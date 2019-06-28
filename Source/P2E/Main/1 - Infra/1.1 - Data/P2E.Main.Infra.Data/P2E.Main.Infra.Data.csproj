@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MicroOrm.Dapper.Repositories" Version="1.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\P2E.Shared\P2E.Shared.csproj" />
+    <ProjectReference Include="..\..\..\0 - Domain\P2E.Main.Domain\P2E.Main.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
