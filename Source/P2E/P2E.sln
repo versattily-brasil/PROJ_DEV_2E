@@ -107,7 +107,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.Exportacao.Infra.Data",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.Exportacao.API", "Exportacao\2 - API\P2E.Exportacao.API\P2E.Exportacao.API.csproj", "{2E9B91AF-3AE6-4900-8923-55BC5FD1E1A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Main.UI.Web", "Main\3 - UI\3.1 - Web\P2E.Main.UI.Web\P2E.Main.UI.Web.csproj", "{FBE42448-DDAA-44B7-A8ED-465AD161618A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.Main.UI.Web", "Main\3 - UI\3.1 - Web\P2E.Main.UI.Web\P2E.Main.UI.Web.csproj", "{FBE42448-DDAA-44B7-A8ED-465AD161618A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -32,7 +32,14 @@ namespace P2E.Main.UI.Web
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                                .AddRazorPagesOptions(options =>
+                                {
+                                    options.AllowAreas = true;
+                                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                                });
+            ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +58,7 @@ namespace P2E.Main.UI.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
@@ -61,4 +69,5 @@ namespace P2E.Main.UI.Web
             });
         }
     }
+
 }
