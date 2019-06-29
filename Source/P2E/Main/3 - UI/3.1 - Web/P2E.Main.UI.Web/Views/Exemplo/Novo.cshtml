@@ -1,0 +1,34 @@
+﻿@model P2E.Main.API.ViewModel.ExemploVM
+@{
+    ViewData["Title"] = "Novo Exemplo";
+    ViewData["PageName"] = "exemplo_novo";
+    ViewData["Category1"] = "Exemplo";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="panel">
+            <div class="panel-hdr">
+                <h1>
+                    Novo Exemplo
+                </h1>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form asp-action="Novo" method="post">
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Descricao">Descrição</label>
+                            <input type="text" asp-for="Descricao" placeholder="Descrição" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Valor">Valor</label>
+                            <input type="text" asp-for="Valor" placeholder="Valor" class="form-control">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

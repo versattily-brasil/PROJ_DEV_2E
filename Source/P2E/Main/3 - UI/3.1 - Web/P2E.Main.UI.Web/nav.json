@@ -6,12 +6,12 @@
       "icon": "fal fa-info-circle",
       "items": [
         {
-          "title": "Listagem",
-          "href": "intel_introduction.html"
+          "title": "Lista",
+          "href": "exemplo_lista.html"
         },
         {
-          "title": "Adicionar",
-          "href": "intel_privacy.html"
+          "title": "Novo",
+          "href": "exemplo_novo.html"
         }
       ]
     }
