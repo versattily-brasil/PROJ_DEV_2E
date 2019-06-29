@@ -1,0 +1,19 @@
+{
+  "version": 4.0,
+  "lists": [
+    {
+      "title": "Exemplo",
+      "icon": "fal fa-info-circle",
+      "items": [
+        {
+          "title": "Listagem",
+          "href": "intel_introduction.html"
+        },
+        {
+          "title": "Adicionar",
+          "href": "intel_privacy.html"
+        }
+      ]
+    }
+  ]
+}

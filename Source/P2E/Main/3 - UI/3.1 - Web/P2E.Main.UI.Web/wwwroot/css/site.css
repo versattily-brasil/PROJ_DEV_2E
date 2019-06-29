@@ -1,56 +1,22 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿/* Bootstrap Validation Summary Override */
+.validation-summary-valid {
+    display: none;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.validation-summary-errors ul {
+    margin-bottom: 0;
+    padding-left: 1rem;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+.alert.validation-summary-errors {
+    margin-bottom: 1rem;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+/* Reference classes, no implementation */
+.js-waves-off, .js-waves-on, .js-get-date, .js-collapse, .js-modal-settings, .js-filter-message, .js-buttons, .js-icon-class, .js-icon-copy, .base, .needs-validation, .flex-start, .text-faded, .app-container-demo, .has-tooltip, .has-popover {
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.js-bg-color, .js-bg-gradient, .js-bg-gradient-demo, .js-bg-target {
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  line-height: 60px; /* Vertically center the text there */
-}
+/* Enter custom CSS rules for your application here */
