@@ -33,10 +33,10 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Novo(ExemploVM exemplo)
+        public async Task<IActionResult> Novo(ExemploVM exemplo)
         {
             HttpClient client = new HttpClient();
-            client.PostAsJsonAsync<ExemploVM>("http://localhost:50761/api/v1/exemplo", exemplo);
+            await client.PostAsJsonAsync<ExemploVM>("http://localhost:50761/api/v1/exemplo", exemplo);
 
             return RedirectToAction("Lista");
         }
