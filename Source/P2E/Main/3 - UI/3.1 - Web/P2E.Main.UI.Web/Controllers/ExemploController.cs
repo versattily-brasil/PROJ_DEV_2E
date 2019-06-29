@@ -11,18 +11,13 @@ namespace P2E.Main.UI.Web.Controllers
     public class ExemploController : Controller
     {
         [HttpGet]
-        public IActionResult Lista()
+        public async Task<IActionResult> Lista()
         {
             HttpClient client = new HttpClient();
-            var result = client.GetAsync("http://localhost:50761/api/v1/exemplo").Result;
-
-            List<ExemploVM> list = new List<ExemploVM>();
-
-            if (result.IsSuccessStatusCode)
-            {
-                list = result.Content.ReadAsAsync<List<ExemploVM>>().Result;
-            }
-
+            var result = await client.GetAsync("http://localhost:50761/api/v1/exemplo");
+            result.EnsureSuccessStatusCode();
+            List<ExemploVM> list = await result.Content.ReadAsAsync<List<ExemploVM>>();
+            
             return View(list);
         }
 
