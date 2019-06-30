@@ -5,16 +5,24 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
+using P2E.Main.UI.Web.Models;
 
 namespace P2E.Main.UI.Web.Controllers
 {
     public class ExemploController : Controller
     {
+        private readonly AppSettings appSettings;
+
+        public ExemploController(AppSettings appSettings)
+        {
+            this.appSettings = appSettings;
+        }
+
         [HttpGet]
         public async Task<IActionResult> Lista()
         {
             HttpClient client = new HttpClient();
-            var result = await client.GetAsync("http://localhost:50761/api/v1/exemplo");
+            var result = await client.GetAsync(this.appSettings.ApiBaseURL+"/exemplo");
             result.EnsureSuccessStatusCode();
             List<ExemploVM> list = await result.Content.ReadAsAsync<List<ExemploVM>>();
             
@@ -31,7 +39,7 @@ namespace P2E.Main.UI.Web.Controllers
         public async Task<IActionResult> Novo(ExemploVM exemplo)
         {
             HttpClient client = new HttpClient();
-            await client.PostAsJsonAsync<ExemploVM>("http://localhost:50761/api/v1/exemplo", exemplo);
+            await client.PostAsJsonAsync<ExemploVM>(this.appSettings.ApiBaseURL + "/exemplo", exemplo);
 
             return RedirectToAction("Lista");
         }
