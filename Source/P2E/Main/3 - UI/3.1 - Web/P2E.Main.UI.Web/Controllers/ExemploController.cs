@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
+using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
 
 namespace P2E.Main.UI.Web.Controllers
@@ -38,10 +39,15 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Novo(ExemploVM exemplo)
         {
+            if(exemplo.Descricao == String.Empty || exemplo.Valor <= 0)
+            {
+                return View(exemplo).WithDanger("Erro.", "Preencha todos os campos.");
+            }
+
             HttpClient client = new HttpClient();
             await client.PostAsJsonAsync<ExemploVM>(this.appSettings.ApiBaseURL + "/exemplo", exemplo);
 
-            return RedirectToAction("Lista");
+            return RedirectToAction("Lista").WithSuccess("Sucesso.", "O novo Exemplo foi salvo corretamente."); ;
         }
     }
 }
