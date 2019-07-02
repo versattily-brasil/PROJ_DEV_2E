@@ -1,8 +1,21 @@
 {
   "ReRoutes": [
-    // Catalog Service Route
+    // Main
     {
-      "DownstreamPathTemplate": "/api/values/",
+      "DownstreamPathTemplate": "/api/{version}/{everything}/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7001
+        }
+      ],
+      "UpstreamPathTemplate": "/main/{version}/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
+    },
+    // Administrativo
+    {
+      "DownstreamPathTemplate": "/api/{everything}/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -11,21 +24,22 @@
         }
       ],
       "UpstreamPathTemplate": "/administrativo/",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
     },
-    // Transaction Service Route
+    // Financeiro
     {
-      "DownstreamPathTemplate": "/api/transaction/",
+      "DownstreamPathTemplate": "/api/{everything}/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 52790
+          "Port": 7003
         }
       ],
-      "UpstreamPathTemplate": "/api/transaction/",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamPathTemplate": "/financeiro/",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
     }
+
   ],
   "GlobalConfiguration": {}
 }
