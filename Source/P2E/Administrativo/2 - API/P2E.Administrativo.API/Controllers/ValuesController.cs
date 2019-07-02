@@ -14,7 +14,7 @@ namespace P2E.Administrativo.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "P2E.Administrativo.API.Controllers", "value2" };
         }
 
         // GET api/values/5

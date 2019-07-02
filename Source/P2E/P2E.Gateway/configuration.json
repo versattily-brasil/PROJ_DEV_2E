@@ -1,0 +1,31 @@
+{
+  "ReRoutes": [
+    // Catalog Service Route
+    {
+      "DownstreamPathTemplate": "/api/values/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7002
+        }
+      ],
+      "UpstreamPathTemplate": "/administrativo/",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    // Transaction Service Route
+    {
+      "DownstreamPathTemplate": "/api/transaction/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 52790
+        }
+      ],
+      "UpstreamPathTemplate": "/api/transaction/",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+  ],
+  "GlobalConfiguration": {}
+}
