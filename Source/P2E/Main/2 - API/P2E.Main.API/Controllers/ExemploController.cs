@@ -27,7 +27,8 @@ namespace P2E.Main.API.Controllers
         [Route("api/v1/exemplo/")]
         public IEnumerable<ExemploVM> Get()
         {
-            var result = _exemploRepository.FindAll();
+            //var result = _exemploRepository.FindAll();
+            var result = _exemploRepository.MetodoCustomizado(0);
             return _mapper.Map<List<ExemploVM>>(result);
         }
 
