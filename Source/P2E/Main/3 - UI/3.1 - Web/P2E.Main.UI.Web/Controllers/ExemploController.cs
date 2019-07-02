@@ -31,7 +31,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Novo(int id)
+        public async Task<IActionResult> Cadastro(int id)
         {
             if(id != 0)
             {
@@ -48,7 +48,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Novo(ExemploVM exemplo)
+        public async Task<IActionResult> Cadastro(ExemploVM exemplo)
         {
             if(exemplo.Descricao == String.Empty || exemplo.Valor <= 0)
             {
