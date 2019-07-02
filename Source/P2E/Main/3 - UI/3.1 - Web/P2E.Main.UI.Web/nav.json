@@ -1,4 +1,4 @@
-{
+﻿{
   "version": 4.0,
   "lists": [
     {
@@ -6,12 +6,78 @@
       "icon": "fal fa-info-circle",
       "items": [
         {
-          "title": "Lista",
+          "title": "Listagem",
           "href": "exemplo_lista.html"
+        }
+      ]
+    },
+    {
+      "title": "Importação",
+      "icon": "fal fa-cloud-download",
+      "items": [
+        {
+          "title": "Lista",
+          "href": "1exemplo_lista.html"
         },
         {
           "title": "Novo",
-          "href": "exemplo_novo.html"
+          "href": "2exemplo_novo.html"
+        }
+      ]
+    },
+    {
+      "title": "Exportação",
+      "icon": "fal fa-cloud-upload",
+      "items": [
+        {
+          "title": "Lista",
+          "href": "3exemplo_lista.html"
+        },
+        {
+          "title": "Novo",
+          "href": "4exemplo_novo.html"
+        }
+      ]
+    },
+    {
+      "title": "Dashboard",
+      "icon": "fal fa-chart-bar",
+      "items": [
+        {
+          "title": "Lista",
+          "href": "5exemplo_lista.html"
+        },
+        {
+          "title": "Novo",
+          "href": "6exemplo_novo.html"
+        }
+      ]
+    },
+    {
+      "title": "Faturamento",
+      "icon": "fal fa-chart-line",
+      "items": [
+        {
+          "title": "Lista",
+          "href": "7exemplo_lista.html"
+        },
+        {
+          "title": "Novo",
+          "href": "77exemplo_novo.html"
+        }
+      ]
+    },
+    {
+      "title": "Financeiro",
+      "icon": "fal fa-money-bill",
+      "items": [
+        {
+          "title": "Lista",
+          "href": "8exemplo_lista.html"
+        },
+        {
+          "title": "Novo",
+          "href": "88exemplo_novo.html"
         }
       ]
     }

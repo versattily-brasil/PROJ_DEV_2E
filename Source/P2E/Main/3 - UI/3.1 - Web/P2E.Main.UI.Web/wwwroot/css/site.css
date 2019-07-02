@@ -19,4 +19,9 @@
 .js-bg-color, .js-bg-gradient, .js-bg-gradient-demo, .js-bg-target {
 }
 
+.login-screen {
+    background-image: url("../img/P2E/2E_wallpaper_02.jpg");
+}
+
+
 /* Enter custom CSS rules for your application here */

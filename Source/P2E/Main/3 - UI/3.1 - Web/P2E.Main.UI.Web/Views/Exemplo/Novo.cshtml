@@ -24,12 +24,13 @@
         <div class="panel">
             <div class="panel-hdr">
                 <h1>
-                    Novo Exemplo
+                    Cadastro de Exemplo
                 </h1>
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
                     <form asp-action="Novo" method="post">
+                        <input type="hidden" asp-for="ExemploId" />
                         <div class="form-group">
                             <label class="form-label" asp-for="Descricao">Descrição</label>
                             <input type="text" asp-for="Descricao" placeholder="Descrição" class="form-control">

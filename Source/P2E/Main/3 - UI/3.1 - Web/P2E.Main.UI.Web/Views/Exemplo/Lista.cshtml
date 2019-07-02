@@ -29,13 +29,14 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-
+                    <a asp-action="Novo" class="btn btn-primary float-right mb-4"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
                     <table class="table table-bordered table-hover m-0">
                         <thead class="thead-themed">
                             <tr>
                                 <th>#</th>
                                 <th>Descrição</th>
                                 <th>Valor</th>
+                                <th colspan="2"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,6 +46,8 @@
                                     <td>@item.ExemploId</td>
                                     <td>@item.Descricao</td>
                                     <td>@item.Valor</td>
+                                    <td class="text-center"><a asp-action="Novo" asp-route-id="@item.ExemploId"><i style="font-weight:bold;cursor:pointer" class="fal fa-trash-alt text-danger"></i></a></td>
+                                    <td class="text-center"><a asp-action="Novo" asp-route-id="@item.ExemploId"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
                                 </tr>
                             }
                         </tbody>

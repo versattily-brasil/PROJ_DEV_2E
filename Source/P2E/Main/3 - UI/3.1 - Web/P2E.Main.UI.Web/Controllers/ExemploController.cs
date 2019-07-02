@@ -31,8 +31,19 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Novo()
+        public async Task<IActionResult> Novo(int id)
         {
+            if(id != 0)
+            {
+                HttpClient client = new HttpClient();
+                var result = await client.GetAsync(this.appSettings.ApiBaseURL + "/exemplo/"+id);
+                result.EnsureSuccessStatusCode();
+
+                ExemploVM exemplo = await result.Content.ReadAsAsync<ExemploVM>();
+
+                return View(exemplo);
+            }
+
             return View();
         }
 
@@ -45,9 +56,8 @@ namespace P2E.Main.UI.Web.Controllers
             }
 
             HttpClient client = new HttpClient();
-            await client.PostAsJsonAsync<ExemploVM>(this.appSettings.ApiBaseURL + "/exemplo", exemplo);
-
-            return RedirectToAction("Lista").WithSuccess("Sucesso.", "O novo Exemplo foi salvo corretamente."); ;
+            await client.PutAsJsonAsync<ExemploVM>(this.appSettings.ApiBaseURL + "/exemplo/"+exemplo.ExemploId , exemplo);
+            return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Exemplo foi salvo corretamente."); ;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace P2E.Main.UI.Web.Models
 
         private static SmartNavigation BuildNavigation(bool seedOnly = true)
         {
-            var jsonText = File.ReadAllText("nav.json");
+            var jsonText = File.ReadAllText("nav.json",System.Text.Encoding.UTF8);
             var navigation = NavigationBuilder.FromJson(jsonText);
             var menu = FillProperties(navigation.Lists, seedOnly);
 
