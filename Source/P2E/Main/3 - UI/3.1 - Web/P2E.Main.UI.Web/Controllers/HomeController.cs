@@ -27,5 +27,13 @@ namespace P2E.Main.UI.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public ActionResult CldrData()
+        {
+            return new DevExtreme.AspNet.Mvc.CldrDataScriptBuilder()
+                .SetCldrPath("~/node_modules/cldr-data")
+                .SetInitialLocale("pt")
+                .Build();
+        }
     }
 }

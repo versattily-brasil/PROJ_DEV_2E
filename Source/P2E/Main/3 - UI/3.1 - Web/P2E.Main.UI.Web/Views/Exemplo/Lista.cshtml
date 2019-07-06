@@ -10,6 +10,11 @@
     var body = (string)TempData["_alert.body"];
 }
 
+@section Localization{
+    <script src="@Url.Action("CldrData","Home",new {t= CldrDataScriptBuilder.GetCacheParam()})"></script>
+    <script src="~/js/devextreme/localization/dx.messages.pt.js"></script>
+}
+
 <div class="row">
     <div class="col-xl-12">
 
@@ -29,29 +34,48 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <a asp-action="Cadastro" class="btn btn-primary float-right mb-4"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
-                    <table class="table table-bordered table-hover m-0">
-                        <thead class="thead-themed">
-                            <tr>
-                                <th>#</th>
-                                <th>Descrição</th>
-                                <th>Valor</th>
-                                <th colspan="2"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>@item.ExemploId</td>
-                                    <td>@item.Descricao</td>
-                                    <td>@item.Valor</td>
-                                    <td class="text-center"><a asp-action="Cadastro" asp-route-id="@item.ExemploId"><i style="font-weight:bold;cursor:pointer" class="fal fa-trash-alt text-danger"></i></a></td>
-                                    <td class="text-center"><a asp-action="Cadastro" asp-route-id="@item.ExemploId"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+
+                    @(Html.DevExtreme().DataGrid<P2E.Main.API.ViewModel.ExemploVM>()
+                        .DataSource(ds => ds
+                            .Mvc()
+                            .Controller("Exemplo")
+                            .Key("ExemploId")
+                            .LoadAction("Listar")
+                            .InsertAction("Adicionar")
+                            .UpdateAction("Atualizar")
+                            .DeleteAction("Excluir")
+                        )
+                        .Paging(paging => paging.PageSize(5))
+                        .AllowColumnReordering(true)
+                        .AllowColumnResizing(true)
+                        .FilterRow(fr => fr.Visible(true))
+                        .HeaderFilter(f => f.Visible(true))
+                        .GroupPanel(gp => gp.Visible(true))
+                        .Editing(e =>
+                        {
+                            e.Mode(GridEditMode.Popup);
+                            e.AllowAdding(true);
+                            e.AllowDeleting(true);
+                            e.AllowUpdating(true);
+                            e.Popup(p => p
+                                .Title("Cadastro Exemplo")
+                                .ShowTitle(true)
+                                .Width(700)
+                                .Height(260)
+                                .Position(pos => pos
+                                               .My(HorizontalAlignment.Center, VerticalAlignment.Center)
+                                               .At(HorizontalAlignment.Center, VerticalAlignment.Center)
+                                               .Of(new JS("window"))
+                                           )
+
+                                );
+
+                        })
+                    )
+
+
+
+
                 </div>
             </div>
         </div>

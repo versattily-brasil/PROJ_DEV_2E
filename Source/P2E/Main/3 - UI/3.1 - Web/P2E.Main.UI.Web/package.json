@@ -1,0 +1,15 @@
+{
+  "name": "P2E.Main.UI.Web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cldr-data": "^35.1.0"
+  }
+}
