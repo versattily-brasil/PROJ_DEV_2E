@@ -29,38 +29,50 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <a asp-action="Cadastro" class="btn btn-primary float-right mb-4"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
-                    <table class="table table-bordered table-hover m-0">
-                        <thead class="thead-themed">
-                            <tr>
-                                <th>#</th>
-                                <th>Descrição</th>
-                                <th>Valor</th>
-                                <th colspan="2"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="Digite algo para procurar..." />
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-default"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <a asp-action="Cadastro" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                        </div>
+                    </div><br/>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover m-0">
+                            <thead class="thead-themed">
                                 <tr>
-                                    <td>@item.ExemploId</td>
-                                    <td>@item.Descricao</td>
-                                    <td>@item.Valor</td>
-                                    <td class="text-center">
-                                        <i 
-                                            data-id = "@item.ExemploId"
-                                            data-controller = "Exemplo"
-                                            data-action = "Excluir"
-                                            data-body-message = "Deseja excluir este Exemplo?"
-                                            style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
-
-                                        </i>
-                                    </td>
-                                    <td class="text-center"><a asp-action="Cadastro" asp-route-id="@item.ExemploId"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                    <th width="100">#</th>
+                                    <th>Descrição</th>
+                                    <th>Valor</th>
+                                    <th width="20"></th>
+                                    <th width="20"></th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.ExemploId</td>
+                                        <td>@item.Descricao</td>
+                                        <td>@item.Valor</td>
+                                        <td class="text-center">
+                                            <i data-id="@item.ExemploId"
+                                               data-controller="Exemplo"
+                                               data-action="Excluir"
+                                               data-body-message="Deseja excluir este Exemplo?"
+                                               style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+
+                                            </i>
+                                        </td>
+                                        <td class="text-center"><a asp-action="Cadastro" asp-route-id="@item.ExemploId"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
