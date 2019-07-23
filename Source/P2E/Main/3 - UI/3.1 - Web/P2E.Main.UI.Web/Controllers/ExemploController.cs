@@ -57,7 +57,16 @@ namespace P2E.Main.UI.Web.Controllers
 
             HttpClient client = new HttpClient();
             await client.PutAsJsonAsync<ExemploVM>(this.appSettings.ApiBaseURL + "/exemplo/"+exemplo.ExemploId , exemplo);
-            return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Exemplo foi salvo corretamente."); ;
+            return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Exemplo foi salvo corretamente.");
         }
+
+        public async Task<IActionResult> Excluir(int Id)
+        {
+            HttpClient client = new HttpClient();
+            await client.DeleteAsync(this.appSettings.ApiBaseURL + "/exemplo/" + Id);
+            return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Exemplo foi excluído corretamente.");
+
+        }
+
     }
 }

@@ -46,7 +46,16 @@
                                     <td>@item.ExemploId</td>
                                     <td>@item.Descricao</td>
                                     <td>@item.Valor</td>
-                                    <td class="text-center"><a asp-action="Cadastro" asp-route-id="@item.ExemploId"><i style="font-weight:bold;cursor:pointer" class="fal fa-trash-alt text-danger"></i></a></td>
+                                    <td class="text-center">
+                                        <i 
+                                            data-id = "@item.ExemploId"
+                                            data-controller = "Exemplo"
+                                            data-action = "Excluir"
+                                            data-body-message = "Deseja excluir este Exemplo?"
+                                            style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+
+                                        </i>
+                                    </td>
                                     <td class="text-center"><a asp-action="Cadastro" asp-route-id="@item.ExemploId"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
                                 </tr>
                             }
