@@ -80,6 +80,16 @@
           "href": "88exemplo_novo.html"
         }
       ]
+    },
+    {
+      "title": "Controle de Acesso",
+      "icon": "fal fa-address-card",
+      "items": [
+        {
+          "title": "Usuários",
+          "href": "usuario_lista.html"
+        }
+      ]
     }
   ]
 }

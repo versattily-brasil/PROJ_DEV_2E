@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidator" Version="2.0.4" />
+    <PackageReference Include="MicroOrm.Dapper.Repositories" Version="1.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="1.60.6" />
     <PackageReference Include="MicroOrm.Dapper.Repositories" Version="1.8.3" />
   </ItemGroup>
@@ -12,5 +17,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\P2E.Shared\P2E.Shared.csproj" />
   </ItemGroup>
+<<<<<<< .mine
 
+=======
+
+>>>>>>> .theirs
 </Project>

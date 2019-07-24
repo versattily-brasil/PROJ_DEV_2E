@@ -22,5 +22,6 @@ namespace P2E.SSO.Infra.Data.DataContext
                 Connection.Close();
             }
         }
+
     }
 }

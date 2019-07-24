@@ -15,6 +15,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SSO\2 - API\P2E.SSO.API\P2E.SSO.API.csproj" />
     <ProjectReference Include="..\..\..\2 - API\P2E.Main.API\P2E.Main.API.csproj" />
   </ItemGroup>
 
