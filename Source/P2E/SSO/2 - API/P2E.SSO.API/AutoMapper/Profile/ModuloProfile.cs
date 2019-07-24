@@ -8,8 +8,8 @@ namespace P2E.SSO.API.AutoMapper
     {
         public ModuloProfile()
         {
-            CreateMap<TB_MOD, ModuloVM>(MemberList.None);
-            CreateMap<ModuloVM, TB_MOD>(MemberList.Source);
+            CreateMap<Modulo, ModuloVM>(MemberList.None);
+            CreateMap<ModuloVM, Modulo>(MemberList.Source);
             AllowNullDestinationValues = true;
         }
     }

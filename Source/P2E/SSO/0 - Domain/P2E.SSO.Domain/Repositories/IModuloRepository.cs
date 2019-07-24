@@ -4,8 +4,8 @@ using P2E.SSO.Domain.Entities;
 
 namespace P2E.SSO.Domain.Repositories
 {
-    public interface IModuloRepository : IDapperRepository<TB_MOD>
+    public interface IModuloRepository : IDapperRepository<Modulo>
     {
-        List<TB_MOD> MetodoCustomizado(int id);
+        List<Modulo> MetodoCustomizado(int id);
     }
 }

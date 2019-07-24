@@ -2,19 +2,23 @@
 using MicroOrm.Dapper.Repositories.Attributes;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace P2E.SSO.Domain.Entities
 {
-    public class TB_MOD : Notifiable
+    [Table("TB_MOD")]
+    public class Modulo : Notifiable
     {
-        public TB_MOD()
+        public Modulo()
         {
 
         }
 
-        public TB_MOD(string descricao)
+        public Modulo(string tx_dsc)
         {
-            TX_DSC = descricao;
+            TX_DSC = tx_dsc;
+
+            IsValid();
         }
 
         [Key]
@@ -25,7 +29,7 @@ namespace P2E.SSO.Domain.Entities
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(TX_DSC.Trim()))
-                AddNotification("Descrição", $"Descrição é um campo obrigatório.");
+                AddNotification("TX_DSC", $"Descrição é um campo obrigatório.");
 
             return Valid;
         }

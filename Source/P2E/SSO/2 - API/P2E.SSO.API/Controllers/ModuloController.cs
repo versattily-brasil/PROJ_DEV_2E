@@ -47,7 +47,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                var modulo = _mapper.Map<TB_MOD>(moduloVM);
+                var modulo = _mapper.Map<Modulo>(moduloVM);
                 if (modulo.IsValid())
                 {
                     _moduloRepository.Insert(modulo);
@@ -72,7 +72,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                var modulo = _mapper.Map<TB_MOD>(moduloVM);
+                var modulo = _mapper.Map<Modulo>(moduloVM);
                 if (modulo.IsValid())
                 {
                     if (id > 0)

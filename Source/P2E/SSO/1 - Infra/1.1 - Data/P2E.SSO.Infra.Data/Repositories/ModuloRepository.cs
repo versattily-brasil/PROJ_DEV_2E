@@ -10,7 +10,7 @@ using P2E.SSO.Infra.Data.DataContext;
 
 namespace P2E.SSO.Infra.Data.Repositories
 {
-    public class ModuloRepository : DapperRepository<TB_MOD>, IModuloRepository
+    public class ModuloRepository : DapperRepository<Modulo>, IModuloRepository
     {
         private readonly SSOContext _ssoContext;
 
@@ -19,16 +19,16 @@ namespace P2E.SSO.Infra.Data.Repositories
             _ssoContext = ssoContext;
         }
 
-        public List<TB_MOD> MetodoCustomizado(int id)
+        public List<Modulo> MetodoCustomizado(int id)
         {
-            var resultado = new List<TB_MOD>();
+            var resultado = new List<Modulo>();
             var parametros = new DynamicParameters();
 
             parametros.Add("CD_MOD", id, System.Data.DbType.Int32, System.Data.ParameterDirection.Input);
 
             var query = @" SELECT * FROM TB_MOD WHERE CD_MOD > @CD_MOD";
 
-            resultado = _ssoContext.Connection.Query<TB_MOD>(query, parametros).ToList();
+            resultado = _ssoContext.Connection.Query<Modulo>(query, parametros).ToList();
 
             return resultado;
         }
