@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Shared\P2E.Shared\P2E.Shared.csproj" />
+    <ProjectReference Include="..\..\..\0 - Domain\P2E.SSO.Domain\P2E.SSO.Domain.csproj" />
+  </ItemGroup>
 
 </Project>
