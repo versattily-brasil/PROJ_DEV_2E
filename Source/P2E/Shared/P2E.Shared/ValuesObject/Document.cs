@@ -1,5 +1,6 @@
 ﻿using FluentValidator;
 using FluentValidator.Validation;
+using P2E.Shared.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,12 +9,12 @@ namespace P2E.Shared.ValuesObject
 {
     public class Document : Notifiable
     {
-        public Document(string number)
+        public Document(string number, eTIPODOC tipodoc = eTIPODOC.CNPJ)
         {
             this.Number = number;
             AddNotifications(
                 new ValidationContract()
-                .IsTrue(IsCpf(number), "Document", "Documento inválido.")
+                .IsTrue(tipodoc == eTIPODOC.CNPJ ? IsCnpj(number) : IsCpf(number), "Document", "Documento inválido.")
             );
         }
         public string Number { get; private set; }

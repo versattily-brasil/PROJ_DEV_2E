@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.60.6" />
+    <PackageReference Include="DapperExtensions.NetCore" Version="2.0.6" />
+    <PackageReference Include="MicroOrm.Dapper.Repositories" Version="1.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Shared\P2E.Shared\P2E.Shared.csproj" />
     <ProjectReference Include="..\..\..\0 - Domain\P2E.SSO.Domain\P2E.SSO.Domain.csproj" />
   </ItemGroup>
