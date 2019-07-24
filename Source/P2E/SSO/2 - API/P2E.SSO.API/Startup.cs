@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using P2E.SSO.Domain.Repositories;
 using P2E.SSO.Infra.Data.DataContext;
 using P2E.SSO.Infra.Data.Repositories;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace P2E.SSO.API
 {
@@ -32,7 +33,13 @@ namespace P2E.SSO.API
             services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "P2E [SSO-API]", Version = "v1" });
+            });
+
             services.AddScoped<SSOContext, SSOContext>();
+            services.AddTransient<IModuloRepository, ModuloRepository>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
         }
 

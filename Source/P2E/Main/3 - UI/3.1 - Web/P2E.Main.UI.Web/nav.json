@@ -12,6 +12,16 @@
       ]
     },
     {
+      "title": "Segurança",
+      "icon": "fal fa-key",
+      "items": [
+        {
+          "title": "Módulos",
+          "href": "modulo_lista.html"
+        }
+      ]
+    },
+    {
       "title": "Importação",
       "icon": "fal fa-cloud-download",
       "items": [
