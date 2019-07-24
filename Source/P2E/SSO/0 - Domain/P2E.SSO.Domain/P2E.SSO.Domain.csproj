@@ -17,9 +17,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\P2E.Shared\P2E.Shared.csproj" />
   </ItemGroup>
-<<<<<<< .mine
-
-=======
-
->>>>>>> .theirs
 </Project>
