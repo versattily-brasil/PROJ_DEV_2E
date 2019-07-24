@@ -6,8 +6,8 @@ using System.Text;
 
 namespace P2E.SSO.Domain.Repositories
 {
-    public interface IPAR_NEGORepository : IDapperRepository<PAR_NEGO>
+    public interface IParceiroNegocioRepository : IDapperRepository<ParceiroNegocio>
     {
-        IEnumerable<PAR_NEGO> GetByPage(int page = 1, int pageSize = 10);
+        IEnumerable<ParceiroNegocio> GetByPage(int currenPage = 1, int pageSize = 10);
     }
 }
