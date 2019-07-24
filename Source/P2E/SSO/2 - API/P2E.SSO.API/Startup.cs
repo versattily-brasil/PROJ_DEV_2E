@@ -38,10 +38,8 @@ namespace P2E.SSO.API
                 c.SwaggerDoc("v1", new Info { Title = "P2E [SSO-API]", Version = "v1" });
             });
 
-            services.AddScoped<MainContext, MainContext>();
-            services.AddTransient<IModuloRepository, ModuloRepository>();
-
             services.AddScoped<SSOContext, SSOContext>();
+            services.AddTransient<IModuloRepository, ModuloRepository>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
         }
 

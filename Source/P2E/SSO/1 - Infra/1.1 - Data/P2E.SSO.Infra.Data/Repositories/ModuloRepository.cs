@@ -12,11 +12,11 @@ namespace P2E.SSO.Infra.Data.Repositories
 {
     public class ModuloRepository : DapperRepository<TB_MOD>, IModuloRepository
     {
-        private readonly MainContext _mainContext;
+        private readonly SSOContext _ssoContext;
 
-        public ModuloRepository(MainContext mainContext) : base(mainContext.Connection)
+        public ModuloRepository(SSOContext ssoContext) : base(ssoContext.Connection)
         {
-            _mainContext = mainContext;
+            _ssoContext = ssoContext;
         }
 
         public List<TB_MOD> MetodoCustomizado(int id)
@@ -28,7 +28,7 @@ namespace P2E.SSO.Infra.Data.Repositories
 
             var query = @" SELECT * FROM TB_MOD WHERE CD_MOD > @CD_MOD";
 
-            resultado = _mainContext.Connection.Query<TB_MOD>(query, parametros).ToList();
+            resultado = _ssoContext.Connection.Query<TB_MOD>(query, parametros).ToList();
 
             return resultado;
         }
