@@ -9,6 +9,10 @@ namespace P2E.Shared.ValuesObject
 {
     public class Document : Notifiable
     {
+        //public Document()
+        //{
+            
+        //}
         public Document(string number, eTIPODOC tipodoc = eTIPODOC.CNPJ)
         {
             this.Number = number;
@@ -20,6 +24,12 @@ namespace P2E.Shared.ValuesObject
         public string Number { get; private set; }
 
         public override string ToString() => Number;
+
+        public static Document FromString(string value)
+        {
+            var result = new Document(value);
+            return result;
+        }
 
         public static bool IsCpf(string cpf)
         {

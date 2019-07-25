@@ -10,8 +10,6 @@ using P2E.SSO.Domain.Repositories;
 
 namespace P2E.SSO.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class ParceiroNegocioController : ControllerBase
     {
         private readonly IParceiroNegocioRepository _parceiroNegocioRepository;
@@ -22,13 +20,12 @@ namespace P2E.SSO.API.Controllers
 
         // GET: api/parceironegocio
         [HttpGet]
-        [Route("api/v1/parceironegocio/")]
-        public ParceiroNegocioVM Get(ParceiroNegocioVM vm)
+        [Route("api/v1/parceironegocio/{pagesize}/{currentpage}")]
+        public ParceiroNegocioVM Get([FromBody] ParceiroNegocioVM vm)
         {
-            if (vm == null)
-                vm = new ParceiroNegocioVM();
+            //var vm = new ParceiroNegocioVM() { CurrentPage = currentPage, PageSize = pageSize};
 
-            vm.Lista = _parceiroNegocioRepository.GetByPage(vm.CurrentPage, vm.PageSize);
+            vm.Lista = _parceiroNegocioRepository.GetByPage(vm.razaoSocial, vm.CNPJ, vm.CurrentPage, vm.PageSize);
 
             return vm;
         }

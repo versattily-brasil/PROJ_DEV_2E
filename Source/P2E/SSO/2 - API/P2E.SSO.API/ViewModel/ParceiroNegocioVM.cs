@@ -14,5 +14,8 @@ namespace P2E.SSO.API.ViewModel
         public int PageSize { get; set; }
         public int CurrentPage { get; set; }
         public int TotalRows { get; set; }
+
+        public string razaoSocial { get; set; }
+        public string CNPJ { get; set; }
     }
 }

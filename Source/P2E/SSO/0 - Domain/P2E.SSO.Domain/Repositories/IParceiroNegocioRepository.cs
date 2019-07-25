@@ -8,6 +8,6 @@ namespace P2E.SSO.Domain.Repositories
 {
     public interface IParceiroNegocioRepository : IDapperRepository<ParceiroNegocio>
     {
-        IEnumerable<ParceiroNegocio> GetByPage(int currenPage = 1, int pageSize = 10);
+        IEnumerable<ParceiroNegocio> GetByPage(string razaoSocial, string cnpj, int currenPage = 1, int pageSize = 10);
     }
 }
