@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace P2E.SSO.API.ViewModel
 {
-    public class ParceiroNegocioVM : Notifiable, IPageControl
+    public class ParceiroNegocioVM
     {
         public IEnumerable<ParceiroNegocio> Lista { get; set; }
         public int PageSize { get; set; }

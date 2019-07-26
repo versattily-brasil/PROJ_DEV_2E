@@ -1,4 +1,5 @@
 ﻿using MicroOrm.Dapper.Repositories;
+using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,6 @@ namespace P2E.SSO.Domain.Repositories
 {
     public interface IParceiroNegocioRepository : IDapperRepository<ParceiroNegocio>
     {
-        IEnumerable<ParceiroNegocio> GetByPage(string razaoSocial, string cnpj, int currenPage = 1, int pageSize = 10);
+        DataPage<ParceiroNegocio> GetByPage(DataPage<ParceiroNegocio> page, string razaoSocial, string cnpj);
     }
 }

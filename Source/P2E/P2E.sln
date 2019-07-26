@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29102.190
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Main", "0 - Main", "{E006E39B-4AA5-4266-BA84-E1A1153CE75A}"
 EndProject
@@ -131,7 +131,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.SSO.API", "SSO\2 - API\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Tests", "3 - Tests", "{A8F7BED2-48D0-495A-960F-F21ED052D967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.SSO.Tests", "SSO\3 - Tests\P2E.SSO.Tests\P2E.SSO.Tests.csproj", "{C3A65541-5AD6-4886-A8DF-DE4D1361BAEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.SSO.Tests", "SSO\3 - Tests\P2E.SSO.Tests\P2E.SSO.Tests.csproj", "{C3A65541-5AD6-4886-A8DF-DE4D1361BAEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

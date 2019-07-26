@@ -29,17 +29,19 @@ namespace P2E.SSO.Infra.Data.Repositories
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public IEnumerable<ParceiroNegocio> GetByPage(string razaoSocial, string cnpj, int currentPage, int pageSize)
+        public DataPage<ParceiroNegocio> GetByPage(DataPage<ParceiroNegocio> dataPage, string razaoSocial, string cnpj)
         {
             var sSQL = new StringBuilder();
-            IEnumerable<ParceiroNegocio> results;
+            dataPage.OrderBy = dataPage.OrderBy ?? "txt_rzsoc";
+            var sort = new Sort() { PropertyName = dataPage.OrderBy, Ascending = !dataPage.Descending  };
 
             #region Filtros
             var predicateGroup = new PredicateGroup();
+            predicateGroup.Predicates = new List<IPredicate>();
 
             if (!string.IsNullOrEmpty(razaoSocial))
             {
-                var predicate = Predicates.Field<ParceiroNegocio>(p => p.TXT_RZSOC, Operator.Eq, razaoSocial);
+                var predicate = Predicates.Field<ParceiroNegocio>(p => p.TXT_RZSOC, Operator.Like, razaoSocial.ToLower());
                 predicateGroup.Predicates.Add(predicate);
             }
 
@@ -48,16 +50,16 @@ namespace P2E.SSO.Infra.Data.Repositories
                 var predicate = Predicates.Field<ParceiroNegocio>(p => p.CNPJ, Operator.Eq, new Document(cnpj));
                 predicateGroup.Predicates.Add(predicate);
             }
+
             #endregion
 
             #region Ordenação
             var listSort = new List<ISort>();
-            listSort.Add(new Sort() { PropertyName = "TXT_RZSOC", Ascending = true }); 
+            listSort.Add(sort); 
             #endregion
 
-            results = _context.Connection.GetPage<ParceiroNegocio>(predicateGroup, listSort, currentPage, pageSize);
-
-            return results.ToList();
+            dataPage.Items = _context.Connection.GetPage<ParceiroNegocio>(predicateGroup, listSort, dataPage.CurrentPage - 1, dataPage.PageSize).ToList();
+            return dataPage;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
@@ -20,14 +21,11 @@ namespace P2E.SSO.API.Controllers
 
         // GET: api/parceironegocio
         [HttpGet]
-        [Route("api/v1/parceironegocio/{pagesize}/{currentpage}")]
-        public ParceiroNegocioVM Get([FromBody] ParceiroNegocioVM vm)
+        [Route("api/v1/parceironegocio/")]
+        public DataPage<ParceiroNegocio> Get([FromQuery] string razaosocial, [FromQuery] string cnpj, [FromQuery] DataPage<ParceiroNegocio> page)
         {
-            //var vm = new ParceiroNegocioVM() { CurrentPage = currentPage, PageSize = pageSize};
-
-            vm.Lista = _parceiroNegocioRepository.GetByPage(vm.razaoSocial, vm.CNPJ, vm.CurrentPage, vm.PageSize);
-
-            return vm;
+            page = _parceiroNegocioRepository.GetByPage(page, razaosocial, cnpj);
+            return page;
         }
 
         // GET: api/parceironegocio/5
