@@ -100,6 +100,16 @@
           "href": "usuario_lista.html"
         }
       ]
+    },
+    {
+      "title": "Configurações",
+      "icon": "fal fa-address-card",
+      "items": [
+        {
+          "title": "Tabelas Auxiliares",
+          "href": "tabelaAuxiliar_lista.html"
+        }
+      ]
     }
   ]
 }

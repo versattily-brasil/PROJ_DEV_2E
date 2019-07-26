@@ -1,0 +1,82 @@
+﻿@model List<P2E.Main.API.ViewModel.TabelaAuxiliarVM>
+@{
+    ViewData["Title"] = "Lista de Tabelas Auxiliares";
+    ViewData["PageName"] = "tabelaAuxiliar_lista";
+    ViewData["Category1"] = "Tabela Auxiliar";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <div class="alert alert-@type alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>@title</strong> @body
+            </div>
+        }
+
+        <div class="panel">
+            <div class="panel-hdr">
+                <h1>
+                    Lista de Tabelas Auxiliares
+                </h1>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="Digite algo para procurar..." />
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-default"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <a asp-action="Cadastro" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                        </div>
+                    </div><br />
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover m-0">
+                            <thead class="thead-themed">
+                                <tr>
+                                    <th width="100">TX_TABELA</th>
+                                    <th>OP_ATIVA</th>
+                                    <th>CD_TBL_PAI</th>
+                                    <th>TX_CAMPO_REF</th>
+                                    <th width="20"></th>
+                                    <th width="20"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td>@item.TX_TABELA</td>
+                                    <td>@item.OP_ATIVA</td>
+                                    <td>@item.CD_TBL_PAI</td>
+                                    <td>@item.TX_CAMPO_REF</td>
+                                    <td class="text-center">
+                                        <i data-id="@item.TX_TABELA"
+                                           data-controller="Tabela Auxiliar"
+                                           data-action="Excluir"
+                                           data-body-message="Deseja excluir esta Tabela Auxiliar?"
+                                           style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+
+                                        </i>
+                                    </td>
+                                    <td class="text-center"><a asp-action="Cadastro" asp-route-id="@item.TX_TABELA"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

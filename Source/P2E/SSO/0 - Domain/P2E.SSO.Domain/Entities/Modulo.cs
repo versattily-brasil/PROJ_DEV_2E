@@ -20,7 +20,7 @@ namespace P2E.SSO.Domain.Entities
 
             IsValid();
         }
-
+        
         [Key]
         [Identity]
         public int CD_MOD { get; private set; }
