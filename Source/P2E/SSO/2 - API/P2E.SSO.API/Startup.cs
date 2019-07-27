@@ -41,6 +41,7 @@ namespace P2E.SSO.API
             services.AddScoped<SSOContext, SSOContext>();
             services.AddTransient<IModuloRepository, ModuloRepository>();
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();
+            services.AddTransient<IRotinaRepository, RotinaRepository>();
             services.AddTransient<IParceiroNegocioRepository, ParceiroNegocioRepository>();
         }
 
