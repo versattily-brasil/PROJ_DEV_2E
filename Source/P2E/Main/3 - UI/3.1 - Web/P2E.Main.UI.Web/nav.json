@@ -98,6 +98,10 @@
         {
           "title": "Usuários",
           "href": "usuario_lista.html"
+        },
+        {
+          "title": "Rotinas",
+          "href": "rotina_lista.html"
         }
       ]
     },
