@@ -1,5 +1,6 @@
 ﻿using FluentValidator;
 using MicroOrm.Dapper.Repositories.Attributes;
+using P2E.Shared.Message;
 using P2E.Shared.ValuesObject;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,8 @@ using System.Text;
 namespace P2E.SSO.Domain.Entities
 {
     [Table("TB_PAR_NEG")]
-    public class ParceiroNegocio : Notifiable
+    [Serializable]
+    public class ParceiroNegocio : CustomNotifiable
     {
         public ParceiroNegocio()
         {

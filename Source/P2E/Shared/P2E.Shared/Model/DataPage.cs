@@ -45,5 +45,6 @@ namespace P2E.Shared.Model
         public int StartIndex { get; private set; }
         public int EndIndex { get; private set; }
         public IEnumerable<int> Pages { get; private set; }
+        public string Message { get; set; }
     }
 }
