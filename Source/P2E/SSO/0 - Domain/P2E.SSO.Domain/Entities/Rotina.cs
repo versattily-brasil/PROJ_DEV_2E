@@ -1,5 +1,6 @@
 ﻿using FluentValidator;
 using MicroOrm.Dapper.Repositories.Attributes;
+using P2E.Shared.Message;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace P2E.SSO.Domain.Entities
 {
     [Table("TB_ROT")]
-    public class Rotina : Notifiable
+    public class Rotina : CustomNotifiable
     {
         public Rotina() {}
 
