@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using P2E.Shared.Enum;
 
 namespace P2E.SSO.API.ViewModel
 {
@@ -13,6 +10,6 @@ namespace P2E.SSO.API.ViewModel
         public int CD_ROT { get; set; }
         public string TX_NOME { get; set; }
         public string TX_DSC { get; set; }        
-        public int OP_TIPO { get; set; }
+        public eTipoRotina OP_TIPO { get; set; }
     }
 }
