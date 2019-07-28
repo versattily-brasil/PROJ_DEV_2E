@@ -16,11 +16,16 @@ namespace P2E.Shared.Message
             {
                 foreach (var item in Notifications)
                 {
-                    msg.Append($"{item.Property}: {item.Message}");
+                    msg.AppendLine($"{item.Property}: {item.Message}");
                 }
             }
 
             return msg.ToString();
+        }
+
+        public void RemoveNotifications()
+        {
+
         }
     }
 }

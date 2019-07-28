@@ -1,0 +1,49 @@
+﻿@model P2E.Main.UI.Web.Models.SSO.ParceiroNegocio.ParceiroNegocioViewModel
+@{
+    ViewData["Title"] = "Novo Parceiro de Negócio";
+    ViewData["PageName"] = "parceiro_negocio";
+    ViewData["Category1"] = "Parceiro de Negócio";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <div class="alert alert-@type alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>@title</strong> @body
+            </div>
+        }
+
+        <div class="panel">
+            <div class="panel-hdr">
+                <h1>
+                    Parceiro de Negócio
+                </h1>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form asp-action="Save" method="post">
+                        <input type="hidden" asp-for="CD_PAR" />
+                        <div class="form-group">
+                            <label class="form-label" asp-for="TXT_RZSOC">Razão  Social</label>
+                            <input type="text" asp-for="TXT_RZSOC" placeholder="Razão Social" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" asp-for="CNPJ">CNPJ</label>
+                            <input type="text" asp-for="CNPJ" placeholder="Valor" class="form-control">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

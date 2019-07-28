@@ -30,10 +30,10 @@ namespace P2E.Main.UI.Web.Extensions.Alerts
             var factory = context.HttpContext.RequestServices.GetService<ITempDataDictionaryFactory>();
 
             var tempData = factory.GetTempData(context.HttpContext);
+            
             tempData["_alert.type"] = Type;
             tempData["_alert.title"] = Title;
             tempData["_alert.body"] = Body;
-
             await Result.ExecuteResultAsync(context);
         }
     }

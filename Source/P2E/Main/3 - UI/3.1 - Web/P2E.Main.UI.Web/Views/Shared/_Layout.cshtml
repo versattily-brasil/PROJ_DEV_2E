@@ -15,6 +15,8 @@
                 <main id="js-page-content" role="main" class="page-content">
                     <partial name="_PageBreadCrumb" />
                     @RenderSection("PageHeading", required: false)
+
+                    <div flashes></div>
                     @RenderBody()
                 </main>
                 <partial name="_PageContentOverlay" />
@@ -29,7 +31,7 @@
     <partial name="_GoogleAnalytics" />
     <partial name="_ScriptBasePlugins" />
     @RenderSection("Scripts", required: false)
-    
+
     <script src="~/js/DeleteConfirmation.js"></script>
 
 </body>

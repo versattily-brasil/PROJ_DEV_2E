@@ -11,16 +11,14 @@ using System.Text;
 namespace P2E.SSO.Domain.Entities
 {
     [Table("TB_PAR_NEG")]
-    [Serializable]
     public class ParceiroNegocio : CustomNotifiable
     {
         public ParceiroNegocio()
         {
             //IsValid();
         }
-
-        //public ParceiroNegocio(string tXT_RZSOC = "", Document cNPJ = null)
-        public ParceiroNegocio(string tXT_RZSOC = "", string cNPJ = null)
+        
+        public ParceiroNegocio(string tXT_RZSOC, string cNPJ)
         {
             TXT_RZSOC = tXT_RZSOC;
             CNPJ = cNPJ;
@@ -43,7 +41,6 @@ namespace P2E.SSO.Domain.Entities
 
             if (string.IsNullOrEmpty(CNPJ))
                 AddNotification("CNPJ", $"CNPJ é obrigatório.");
-
             return Valid;
         }
 

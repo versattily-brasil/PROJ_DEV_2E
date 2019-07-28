@@ -24,10 +24,11 @@ namespace P2E.SSO.Infra.Data.Repositories
         }
 
         /// <summary>
-        /// Retorna uma lista paginada
+        /// 
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="dataPage"></param>
+        /// <param name="razaoSocial"></param>
+        /// <param name="cnpj"></param>
         /// <returns></returns>
         public DataPage<ParceiroNegocio> GetByPage(DataPage<ParceiroNegocio> dataPage, string razaoSocial, string cnpj)
         {
@@ -59,7 +60,15 @@ namespace P2E.SSO.Infra.Data.Repositories
             #endregion
 
             dataPage.Items = _context.Connection.GetPage<ParceiroNegocio>(predicateGroup, listSort, dataPage.CurrentPage - 1, dataPage.PageSize).ToList();
+
+            dataPage.TotalItems = GetTotalRows(predicateGroup);
             return dataPage;
         }
+
+        public int GetTotalRows(PredicateGroup predicateGroup)
+        {
+            return _context.Connection.GetList<ParceiroNegocio>(predicateGroup).Count();
+        }
+        
     }
 }

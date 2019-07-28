@@ -112,6 +112,10 @@
         {
           "title": "Tabelas Auxiliares",
           "href": "tabelaAuxiliar_lista.html"
+        },
+        {
+          "title": "Parceiro de Negócio",
+          "href": "/ParceiroNegocio"
         }
       ]
     }

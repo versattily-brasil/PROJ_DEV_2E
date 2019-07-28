@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
+using Core.Flash2;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
@@ -20,13 +21,15 @@ namespace P2E.Main.UI.Web.Controllers
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
         private string _urlParceiro;
+        private readonly IFlasher _flash;
         #endregion
 
         #region construtor
-        public ParceiroNegocioController(AppSettings appSettings, IMapper mapper)
+        public ParceiroNegocioController(AppSettings appSettings, IMapper mapper, IFlasher flash)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
+            _flash = flash;
             _urlParceiro = this.appSettings.ApiBaseURL + $"sso/v1/parceironegocio";
         }
         #endregion
@@ -47,10 +50,11 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    var result = await client.GetAsync($"{_urlParceiro}?currentPage{dataPage.CurrentPage}&pagesize={dataPage.PageSize}&orderby={dataPage.OrderBy}&Descending={dataPage.Descending}");
+                    var result = await client.GetAsync($"{_urlParceiro}?currentpage={dataPage.CurrentPage}&pagesize={dataPage.PageSize}&orderby={dataPage.OrderBy}&Descending={dataPage.Descending}");
                     result.EnsureSuccessStatusCode();
                     dataPage = await result.Content.ReadAsAsync<DataPage<ParceiroNegocio>>();
-                    return View(dataPage);
+                    dataPage.UrlSearch = $"parceironegocio?";
+                    return View("Index",dataPage);
                 }
             }
             catch (Exception ex)
@@ -68,11 +72,21 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
-            using (var client = new HttpClient())
+            try
             {
-                var result = await client.GetAsync($"{_urlParceiro}/{id}");
-                var parceiroNegocio = _mapper.Map<ParceiroNegocioViewModel>(result);
-                return View(parceiroNegocio);
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync($"{_urlParceiro}/{id}");
+                    result.EnsureSuccessStatusCode();
+                    var parceiroNegocio = await result.Content.ReadAsAsync<ParceiroNegocio>();
+                    var parceiroNegocioViewModel = _mapper.Map<ParceiroNegocioViewModel>(parceiroNegocio);
+                    return View("Form", parceiroNegocioViewModel);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
@@ -83,7 +97,7 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View("Form");
         }
 
         /// <summary>
@@ -102,17 +116,18 @@ namespace P2E.Main.UI.Web.Controllers
                     using (var client = new HttpClient())
                     {
                         await client.PutAsJsonAsync($"{_urlParceiro}/{parceiroNegocio.CD_PAR}", parceiroNegocio);
-                        return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
+                        _flash.Flash("success", GenericMessages.SucessSave("Parceiro Negócio"));
+                        return RedirectToAction("Index");//.WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
                     }
                 }
                 else
                 {
-                    return View(itemViewModel.CD_PAR > 0 ? "Edit" : "Create", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Parceiro Negocio", parceiroNegocio.Messages));
+                    return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Parceiro Negocio", parceiroNegocio.Messages));
                 }
             }
             catch (Exception ex)
             {
-                return View(itemViewModel.CD_PAR > 0 ? "Edit" : "Create", itemViewModel).WithDanger("Erro", ex.Message);
+                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
             }
         }
 

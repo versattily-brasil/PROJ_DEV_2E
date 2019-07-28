@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using P2E.Main.UI.Web.Models;
+using P2E.Main.UI.Web.Extensions;
 
 namespace P2E.Main.UI.Web
 {
@@ -39,6 +40,7 @@ namespace P2E.Main.UI.Web
             });
 
             services.AddAutoMapper();
+            services.AddFlashes();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                                 .AddRazorPagesOptions(options =>

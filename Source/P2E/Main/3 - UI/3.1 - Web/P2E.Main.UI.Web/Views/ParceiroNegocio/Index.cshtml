@@ -15,10 +15,18 @@
 
         @if (!string.IsNullOrEmpty(type))
         {
-        <div class="alert alert-@type alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>@title</strong> @body
-        </div>
+            <div class="alert alert-@type alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>@title</strong> @body
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <div class="alert alert-@type alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>@title</strong> @body
+            </div>
         }
 
         <div class="panel">
@@ -37,14 +45,13 @@
                             <button class="btn btn-default"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
                         </div>
                         <div class="col-md-6">
-                            <a asp-action="Cadastro" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                            <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
                         </div>
                     </div><br />
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover m-0">
                             <thead class="thead-themed">
                                 <tr>
-                                    <th width="100">#</th>
                                     <th>Código</th>
                                     <th>Razão Social</th>
                                     <th>CNPJ</th>
@@ -55,24 +62,63 @@
                             <tbody>
                                 @foreach (var item in Model.Items)
                                 {
-                                <tr>
-                                    <td>@item.CD_PAR</td>
-                                    <td>@item.TXT_RZSOC</td>
-                                    <td>@item.CNPJ</td>
-                                    <td class="text-center">
-                                        <i data-id="@item.CD_PAR"
-                                           data-controller="ParceiroDeNegocio"
-                                           data-action="Excluir"
-                                           data-body-message="Deseja excluir este registro?"
-                                           style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+                                    <tr>
+                                        <td>@item.CD_PAR</td>
+                                        <td>@item.TXT_RZSOC</td>
+                                        <td>@item.CNPJ</td>
+                                        <td class="text-center">
+                                            <i data-id="@item.CD_PAR"
+                                               data-controller="ParceiroDeNegocio"
+                                               data-action="Delete"
+                                               data-body-message="Deseja excluir este registro?"
+                                               style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-                                        </i>
-                                    </td>
-                                    <td class="text-center"><a asp-action="Cadastro" asp-route-id="@item.CD_PAR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
-                                </tr>
+                                            </i>
+                                        </td>
+                                        <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_PAR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
+                        <br />
+                        <!-- pager -->
+                        @if (Model.Pages != null && Model.Pages.Any())
+                        {
+                            <nav class="table-responsive">
+                                <ul class="pagination justify-content-center d-flex flex-wrap">
+                                    @if (Model.CurrentPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="@Model.GetLinkPage($"razaosocial={""}&cnpj={""}", Model.FirstPage)">Primeiro</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="@Model.GetLinkPage($"razaosocial={""}&cnpj={""}", Model.PriorPage)">Anterior</a>
+                                        </li>
+                                    }
+
+                                    @for (int i = 1; i <= Model.TotalPages; i++)
+                                    {
+                                        var pg = Model.Pages.First(p => p.PageNumber == i);
+
+                                        <li class="page-item @(pg.PageNumber == Model.CurrentPage ? "active" : "")">
+                                            <a class="page-link" href="@Model.GetLinkPage($"razaosocial={""}&cnpj={""}", pg.PageNumber)">@pg.PageNumber</a>
+                                        </li>
+                                    }
+
+
+                                    @if (Model.CurrentPage < Model.TotalPages)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="@Model.GetLinkPage($"razaosocial={""}&cnpj={""}", Model.NextPage)">Próximo</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="@Model.GetLinkPage($"razaosocial={""}&cnpj={""}", Model.LastPage)">Último</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </nav>
+                        }
+
                     </div>
                 </div>
             </div>
