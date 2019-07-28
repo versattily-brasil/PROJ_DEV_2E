@@ -1,4 +1,5 @@
-﻿@model P2E.SSO.API.ViewModel.RotinaVM
+﻿@using P2E.Shared.Enum;
+@model P2E.SSO.API.ViewModel.RotinaVM
 @{
     ViewData["Title"] = "Cadastro de Rotina";
     ViewData["PageName"] = "rotina_cadastro";
@@ -40,9 +41,10 @@
                             <input type="text" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
                         </div>                        
                         <div class="form-group">
-                            <label class="form-label" asp-for="OP_TIPO">Status</label>
-                            <input type="text" asp-for="OP_TIPO" placeholder="Status" class="form-control">
-
+                            <label class="form-label" asp-for="OP_TIPO">Tipo</label>
+                            <select class="form-control" asp-for="OP_TIPO" asp-items="Html.GetEnumSelectList<eTipoRotina>()">
+                                <option selected="selected" value="">Selecione o tipo da rotina</option>                                
+                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Salvar</button>
