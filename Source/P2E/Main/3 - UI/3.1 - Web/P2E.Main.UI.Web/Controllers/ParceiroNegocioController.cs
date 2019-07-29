@@ -116,8 +116,8 @@ namespace P2E.Main.UI.Web.Controllers
                     using (var client = new HttpClient())
                     {
                         await client.PutAsJsonAsync($"{_urlParceiro}/{parceiroNegocio.CD_PAR}", parceiroNegocio);
-                        _flash.Flash("success", GenericMessages.SucessSave("Parceiro Negócio"));
-                        return RedirectToAction("Index");//.WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
+                        //_flash.Flash("success", GenericMessages.SucessSave("Parceiro Negócio"));
+                        return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
                     }
                 }
                 else

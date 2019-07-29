@@ -13,17 +13,19 @@ namespace P2E.Main.UI.Web.Controllers
     public class UsuarioController : Controller
     {
         private readonly AppSettings appSettings;
+        private string _urlUsuario;
 
         public UsuarioController(AppSettings appSettings)
         {
             this.appSettings = appSettings;
+            _urlUsuario = this.appSettings.ApiBaseURL + $"sso/v1/usuario";
         }
 
         [HttpGet]
         public async Task<IActionResult> Lista()
         {
             HttpClient client = new HttpClient();
-            var result = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/usuario");
+            var result = await client.GetAsync(_urlUsuario);
             result.EnsureSuccessStatusCode();
             List<UsuarioVM> list = await result.Content.ReadAsAsync<List<UsuarioVM>>();
 
@@ -36,7 +38,7 @@ namespace P2E.Main.UI.Web.Controllers
             if (id != 0)
             {
                 HttpClient client = new HttpClient();
-                var result = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/usuario/" + id);
+                var result = await client.GetAsync(_urlUsuario +"/" + id);
                 result.EnsureSuccessStatusCode();
 
                 UsuarioVM usuario = await result.Content.ReadAsAsync<UsuarioVM>();
@@ -56,14 +58,14 @@ namespace P2E.Main.UI.Web.Controllers
             //}
 
             HttpClient client = new HttpClient();
-            await client.PutAsJsonAsync<UsuarioVM>(this.appSettings.ApiUsuarioBaseURL + "/usuario/" + usuario.CD_USR, usuario);
+            await client.PutAsJsonAsync<UsuarioVM>(_urlUsuario + "/" + usuario.CD_USR, usuario);
             return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Usuário foi salvo corretamente.");
         }
 
         public async Task<IActionResult> Excluir(int Id)
         {
             HttpClient client = new HttpClient();
-            await client.DeleteAsync(this.appSettings.ApiUsuarioBaseURL + "/usuario/" + Id);
+            await client.DeleteAsync(_urlUsuario + "/" + Id);
             return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Usuário foi excluído corretamente.");
 
         }

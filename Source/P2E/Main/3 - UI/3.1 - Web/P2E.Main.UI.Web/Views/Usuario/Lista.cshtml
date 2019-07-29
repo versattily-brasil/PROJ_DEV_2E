@@ -55,26 +55,28 @@
                             <tbody>
                                 @foreach (var usr in Model)
                                 {
-                                <tr>
-                                    <td>@usr.CD_USR</td>
-                                    <td>@usr.TX_NOME</td>
-                                    <td>@usr.TX_LOGIN</td>
-                                    <td>@usr.OP_STATUS</td>
-                                    <td class="text-center">
-                                        <i data-id="@usr.CD_USR"
-                                           data-controller="Usuario"
-                                           data-action="Excluir"
-                                           data-body-message="Deseja excluir este Usuário?"
-                                           style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+                                    <tr>
+                                        <td>@usr.CD_USR</td>
+                                        <td>@usr.TX_NOME</td>
+                                        <td>@usr.TX_LOGIN</td>
+                                        <td>@usr.OP_STATUS</td>
+                                        <td class="text-center">
+                                            <i data-id="@usr.CD_USR"
+                                               data-controller="Usuario"
+                                               data-action="Excluir"
+                                               data-body-message="Deseja excluir este Usuário?"
+                                               style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-                                        </i>
-                                    </td>
-                                    <td class="text-center"><a asp-action="Cadastro" asp-route-id="@usr.CD_USR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
-                                </tr>
+                                            </i>
+                                        </td>
+                                        <td class="text-center"><a asp-action="Cadastro" asp-route-id="@usr.CD_USR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
                     </div>
+
+                    
                 </div>
             </div>
         </div>
