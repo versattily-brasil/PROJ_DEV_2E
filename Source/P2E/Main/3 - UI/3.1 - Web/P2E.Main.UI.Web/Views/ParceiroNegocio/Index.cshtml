@@ -38,13 +38,22 @@
             <div class="panel-container show">
                 <div class="panel-content">
                     <div class="row">
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" placeholder="Digite algo para procurar..." />
-                        </div>
+                        <form asp-action="Index" method="get">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="form-label">Razão  Social</label>
+                                    <input type="text" id="razaosocial" placeholder="Razão Social" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CNPJ</label>
+                                    <input type="text" id="cnpj" placeholder="CNPJ" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-default"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
+                            </div>
+                        </form>
                         <div class="col-md-2">
-                            <button class="btn btn-default"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
-                        </div>
-                        <div class="col-md-6">
                             <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
                         </div>
                     </div><br />
