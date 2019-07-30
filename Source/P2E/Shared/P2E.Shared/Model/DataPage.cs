@@ -13,11 +13,12 @@ namespace P2E.Shared.Model
             Items = new List<T>();
             Pages = new List<Page>();
             
-            if (CurrentPage < 1)
-            {
-                CurrentPage = 1;
-            }
-            else if (CurrentPage > TotalPages)
+            //if (CurrentPage < 1)
+            //{
+            //    CurrentPage = 1;
+            //}
+            //else 
+            if (CurrentPage > TotalPages)
             {
                 CurrentPage = TotalPages;
             }
@@ -29,7 +30,7 @@ namespace P2E.Shared.Model
         public int PageSize { get; set; } = 5;
         public int FirstPage { get { return (1); } }
         public int PriorPage { get { return (CurrentPage > 1 ? CurrentPage - 1 : 1); } }
-        public int CurrentPage { get; set; } = 1;
+        public int CurrentPage { get; set; } = -1;
         public int NextPage { get { return (CurrentPage < LastPage ? CurrentPage + 1 : LastPage); }}
         public int LastPage { get { return TotalPages; }}
 

@@ -44,23 +44,27 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="cnpj"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Index(DataPage<ParceiroNegocio> dataPage, string razaosocial, string cnpj)
+        public async Task<IActionResult> Index(ParceiroNegocioListViewModel vm)
         {
             try
             {
-                using (var client = new HttpClient())
+                if (vm.DataPage.CurrentPage > 0)
                 {
-                    var result = await client.GetAsync($"{_urlParceiro}?currentpage={dataPage.CurrentPage}&pagesize={dataPage.PageSize}&orderby={dataPage.OrderBy}&Descending={dataPage.Descending}");
-                    result.EnsureSuccessStatusCode();
-                    dataPage = await result.Content.ReadAsAsync<DataPage<ParceiroNegocio>>();
-                    dataPage.UrlSearch = $"parceironegocio?";
-                    return View("Index",dataPage);
+                    using (var client = new HttpClient())
+                    {
+                        var result = await client.GetAsync($"{_urlParceiro}?currentpage={vm.DataPage.CurrentPage}&pagesize={vm.DataPage.PageSize}&orderby={vm.DataPage.OrderBy}&Descending={vm.DataPage.Descending}&cnpj={vm.cnpj}&razaosocial={vm.razaosocial}");
+                        result.EnsureSuccessStatusCode();
+                        vm.DataPage = await result.Content.ReadAsAsync<DataPage<ParceiroNegocio>>();
+                        vm.DataPage.UrlSearch = $"parceironegocio?";
+                        return View("Index", vm);
+                    } 
                 }
+                return View("Index", vm);
             }
             catch (Exception ex)
             {
-                dataPage.Message = ex.Message;
-                return View(dataPage);
+                vm.DataPage.Message = ex.Message;
+                return View(vm.DataPage);
             }
         }
 
@@ -117,7 +121,7 @@ namespace P2E.Main.UI.Web.Controllers
                     {
                         await client.PutAsJsonAsync($"{_urlParceiro}/{parceiroNegocio.CD_PAR}", parceiroNegocio);
                         _flash.Flash("success", GenericMessages.SucessSave("Parceiro Negócio"));
-                        return RedirectToAction("Index");//.WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
+                        return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
                     }
                 }
                 else
