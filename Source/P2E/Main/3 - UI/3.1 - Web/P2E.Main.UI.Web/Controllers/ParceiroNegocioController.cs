@@ -50,7 +50,6 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 if (vm.DataPage.CurrentPage > 0)
                 {
-
                     using (var client = new HttpClient())
                     {
                         var result = await client.GetAsync($"{_urlParceiro}?currentpage={vm.DataPage.CurrentPage}&pagesize={vm.DataPage.PageSize}&orderby={vm.DataPage.OrderBy}&Descending={vm.DataPage.Descending}&cnpj={vm.cnpj}&razaosocial={vm.razaosocial}");

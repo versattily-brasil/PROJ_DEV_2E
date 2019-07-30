@@ -27,7 +27,7 @@ namespace P2E.Shared.Model
         
 
         public int MaxPages { get; set; }
-        public int PageSize { get; set; } = 5;
+        public int PageSize { get; set; } = 10;
         public int FirstPage { get { return (1); } }
         public int PriorPage { get { return (CurrentPage > 1 ? CurrentPage - 1 : 1); } }
         public int CurrentPage { get; set; } = 1;
