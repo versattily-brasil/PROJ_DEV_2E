@@ -1,13 +1,16 @@
-﻿using System;
+﻿using P2E.SSO.Domain.Entities;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace P2E.SSO.API.ViewModel
 {
     public class ModuloVM
     {
-        public int CD_MOD { get; set; }
-        public string TX_DSC { get; set; }
+        public IEnumerable<Modulo> Lista { get; set; }
+        public int PageSize { get; set; }
+        public int CurrentPage { get; set; }
+        public int TotalRows { get; set; }
+
+        public string tx_dsc { get; set; }
     }
 }

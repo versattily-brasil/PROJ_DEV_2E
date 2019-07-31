@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace P2E.SSO.API.ViewModel
+namespace P2E.Main.UI.Web.Models.SSO.Modulo
 {
-    public class UsuarioModuloVM
+    public class ModuloViewModel
     {
-        public int CD_USR_MOD { get; set; }
-        public int CD_USR { get; set; }
         public int CD_MOD { get; set; }
+        public string TX_DSC { get; set; }
     }
 }

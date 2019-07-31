@@ -20,13 +20,24 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ListaModulo()
+        {
+            HttpClient client = new HttpClient();
+            var result = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/modulo");
+            result.EnsureSuccessStatusCode();
+            List<ModuloVM> list = await result.Content.ReadAsAsync<List<ModuloVM>>();
+
+            return View(list);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Lista()
         {
             HttpClient client = new HttpClient();
             var result = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/usuario");
             result.EnsureSuccessStatusCode();
             List<UsuarioVM> list = await result.Content.ReadAsAsync<List<UsuarioVM>>();
-
+            
             return View(list);
         }
 

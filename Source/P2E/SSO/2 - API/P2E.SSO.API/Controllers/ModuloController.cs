@@ -3,59 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 
 namespace P2E.SSO.API.Controllers
 {
-    [ApiController]
     public class ModuloController : ControllerBase
     {
         private readonly IModuloRepository _moduloRepository;
-        private readonly IMapper _mapper;
-        public ModuloController(IModuloRepository moduloRepository, IMapper mapper)
+        public ModuloController(IModuloRepository moduloRepository)
         {
-            _mapper = mapper;
             _moduloRepository = moduloRepository;
         }
 
         // GET: api/Modulo
         [HttpGet]
         [Route("api/v1/modulo/")]
-        public IEnumerable<ModuloVM> Get()
+        public DataPage<Modulo> Get([FromQuery] string tx_dsc, [FromQuery] DataPage<Modulo> page)
         {
-            var result = _moduloRepository.MetodoCustomizado(0);
-            return _mapper.Map<List<ModuloVM>>(result);
+            page = _moduloRepository.GetByPage(page, tx_dsc);
+            return page;
         }
 
         // GET: api/Modulo/5
         [HttpGet]
         [Route("api/v1/modulo/{id}")]
-        public ModuloVM Get(int id)
+        public Modulo Get(long id)
         {
-            var result = _moduloRepository.Find(p => p.CD_MOD == id);
-            return _mapper.Map<ModuloVM>(result);
+            return _moduloRepository.Find(p => p.CD_MOD == id);
         }
 
         // POST: api/Modulo
         [HttpPost]
         [Route("api/v1/modulo")]
-        public object Post([FromBody] ModuloVM moduloVM)
+        public object Post([FromBody] Modulo item)
         {
             try
             {
-                var modulo = _mapper.Map<Modulo>(moduloVM);
-                if (modulo.IsValid())
+                if (item.IsValid())
                 {
-                    _moduloRepository.Insert(modulo);
+                    _moduloRepository.Insert(item);
                     return new { message = "OK" };
                 }
                 else
                 {
-                    return new { message = modulo.Notifications.FirstOrDefault().Message };
+                    return new { message = item.Notifications.FirstOrDefault().Message };
                 }
 
             }
@@ -68,22 +63,21 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/Modulo/5
         [HttpPut]
         [Route("api/v1/modulo/{id}")]
-        public object Put(int id, [FromBody] ModuloVM moduloVM)
+        public object Put(int id, [FromBody] Modulo item)
         {
             try
             {
-                var modulo = _mapper.Map<Modulo>(moduloVM);
-                if (modulo.IsValid())
+                if (item.IsValid())
                 {
                     if (id > 0)
-                        _moduloRepository.Update(modulo);
+                        _moduloRepository.Update(item);
                     else
-                        _moduloRepository.Insert(modulo);
+                        _moduloRepository.Insert(item);
                     return new { message = "OK" };
                 }
                 else
                 {
-                    return new { message = modulo.Notifications.FirstOrDefault().Message };
+                    return new { message = item.Notifications.FirstOrDefault().Message };
                 }
             }
             catch (Exception ex)

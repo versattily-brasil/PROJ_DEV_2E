@@ -1,4 +1,4 @@
-﻿@model P2E.SSO.API.ViewModel.ModuloVM
+﻿@model P2E.Main.UI.Web.Models.SSO.Modulo.ModuloViewModel
 @{
     ViewData["Title"] = "Novo Módulo";
     ViewData["PageName"] = "modulo_novo";
@@ -29,7 +29,7 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <form asp-action="Novo" method="post">
+                    <form asp-action="Save" method="post">
                         <input type="hidden" asp-for="CD_MOD" />
                         <div class="form-group">
                             <label class="form-label" asp-for="TX_DSC">Descrição</label>

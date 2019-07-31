@@ -3,11 +3,12 @@ using MicroOrm.Dapper.Repositories.Attributes;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using P2E.Shared.Message;
 
 namespace P2E.SSO.Domain.Entities
 {
     [Table("TB_MOD")]
-    public class Modulo : Notifiable
+    public class Modulo : CustomNotifiable
     {
         public Modulo()
         {
@@ -23,8 +24,8 @@ namespace P2E.SSO.Domain.Entities
         
         [Key]
         [Identity]
-        public int CD_MOD { get; private set; }
-        public string TX_DSC { get; private set; }
+        public int CD_MOD { get; set; }
+        public string TX_DSC { get; set; }
 
         public bool IsValid()
         {

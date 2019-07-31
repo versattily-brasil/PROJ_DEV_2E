@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
+using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 
 namespace P2E.SSO.Domain.Repositories
 {
     public interface IModuloRepository : IDapperRepository<Modulo>
-    {
-        List<Modulo> MetodoCustomizado(int id);
+    {   
+        DataPage<Modulo> GetByPage(DataPage<Modulo> page, string tx_dsc);
+
+        int GetTotalRows(PredicateGroup predicateGroup);
     }
 }

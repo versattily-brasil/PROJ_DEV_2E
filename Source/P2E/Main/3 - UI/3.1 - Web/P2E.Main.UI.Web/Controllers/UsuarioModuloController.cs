@@ -25,7 +25,7 @@ namespace P2E.Main.UI.Web.Controllers
             HttpClient client = new HttpClient();
             var result = await client.GetAsync(this.appSettings.ApiBaseURL + "/usuarioModulo");
             result.EnsureSuccessStatusCode();
-            List<UsuarioModuloVM> list = await result.Content.ReadAsAsync<List<UsuarioModuloVM>>();
+            List<UsuarioModuloVM> list = await result.Content.ReadAsAsync<List<UsuarioModuloVM>>();           
 
             return View(list);
         }
