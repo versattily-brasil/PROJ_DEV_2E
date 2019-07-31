@@ -18,6 +18,10 @@
         {
           "title": "Módulos",
           "href": "/modulo"
+        },
+        {
+          "title": "Grupos",
+          "href": "/grupo"
         }
       ]
     },
