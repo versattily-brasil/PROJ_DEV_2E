@@ -41,6 +41,7 @@ namespace P2E.Main.API
             services.AddScoped<MainContext, MainContext>();
             services.AddTransient<IExemploRepository, ExemploRepository>();
             services.AddTransient<ITabelaAuxiliarRepository, TabelaAuxiliarRepository>();
+            //services.AddTransient<IServicoRepository, ServicoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

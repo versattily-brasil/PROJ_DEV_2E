@@ -23,11 +23,11 @@ namespace P2E.Main.UI.Web.Controllers
         public async Task<IActionResult> Lista()
         {
             HttpClient client = new HttpClient();
-            var result = await client.GetAsync(this.appSettings.ApiBaseURL+"/exemplo");
+            var result = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/exemplo");
             result.EnsureSuccessStatusCode();
             List<ExemploVM> list = await result.Content.ReadAsAsync<List<ExemploVM>>();
             
-            return View(list);
+            return View(list)   ;
         }
 
         [HttpGet]
@@ -36,7 +36,7 @@ namespace P2E.Main.UI.Web.Controllers
             if(id != 0)
             {
                 HttpClient client = new HttpClient();
-                var result = await client.GetAsync(this.appSettings.ApiBaseURL + "/exemplo/"+id);
+                var result = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/exemplo/"+id);
                 result.EnsureSuccessStatusCode();
 
                 ExemploVM exemplo = await result.Content.ReadAsAsync<ExemploVM>();
@@ -56,14 +56,14 @@ namespace P2E.Main.UI.Web.Controllers
             }
 
             HttpClient client = new HttpClient();
-            await client.PutAsJsonAsync<ExemploVM>(this.appSettings.ApiBaseURL + "/exemplo/"+exemplo.ExemploId , exemplo);
+            await client.PutAsJsonAsync<ExemploVM>(this.appSettings.ApiUsuarioBaseURL + "/exemplo/"+exemplo.ExemploId , exemplo);
             return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Exemplo foi salvo corretamente.");
         }
 
         public async Task<IActionResult> Excluir(int Id)
         {
             HttpClient client = new HttpClient();
-            await client.DeleteAsync(this.appSettings.ApiBaseURL + "/exemplo/" + Id);
+            await client.DeleteAsync(this.appSettings.ApiUsuarioBaseURL + "/exemplo/" + Id);
             return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Exemplo foi excluído corretamente.");
 
         }

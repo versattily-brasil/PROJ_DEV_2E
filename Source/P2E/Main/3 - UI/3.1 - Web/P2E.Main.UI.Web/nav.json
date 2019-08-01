@@ -26,6 +26,16 @@
       ]
     },
     {
+      "title": "Serviços",
+      "icon": "fal fa-key",
+      "items": [
+        {
+          "title": "Lista",
+          "href": "/servico"
+        }
+      ]
+    },
+    {
       "title": "Importação",
       "icon": "fal fa-cloud-download",
       "items": [

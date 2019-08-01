@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\ServicoRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MicroOrm.Dapper.Repositories" Version="1.8.3" />
   </ItemGroup>
 

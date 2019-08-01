@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Remove="AutoMapper\Profile\ModuloProfile.cs" />
+    <Compile Remove="AutoMapper\Profile\ServicoProfile.cs" />
   </ItemGroup>
 
   <ItemGroup>
