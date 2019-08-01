@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using P2E.SSO.API.ViewModel;
+using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 
@@ -13,47 +10,43 @@ namespace P2E.SSO.API.Controllers
     public class RotinaController : ControllerBase
     {
         private readonly IRotinaRepository _rotinaRepository;
-        private readonly IMapper _mapper;
-        public RotinaController(IRotinaRepository rotinaRepository, IMapper mapper)
+        public RotinaController(IRotinaRepository rotinaRepository)
         {
-            _mapper = mapper;
             _rotinaRepository = rotinaRepository;
         }
 
         // GET: api/rotina
         [HttpGet]
         [Route("api/v1/rotina/")]
-        public IEnumerable<RotinaVM> Get()
+        public DataPage<Rotina> Get([FromQuery] string descricao, [FromQuery] string nome, [FromQuery] DataPage<Rotina> page)
         {
-            var result = _rotinaRepository.FindAll();
-            return _mapper.Map<List<RotinaVM>>(result);
+            page = _rotinaRepository.GetByPage(page, descricao, nome);
+            return page;
         }
 
         // GET: api/rotina/5
         [HttpGet]
         [Route("api/v1/rotina/{id}")]
-        public RotinaVM Get(int id)
+        public Rotina Get(long id)
         {
-            var result = _rotinaRepository.Find(p => p.CD_ROT == id);
-            return _mapper.Map<RotinaVM>(result);
+            return _rotinaRepository.Find(p => p.CD_ROT == id);
         }
 
         // POST: api/rotina
         [HttpPost]
         [Route("api/v1/rotina")]
-        public object Post([FromBody] RotinaVM rotinaVM)
+        public object Post([FromBody] Rotina item)
         {
             try
             {
-                var rotina = _mapper.Map<Rotina>(rotinaVM);
-                if (rotina.IsValid())
+                if (item.IsValid())
                 {
-                    _rotinaRepository.Insert(rotina);
+                    _rotinaRepository.Insert(item);
                     return new { message = "OK" };
                 }
                 else
                 {
-                    return new { message = rotina.Notifications.FirstOrDefault().Message };
+                    return new { message = item.Notifications.FirstOrDefault().Message };
                 }
 
             }
@@ -66,22 +59,21 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/rotina/5
         [HttpPut]
         [Route("api/v1/rotina/{id}")]
-        public object Put(int id, [FromBody] RotinaVM rotinaVM)
+        public object Put(int id, [FromBody] Rotina item)
         {
             try
             {
-                var rotina = _mapper.Map<Rotina>(rotinaVM);
-                if (rotina.IsValid())
+                if (item.IsValid())
                 {
                     if (id > 0)
-                        _rotinaRepository.Update(rotina);
+                        _rotinaRepository.Update(item);
                     else
-                        _rotinaRepository.Insert(rotina);
+                        _rotinaRepository.Insert(item);
                     return new { message = "OK" };
                 }
                 else
                 {
-                    return new { message = rotina.Notifications.FirstOrDefault().Message };
+                    return new { message = item.Notifications.FirstOrDefault().Message };
                 }
             }
             catch (Exception ex)
@@ -93,12 +85,12 @@ namespace P2E.SSO.API.Controllers
         // DELETE: api/rotina/5
         [HttpDelete]
         [Route("api/v1/rotina/{id}")]
-        public object Delete(int id)
+        public object Delete(long id)
         {
             try
             {
-                var rotina = _rotinaRepository.FindById(id);
-                _rotinaRepository.Delete(rotina);
+                var item = _rotinaRepository.FindById(id);
+                _rotinaRepository.Delete(item);
                 return new { message = "OK" };
             }
             catch (Exception ex)
@@ -106,5 +98,99 @@ namespace P2E.SSO.API.Controllers
                 return new { message = "Error." + ex.Message };
             }
         }
+        //private readonly IRotinaRepository _rotinaRepository;
+        //private readonly IMapper _mapper;
+        //public RotinaController(IRotinaRepository rotinaRepository, IMapper mapper)
+        //{
+        //    _mapper = mapper;
+        //    _rotinaRepository = rotinaRepository;
+        //}
+
+        //// GET: api/rotina
+        //[HttpGet]
+        //[Route("api/v1/rotina/")]
+        //public IEnumerable<RotinaVM> Get()
+        //{
+        //    var result = _rotinaRepository.FindAll();
+        //    return _mapper.Map<List<RotinaVM>>(result);
+        //}
+
+        //// GET: api/rotina/5
+        //[HttpGet]
+        //[Route("api/v1/rotina/{id}")]
+        //public RotinaVM Get(int id)
+        //{
+        //    var result = _rotinaRepository.Find(p => p.CD_ROT == id);
+        //    return _mapper.Map<RotinaVM>(result);
+        //}
+
+        //// POST: api/rotina
+        //[HttpPost]
+        //[Route("api/v1/rotina")]
+        //public object Post([FromBody] RotinaVM rotinaVM)
+        //{
+        //    try
+        //    {
+        //        var rotina = _mapper.Map<Rotina>(rotinaVM);
+        //        if (rotina.IsValid())
+        //        {
+        //            _rotinaRepository.Insert(rotina);
+        //            return new { message = "OK" };
+        //        }
+        //        else
+        //        {
+        //            return new { message = rotina.Notifications.FirstOrDefault().Message };
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new { message = "Error." + ex.Message };
+        //    }
+        //}
+
+        //// PUT: api/rotina/5
+        //[HttpPut]
+        //[Route("api/v1/rotina/{id}")]
+        //public object Put(int id, [FromBody] RotinaVM rotinaVM)
+        //{
+        //    try
+        //    {
+        //        var rotina = _mapper.Map<Rotina>(rotinaVM);
+        //        if (rotina.IsValid())
+        //        {
+        //            if (id > 0)
+        //                _rotinaRepository.Update(rotina);
+        //            else
+        //                _rotinaRepository.Insert(rotina);
+        //            return new { message = "OK" };
+        //        }
+        //        else
+        //        {
+        //            return new { message = rotina.Notifications.FirstOrDefault().Message };
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new { message = "Error." + ex.Message };
+        //    }
+        //}
+
+        //// DELETE: api/rotina/5
+        //[HttpDelete]
+        //[Route("api/v1/rotina/{id}")]
+        //public object Delete(int id)
+        //{
+        //    try
+        //    {
+        //        var rotina = _rotinaRepository.FindById(id);
+        //        _rotinaRepository.Delete(rotina);
+        //        return new { message = "OK" };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new { message = "Error." + ex.Message };
+        //    }
+        //}
     }
 }
