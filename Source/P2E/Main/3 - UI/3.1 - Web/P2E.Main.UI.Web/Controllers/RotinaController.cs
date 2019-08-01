@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
+using Core.Flash2;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
-using P2E.SSO.API.ViewModel;
+using P2E.Main.UI.Web.Models.SSO.Rotina;
+using P2E.Shared.Message;
+using P2E.Shared.Model;
+using P2E.SSO.Domain.Entities;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -17,56 +20,133 @@ namespace P2E.Main.UI.Web.Controllers
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
         private string _urlRotina;
+        private readonly IFlasher _flash;
         #endregion
 
-        public RotinaController(AppSettings appSettings, IMapper mapper)
+        #region construtor
+        public RotinaController(AppSettings appSettings, IMapper mapper, IFlasher flash)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
+            _flash = flash;
             _urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/rotina";
         }
+        #endregion
 
+        #region Métodos
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataPage"></param>
+        /// <param name="decricao"></param>
+        /// <param name="nome"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Lista()
+        public async Task<IActionResult> Index(RotinaListViewModel vm)
         {
-            HttpClient client = new HttpClient();
-            var result = await client.GetAsync(_urlRotina);
-            result.EnsureSuccessStatusCode();
-            List<RotinaVM> list = await result.Content.ReadAsAsync<List<RotinaVM>>();
-
-            return View(list);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Cadastro(int id)
-        {
-            if (id != 0)
+            try
             {
-                HttpClient client = new HttpClient();
-                var result = await client.GetAsync(_urlRotina + "/" + id);
-                result.EnsureSuccessStatusCode();
-
-                RotinaVM rotina = await result.Content.ReadAsAsync<RotinaVM>();
-
-                return View(rotina);
+                if (vm.DataPage.CurrentPage > 0)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var result = await client.GetAsync($"{_urlRotina}?currentpage={vm.DataPage.CurrentPage}&pagesize={vm.DataPage.PageSize}&orderby={vm.DataPage.OrderBy}&Descending={vm.DataPage.Descending}&nome={vm.nome}&descricao={vm.descricao}");
+                        result.EnsureSuccessStatusCode();
+                        vm.DataPage = await result.Content.ReadAsAsync<DataPage<Rotina>>();
+                        vm.DataPage.UrlSearch = $"rotina?";
+                        return View("Index", vm);
+                    }
+                }
+                return View("Index", vm);
             }
-
-            return View();
+            catch (Exception ex)
+            {
+                vm.DataPage.Message = ex.Message;
+                return View(vm.DataPage);
+            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Edit(long id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync($"{_urlRotina}/{id}");
+                    result.EnsureSuccessStatusCode();
+                    var rotina = await result.Content.ReadAsAsync<Rotina>();
+                    var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
+                    return View("Form", rotinaViewModel);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View("Form");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Cadastro(RotinaVM rotina)
+        public async Task<IActionResult> Save(RotinaViewModel itemViewModel)
         {
-            HttpClient client = new HttpClient();
-            await client.PutAsJsonAsync<RotinaVM>(_urlRotina + "/" + rotina.CD_ROT, rotina);
-            return RedirectToAction("Lista").WithSuccess("Sucesso.", "A Rotina foi salva corretamente.");
+            try
+            {
+                var rotina = _mapper.Map<Rotina>(itemViewModel);
+                if (rotina.IsValid())
+                {
+                    using (var client = new HttpClient())
+                    {
+                        await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
+                        _flash.Flash("success", GenericMessages.SucessSave("Rotina"));
+                        return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Rotina"));
+                    }
+                }
+                else
+                {
+                    return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Rotina", rotina.Messages));
+                }
+            }
+            catch (Exception ex)
+            {
+                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
+            }
         }
 
-        public async Task<IActionResult> Excluir(int Id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Delete(long Id)
         {
-            HttpClient client = new HttpClient();
-            await client.DeleteAsync(_urlRotina + "/" + Id);
-            return RedirectToAction("Lista").WithSuccess("Sucesso.", "A Rotina foi excluída corretamente.");
+            using (var client = new HttpClient())
+            {
+                await client.DeleteAsync($"{_urlRotina}/{Id}");
+                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Rotina"));
+            }
         }
+        #endregion        
     }
 }
