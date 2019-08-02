@@ -14,13 +14,15 @@ namespace P2E.SSO.API.Controllers
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IUsuarioModuloRepository _usuarioModuloRepository;
+        private readonly IUsuarioGrupoRepository _usuarioGrupoRepository;
 
         private readonly IMapper _mapper;
-        public UsuarioController(IUsuarioRepository usuarioRepository, IUsuarioModuloRepository usuarioModuloRepository,  IMapper mapper)
+        public UsuarioController(IUsuarioRepository usuarioRepository, IUsuarioModuloRepository usuarioModuloRepository, IUsuarioGrupoRepository usuarioGrupoRepository, IMapper mapper)
         {
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
             _usuarioModuloRepository = usuarioModuloRepository;
+            _usuarioGrupoRepository = usuarioGrupoRepository;
         }
 
         // GET: api/usuario
@@ -76,6 +78,7 @@ namespace P2E.SSO.API.Controllers
                 if (usuario.IsValid())
                 {
                     _usuarioModuloRepository.Delete(o => o.CD_USR == usuario.CD_USR);
+                    _usuarioGrupoRepository.Delete(o => o.CD_USR == usuario.CD_USR);
 
                     if (id > 0)
                         _usuarioRepository.Update(usuario);
@@ -87,7 +90,13 @@ namespace P2E.SSO.API.Controllers
                         usuarioModulo.CD_USR = usuario.CD_USR;
                         _usuarioModuloRepository.Insert(usuarioModulo);
                     }
-                    
+
+                    foreach (var usuarioGrupo in usuario.UsuarioGrupo)
+                    {
+                        usuarioGrupo.CD_USR = usuario.CD_USR;
+                        _usuarioGrupoRepository.Insert(usuarioGrupo);
+                    }
+
                     return new { message = "OK" };
                 }
                 else

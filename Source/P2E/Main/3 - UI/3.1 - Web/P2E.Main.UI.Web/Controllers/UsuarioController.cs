@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
+using P2E.Main.UI.Web.Models.SSO.Grupo;
 using P2E.Main.UI.Web.Models.SSO.Modulo;
 using P2E.Main.UI.Web.Models.SSO.Usuario;
 using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
 using P2E.SSO.Domain.Entities;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -24,6 +23,17 @@ namespace P2E.Main.UI.Web.Controllers
         {
             this.appSettings = appSettings;
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListaGrupo()
+        {
+            HttpClient client = new HttpClient();
+            var result = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/grupo");
+            result.EnsureSuccessStatusCode();
+            List<GrupoVM> list = await result.Content.ReadAsAsync<List<GrupoVM>>();
+
+            return View(list);
         }
 
         [HttpGet]
@@ -52,12 +62,20 @@ namespace P2E.Main.UI.Web.Controllers
         public async Task<IActionResult> Cadastro(int id)
         {
             HttpClient client = new HttpClient();
+
             var modResult = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/modulo/");
             modResult.EnsureSuccessStatusCode();
             var pageModulos = await modResult.Content.ReadAsAsync<DataPage<Modulo>>();
 
+            var grpResult = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/grupo/");
+            grpResult.EnsureSuccessStatusCode();
+            var pageGrupo = await grpResult.Content.ReadAsAsync<DataPage<Grupo>>();
+
             var usuarioVM = new UsuarioViewModel();
             usuarioVM.Modulos = _mapper.Map<List<ModuloViewModel>>(pageModulos.Items);
+
+            var grupoVM = new UsuarioViewModel();
+            usuarioVM.Grupo = _mapper.Map<List<GrupoViewModel>>(pageGrupo.Items);
 
             if (id != 0)
             {

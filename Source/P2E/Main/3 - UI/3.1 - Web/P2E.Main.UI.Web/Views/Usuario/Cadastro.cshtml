@@ -87,15 +87,47 @@
                                                         <th width="100px"></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                </tbody>
+                                                <tbody></tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tab_direction-2" role="tabpanel">
-
+                                <div class="container container-demo">
+                                    <div class="row">
+                                        <div class="col">
+                                            <table id="table-origem-grp" class="table table-bordered table-hover m-0">
+                                                <thead class="thead-themed">
+                                                    <tr>
+                                                        <th>Grupos</th>
+                                                        <th width="100px"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var grupo in Model.Grupo)
+                                                    {
+                                                        <tr data-mod="@grupo.CD_GRP">
+                                                            <td>@grupo.TX_DSC</td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao"></i></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col">
+                                            <table id="table-destino-grp" class="table table-bordered table-hover m-0">
+                                                <thead class="thead-themed">
+                                                    <tr>
+                                                        <th>Grupos Associados ao Usuário</th>
+                                                        <th width="100px"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -115,4 +147,10 @@
 
     <script src="~/js/Shared/TabelaCadastro.js"></script>
     <script src="~/js/Usuario/UsuarioCadastro.js"></script>
+}
+
+@section Scripts {
+
+    <script src="~/js/Shared/TabelaUsuarioGrupo.js"></script>
+    <script src="~/js/Usuario/UsuarioGrupo.js"></script>
 }

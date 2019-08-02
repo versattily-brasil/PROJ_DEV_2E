@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using P2E.Main.UI.Web.Models.SSO.Usuario;
 using P2E.SSO.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.AutoMapper
 {
@@ -17,6 +13,9 @@ namespace P2E.Main.UI.Web.AutoMapper
 
             CreateMap<UsuarioModulo, UsuarioModuloViewModel>(MemberList.None);
             CreateMap<UsuarioModuloViewModel, UsuarioModulo>(MemberList.Source);
+
+            CreateMap<UsuarioGrupo, UsuarioGrupoViewModel>(MemberList.None);
+            CreateMap<UsuarioGrupoViewModel, UsuarioGrupo>(MemberList.Source);
 
             AllowNullDestinationValues = true;
         }

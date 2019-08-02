@@ -46,5 +46,6 @@ namespace P2E.SSO.Domain.Entities
         public override string ToString() => $"{TX_LOGIN.ToString()}";
 
         public List<UsuarioModulo> UsuarioModulos { get; set; } = new List<UsuarioModulo>();
+        public List<UsuarioGrupo> UsuarioGrupo { get; set; } = new List<UsuarioGrupo>();
     }
 }
