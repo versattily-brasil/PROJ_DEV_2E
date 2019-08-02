@@ -1,7 +1,6 @@
-﻿using FluentValidator;
-using MicroOrm.Dapper.Repositories.Attributes;
+﻿using MicroOrm.Dapper.Repositories.Attributes;
+using P2E.Shared.Enum;
 using P2E.Shared.Message;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,7 +11,7 @@ namespace P2E.SSO.Domain.Entities
     {
         public Rotina() {}
 
-        public Rotina(string tx_nome, string tx_dsc, int op_tipo)
+        public Rotina(string tx_nome, string tx_dsc, eTipoRotina op_tipo)
         {
             TX_NOME = tx_nome;
             TX_DSC = tx_dsc;
@@ -23,10 +22,10 @@ namespace P2E.SSO.Domain.Entities
 
         [Key]
         [Identity]
-        public int CD_ROT { get; private set; }
-        public string TX_NOME { get; private set; }
-        public string TX_DSC { get; private set; }
-        public int OP_TIPO { get; private set; }
+        public int CD_ROT { get; set; }
+        public string TX_NOME { get; set; }
+        public string TX_DSC { get; set; }
+        public eTipoRotina OP_TIPO { get; set; }
 
         public bool IsValid()
         {
