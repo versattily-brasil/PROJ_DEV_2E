@@ -69,7 +69,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var modulo in Model.Modulos)
+                                                    @foreach (var modulo in Model.Modulos.Where(o1=> !Model.UsuarioModulos.Any(o2=>o2.CD_MOD == o1.CD_MOD)))
                                                     {
                                                         <tr data-mod="@modulo.CD_MOD">
                                                             <td>@modulo.TX_DSC</td>
@@ -105,11 +105,11 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var grupo in Model.Grupo)
+                                                    @foreach (var modulo in Model.Modulos.Where(o1 => Model.UsuarioModulos.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
                                                     {
-                                                        <tr data-mod="@grupo.CD_GRP">
-                                                            <td>@grupo.TX_DSC</td>
-                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao"></i></td>
+                                                        <tr data-mod="@modulo.CD_MOD">
+                                                            <td>@modulo.TX_DSC</td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao"></i></td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -145,7 +145,7 @@
 </div>
 @section Scripts {
 
-    <script src="~/js/Shared/TabelaCadastro.js"></script>
+    <script src="~/js/Usuario/TabelaUsarioModulo.js"></script>
     <script src="~/js/Usuario/UsuarioCadastro.js"></script>
 }
 
