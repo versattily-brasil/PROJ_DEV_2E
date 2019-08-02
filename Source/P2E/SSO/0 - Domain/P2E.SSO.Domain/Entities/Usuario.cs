@@ -1,5 +1,6 @@
 ﻿using FluentValidator;
 using MicroOrm.Dapper.Repositories.Attributes;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -43,5 +44,7 @@ namespace P2E.SSO.Domain.Entities
         }
 
         public override string ToString() => $"{TX_LOGIN.ToString()}";
+
+        public List<UsuarioModulo> UsuarioModulos { get; set; } = new List<UsuarioModulo>();
     }
 }

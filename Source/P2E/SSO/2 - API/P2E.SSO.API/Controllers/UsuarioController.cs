@@ -13,20 +13,23 @@ namespace P2E.SSO.API.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IUsuarioModuloRepository _usuarioModuloRepository;
+
         private readonly IMapper _mapper;
-        public UsuarioController(IUsuarioRepository usuarioRepository, IMapper mapper)
+        public UsuarioController(IUsuarioRepository usuarioRepository, IUsuarioModuloRepository usuarioModuloRepository,  IMapper mapper)
         {
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;
+            _usuarioModuloRepository = usuarioModuloRepository;
         }
 
         // GET: api/usuario
         [HttpGet]
         [Route("api/v1/usuario/")]
-        public IEnumerable<UsuarioVM> Get()
+        public IEnumerable<Usuario> Get()
         {
             var result = _usuarioRepository.FindAll();
-            return _mapper.Map<List<UsuarioVM>>(result);
+            return result;
         }
 
         // GET: api/usuario/5
@@ -66,22 +69,30 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/usuario/5
         [HttpPut]
         [Route("api/v1/usuario/{id}")]
-        public object Put(int id, [FromBody] UsuarioVM exemploVM)
+        public object Put(int id, [FromBody] Usuario usuario)
         {
             try
             {
-                var exemplo = _mapper.Map<Usuario>(exemploVM);
-                if (exemplo.IsValid())
+                if (usuario.IsValid())
                 {
+                    _usuarioModuloRepository.Delete(o => o.CD_USR == usuario.CD_USR);
+
                     if (id > 0)
-                        _usuarioRepository.Update(exemplo);
+                        _usuarioRepository.Update(usuario);
                     else
-                        _usuarioRepository.Insert(exemplo);
+                        _usuarioRepository.Insert(usuario);
+
+                    foreach(var usuarioModulo in usuario.UsuarioModulos)
+                    {
+                        usuarioModulo.CD_USR = usuario.CD_USR;
+                        _usuarioModuloRepository.Insert(usuarioModulo);
+                    }
+                    
                     return new { message = "OK" };
                 }
                 else
                 {
-                    return new { message = exemplo.Notifications.FirstOrDefault().Message };
+                    return new { message = usuario.Notifications.FirstOrDefault().Message };
                 }
             }
             catch (Exception ex)

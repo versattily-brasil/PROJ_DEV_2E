@@ -3,7 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\Shared\TabelaCadastro.ts" />
+    <None Remove="Scripts\Usuario\UsuarioCadastro.ts" />
+  </ItemGroup>
 
 
   <ItemGroup>
@@ -21,5 +27,28 @@
     <ProjectReference Include="..\..\..\..\SSO\2 - API\P2E.SSO.API\P2E.SSO.API.csproj" />
     <ProjectReference Include="..\..\..\2 - API\P2E.Main.API\P2E.Main.API.csproj" />
   </ItemGroup>
+
+
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Shared\TabelaCadastro.ts" />
+    <TypeScriptCompile Include="Scripts\Usuario\UsuarioCadastro.ts" />
+  </ItemGroup>
+
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES2015</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
 
 </Project>

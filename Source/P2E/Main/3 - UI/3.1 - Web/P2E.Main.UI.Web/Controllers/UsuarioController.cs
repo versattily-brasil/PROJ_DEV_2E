@@ -3,20 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
+using P2E.Main.UI.Web.Models.SSO.Modulo;
+using P2E.Main.UI.Web.Models.SSO.Usuario;
+using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
+using P2E.SSO.Domain.Entities;
 
 namespace P2E.Main.UI.Web.Controllers
 {
     public class UsuarioController : Controller
     {
         private readonly AppSettings appSettings;
+        private readonly IMapper _mapper;
 
-        public UsuarioController(AppSettings appSettings)
+        public UsuarioController(AppSettings appSettings, IMapper mapper)
         {
             this.appSettings = appSettings;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -44,30 +51,36 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Cadastro(int id)
         {
+            HttpClient client = new HttpClient();
+            var modResult = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/modulo/");
+            modResult.EnsureSuccessStatusCode();
+            var pageModulos = await modResult.Content.ReadAsAsync<DataPage<Modulo>>();
+
+            var usuarioVM = new UsuarioViewModel();
+            usuarioVM.Modulos = _mapper.Map<List<ModuloViewModel>>(pageModulos.Items);
+
             if (id != 0)
             {
-                HttpClient client = new HttpClient();
                 var result = await client.GetAsync(this.appSettings.ApiUsuarioBaseURL + "/usuario/" + id);
                 result.EnsureSuccessStatusCode();
 
-                UsuarioVM usuario = await result.Content.ReadAsAsync<UsuarioVM>();
+                Usuario usuario = await result.Content.ReadAsAsync<Usuario>();
 
-                return View(usuario);
+                usuarioVM = _mapper.Map<UsuarioViewModel>(usuario);
+
+                return View(usuarioVM);
             }
-
-            return View();
+            
+            return View(usuarioVM);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Cadastro(UsuarioVM usuario)
+        public async Task<IActionResult> Cadastro(UsuarioViewModel usuarioVM)
         {
-            //if (exemplo.Descricao == String.Empty || exemplo.Valor <= 0)
-            //{
-            //    return View(exemplo).WithDanger("Erro.", "Preencha todos os campos.");
-            //}
+            var usuario = _mapper.Map<Usuario>(usuarioVM);
 
             HttpClient client = new HttpClient();
-            await client.PutAsJsonAsync<UsuarioVM>(this.appSettings.ApiUsuarioBaseURL + "/usuario/" + usuario.CD_USR, usuario);
+            await client.PutAsJsonAsync<Usuario>(this.appSettings.ApiUsuarioBaseURL + "/usuario/" + usuario.CD_USR, usuario);
             return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Usuário foi salvo corretamente.");
         }
 
