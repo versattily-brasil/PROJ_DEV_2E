@@ -66,7 +66,7 @@ namespace P2E.SSO.Infra.Data.Repositories
 
         public int GetTotalRows(PredicateGroup predicateGroup)
         {
-            return _context.Connection.GetList<ParceiroNegocio>(predicateGroup).Count();
+            return _context.Connection.GetList<Rotina>(predicateGroup).Count();
         }
     }
 }

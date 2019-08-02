@@ -1,7 +1,7 @@
 ﻿@model P2E.Main.UI.Web.Models.SSO.Rotina.RotinaListViewModel
 @{
     ViewData["Title"] = "Lista de Rotinas";
-    ViewData["PageName"] = "rotina";
+    ViewData["PageName"] = "rotina_lista";
     ViewData["Category1"] = "Rotina";
 
     //Alert info
@@ -43,11 +43,11 @@
 
                         <div class="row">
                             <div class="col-md-2">
-                                <input type="text" asp-for="nome" class="form-control" placeholder="Nome"/>
+                                <input type="text" asp-for="TX_NOME" class="form-control" placeholder="Nome"/>
                             </div>
 
                             <div class="col-md-6">
-                                <input type="text" asp-for="descricao" class="form-control" placeholder="Descrição" />
+                                <input type="text" asp-for="TX_DSC" class="form-control" placeholder="Descrição" />
                             </div>
                             <div class="col-md-2">
                                 <button class="btn btn-default"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
@@ -59,7 +59,7 @@
                             <table class="table table-bordered table-hover m-0">
                                 <thead class="thead-themed">
                                     <tr>
-                                        <th>Código</th>
+                                        <th width="50">Código</th>
                                         <th>Nome</th>
                                         <th>Descrição</th>
                                         <th width="20"></th>
@@ -71,8 +71,8 @@
                                     {
                                         <tr>
                                             <td>@item.CD_ROT</td>
-                                            <td>@item.TX_DSC</td>
                                             <td>@item.TX_NOME</td>
+                                            <td>@item.TX_DSC</td>
                                             <td class="text-center">
                                                 <i data-id="@item.CD_ROT"
                                                    data-controller="Rotina"
@@ -96,10 +96,10 @@
                                         @if (Model.DataPage.CurrentPage > 1)
                                         {
                                             <li class="page-item">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.FirstPage)">Primeiro</a>
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}&tx_nome={""}", Model.DataPage.FirstPage)">Primeiro</a>
                                             </li>
                                             <li class="page-item">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.PriorPage)">Anterior</a>
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}&tx_nome={""}", Model.DataPage.PriorPage)">Anterior</a>
                                             </li>
                                         }
 
@@ -108,7 +108,7 @@
                                             var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
 
                                             <li class="page-item @(pg.PageNumber == Model.DataPage.CurrentPage ? "active" : "")">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", pg.PageNumber)">@pg.PageNumber</a>
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}&tx_nome={""}", pg.PageNumber)">@pg.PageNumber</a>
                                             </li>
                                         }
 
@@ -116,10 +116,10 @@
                                         @if (Model.DataPage.CurrentPage < Model.DataPage.TotalPages)
                                         {
                                             <li class="page-item">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.NextPage)">Próximo</a>
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}&tx_nome={""}", Model.DataPage.NextPage)">Próximo</a>
                                             </li>
                                             <li class="page-item">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.LastPage)">Último</a>
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}&tx_nome={""}", Model.DataPage.LastPage)">Último</a>
                                             </li>
                                         }
                                     </ul>

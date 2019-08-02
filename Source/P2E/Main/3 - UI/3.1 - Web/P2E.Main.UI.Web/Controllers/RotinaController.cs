@@ -51,7 +51,15 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        var result = await client.GetAsync($"{_urlRotina}?currentpage={vm.DataPage.CurrentPage}&pagesize={vm.DataPage.PageSize}&orderby={vm.DataPage.OrderBy}&Descending={vm.DataPage.Descending}&nome={vm.nome}&descricao={vm.descricao}");
+                        var result = await client.GetAsync($"{_urlRotina}" +
+                                                                            $"?currentpage={vm.DataPage.CurrentPage}" +
+                                                                            $"&pagesize={vm.DataPage.PageSize}" +
+                                                                            $"&orderby={vm.DataPage.OrderBy}" +
+                                                                            $"&Descending={vm.DataPage.Descending}" +
+                                                                            $"&tx_nome={vm.TX_NOME}" +
+                                                                            $"&tx_dsc={vm.TX_DSC}");
+
+                        
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Rotina>>();
                         vm.DataPage.UrlSearch = $"rotina?";

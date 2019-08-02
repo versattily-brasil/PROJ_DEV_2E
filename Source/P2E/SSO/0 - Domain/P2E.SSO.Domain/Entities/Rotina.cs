@@ -22,10 +22,10 @@ namespace P2E.SSO.Domain.Entities
 
         [Key]
         [Identity]
-        public int CD_ROT { get; private set; }
-        public string TX_NOME { get; private set; }
-        public string TX_DSC { get; private set; }
-        public eTipoRotina OP_TIPO { get; private set; }
+        public int CD_ROT { get; set; }
+        public string TX_NOME { get; set; }
+        public string TX_DSC { get; set; }
+        public eTipoRotina OP_TIPO { get; set; }
 
         public bool IsValid()
         {
