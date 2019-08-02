@@ -73,8 +73,6 @@ namespace P2E.Main.UI.Web.Controllers
 
             var usuarioVM = new UsuarioViewModel();
             usuarioVM.Modulos = _mapper.Map<List<ModuloViewModel>>(pageModulos.Items);
-
-            var grupoVM = new UsuarioViewModel();
             usuarioVM.Grupo = _mapper.Map<List<GrupoViewModel>>(pageGrupo.Items);
 
             if (id != 0)
@@ -86,6 +84,7 @@ namespace P2E.Main.UI.Web.Controllers
 
                 usuarioVM = _mapper.Map<UsuarioViewModel>(usuario);
                 usuarioVM.Modulos = _mapper.Map<List<ModuloViewModel>>(pageModulos.Items);
+                usuarioVM.Grupo= _mapper.Map<List<GrupoViewModel>>(pageGrupo.Items);
                 return View(usuarioVM);
             }
             

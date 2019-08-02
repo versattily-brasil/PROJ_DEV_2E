@@ -1,34 +1,26 @@
-﻿class UsuarioGrupo {
-
-    form = $("#form");
-    btnSalvar = $("#btnSalvar");
-
-    init(): void {
-
-
-
-        this.btnSalvar.on("click", () => {
-
+var UsuarioGrupo = /** @class */ (function () {
+    function UsuarioGrupo() {
+        this.form = $("#form");
+        this.btnSalvar = $("#btnSalvar");
+    }
+    UsuarioGrupo.prototype.init = function () {
+        var _this = this;
+        this.btnSalvar.on("click", function () {
             var listName = "UsuarioGrupo";
             var qtd = 0;
-
             $("#table-destino-grp > tbody > tr").each(function () {
-
                 var CD_GRP = $(this).data("mod");
                 $("#form").prepend("<input type='hidden' name= '" + listName + "[" + qtd + "].CD_GRP' value= '" + CD_GRP + "' > ");
-
                 qtd += 1;
             });
-
             console.log(qtd);
-            this.form.submit();
+            _this.form.submit();
         });
-
-
-    }
-}
-
+    };
+    return UsuarioGrupo;
+}());
 $(function () {
     var obj = new UsuarioGrupo();
     obj.init();
 });
+//# sourceMappingURL=UsuarioGrupo.js.map
