@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\Shared\TabelaCadastro.ts" />
+    <None Remove="Scripts\Usuario\TabelaUsarioModulo.ts" />
     <None Remove="Scripts\Usuario\UsuarioCadastro.ts" />
   </ItemGroup>
 
@@ -30,7 +30,7 @@
 
 
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\Shared\TabelaCadastro.ts" />
+    <TypeScriptCompile Include="Scripts\Usuario\TabelaUsarioModulo.ts" />
     <TypeScriptCompile Include="Scripts\Usuario\UsuarioCadastro.ts" />
   </ItemGroup>
 

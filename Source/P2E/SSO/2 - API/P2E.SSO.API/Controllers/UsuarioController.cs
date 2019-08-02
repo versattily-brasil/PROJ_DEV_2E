@@ -35,10 +35,12 @@ namespace P2E.SSO.API.Controllers
         // GET: api/usuario/5
         [HttpGet]
         [Route("api/v1/usuario/{id}")]
-        public UsuarioVM Get(int id)
+        public Usuario Get(int id)
         {
             var result = _usuarioRepository.Find(p => p.CD_USR == id);
-            return _mapper.Map<UsuarioVM>(result);
+            result.UsuarioModulos = _usuarioModuloRepository.FindAll(o => o.CD_USR == id).ToList();
+
+            return result;
         }
 
         // POST: api/usuario

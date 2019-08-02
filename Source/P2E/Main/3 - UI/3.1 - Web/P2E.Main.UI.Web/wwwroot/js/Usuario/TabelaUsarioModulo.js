@@ -1,7 +1,7 @@
-var TabelaCadastro = /** @class */ (function () {
-    function TabelaCadastro() {
+var TabelaUsuarioModulo = /** @class */ (function () {
+    function TabelaUsuarioModulo() {
     }
-    TabelaCadastro.prototype.init = function () {
+    TabelaUsuarioModulo.prototype.init = function () {
         $(".bt-selecao").on("click", function () {
             if ($(this).hasClass("fa-plus-circle")) {
                 $(this).removeClass("fa-plus-circle").removeClass("text-success");
@@ -19,7 +19,7 @@ var TabelaCadastro = /** @class */ (function () {
             }
         });
     };
-    TabelaCadastro.sortTable = function (name) {
+    TabelaUsuarioModulo.sortTable = function (name) {
         var seletor = '#' + name + " tbody  tr";
         var rows = $(seletor).get();
         console.log(rows);
@@ -38,10 +38,10 @@ var TabelaCadastro = /** @class */ (function () {
             $('#' + name).children('tbody').append(row);
         });
     };
-    return TabelaCadastro;
+    return TabelaUsuarioModulo;
 }());
 $(function () {
-    var obj = new TabelaCadastro();
+    var obj = new TabelaUsuarioModulo();
     obj.init();
 });
-//# sourceMappingURL=TabelaCadastro.js.map
+//# sourceMappingURL=TabelaUsarioModulo.js.map

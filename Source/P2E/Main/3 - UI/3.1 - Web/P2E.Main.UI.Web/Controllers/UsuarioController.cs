@@ -67,7 +67,7 @@ namespace P2E.Main.UI.Web.Controllers
                 Usuario usuario = await result.Content.ReadAsAsync<Usuario>();
 
                 usuarioVM = _mapper.Map<UsuarioViewModel>(usuario);
-
+                usuarioVM.Modulos = _mapper.Map<List<ModuloViewModel>>(pageModulos.Items);
                 return View(usuarioVM);
             }
             
