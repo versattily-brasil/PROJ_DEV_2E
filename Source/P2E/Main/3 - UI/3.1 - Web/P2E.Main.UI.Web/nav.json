@@ -12,20 +12,6 @@
       ]
     },
     {
-      "title": "Segurança",
-      "icon": "fal fa-key",
-      "items": [
-        {
-          "title": "Módulos",
-          "href": "/modulo"
-        },
-        {
-          "title": "Grupos",
-          "href": "/grupo"
-        }
-      ]
-    },
-    {
       "title": "Serviços",
       "icon": "fal fa-key",
       "items": [
@@ -120,6 +106,14 @@
         {
           "title": "Operações",
           "href": "/operacao"
+        },
+        {
+          "title": "Módulos",
+          "href": "/modulo"
+        },
+        {
+          "title": "Grupos",
+          "href": "/grupo"
         }
       ]
     },
