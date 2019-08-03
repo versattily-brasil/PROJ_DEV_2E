@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AutoMapper\Profile\ServicoProfile.cs" />
+    <Compile Remove="Controllers\ServicoController.cs" />
+    <Compile Remove="ViewModel\ServicoVM.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -22,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SSO\0 - Domain\P2E.SSO.Domain\P2E.SSO.Domain.csproj" />
     <ProjectReference Include="..\..\0 - Domain\P2E.Main.Domain\P2E.Main.Domain.csproj" />
     <ProjectReference Include="..\..\1 - Infra\1.1 - Data\P2E.Main.Infra.Data\P2E.Main.Infra.Data.csproj" />
   </ItemGroup>

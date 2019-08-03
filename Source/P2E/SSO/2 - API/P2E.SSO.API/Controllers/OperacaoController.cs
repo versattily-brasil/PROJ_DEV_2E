@@ -7,41 +7,41 @@ using P2E.SSO.Domain.Repositories;
 
 namespace P2E.SSO.API.Controllers
 {
-    public class RotinaController : ControllerBase
+    public class OperacaoController : ControllerBase
     {
-        private readonly IRotinaRepository _rotinaRepository;
-        public RotinaController(IRotinaRepository rotinaRepository)
+        private readonly IOperacaoRepository _operacaoRepository;
+        public OperacaoController(IOperacaoRepository operacaoRepository)
         {
-            _rotinaRepository = rotinaRepository;
+            _operacaoRepository = operacaoRepository;
         }
 
-        // GET: api/rotina
+        // GET: api/operacao
         [HttpGet]
-        [Route("api/v1/rotina/")]
-        public DataPage<Rotina> Get([FromQuery] string descricao, [FromQuery] string nome, [FromQuery] DataPage<Rotina> page)
+        [Route("api/v1/operacao/")]
+        public DataPage<Operacao> Get([FromQuery] string descricao, [FromQuery] DataPage<Operacao> page)
         {
-            page = _rotinaRepository.GetByPage(page, descricao, nome);
+            page = _operacaoRepository.GetByPage(page, descricao);
             return page;
         }
 
-        // GET: api/rotina/5
+        // GET: api/operacao/5
         [HttpGet]
-        [Route("api/v1/rotina/{id}")]
-        public Rotina Get(long id)
+        [Route("api/v1/operacao/{id}")]
+        public Operacao Get(long id)
         {
-            return _rotinaRepository.Find(p => p.CD_ROT == id);
+            return _operacaoRepository.Find(p => p.CD_OPR == id);
         }
 
-        // POST: api/rotina
+        // POST: api/operacao
         [HttpPost]
-        [Route("api/v1/rotina")]
-        public object Post([FromBody] Rotina item)
+        [Route("api/v1/operacao")]
+        public object Post([FromBody] Operacao item)
         {
             try
             {
                 if (item.IsValid())
                 {
-                    _rotinaRepository.Insert(item);
+                    _operacaoRepository.Insert(item);
                     return new { message = "OK" };
                 }
                 else
@@ -56,19 +56,19 @@ namespace P2E.SSO.API.Controllers
             }
         }
 
-        // PUT: api/rotina/5
+        // PUT: api/operacao/5
         [HttpPut]
-        [Route("api/v1/rotina/{id}")]
-        public object Put(int id, [FromBody] Rotina item)
+        [Route("api/v1/operacao/{id}")]
+        public object Put(int id, [FromBody] Operacao item)
         {
             try
             {
                 if (item.IsValid())
                 {
                     if (id > 0)
-                        _rotinaRepository.Update(item);
+                        _operacaoRepository.Update(item);
                     else
-                        _rotinaRepository.Insert(item);
+                        _operacaoRepository.Insert(item);
                     return new { message = "OK" };
                 }
                 else
@@ -82,15 +82,15 @@ namespace P2E.SSO.API.Controllers
             }
         }
 
-        // DELETE: api/rotina/5
+        // DELETE: api/operacao/5
         [HttpDelete]
-        [Route("api/v1/rotina/{id}")]
+        [Route("api/v1/operacao/{id}")]
         public object Delete(long id)
         {
             try
             {
-                var item = _rotinaRepository.FindById(id);
-                _rotinaRepository.Delete(item);
+                var item = _operacaoRepository.FindById(id);
+                _operacaoRepository.Delete(item);
                 return new { message = "OK" };
             }
             catch (Exception ex)

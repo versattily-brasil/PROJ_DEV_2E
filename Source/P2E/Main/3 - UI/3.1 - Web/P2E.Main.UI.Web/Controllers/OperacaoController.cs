@@ -7,29 +7,29 @@ using Core.Flash2;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
-using P2E.Main.UI.Web.Models.SSO.Rotina;
+using P2E.Main.UI.Web.Models.SSO.Operacao;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 
 namespace P2E.Main.UI.Web.Controllers
 {
-    public class RotinaController : Controller
+    public class OperacaoController : Controller
     {
         #region variáveis locais
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
-        private string _urlRotina;
+        private string _urlOperacao;
         private readonly IFlasher _flash;
         #endregion
 
         #region construtor
-        public RotinaController(AppSettings appSettings, IMapper mapper, IFlasher flash)
+        public OperacaoController(AppSettings appSettings, IMapper mapper, IFlasher flash)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
             _flash = flash;
-            _urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/rotina";
+            _urlOperacao = this.appSettings.ApiBaseURL + $"sso/v1/operacao";
         }
         #endregion
 
@@ -40,10 +40,9 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <param name="dataPage"></param>
         /// <param name="decricao"></param>
-        /// <param name="nome"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Index(RotinaListViewModel vm)
+        public async Task<IActionResult> Index(OperacaoListViewModel vm)
         {
             try
             {
@@ -51,18 +50,17 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        var result = await client.GetAsync($"{_urlRotina}" +
+                        var result = await client.GetAsync($"{_urlOperacao}" +
                                                                             $"?currentpage={vm.DataPage.CurrentPage}" +
                                                                             $"&pagesize={vm.DataPage.PageSize}" +
                                                                             $"&orderby={vm.DataPage.OrderBy}" +
                                                                             $"&Descending={vm.DataPage.Descending}" +
-                                                                            $"&tx_nome={vm.TX_NOME}" +
                                                                             $"&tx_dsc={vm.TX_DSC}");
 
 
                         result.EnsureSuccessStatusCode();
-                        vm.DataPage = await result.Content.ReadAsAsync<DataPage<Rotina>>();
-                        vm.DataPage.UrlSearch = $"rotina?";
+                        vm.DataPage = await result.Content.ReadAsAsync<DataPage<Operacao>>();
+                        vm.DataPage.UrlSearch = $"operacao?";
                         return View("Index", vm);
                     }
                 }
@@ -87,16 +85,15 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
-                    var result = await client.GetAsync($"{_urlRotina}/{id}");
+                    var result = await client.GetAsync($"{_urlOperacao}/{id}");
                     result.EnsureSuccessStatusCode();
-                    var rotina = await result.Content.ReadAsAsync<Rotina>();
-                    var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
-                    return View("Form", rotinaViewModel);
+                    var operacao = await result.Content.ReadAsAsync<Operacao>();
+                    var operacaoViewModel = _mapper.Map<OperacaoViewModel>(operacao);
+                    return View("Form", operacaoViewModel);
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -117,23 +114,23 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="itemViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Save(RotinaViewModel itemViewModel)
+        public async Task<IActionResult> Save(OperacaoViewModel itemViewModel)
         {
             try
             {
-                var rotina = _mapper.Map<Rotina>(itemViewModel);
-                if (rotina.IsValid())
+                var operacao = _mapper.Map<Operacao>(itemViewModel);
+                if (operacao.IsValid())
                 {
                     using (var client = new HttpClient())
                     {
-                        await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
-                        _flash.Flash("success", GenericMessages.SucessSave("Rotina"));
-                        return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Rotina"));
+                        await client.PutAsJsonAsync($"{_urlOperacao}/{operacao.CD_OPR}", operacao);
+                        _flash.Flash("success", GenericMessages.SucessSave("Operacao"));
+                        return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Operacao"));
                     }
                 }
                 else
                 {
-                    return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Rotina", rotina.Messages));
+                    return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Operacao", operacao.Messages));
                 }
             }
             catch (Exception ex)
@@ -151,8 +148,8 @@ namespace P2E.Main.UI.Web.Controllers
         {
             using (var client = new HttpClient())
             {
-                await client.DeleteAsync($"{_urlRotina}/{Id}");
-                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Rotina"));
+                await client.DeleteAsync($"{_urlOperacao}/{Id}");
+                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Operacao"));
             }
         }
         #endregion        

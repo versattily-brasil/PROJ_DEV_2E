@@ -97,7 +97,7 @@ namespace P2E.Main.UI.Web.Controllers
             var usuario = _mapper.Map<Usuario>(usuarioVM);
 
             HttpClient client = new HttpClient();
-            await client.PutAsJsonAsync<Usuario>(this.appSettings.ApiUsuarioBaseURL + "/usuario/" + usuario.CD_USR, usuario);
+            await client.PutAsJsonAsync<Usuario>(this.appSettings.ApiUsuarioBaseURL + "/usuario/" + usuarioVM.CD_USR, usuario);
             return RedirectToAction("Lista").WithSuccess("Sucesso.", "O Usuário foi salvo corretamente.");
         }
 

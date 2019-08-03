@@ -1,0 +1,128 @@
+﻿@model P2E.Main.UI.Web.Models.SSO.Operacao.OperacaoListViewModel
+@{
+    ViewData["Title"] = "Lista de Operações";
+    ViewData["PageName"] = "operacao_lista";
+    ViewData["Category1"] = "Operação";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <div class="alert alert-@type alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>@title</strong> @body
+            </div>
+        }
+
+        <div class="panel">
+            <div class="panel-hdr">
+                <div class="col-lg-5">
+                    <h1>
+                        Lista de Operações
+                    </h1>
+                </div>
+                <div class="col-lg-7 text-lg-right">
+                    <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                </div>
+
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+
+                    <form asp-action="/" method="get">
+                        <input type="hidden" asp-for="DataPage.CurrentPage" />
+                        <input type="hidden" asp-for="DataPage.Descending" />
+                        <input type="hidden" asp-for="DataPage.PageSize" />
+
+                        <div class="row">                            
+                            <div class="col-md-6">
+                                <input type="text" asp-for="TX_DSC" class="form-control" placeholder="Descrição" />
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-default"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
+                            </div>
+
+                        </div><br />
+                    </form>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover m-0">
+                                <thead class="thead-themed">
+                                    <tr>
+                                        <th width="50">Código</th>
+                                        <th>Descrição</th>
+                                        <th width="20"></th>
+                                        <th width="20"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.DataPage.Items)
+                                    {
+                                        <tr>
+                                            <td>@item.CD_OPR</td>
+                                            <td>@item.TX_DSC</td>
+                                            <td class="text-center">
+                                                <i data-id="@item.CD_OPR"
+                                                   data-controller="Operacao"
+                                                   data-action="Delete"
+                                                   data-body-message="Deseja excluir este registro?"
+                                                   style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+
+                                                </i>
+                                            </td>
+                                            <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_OPR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <br />
+                            <!-- pager -->
+                            @if (Model.DataPage.Pages != null && Model.DataPage.Pages.Any())
+                            {
+                                <nav class="table-responsive">
+                                    <ul class="pagination justify-content-center d-flex flex-wrap">
+                                        @if (Model.DataPage.CurrentPage > 1)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}", Model.DataPage.FirstPage)">Primeiro</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}", Model.DataPage.PriorPage)">Anterior</a>
+                                            </li>
+                                        }
+
+                                        @for (int i = 1; i <= Model.DataPage.TotalPages; i++)
+                                        {
+                                            var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
+
+                                            <li class="page-item @(pg.PageNumber == Model.DataPage.CurrentPage ? "active" : "")">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}", pg.PageNumber)">@pg.PageNumber</a>
+                                            </li>
+                                        }
+
+
+                                        @if (Model.DataPage.CurrentPage < Model.DataPage.TotalPages)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}", Model.DataPage.NextPage)">Próximo</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_dsc={""}", Model.DataPage.LastPage)">Último</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            }
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

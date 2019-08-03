@@ -41,6 +41,7 @@ namespace P2E.SSO.API.Controllers
         {
             var result = _usuarioRepository.Find(p => p.CD_USR == id);
             result.UsuarioModulos = _usuarioModuloRepository.FindAll(o => o.CD_USR == id).ToList();
+            result.UsuarioGrupo = _usuarioGrupoRepository.FindAll(o => o.CD_USR == id).ToList();
 
             return result;
         }

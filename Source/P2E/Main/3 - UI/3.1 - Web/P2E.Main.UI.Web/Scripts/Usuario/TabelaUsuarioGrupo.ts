@@ -3,7 +3,7 @@ class TabelaUsuarioGrupo {
 
     init(): void {
 
-        $(".bt-selecao").on("click", function () {
+        $(".bt-selecao-grp").on("click", function () {
             if ($(this).hasClass("fa-plus-circle")) {
                 $(this).removeClass("fa-plus-circle").removeClass("text-success");
                 $(this).addClass("fa-minus-circle").addClass("text-danger");

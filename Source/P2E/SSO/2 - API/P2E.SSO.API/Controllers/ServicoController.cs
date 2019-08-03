@@ -1,47 +1,54 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
+using P2E.SSO.API.ViewModel;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 
 namespace P2E.SSO.API.Controllers
 {
-    public class RotinaController : ControllerBase
+    [ApiController]
+    public class ServicoController : ControllerBase
     {
-        private readonly IRotinaRepository _rotinaRepository;
-        public RotinaController(IRotinaRepository rotinaRepository)
+        private readonly IServicoRepository _servicoRepository;
+        
+        public ServicoController(IServicoRepository servicoRepository)
         {
-            _rotinaRepository = rotinaRepository;
+            _servicoRepository = servicoRepository;
         }
 
-        // GET: api/rotina
+        // GET: api/Servico
         [HttpGet]
-        [Route("api/v1/rotina/")]
-        public DataPage<Rotina> Get([FromQuery] string descricao, [FromQuery] string nome, [FromQuery] DataPage<Rotina> page)
+        [Route("api/v1/servico/")]
+        public DataPage<Servico> Get([FromQuery] string txt_dec, [FromQuery] DataPage<Servico> page)
         {
-            page = _rotinaRepository.GetByPage(page, descricao, nome);
+            page = _servicoRepository.GetByPage(page, txt_dec);
             return page;
         }
 
-        // GET: api/rotina/5
+        // GET: api/Servico/5
         [HttpGet]
-        [Route("api/v1/rotina/{id}")]
-        public Rotina Get(long id)
+        [Route("api/v1/servico/{id}")]
+        public Servico Get(long id)
         {
-            return _rotinaRepository.Find(p => p.CD_ROT == id);
+            return _servicoRepository.Find(p => p.CD_SRV == id);
         }
 
-        // POST: api/rotina
+        // POST: api/Servico
         [HttpPost]
-        [Route("api/v1/rotina")]
-        public object Post([FromBody] Rotina item)
+        [Route("api/v1/servico")]
+        public object Post([FromBody] Servico item)
         {
             try
             {
                 if (item.IsValid())
                 {
-                    _rotinaRepository.Insert(item);
+                    _servicoRepository.Insert(item);
                     return new { message = "OK" };
                 }
                 else
@@ -56,19 +63,18 @@ namespace P2E.SSO.API.Controllers
             }
         }
 
-        // PUT: api/rotina/5
-        [HttpPut]
-        [Route("api/v1/rotina/{id}")]
-        public object Put(int id, [FromBody] Rotina item)
+        // PUT: api/Servico/5
+        [HttpPut("api/v1/servico/{id}")]
+        public object Put(int id, [FromBody] Servico item)
         {
             try
             {
                 if (item.IsValid())
                 {
                     if (id > 0)
-                        _rotinaRepository.Update(item);
+                        _servicoRepository.Update(item);
                     else
-                        _rotinaRepository.Insert(item);
+                        _servicoRepository.Insert(item);
                     return new { message = "OK" };
                 }
                 else
@@ -82,21 +88,20 @@ namespace P2E.SSO.API.Controllers
             }
         }
 
-        // DELETE: api/rotina/5
-        [HttpDelete]
-        [Route("api/v1/rotina/{id}")]
-        public object Delete(long id)
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("api/v1/servico/{id}")]
+        public object Delete(int id)
         {
             try
             {
-                var item = _rotinaRepository.FindById(id);
-                _rotinaRepository.Delete(item);
+                var objeto = _servicoRepository.FindById(id);
+                _servicoRepository.Delete(objeto);
                 return new { message = "OK" };
             }
             catch (Exception ex)
             {
                 return new { message = "Error." + ex.Message };
             }
-        }        
+        }
     }
 }
