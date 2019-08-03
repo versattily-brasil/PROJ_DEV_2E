@@ -2,7 +2,7 @@ var TabelaUsuarioGrupo = /** @class */ (function () {
     function TabelaUsuarioGrupo() {
     }
     TabelaUsuarioGrupo.prototype.init = function () {
-        $(".bt-selecao").on("click", function () {
+        $(".bt-selecao-grp").on("click", function () {
             if ($(this).hasClass("fa-plus-circle")) {
                 $(this).removeClass("fa-plus-circle").removeClass("text-success");
                 $(this).addClass("fa-minus-circle").addClass("text-danger");

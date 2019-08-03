@@ -89,7 +89,15 @@
                                                         <th width="100px"></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody></tbody>
+                                                <tbody>
+                                                    @foreach (var modulo in Model.Modulos.Where(o1 => Model.UsuarioModulos.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
+                                                    {
+                                                        <tr data-mod="@modulo.CD_MOD">
+                                                            <td>@modulo.TX_DSC</td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao"></i></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -108,11 +116,11 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var grupo in Model.Grupo.Where(o1 => Model.UsuarioGrupo.Any(o2 => o2.CD_GRP == o1.CD_GRP)))
+                                                    @foreach (var grupo in Model.Grupo.Where(o1 => !Model.UsuarioGrupo.Any(o2 => o2.CD_GRP == o1.CD_GRP)))
                                                     {
-                                                        <tr data-mod="@grupo.CD_GRP">
+                                                        <tr data-grp="@grupo.CD_GRP">
                                                             <td>@grupo.TX_DSC</td>
-                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao"></i></td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao-grp"></i></td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -126,7 +134,15 @@
                                                         <th width="100px"></th>
                                                     </tr>
                                                 </thead>
-                                                <tbody></tbody>
+                                                <tbody>
+                                                    @foreach (var grupo in Model.Grupo.Where(o1 => Model.UsuarioGrupo.Any(o2 => o2.CD_GRP == o1.CD_GRP)))
+                                                    {
+                                                        <tr data-grp="@grupo.CD_GRP">
+                                                            <td>@grupo.TX_DSC</td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-grp"></i></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -136,6 +152,7 @@
                         </div>
 
                         <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
+                        @*<button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>*@
 
                     </div>
                 </form>
@@ -146,7 +163,7 @@
 @section Scripts {
 
     <script src="~/js/Usuario/TabelaUsarioModulo.js"></script>
-    <script src="~/js/Usuario/UsuarioCadastro.js"></script>
+    @*<script src="~/js/Usuario/UsuarioCadastro.js"></script>*@
 
     <script src="~/js/Usuario/TabelaUsuarioGrupo.js"></script>
     <script src="~/js/Usuario/UsuarioGrupo.js"></script>
