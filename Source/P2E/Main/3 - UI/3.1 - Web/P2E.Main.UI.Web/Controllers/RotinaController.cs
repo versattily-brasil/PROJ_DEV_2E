@@ -59,7 +59,7 @@ namespace P2E.Main.UI.Web.Controllers
                                                                             $"&tx_nome={vm.TX_NOME}" +
                                                                             $"&tx_dsc={vm.TX_DSC}");
 
-                        
+
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Rotina>>();
                         vm.DataPage.UrlSearch = $"rotina?";
