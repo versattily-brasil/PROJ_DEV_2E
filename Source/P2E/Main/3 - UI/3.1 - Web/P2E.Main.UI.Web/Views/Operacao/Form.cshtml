@@ -1,0 +1,45 @@
+﻿@model P2E.Main.UI.Web.Models.SSO.Operacao.OperacaoViewModel
+@{
+    ViewData["Title"] = "Cadastro de Operação";
+    ViewData["PageName"] = "operacao_cadastro";
+    ViewData["Category1"] = "Operação";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <div class="alert alert-@type alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>@title</strong> @body
+            </div>
+        }
+
+        <div class="panel">
+            <div class="panel-hdr">
+                <h1>
+                    Cadastro de Operação
+                </h1>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form asp-action="Save" method="post">
+                        <input type="hidden" asp-for="CD_OPR" />                        
+                        <div class="form-group">
+                            <label class="form-label" asp-for="TX_DSC">Descrição</label>
+                            <input type="text" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
