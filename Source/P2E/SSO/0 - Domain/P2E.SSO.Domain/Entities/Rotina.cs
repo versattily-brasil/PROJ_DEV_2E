@@ -29,10 +29,10 @@ namespace P2E.SSO.Domain.Entities
 
         public bool IsValid()
         {
-            if (string.IsNullOrEmpty(TX_NOME.Trim()))
+            if (string.IsNullOrEmpty(TX_NOME))
                 AddNotification("TX_NOME", $"O Nome da Rotina é um campo obrigatório.");
 
-            if (string.IsNullOrEmpty(TX_DSC.Trim()))
+            if (string.IsNullOrEmpty(TX_DSC))
                 AddNotification("TX_DSC", $"A Descrição da Rotina é um campo obrigatório.");
 
             if (OP_TIPO == 0)

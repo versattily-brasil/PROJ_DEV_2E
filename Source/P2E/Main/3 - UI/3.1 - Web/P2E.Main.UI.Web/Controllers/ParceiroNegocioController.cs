@@ -101,7 +101,10 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View("Form");
+            var vm = new ParceiroNegocioViewModel();
+            vm.Modulos =  CarregarModulos().Result;
+            vm.Servicos =  CarregarServicos().Result;
+            return View("Form", vm);
         }
 
         /// <summary>
@@ -147,7 +150,29 @@ namespace P2E.Main.UI.Web.Controllers
                 await client.DeleteAsync($"{_urlParceiro}/{Id}");
                 return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Parceiro Negócio"));
             }
-        } 
+        }
         #endregion
+
+        private async Task<List<Modulo>> CarregarModulos()
+        {
+            string urlModulo = this.appSettings.ApiBaseURL + $"sso/v1/modulo/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlModulo);
+                var lista = await result.Content.ReadAsAsync<List<Modulo>>();
+                return lista;
+            }
+        }
+
+        private async Task<List<Servico>> CarregarServicos()
+        {
+            string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/servico/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlServico);
+                var lista = await result.Content.ReadAsAsync<List<Servico>>();
+                return lista;
+            }
+        }
     }
 }

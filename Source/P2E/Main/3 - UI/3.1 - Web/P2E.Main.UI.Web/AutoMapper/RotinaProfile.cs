@@ -9,7 +9,7 @@ namespace P2E.Main.UI.Web.AutoMapper
         public RotinaProfile()
         {
             CreateMap<Rotina, RotinaViewModel>(MemberList.None);
-            CreateMap<RotinaViewModel, Rotina>(MemberList.Source);
+            CreateMap<RotinaViewModel, Rotina>(MemberList.None);
             AllowNullDestinationValues = true;
         }
     }

@@ -9,10 +9,10 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
         {
             DataPage = new DataPage<P2E.SSO.Domain.Entities.Rotina>();
         }
-        public int CD_ROT { get; private set; }
-        public string TX_NOME { get; private set; }
-        public string TX_DSC { get; private set; }
-        public eTipoRotina OP_TIPO { get; private set; }
+
+        public string Nome { get;  set; }
+        public string Descricao { get; set; }
+
         public DataPage<P2E.SSO.Domain.Entities.Rotina> DataPage { get; set; }
     }
 }
