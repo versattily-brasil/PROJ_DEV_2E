@@ -8,7 +8,7 @@ using System.Text;
 namespace P2E.SSO.Domain.Entities
 {
     [Table("TB_PAR_SRV_MOD")]
-    public class ParceiroNegocioModulo
+    public class ParceiroNegocioServicoModulo
     {
         [Key]
         [Identity]

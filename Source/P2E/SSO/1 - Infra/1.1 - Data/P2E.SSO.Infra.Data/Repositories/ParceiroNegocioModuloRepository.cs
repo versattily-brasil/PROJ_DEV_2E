@@ -11,7 +11,7 @@ using System.Text;
 
 namespace P2E.SSO.Infra.Data.Repositories
 {
-    public class ParceiroNegocioModuloRepository : DapperRepository<ParceiroNegocioModulo>, IParceiroNegocioModuloRepository
+    public class ParceiroNegocioModuloRepository : DapperRepository<ParceiroNegocioServicoModulo>, IParceiroNegocioModuloRepository
     {
         private readonly SSOContext _context;
 
@@ -20,9 +20,9 @@ namespace P2E.SSO.Infra.Data.Repositories
             _context = context;
         }
 
-        public List<ParceiroNegocioModulo> GetParceiroNegocioModulos(long cd_par, long cd_srv, long cd_mod)
+        public List<ParceiroNegocioServicoModulo> GetParceiroNegocioModulos(long cd_par, long cd_srv, long cd_mod)
         {
-            var resultado = new List<ParceiroNegocioModulo>();
+            var resultado = new List<ParceiroNegocioServicoModulo>();
             var parametros = new DynamicParameters();
 
             parametros.Add("CD_PAR", cd_par, System.Data.DbType.Int16, System.Data.ParameterDirection.Input);
@@ -31,7 +31,7 @@ namespace P2E.SSO.Infra.Data.Repositories
 
             var query = @" SELECT * FROM TB_PAR_SRV_MOD WHERE TX_TABELA > @TX_TABELA";
 
-            resultado = _context.Connection.Query<ParceiroNegocioModulo>(query, parametros).ToList();
+            resultado = _context.Connection.Query<ParceiroNegocioServicoModulo>(query, parametros).ToList();
 
             return resultado;
         }

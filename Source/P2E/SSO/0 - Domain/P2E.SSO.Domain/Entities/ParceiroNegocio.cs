@@ -45,5 +45,7 @@ namespace P2E.SSO.Domain.Entities
         }
 
         public override string ToString() => $"{TXT_RZSOC.ToString()}";
+
+        public List<ParceiroNegocioServicoModulo> ParceiroNegocioServicoModulo { get; set; } = new List<ParceiroNegocioServicoModulo>();
     }
 }

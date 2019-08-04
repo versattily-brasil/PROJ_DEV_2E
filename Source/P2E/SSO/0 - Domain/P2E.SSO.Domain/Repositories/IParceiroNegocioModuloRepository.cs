@@ -6,8 +6,8 @@ using System.Text;
 
 namespace P2E.SSO.Domain.Repositories
 {
-    public interface IParceiroNegocioModuloRepository : IDapperRepository<ParceiroNegocioModulo>
+    public interface IParceiroNegocioModuloRepository : IDapperRepository<ParceiroNegocioServicoModulo>
     {
-        List<ParceiroNegocioModulo> GetParceiroNegocioModulos(long cd_par, long cd_srv, long cd_mod);
+        List<ParceiroNegocioServicoModulo> GetParceiroNegocioModulos(long cd_par, long cd_srv, long cd_mod);
     }
 }

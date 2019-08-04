@@ -104,7 +104,7 @@ namespace P2E.SSO.API.Controllers
                     else
                         _usuarioRepository.Insert(usuario);
 
-                    foreach (var usuarioModulo in usuario.UsuarioModulo)
+                    foreach (var usuarioModulo in usuario.UsuarioModulo)//lista de associações
                     {
                         usuarioModulo.CD_USR = usuario.CD_USR;
                         _usuarioModuloRepository.Insert(usuarioModulo);

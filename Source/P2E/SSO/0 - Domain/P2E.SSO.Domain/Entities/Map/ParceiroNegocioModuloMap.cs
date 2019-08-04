@@ -5,7 +5,7 @@ using System.Text;
 
 namespace P2E.SSO.Domain.Entities.Map
 {
-    public class ParceiroNegocioModuloMap : ClassMapper<ParceiroNegocioModulo>
+    public class ParceiroNegocioModuloMap : ClassMapper<ParceiroNegocioServicoModulo>
     {
         public ParceiroNegocioModuloMap()
         {
