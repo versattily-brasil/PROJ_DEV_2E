@@ -135,9 +135,13 @@ namespace P2E.SSO.API.Controllers
         public object Delete(int id)
         {
             try
-            {
+            {                
+                _usuarioModuloRepository.ExcluirUsuarioModulos(id);                               
+                _usuarioGrupoRepository.ExcluirUsuarioGrupo(id);
+
                 var objeto = _usuarioRepository.FindById(id);
                 _usuarioRepository.Delete(objeto);
+
                 return new { message = "OK" };
             }
             catch (Exception ex)
