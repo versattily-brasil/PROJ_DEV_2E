@@ -29,7 +29,7 @@
                 </h1>
             </div>
             <div class="panel-container show">
-                <form id="form" asp-action="Cadastro" method="post">
+                <form id="form" asp-action="Save" method="post">
                     <div class="panel-content" style="border-bottom: 1px solid rgba(0, 0, 0, 0.07);">
 
                         <input type="hidden" asp-for="CD_USR" />
@@ -73,7 +73,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var modulo in Model.Modulos.Where(o1 => !Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
+                                                    @foreach (var modulo in Model.Modulo.Where(o1 => !Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
                                                     {
                                                         <tr data-mod="@modulo.CD_MOD">
                                                             <td>@modulo.TX_DSC</td>
@@ -92,7 +92,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var modulo in Model.Modulos.Where(o1 => Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
+                                                    @foreach (var modulo in Model.Modulo.Where(o1 => Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
                                                     {
                                                         <tr data-mod="@modulo.CD_MOD">
                                                             <td>@modulo.TX_DSC</td>

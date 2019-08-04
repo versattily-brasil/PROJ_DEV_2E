@@ -1,12 +1,14 @@
-﻿using MicroOrm.Dapper.Repositories;
+﻿using DapperExtensions;
+using MicroOrm.Dapper.Repositories;
+using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace P2E.SSO.Domain.Repositories
 {
     public interface IUsuarioRepository : IDapperRepository<Usuario>
     {
+        DataPage<Usuario> GetByPage(DataPage<Usuario> page, string tx_nome);
+
+        int GetTotalRows(PredicateGroup predicateGroup);
     }
 }

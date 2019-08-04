@@ -97,7 +97,7 @@
       "items": [
         {
           "title": "Usuários",
-          "href": "usuario_lista.html"
+          "href": "/usuario"
         },
         {
           "title": "Rotinas",

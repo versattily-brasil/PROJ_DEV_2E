@@ -1,6 +1,7 @@
 ﻿using FluentValidator;
 using MicroOrm.Dapper.Repositories.Attributes;
 using P2E.Shared.Enum;
+using P2E.Shared.Message;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace P2E.SSO.Domain.Entities
 {
     [Table("TB_USR")]
-    public class Usuario : Notifiable
+    public class Usuario : CustomNotifiable
     {
         public Usuario()
         {
@@ -22,6 +23,8 @@ namespace P2E.SSO.Domain.Entities
             TX_NOME = tx_nome;
             TX_SENHA = tx_senha;
             OP_STATUS = op_status;
+
+            IsValid();
         }
 
         [Key]
@@ -47,6 +50,8 @@ namespace P2E.SSO.Domain.Entities
         public override string ToString() => $"{TX_LOGIN.ToString()}";
 
         public List<UsuarioModulo> UsuarioModulo { get; set; } = new List<UsuarioModulo>();
+        public List<Modulo> Modulo { get; set; } = new List<Modulo>();
         public List<UsuarioGrupo> UsuarioGrupo { get; set; } = new List<UsuarioGrupo>();
+        public List<Grupo> Grupo { get; set; } = new List<Grupo>();
     }
 }

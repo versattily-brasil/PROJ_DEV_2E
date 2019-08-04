@@ -19,7 +19,7 @@ namespace P2E.Main.UI.Web.Models.SSO.Usuario
         public List<UsuarioModuloViewModel> UsuarioModulo { get; set; } = new List<UsuarioModuloViewModel>();
         public List<UsuarioGrupoViewModel> UsuarioGrupo { get; set; } = new List<UsuarioGrupoViewModel>();
 
-        public List<ModuloViewModel> Modulos { get; set; } = new List<ModuloViewModel>();               
+        public List<ModuloViewModel> Modulo { get; set; } = new List<ModuloViewModel>();               
         public List<GrupoViewModel> Grupo { get; set; } = new List<GrupoViewModel>();
     }
 }
