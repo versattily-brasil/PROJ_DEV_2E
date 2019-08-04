@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.Flash2;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
@@ -21,15 +20,13 @@ namespace P2E.Main.UI.Web.Controllers
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
         private string _urlParceiro;
-        private readonly IFlasher _flash;
         #endregion
 
         #region construtor
-        public ParceiroNegocioController(AppSettings appSettings, IMapper mapper, IFlasher flash)
+        public ParceiroNegocioController(AppSettings appSettings, IMapper mapper)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
-            _flash = flash;
             _urlParceiro = this.appSettings.ApiBaseURL + $"sso/v1/parceironegocio";
         }
         #endregion
@@ -84,12 +81,14 @@ namespace P2E.Main.UI.Web.Controllers
                     result.EnsureSuccessStatusCode();
                     var parceiroNegocio = await result.Content.ReadAsAsync<ParceiroNegocio>();
                     var parceiroNegocioViewModel = _mapper.Map<ParceiroNegocioViewModel>(parceiroNegocio);
+                    parceiroNegocioViewModel.Modulos = CarregarModulos().Result;
+                    parceiroNegocioViewModel.Servicos = CarregarServicos().Result;
+
                     return View("Form", parceiroNegocioViewModel);
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -123,7 +122,6 @@ namespace P2E.Main.UI.Web.Controllers
                     using (var client = new HttpClient())
                     {
                         await client.PutAsJsonAsync($"{_urlParceiro}/{parceiroNegocio.CD_PAR}", parceiroNegocio);
-                        _flash.Flash("success", GenericMessages.SucessSave("Parceiro Negócio"));
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
                     }
                 }

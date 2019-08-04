@@ -1,5 +1,5 @@
 ﻿{
-  "version": 4.0,
+  "version": 1.0,
   "lists": [
     //{
     //  "title": "Exemplo",
@@ -11,16 +11,16 @@
     //    }
     //  ]
     //},
-    {
-      "title": "Serviços",
-      "icon": "fal fa-key",
-      "items": [
-        {
-          "title": "Lista",
-          "href": "/servico"
-        }
-      ]
-    },
+    //{
+    //  "title": "Serviços",
+    //  "icon": "fal fa-key",
+    //  "items": [
+    //    {
+    //      "title": "Lista",
+    //      "href": "/servico"
+    //    }
+    //  ]
+    //},
     //{
     //  "title": "Importação",
     //  "icon": "fal fa-cloud-download",
@@ -92,7 +92,7 @@
     //  ]
     //},
     {
-      "title": "Controle de Acesso",
+      "title": "Segurança",
       "icon": "fal fa-address-card",
       "items": [
         {
@@ -114,18 +114,24 @@
         {
           "title": "Grupos",
           "href": "/grupo"
-        }
-      ]
-    },
-    {
-      "title": "Configurações",
-      "icon": "fal fa-address-card",
-      "items": [
+        },
         {
           "title": "Parceiro de Negócio",
           "href": "/ParceiroNegocio"
-        }
+        },
+        {
+                "title": "Serviço",
+                "href": "/servico"
+         }
       ]
     }
+    //,
+    //{
+    //  "title": "Configurações",
+    //  "icon": "fal fa-address-card",
+    //  "items": [
+        
+    //  ]
+    //}
   ]
 }

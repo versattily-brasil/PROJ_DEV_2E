@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Scripts\ParceiroNegocio\TabelaParceiroNegocioModuloServico.ts" />
     <None Remove="Scripts\Usuario\TabelaUsuarioModulo.ts" />
     <None Remove="Scripts\Usuario\UsuarioCadastro.ts" />
     <None Remove="Scripts\Usuario\TabelaUsuarioGrupo.ts" />
@@ -31,6 +32,7 @@
 
 
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\ParceiroNegocio\TabelaParceiroNegocioModuloServico.ts" />
     <TypeScriptCompile Include="Scripts\Usuario\TabelaUsuarioModulo.ts" />
     <TypeScriptCompile Include="Scripts\Usuario\UsuarioCadastro.ts" />
     <TypeScriptCompile Include="Scripts\Usuario\TabelaUsuarioGrupo.ts" />
