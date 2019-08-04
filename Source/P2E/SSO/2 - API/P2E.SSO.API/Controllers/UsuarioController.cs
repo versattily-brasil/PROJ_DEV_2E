@@ -40,7 +40,7 @@ namespace P2E.SSO.API.Controllers
         public Usuario Get(int id)
         {
             var result = _usuarioRepository.Find(p => p.CD_USR == id);
-            result.UsuarioModulos = _usuarioModuloRepository.FindAll(o => o.CD_USR == id).ToList();
+            result.UsuarioModulo = _usuarioModuloRepository.FindAll(o => o.CD_USR == id).ToList();
             result.UsuarioGrupo = _usuarioGrupoRepository.FindAll(o => o.CD_USR == id).ToList();
 
             return result;
@@ -88,7 +88,7 @@ namespace P2E.SSO.API.Controllers
                     else
                         _usuarioRepository.Insert(usuario);
 
-                    foreach(var usuarioModulo in usuario.UsuarioModulos)
+                    foreach(var usuarioModulo in usuario.UsuarioModulo)
                     {
                         usuarioModulo.CD_USR = usuario.CD_USR;
                         _usuarioModuloRepository.Insert(usuarioModulo);

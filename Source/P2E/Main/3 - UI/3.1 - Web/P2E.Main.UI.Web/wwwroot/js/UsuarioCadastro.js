@@ -6,14 +6,20 @@ var UsuarioCadastro = /** @class */ (function () {
     UsuarioCadastro.prototype.init = function () {
         var _this = this;
         this.btnSalvar.on("click", function () {
-            var listName = "UsuarioModulos";
-            var qtd = 0;
-            $("#table-destino > tbody > tr").each(function () {
-                var CD_MOD = $(this).data("mod");
-                $("#form").prepend("<input type='hidden' name= '" + listName + "[" + qtd + "].CD_MOD' value= '" + CD_MOD + "' > ");
-                qtd += 1;
+            var listaGrupos = "UsuarioGrupo";
+            var g = 0;
+            $("#table-destino-grp > tbody > tr").each(function () {
+                var CD_GRP = $(this).data("grp");
+                $("#form").append("<input type='hidden' name= '" + listaGrupos + "[" + g + "].CD_GRP' value= '" + CD_GRP + "' > ");
+                g += 1;
             });
-            console.log(qtd);
+            var listaModulos = "UsuarioModulo";
+            var m = 0;
+            $("#table-destino-md > tbody > tr").each(function () {
+                var CD_MOD = $(this).data("mod");
+                $("#form").append("<input type='hidden' name= '" + listaModulos + "[" + m + "].CD_MOD' value= '" + CD_MOD + "' > ");
+                m += 1;
+            });
             _this.form.submit();
         });
     };

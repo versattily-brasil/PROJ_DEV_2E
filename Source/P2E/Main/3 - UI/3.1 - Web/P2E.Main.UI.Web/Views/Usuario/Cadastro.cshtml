@@ -1,4 +1,5 @@
 ﻿@model P2E.Main.UI.Web.Models.SSO.Usuario.UsuarioViewModel
+@using P2E.Shared.Enum
 @{
     ViewData["Title"] = "Cadastro de Usuário";
     ViewData["PageName"] = "usuario_cadastro";
@@ -46,8 +47,9 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" asp-for="OP_STATUS">Status</label>
-                            <input type="text" asp-for="OP_STATUS" placeholder="Status" class="form-control">
-                        </div>
+                            @*<input type="text" asp-for="OP_STATUS" placeholder="Status" class="form-control">*@
+
+                            <select asp-for="OP_STATUS" class="form-control" asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
 
                     </div>
                     <div class="panel-content">
@@ -63,7 +65,7 @@
                                 <div class="container container-demo">
                                     <div class="row">
                                         <div class="col">
-                                            <table id="table-origem" class="table table-bordered table-hover m-0">
+                                            <table id="table-origem-md" class="table table-bordered table-hover m-0">
                                                 <thead class="thead-themed">
                                                     <tr>
                                                         <th>Módulos</th>
@@ -71,18 +73,18 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var modulo in Model.Modulos.Where(o1 => !Model.UsuarioModulos.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
+                                                    @foreach (var modulo in Model.Modulos.Where(o1 => !Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
                                                     {
                                                         <tr data-mod="@modulo.CD_MOD">
                                                             <td>@modulo.TX_DSC</td>
-                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao"></i></td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao-md"></i></td>
                                                         </tr>
                                                     }
                                                 </tbody>
                                             </table>
                                         </div>
                                         <div class="col">
-                                            <table id="table-destino" class="table table-bordered table-hover m-0">
+                                            <table id="table-destino-md" class="table table-bordered table-hover m-0">
                                                 <thead class="thead-themed">
                                                     <tr>
                                                         <th>Módulos Associados ao Usuário</th>
@@ -90,13 +92,13 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var modulo in Model.Modulos.Where(o1 => Model.UsuarioModulos.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
+                                                    @foreach (var modulo in Model.Modulos.Where(o1 => Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
                                                     {
                                                         <tr data-mod="@modulo.CD_MOD">
                                                             <td>@modulo.TX_DSC</td>
-                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao"></i></td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-md"></i></td>
                                                         </tr>
-                                                    }
+                                                      }
                                                 </tbody>
                                             </table>
                                         </div>
@@ -152,8 +154,6 @@
                         </div>
 
                         <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
-                        @*<button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>*@
-
                     </div>
                 </form>
             </div>
@@ -162,9 +162,7 @@
 </div>
 @section Scripts {
 
-    <script src="~/js/Usuario/TabelaUsarioModulo.js"></script>
-    @*<script src="~/js/Usuario/UsuarioCadastro.js"></script>*@
-
-    <script src="~/js/Usuario/TabelaUsuarioGrupo.js"></script>
-    <script src="~/js/Usuario/UsuarioGrupo.js"></script>
+    <script src="~/js/TabelaUsuarioModulo.js"></script>
+    <script src="~/js/TabelaUsuarioGrupo.js"></script>
+    <script src="~/js/UsuarioCadastro.js"></script>
 }

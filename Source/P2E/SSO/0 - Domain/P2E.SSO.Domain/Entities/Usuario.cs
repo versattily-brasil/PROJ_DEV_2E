@@ -1,5 +1,6 @@
 ﻿using FluentValidator;
 using MicroOrm.Dapper.Repositories.Attributes;
+using P2E.Shared.Enum;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,7 +15,7 @@ namespace P2E.SSO.Domain.Entities
 
         }
 
-        public Usuario(int cd_usr, string tx_login, string tx_nome, string tx_senha, int op_status)
+        public Usuario(int cd_usr, string tx_login, string tx_nome, string tx_senha, eStatusUsuario op_status)
         {
             CD_USR = cd_usr;
             TX_LOGIN = tx_login;
@@ -29,7 +30,7 @@ namespace P2E.SSO.Domain.Entities
         public string TX_NOME { get; set; }
         public string TX_LOGIN { get; set; }
         public string TX_SENHA { get; set; }
-        public int OP_STATUS { get; set; }
+        public eStatusUsuario OP_STATUS { get; set; }
 
         public bool IsValid()
         {
@@ -45,7 +46,7 @@ namespace P2E.SSO.Domain.Entities
 
         public override string ToString() => $"{TX_LOGIN.ToString()}";
 
-        public List<UsuarioModulo> UsuarioModulos { get; set; } = new List<UsuarioModulo>();
+        public List<UsuarioModulo> UsuarioModulo { get; set; } = new List<UsuarioModulo>();
         public List<UsuarioGrupo> UsuarioGrupo { get; set; } = new List<UsuarioGrupo>();
     }
 }

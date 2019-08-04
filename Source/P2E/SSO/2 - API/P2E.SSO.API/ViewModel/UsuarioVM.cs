@@ -1,4 +1,5 @@
-﻿using System;
+﻿using P2E.Shared.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,6 @@ namespace P2E.SSO.API.ViewModel
         public string TX_LOGIN { get; set; }
         public string TX_NOME { get; set; }
         public string TX_SENHA { get; set; }
-        public int OP_STATUS { get; set; }
+        public eStatusUsuario OP_STATUS { get; set; }
     }
 }
