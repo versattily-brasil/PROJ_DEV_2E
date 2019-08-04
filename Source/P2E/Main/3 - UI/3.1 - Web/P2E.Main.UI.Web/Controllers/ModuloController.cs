@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.Flash2;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
@@ -21,15 +20,13 @@ namespace P2E.Main.UI.Web.Controllers
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
         private string _urlModulo;
-        private readonly IFlasher _flash;
         #endregion
 
         #region construtor
-        public ModuloController(AppSettings appSettings, IMapper mapper, IFlasher flash)
+        public ModuloController(AppSettings appSettings, IMapper mapper)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
-            _flash = flash;
             _urlModulo = this.appSettings.ApiBaseURL + $"sso/v1/modulo";
         }
         #endregion
@@ -124,7 +121,6 @@ namespace P2E.Main.UI.Web.Controllers
                     using (var client = new HttpClient())
                     {
                         await client.PutAsJsonAsync($"{_urlModulo}/{modulo.CD_MOD}", modulo);
-                        _flash.Flash("success", GenericMessages.SucessSave("Módulo"));
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Módulo"));
                     }
                 }

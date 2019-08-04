@@ -16,7 +16,8 @@ namespace P2E.Shared.Message
             {
                 foreach (var item in Notifications)
                 {
-                    msg.AppendLine($"{item.Property}: {item.Message}");
+                    if(!msg.ToString().Contains(item.Message))
+                    msg.AppendLine($"{item.Message}");
                 }
             }
 

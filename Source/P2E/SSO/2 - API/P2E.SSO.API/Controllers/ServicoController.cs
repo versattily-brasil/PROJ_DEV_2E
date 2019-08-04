@@ -22,6 +22,15 @@ namespace P2E.SSO.API.Controllers
             _servicoRepository = servicoRepository;
         }
 
+        // GET: api/Modulo
+        [HttpGet]
+        [Route("api/v1/servico/todos")]
+        public IEnumerable<Servico> Get()
+        {
+            var result = _servicoRepository.FindAll();
+            return result;
+        }
+
         // GET: api/Servico
         [HttpGet]
         [Route("api/v1/servico/")]
