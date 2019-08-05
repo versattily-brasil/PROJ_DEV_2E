@@ -12,10 +12,10 @@ namespace P2E.SSO.Domain.Entities
     {
         [Key]
         [Identity]
-        public int CD_PAR_SRV_MOD { get; set; }
-        public int CD_PAR { get; set; }
-        public int CD_SRV { get; set; }
-        public int CD_MOD { get; set; }
+        public long CD_PAR_SRV_MOD { get; set; }
+        public long CD_PAR { get; set; }
+        public long CD_SRV { get; set; }
+        public long CD_MOD { get; set; }
     }
 }
 

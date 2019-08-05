@@ -8,6 +8,6 @@ namespace P2E.SSO.Domain.Repositories
 {
     public interface IParceiroNegocioModuloRepository : IDapperRepository<ParceiroNegocioServicoModulo>
     {
-        List<ParceiroNegocioServicoModulo> GetParceiroNegocioModulos(long cd_par, long cd_srv, long cd_mod);
+        
     }
 }

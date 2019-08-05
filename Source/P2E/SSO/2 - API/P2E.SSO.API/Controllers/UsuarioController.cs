@@ -20,7 +20,12 @@ namespace P2E.SSO.API.Controllers
         private readonly IModuloRepository _moduloRepository;
 
         private readonly IMapper _mapper;
-        public UsuarioController(IUsuarioRepository usuarioRepository, IUsuarioModuloRepository usuarioModuloRepository, IUsuarioGrupoRepository usuarioGrupoRepository, IModuloRepository moduloRepository, IGrupoRepository grupoRepository, IMapper mapper)
+        public UsuarioController(IUsuarioRepository usuarioRepository, 
+                                 IUsuarioModuloRepository usuarioModuloRepository, 
+                                 IUsuarioGrupoRepository usuarioGrupoRepository, 
+                                 IModuloRepository moduloRepository, 
+                                 IGrupoRepository grupoRepository, 
+                                 IMapper mapper)
         {
             _mapper = mapper;
             _usuarioRepository = usuarioRepository;

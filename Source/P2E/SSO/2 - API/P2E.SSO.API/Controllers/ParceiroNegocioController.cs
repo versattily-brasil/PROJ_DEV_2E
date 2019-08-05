@@ -14,9 +14,12 @@ namespace P2E.SSO.API.Controllers
     public class ParceiroNegocioController : ControllerBase
     {
         private readonly IParceiroNegocioRepository _parceiroNegocioRepository;
-        public ParceiroNegocioController(IParceiroNegocioRepository parceiroNegocioRepository)
+        private readonly IParceiroNegocioModuloRepository _parceiroNegocioModuloRepository;
+        
+        public ParceiroNegocioController(IParceiroNegocioRepository parceiroNegocioRepository, IParceiroNegocioModuloRepository parceiroNegocioModuloRepository)
         {
             _parceiroNegocioRepository = parceiroNegocioRepository;
+            _parceiroNegocioModuloRepository = parceiroNegocioModuloRepository;
         }
 
         // GET: api/parceironegocio
@@ -33,7 +36,18 @@ namespace P2E.SSO.API.Controllers
         [Route("api/v1/parceironegocio/{id}")]
         public ParceiroNegocio Get(long id)
         {
-            return  _parceiroNegocioRepository.Find(p => p.CD_PAR == id);
+            ParceiroNegocio parceiro = new ParceiroNegocio();
+
+            if (id > 0)
+            {
+                parceiro = _parceiroNegocioRepository.Find(p => p.CD_PAR == id);
+                parceiro.ParceiroNegocioServicoModulo = _parceiroNegocioModuloRepository.FindAll(p => p.CD_PAR == id).ToList();
+
+            }
+
+            return parceiro;
+
+            //return  _parceiroNegocioRepository.Find(p => p.CD_PAR == id);
         }
 
         // POST: api/parceironegocio
@@ -63,21 +77,33 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/parceironegocio/5
         [HttpPut]
         [Route("api/v1/parceironegocio/{id}")]
-        public object Put(int id, [FromBody] ParceiroNegocio item)
+        public object Put(int id, [FromBody] ParceiroNegocio parceiro)
         {
             try
             {
-                if (item.IsValid())
+                if (parceiro.IsValid())
                 {
+                    _parceiroNegocioRepository.Delete(a => a.CD_PAR == parceiro.CD_PAR);
+                    _parceiroNegocioModuloRepository.Delete(a => a.CD_PAR == parceiro.CD_PAR);
+
                     if (id > 0)
-                        _parceiroNegocioRepository.Update(item);
+                        _parceiroNegocioRepository.Update(parceiro);
                     else
-                        _parceiroNegocioRepository.Insert(item);
+                        _parceiroNegocioRepository.Insert(parceiro);
+
+                    foreach (var parceiroServico in parceiro.ParceiroNegocioServicoModulo)
+                    {
+                        parceiroServico.CD_PAR = parceiro.CD_PAR;
+
+                        _parceiroNegocioModuloRepository.Insert(parceiroServico);
+                    }
+
+
                     return new { message = "OK" };
                 }
                 else
                 {
-                    return new { message = item.Notifications.FirstOrDefault().Message };
+                    return new { message = parceiro.Notifications.FirstOrDefault().Message };
                 }
             }
             catch (Exception ex)

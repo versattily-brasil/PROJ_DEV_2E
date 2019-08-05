@@ -19,21 +19,5 @@ namespace P2E.SSO.Infra.Data.Repositories
         {
             _context = context;
         }
-
-        public List<ParceiroNegocioServicoModulo> GetParceiroNegocioModulos(long cd_par, long cd_srv, long cd_mod)
-        {
-            var resultado = new List<ParceiroNegocioServicoModulo>();
-            var parametros = new DynamicParameters();
-
-            parametros.Add("CD_PAR", cd_par, System.Data.DbType.Int16, System.Data.ParameterDirection.Input);
-            parametros.Add("CD_SRV", cd_srv, System.Data.DbType.Int16, System.Data.ParameterDirection.Input);
-            parametros.Add("CD_MOD", cd_mod, System.Data.DbType.Int16, System.Data.ParameterDirection.Input);
-
-            var query = @" SELECT * FROM TB_PAR_SRV_MOD WHERE TX_TABELA > @TX_TABELA";
-
-            resultado = _context.Connection.Query<ParceiroNegocioServicoModulo>(query, parametros).ToList();
-
-            return resultado;
-        }
     }
 }
