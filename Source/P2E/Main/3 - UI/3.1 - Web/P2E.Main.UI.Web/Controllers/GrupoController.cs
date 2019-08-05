@@ -55,11 +55,18 @@ namespace P2E.Main.UI.Web.Controllers
                                                                                $"&pagesize={vm.DataPage.PageSize}" +
                                                                                $"&orderby={vm.DataPage.OrderBy}" +
                                                                                $"&Descending={vm.DataPage.Descending}" +
-                                                                               $"&tx_dsc={vm.TX_DSC}");
+                                                                               $"&tx_dsc={vm.descricao}");
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Grupo>>();
                         vm.DataPage.UrlSearch = $"grupo?";
-                        return View("Index", vm);
+                        if (vm.DataPage.Items.Any())
+                        {
+                            return View("Index", vm);
+                        }
+                        else
+                        {
+                            return View("Index", vm).WithInfo("", GenericMessages.ListNull());
+                        }
                     }
                 }
                 return View("Index", vm);

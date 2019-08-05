@@ -50,7 +50,7 @@ namespace P2E.SSO.Infra.Data.Repositories
 
             if (!string.IsNullOrEmpty(nome))
             {
-                var predicate = Predicates.Field<Rotina>(p => p.TX_NOME, Operator.Eq, nome);
+                var predicate = Predicates.Field<Rotina>(p => p.TX_NOME, Operator.Like, "%" + nome.Trim() + "%");
                 predicateGroup.Predicates.Add(predicate);
             }
 

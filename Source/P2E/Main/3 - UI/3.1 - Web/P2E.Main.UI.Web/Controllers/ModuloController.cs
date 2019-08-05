@@ -57,7 +57,14 @@ namespace P2E.Main.UI.Web.Controllers
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Modulo>>();
                         vm.DataPage.UrlSearch = $"modulo?";
-                        return View("Index", vm);
+                        if (vm.DataPage.Items.Any())
+                        {
+                            return View("Index", vm);
+                        }
+                        else
+                        {
+                            return View("Index", vm).WithInfo("", GenericMessages.ListNull());
+                        }
                     }
                 }
                 return View("Index", vm);

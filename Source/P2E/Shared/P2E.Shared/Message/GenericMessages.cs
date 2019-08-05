@@ -16,6 +16,13 @@ namespace P2E.Shared.Message
             return $"{param} excluído com sucesso.";
         }
 
+
+        public static string ListNull()
+        {
+            return $"Nenhum registro encontrado para a pesquisa realizada.";
+        }
+
+
         public static string ErrorSave(string param, string messages)
         {
             var msgReturn = new StringBuilder();

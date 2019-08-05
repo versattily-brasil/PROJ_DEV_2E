@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.Flash2;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
@@ -20,15 +19,13 @@ namespace P2E.Main.UI.Web.Controllers
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
         private string _urlOperacao;
-        private readonly IFlasher _flash;
         #endregion
 
         #region construtor
-        public OperacaoController(AppSettings appSettings, IMapper mapper, IFlasher flash)
+        public OperacaoController(AppSettings appSettings, IMapper mapper)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
-            _flash = flash;
             _urlOperacao = this.appSettings.ApiBaseURL + $"sso/v1/operacao";
         }
         #endregion
@@ -61,7 +58,14 @@ namespace P2E.Main.UI.Web.Controllers
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Operacao>>();
                         vm.DataPage.UrlSearch = $"operacao?";
-                        return View("Index", vm);
+                        if (vm.DataPage.Items.Any())
+                        {
+                            return View("Index", vm);
+                        }
+                        else
+                        {
+                            return View("Index", vm).WithInfo("", GenericMessages.ListNull());
+                        }
                     }
                 }
                 return View("Index", vm);
@@ -124,7 +128,6 @@ namespace P2E.Main.UI.Web.Controllers
                     using (var client = new HttpClient())
                     {
                         await client.PutAsJsonAsync($"{_urlOperacao}/{operacao.CD_OPR}", operacao);
-                        _flash.Flash("success", GenericMessages.SucessSave("Operacao"));
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Operacao"));
                     }
                 }

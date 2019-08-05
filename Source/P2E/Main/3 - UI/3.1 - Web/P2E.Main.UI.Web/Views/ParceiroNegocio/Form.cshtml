@@ -58,7 +58,7 @@
                                             <div class="col-5">
                                                 <div class="form-group">
                                                     <label class="form-label">Móodulo</label>
-                                                    <select asp-items="@(new SelectList(@Model.Modulos,"CD_MOD", "TX_DSC"))" class="form-control">
+                                                    <select asp-items="@(new SelectList(@Model.Modulos,"CD_MOD", "TX_DSC"))" class="form-control"  id="comboModulo">
                                                         <option disabled selected>--- Selecione um módulo ---</option>
                                                     </select>
                                                 </div>
@@ -67,14 +67,14 @@
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label class="form-label">Serviço</label>
-                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control">
+                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control"  id="comboServico">
                                                         <option disabled selected>--- Selecione um serviço ---</option>
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="col-1">
-                                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot">
+                                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-parceiro-servico-usuario">
                                                     <i class="fal fa-download"></i>
                                                 </a>
                                             </div>
@@ -86,7 +86,7 @@
 
                         <div class="form-group mb-0">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover m-0">
+                                <table class="table table-bordered table-hover m-0" id="tabela_servico_modulo">
                                     <thead class="thead-themed">
                                         <tr>
                                             <th>Módulo</th>
@@ -96,23 +96,23 @@
                                     </thead>
                                     <tbody>
                                         @*@foreach (var item in Model.Modulos.Items)
-                                        {
-                                            <tr>
-                                                <td>@item.CD_PAR</td>
-                                                <td>@item.TXT_RZSOC</td>
-                                                <td>@item.CNPJ</td>
-                                                <td class="text-center">
-                                                    <i data-id="@item.CD_PAR"
-                                                       data-controller="ParceiroNegocio"
-                                                       data-action="Delete"
-                                                       data-body-message="Deseja excluir este registro?"
-                                                       style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+                                            {
+                                                <tr>
+                                                    <td>@item.CD_PAR</td>
+                                                    <td>@item.TXT_RZSOC</td>
+                                                    <td>@item.CNPJ</td>
+                                                    <td class="text-center">
+                                                        <i data-id="@item.CD_PAR"
+                                                           data-controller="ParceiroNegocio"
+                                                           data-action="Delete"
+                                                           data-body-message="Deseja excluir este registro?"
+                                                           style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-                                                    </i>
-                                                </td>
-                                                <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_PAR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
-                                            </tr>
-                                        }*@
+                                                        </i>
+                                                    </td>
+                                                    <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_PAR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                                </tr>
+                                            }*@
                                     </tbody>
                                 </table>
                             </div>
@@ -131,4 +131,7 @@
             </div>
         </div>
     </div>
-</div>  
+</div>
+@section Scripts {
+    <script src="~/js/ParceiroNegocio/TabelaParceiroNegocioServicoModulo.js"></script>
+    }

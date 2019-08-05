@@ -18,9 +18,9 @@ namespace P2E.SSO.API.Controllers
         // GET: api/operacao
         [HttpGet]
         [Route("api/v1/operacao/")]
-        public DataPage<Operacao> Get([FromQuery] string descricao, [FromQuery] DataPage<Operacao> page)
+        public DataPage<Operacao> Get([FromQuery] string tx_dsc, [FromQuery] DataPage<Operacao> page)
         {
-            page = _operacaoRepository.GetByPage(page, descricao);
+            page = _operacaoRepository.GetByPage(page, tx_dsc);
             return page;
         }
 

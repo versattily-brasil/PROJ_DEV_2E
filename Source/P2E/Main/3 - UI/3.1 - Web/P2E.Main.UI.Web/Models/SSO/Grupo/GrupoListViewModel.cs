@@ -9,7 +9,7 @@ namespace P2E.Main.UI.Web.Models.SSO.Grupo
         {
             DataPage = new DataPage<P2E.SSO.Domain.Entities.Grupo>();
         }
-        public string TX_DSC { get; set; }
+        public string descricao { get; set; }
         public DataPage<P2E.SSO.Domain.Entities.Grupo> DataPage { get; set; }
     }
 }

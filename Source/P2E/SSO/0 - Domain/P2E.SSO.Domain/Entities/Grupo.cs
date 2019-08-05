@@ -28,7 +28,7 @@ namespace P2E.SSO.Domain.Entities
 
         public bool IsValid()
         {
-            if (string.IsNullOrEmpty(TX_DSC.Trim()))
+            if (string.IsNullOrEmpty(TX_DSC))
                 AddNotification("TX_DSC", $"Descrição é um campo obrigatório.");
 
             return Valid;

@@ -12,6 +12,7 @@ using P2E.SSO.API.ViewModel;
 using P2E.SSO.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -64,7 +65,14 @@ namespace P2E.Main.UI.Web.Controllers
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Usuario>>();
                         vm.DataPage.UrlSearch = $"usuario?";
-                        return View("Index", vm);
+                        if (vm.DataPage.Items.Any())
+                        {
+                            return View("Index", vm);
+                        }
+                        else
+                        {
+                            return View("Index", vm).WithInfo("", GenericMessages.ListNull());
+                        }
                     }
                 }
                 return View("Index", vm);

@@ -51,77 +51,81 @@
 
                         </div><br />
                     </form>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover m-0">
-                            <thead class="thead-themed">
-                                <tr>
-                                    <th width="50">Código</th>
-                                    <th>Nome</th>
-                                    <th>Descrição</th>
-                                    <th width="20"></th>
-                                    <th width="20"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.DataPage.Items)
-                                {
+                    <hr />
+                    @if (Model.DataPage.Items.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover m-0">
+                                <thead class="thead-themed">
                                     <tr>
-                                        <td>@item.CD_ROT</td>
-                                        <td>@item.TX_NOME</td>
-                                        <td>@item.TX_DSC</td>
-                                        <td class="text-center">
-                                            <i data-id="@item.CD_ROT"
-                                               data-controller="Rotina"
-                                               data-action="Delete"
-                                               data-body-message="Deseja excluir este registro?"
-                                               style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
-
-                                            </i>
-                                        </td>
-                                        <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_ROT"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                        <th width="50">Código</th>
+                                        <th>Nome</th>
+                                        <th>Descrição</th>
+                                        <th width="20"></th>
+                                        <th width="20"></th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
-                        <br />
-                        <!-- pager -->
-                        @if (Model.DataPage.Pages != null && Model.DataPage.Pages.Any())
-                        {
-                            <nav class="table-responsive">
-                                <ul class="pagination justify-content-center d-flex flex-wrap">
-                                    @if (Model.DataPage.CurrentPage > 1)
-                                    {
-                                        <li class="page-item">
-                                            <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.FirstPage)">Primeiro</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.PriorPage)">Anterior</a>
-                                        </li>
-                                    }
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.DataPage.Items)
+                    {
+                                        <tr>
+                                            <td>@item.CD_ROT</td>
+                                            <td>@item.TX_NOME</td>
+                                            <td>@item.TX_DSC</td>
+                                            <td class="text-center">
+                                                <i data-id="@item.CD_ROT"
+                                                   data-controller="Rotina"
+                                                   data-action="Delete"
+                                                   data-body-message="Deseja excluir este registro?"
+                                                   style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-                                    @for (int i = 1; i <= Model.DataPage.TotalPages; i++)
-                                    {
-                                        var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
+                                                </i>
+                                            </td>
+                                            <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_ROT"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
+                                        </tr>
+                    }
+                                </tbody>
+                            </table>
+                            <br />
+                            <!-- pager -->
+                            @if (Model.DataPage.Pages != null && Model.DataPage.Pages.Any())
+                    {
+                                <nav class="table-responsive">
+                                    <ul class="pagination justify-content-center d-flex flex-wrap">
+                                        @if (Model.DataPage.CurrentPage > 1)
+                    {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.FirstPage)">Primeiro</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.PriorPage)">Anterior</a>
+                                            </li>
+                    }
 
-                                        <li class="page-item @(pg.PageNumber == Model.DataPage.CurrentPage ? "active" : "")">
-                                            <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", pg.PageNumber)">@pg.PageNumber</a>
-                                        </li>
-                                    }
+                                        @for (int i = 1; i <= Model.DataPage.TotalPages; i++)
+                    {
+                        var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
 
-                                    @if (Model.DataPage.CurrentPage < Model.DataPage.TotalPages)
-                                    {
-                                        <li class="page-item">
-                                            <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.NextPage)">Próximo</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.LastPage)">Último</a>
-                                        </li>
-                                    }
-                                </ul>
-                            </nav>
-                        }
+                                            <li class="page-item @(pg.PageNumber == Model.DataPage.CurrentPage ? "active" : "")">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", pg.PageNumber)">@pg.PageNumber</a>
+                                            </li>
+                    }
 
-                    </div>
+                                        @if (Model.DataPage.CurrentPage < Model.DataPage.TotalPages)
+                    {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.NextPage)">Próximo</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}&nome={""}", Model.DataPage.LastPage)">Último</a>
+                                            </li>
+                    }
+                                    </ul>
+                                </nav>
+                    }
+
+                        </div>
+                    }
                 </div>
             </div>
         </div>

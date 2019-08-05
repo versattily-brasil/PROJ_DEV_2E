@@ -41,7 +41,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="cnpj"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Index(ParceiroNegocioListViewModel vm)
+        public async Task<IActionResult> Index([FromQuery] ParceiroNegocioListViewModel vm)
         {
             try
             {
@@ -56,7 +56,14 @@ namespace P2E.Main.UI.Web.Controllers
                         return View("Index", vm);
                     } 
                 }
-                return View("Index", vm);
+                if (vm.DataPage.Items.Any())
+                {
+                    return View("Index", vm);
+                }
+                else
+                {
+                    return View("Index", vm).WithInfo("", GenericMessages.ListNull());
+                }
             }
             catch (Exception ex)
             {
@@ -127,11 +134,16 @@ namespace P2E.Main.UI.Web.Controllers
                 }
                 else
                 {
+                    itemViewModel.Modulos = CarregarModulos().Result;
+                    itemViewModel.Servicos = CarregarServicos().Result;
+
                     return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Parceiro Negocio", parceiroNegocio.Messages));
                 }
             }
             catch (Exception ex)
             {
+                itemViewModel.Modulos = CarregarModulos().Result;
+                itemViewModel.Servicos = CarregarServicos().Result;
                 return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
             }
         }
@@ -172,5 +184,7 @@ namespace P2E.Main.UI.Web.Controllers
                 return lista;
             }
         }
+
+
     }
 }

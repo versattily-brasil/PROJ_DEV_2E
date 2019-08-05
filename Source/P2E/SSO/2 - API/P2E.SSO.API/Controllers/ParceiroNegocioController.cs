@@ -83,7 +83,6 @@ namespace P2E.SSO.API.Controllers
             {
                 if (parceiro.IsValid())
                 {
-                    _parceiroNegocioRepository.Delete(a => a.CD_PAR == parceiro.CD_PAR);
                     _parceiroNegocioModuloRepository.Delete(a => a.CD_PAR == parceiro.CD_PAR);
 
                     if (id > 0)

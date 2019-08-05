@@ -31,11 +31,9 @@ namespace P2E.SSO.Domain.Entities
 
         public bool IsValid()
         {
-            if (string.IsNullOrEmpty(TXT_DEC.Trim()))
+            if (string.IsNullOrEmpty(TXT_DEC))
                 AddNotification("TXT_DEC", $"Descrição é um campo obrigatório.");
-
             return Valid;
-                
         }
 
         public override string ToString() => $"{TXT_DEC.ToString()}";

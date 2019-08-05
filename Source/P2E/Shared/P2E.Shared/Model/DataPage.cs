@@ -12,12 +12,12 @@ namespace P2E.Shared.Model
         {
             Items = new List<T>();
             Pages = new List<Page>();
-            
-            //if (CurrentPage < 1)
-            //{
-            //    CurrentPage = 1;
-            //}
-            //else 
+
+            if (CurrentPage < 1)
+            {
+                CurrentPage = 1;
+            }
+            else
             if (CurrentPage > TotalPages)
             {
                 CurrentPage = TotalPages;
@@ -61,7 +61,7 @@ namespace P2E.Shared.Model
 
         public string GetLinkPage(string filters, int pg)
         {
-            return $"{UrlSearch}{filters}&currentPage={pg}&pagesize={PageSize}&orderby{OrderBy}&Descending{Descending}";
+            return $"{UrlSearch}{filters}&dataPage.currentPage={pg}&dataPage.pagesize={PageSize}&dataPage.orderby={OrderBy}&dataPage.Descending={Descending}";
         }
     }
 

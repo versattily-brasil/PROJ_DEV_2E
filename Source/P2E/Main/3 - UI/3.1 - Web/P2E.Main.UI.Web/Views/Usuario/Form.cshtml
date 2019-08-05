@@ -13,15 +13,10 @@
 
 <div class="row">
     <div class="col-xl-12">
-
         @if (!string.IsNullOrEmpty(type))
         {
-            <div class="alert alert-@type alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>@title</strong> @body
-            </div>
+            <partial name="_DisplayMessagePartial" />
         }
-
         <div class="panel">
             <div class="panel-hdr">
                 <h1>
@@ -32,25 +27,38 @@
                 <form id="form" asp-action="Save" method="post">
                     <div class="panel-content" style="border-bottom: 1px solid rgba(0, 0, 0, 0.07);">
 
-                        <input type="hidden" asp-for="CD_USR" />
-                        <div class="form-group">
-                            <label class="form-label" asp-for="TX_NOME">Nome</label>
-                            <input type="text" asp-for="TX_NOME" placeholder="Nome" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" asp-for="TX_LOGIN">Login</label>
-                            <input type="text" asp-for="TX_LOGIN" placeholder="Login" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" asp-for="TX_SENHA">Senha</label>
-                            <input type="text" asp-for="TX_SENHA" placeholder="Senha" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" asp-for="OP_STATUS">Status</label>
-                            @*<input type="text" asp-for="OP_STATUS" placeholder="Status" class="form-control">*@
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="hidden" asp-for="CD_USR" />
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_NOME">Nome</label>
+                                        <input type="text" asp-for="TX_NOME" placeholder="Nome" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_LOGIN">Login</label>
+                                        <input type="text" asp-for="TX_LOGIN" placeholder="Login" class="form-control">
+                                    </div>
+                                </div>
 
-                            <select asp-for="OP_STATUS" class="form-control" asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_SENHA">Senha</label>
+                                        <input type="text" asp-for="TX_SENHA" placeholder="Senha" class="form-control">
+                                    </div>
+                                </div>
 
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="OP_STATUS">Status</label>
+                                        <select asp-for="OP_STATUS" class="form-control" asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-content">
 
@@ -98,7 +106,7 @@
                                                             <td>@modulo.TX_DSC</td>
                                                             <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-md"></i></td>
                                                         </tr>
-                                                      }
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>
