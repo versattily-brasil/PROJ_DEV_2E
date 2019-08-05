@@ -26,7 +26,8 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <form asp-action="Save" method="post">
+                    <form id="form" asp-action="Save" method="post">
+
                         <div class="form-group mb-0">
                             <div class="row">
                                 <div class="col-8">
@@ -58,7 +59,7 @@
                                             <div class="col-5">
                                                 <div class="form-group">
                                                     <label class="form-label">Móodulo</label>
-                                                    <select asp-items="@(new SelectList(@Model.Modulos,"CD_MOD", "TX_DSC"))" class="form-control"  id="comboModulo">
+                                                    <select asp-items="@(new SelectList(@Model.Modulos,"CD_MOD", "TX_DSC"))" class="form-control" id="comboModulo">
                                                         <option disabled selected>--- Selecione um módulo ---</option>
                                                     </select>
                                                 </div>
@@ -67,7 +68,7 @@
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label class="form-label">Serviço</label>
-                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control"  id="comboServico">
+                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
                                                         <option disabled selected>--- Selecione um serviço ---</option>
                                                     </select>
                                                 </div>
@@ -95,24 +96,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @*@foreach (var item in Model.Modulos.Items)
-                                            {
-                                                <tr>
-                                                    <td>@item.CD_PAR</td>
-                                                    <td>@item.TXT_RZSOC</td>
-                                                    <td>@item.CNPJ</td>
-                                                    <td class="text-center">
-                                                        <i data-id="@item.CD_PAR"
-                                                           data-controller="ParceiroNegocio"
-                                                           data-action="Delete"
-                                                           data-body-message="Deseja excluir este registro?"
-                                                           style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+                                        @foreach (var modulo_servico in Model.ParceiroNegocioServicoModulo)
+                                        {
+                                        <tr data-cdmod="@modulo_servico.CD_MOD" data-cdsrv="@modulo_servico.CD_SRV">
+                                            <td>
+                                                @modulo_servico.CD_MOD
+                                            </td>
 
-                                                        </i>
-                                                    </td>
-                                                    <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_PAR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
-                                                </tr>
-                                            }*@
+                                            <td>
+                                                @modulo_servico.CD_SRV
+                                            </td>
+                                        </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -122,7 +117,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <br />
-                                    <button type="submit" class="btn btn-primary">Salvar</button>
+                                    <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
                                 </div>
                             </div>
                         </div>
@@ -134,4 +129,5 @@
 </div>
 @section Scripts {
     <script src="~/js/ParceiroNegocio/TabelaParceiroNegocioServicoModulo.js"></script>
-    }
+    <script src="~/js/ParceiroNegocio/ParceiroNegocioServicoModulo.js"></script>
+}

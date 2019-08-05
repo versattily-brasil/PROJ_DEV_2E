@@ -16,6 +16,9 @@ namespace P2E.SSO.Domain.Entities
         public long CD_PAR { get; set; }
         public long CD_SRV { get; set; }
         public long CD_MOD { get; set; }
+
+        public Modulo Modulo { get; set; }
+        public Servico Servico { get; set; }
     }
 }
 

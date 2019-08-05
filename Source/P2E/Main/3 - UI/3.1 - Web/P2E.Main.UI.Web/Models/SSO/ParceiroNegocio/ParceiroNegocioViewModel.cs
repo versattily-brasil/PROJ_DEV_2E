@@ -13,5 +13,8 @@ namespace P2E.Main.UI.Web.Models.SSO.ParceiroNegocio
 
         public List<P2E.SSO.Domain.Entities.Modulo> Modulos { get; set; }
         public List<P2E.SSO.Domain.Entities.Servico> Servicos { get; set; }
+
+        public List<ParceiroNegocioServicoModulo> ParceiroNegocioServicoModulo { get; set; } = new List<ParceiroNegocioServicoModulo>();
+
     }
 }
