@@ -85,42 +85,39 @@
                             </div>
                         </div>
 
-                        <div class="form-group mb-0">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover m-0" id="tabela_servico_modulo">
-                                    <thead class="thead-themed">
-                                        <tr>
-                                            <th>Módulo</th>
-                                            <th>Serviço</th>
-                                            <th width="20"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var modulo_servico in Model.ParceiroNegocioServicoModulo)
-                                        {
-                                        <tr data-cdmod="@modulo_servico.CD_MOD" data-cdsrv="@modulo_servico.CD_SRV">
-                                            <td>
-                                                @modulo_servico.CD_MOD
-                                            </td>
+                            <div class="form-group mb-0">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover m-0" id="tabela_servico_modulo">
+                                        <thead class="thead-themed">
+                                            <tr>
+                                                <th>Módulo</th>
+                                                <th>Serviço</th>
+                                                <th width="20"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var modulo_servico in Model.ParceiroNegocioServicoModulo)
+                                            {
+                                            <tr data-cdmod="@modulo_servico.CD_MOD" data-cdsrv="@modulo_servico.CD_SRV">
+                                                <td>@modulo_servico.Modulo.TX_DSC</td>
+                                                <td>@modulo_servico.Servico.TXT_DEC</td>                                                
+                                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger btn-delete-srv-mod"></i></td>
+                                            </tr>
 
-                                            <td>
-                                                @modulo_servico.CD_SRV
-                                            </td>
-                                        </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-0">
-                            <div class="row">
-                                <div class="col-12">
-                                    <br />
-                                    <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="form-group mb-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <br />
+                                        <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
+                                    </div>
+                                </div>
+                            </div>
                     </form>
                 </div>
             </div>

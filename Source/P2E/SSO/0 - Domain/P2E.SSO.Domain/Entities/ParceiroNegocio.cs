@@ -55,6 +55,9 @@ namespace P2E.SSO.Domain.Entities
 
         public List<ParceiroNegocioServicoModulo> ParceiroNegocioServicoModulo { get; set; } = new List<ParceiroNegocioServicoModulo>();
 
+        public List<Modulo> Modulo { get; set; } = new List<Modulo>();
+        public List<Servico> Servico { get; set; } = new List<Servico>();
+
         public static bool IsCnpj(string cnpj)
         {
             int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };

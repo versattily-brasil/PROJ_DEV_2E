@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using P2E.Main.UI.Web.Models.SSO.Modulo;
+using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.SSO.Domain.Entities;
+using System.Collections.Generic;
+
 namespace P2E.Main.UI.Web.Models.SSO.ParceiroNegocio
 {
     public class ParceiroNegocioViewModel
@@ -16,5 +16,7 @@ namespace P2E.Main.UI.Web.Models.SSO.ParceiroNegocio
 
         public List<ParceiroNegocioServicoModulo> ParceiroNegocioServicoModulo { get; set; } = new List<ParceiroNegocioServicoModulo>();
 
+        public List<ModuloViewModel> Modulo { get; set; } = new List<ModuloViewModel>();
+        public List<ServicoViewModel> Servico { get; set; } = new List<ServicoViewModel>();
     }
 }

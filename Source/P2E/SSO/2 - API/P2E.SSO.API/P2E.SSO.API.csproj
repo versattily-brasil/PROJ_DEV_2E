@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\1 - Infra\1.1 - Data\P2E.SSO.Infra.Data\P2E.SSO.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AutoMapper\Profile\" />
+  </ItemGroup>
+
 </Project>

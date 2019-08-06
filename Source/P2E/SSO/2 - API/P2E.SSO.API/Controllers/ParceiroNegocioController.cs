@@ -15,11 +15,18 @@ namespace P2E.SSO.API.Controllers
     {
         private readonly IParceiroNegocioRepository _parceiroNegocioRepository;
         private readonly IParceiroNegocioModuloRepository _parceiroNegocioModuloRepository;
-        
-        public ParceiroNegocioController(IParceiroNegocioRepository parceiroNegocioRepository, IParceiroNegocioModuloRepository parceiroNegocioModuloRepository)
+        private readonly IServicoRepository _servicoRepository;
+        private readonly IModuloRepository _moduloRepository;
+
+        public ParceiroNegocioController(IParceiroNegocioRepository parceiroNegocioRepository, 
+                                         IParceiroNegocioModuloRepository parceiroNegocioModuloRepository,
+                                         IModuloRepository moduloRepository,
+                                         IServicoRepository servicoRepository)
         {
             _parceiroNegocioRepository = parceiroNegocioRepository;
             _parceiroNegocioModuloRepository = parceiroNegocioModuloRepository;
+            _servicoRepository = servicoRepository;
+            _moduloRepository = moduloRepository;
         }
 
         // GET: api/parceironegocio
@@ -43,6 +50,18 @@ namespace P2E.SSO.API.Controllers
                 parceiro = _parceiroNegocioRepository.Find(p => p.CD_PAR == id);
                 parceiro.ParceiroNegocioServicoModulo = _parceiroNegocioModuloRepository.FindAll(p => p.CD_PAR == id).ToList();
 
+                parceiro.Servico = _servicoRepository.FindAll().ToList();
+                parceiro.Modulo = _moduloRepository.FindAll().ToList();
+
+                int i = 0;
+                foreach (var pns in parceiro.ParceiroNegocioServicoModulo)
+                {
+                    parceiro.ParceiroNegocioServicoModulo[i].Modulo = parceiro.Modulo.Find(p => p.CD_MOD == pns.CD_MOD);
+                    parceiro.ParceiroNegocioServicoModulo[i].Servico = parceiro.Servico.Find(p => p.CD_SRV == pns.CD_SRV);
+                    i++;
+                }                    
+
+                //parceiro
             }
 
             return parceiro;
