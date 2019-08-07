@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidator;
@@ -117,12 +119,11 @@ namespace P2E.SSO.API.Controllers
                         _parceiroNegocioModuloRepository.Insert(parceiroServico);
                     }
 
-
-                    return new { message = "OK" };
+                    return Ok(parceiro);
                 }
                 else
                 {
-                    return new { message = parceiro.Messages };
+                    return StatusCode((int)HttpStatusCode.BadRequest, parceiro.Messages);
                 }
             }
             catch (Exception ex)

@@ -121,6 +121,7 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(ParceiroNegocioViewModel itemViewModel)
         {
+            HttpResponseMessage result = new HttpResponseMessage();
             try
             {
                 var parceiroNegocio = _mapper.Map<ParceiroNegocio>(itemViewModel);
@@ -128,7 +129,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        var result = await client.PutAsJsonAsync($"{_urlParceiro}/{parceiroNegocio.CD_PAR}", parceiroNegocio);
+                        result = await client.PutAsJsonAsync($"{_urlParceiro}/{parceiroNegocio.CD_PAR}", parceiroNegocio);
                         result.EnsureSuccessStatusCode();
 
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
@@ -146,7 +147,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 itemViewModel.Modulos = CarregarModulos().Result;
                 itemViewModel.Servicos = CarregarServicos().Result;
-                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
+                return View("Form", itemViewModel).WithDanger("Erro", result.RequestMessage.Content.ReadAsStringAsync().Result);
             }
         }
 
