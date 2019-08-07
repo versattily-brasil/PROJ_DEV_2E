@@ -56,3 +56,24 @@
   ],
   "GlobalConfiguration": {}
 }
+
+
+//{
+//  "ReRoutes": [
+//    // SSO  
+//  {
+//	  "DownstreamPathTemplate": "/api/{version}/{everything}",
+//      "DownstreamScheme": "http",
+//      "DownstreamHostAndPorts": [
+//            {
+//                "Host": "sso.2e.versattily.com",
+//                "Port": 80
+//            }
+//        ],
+//    "UpstreamPathTemplate": "/sso/{version}/{everything}",
+//    "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+//    "UpstreamHost": "localhost:7000"
+//}
+//  ],
+//  "GlobalConfiguration": {}
+//}

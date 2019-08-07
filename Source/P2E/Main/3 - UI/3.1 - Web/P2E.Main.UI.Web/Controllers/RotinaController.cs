@@ -130,7 +130,8 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
+                        var result = await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
+                        result.EnsureSuccessStatusCode();
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Rotina"));
                     }
                 }

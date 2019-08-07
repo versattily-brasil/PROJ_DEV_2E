@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidator;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
@@ -76,7 +77,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _parceiroNegocioRepository.ValidarDuplicidades(item))
                 {
                     _parceiroNegocioRepository.Insert(item);
                     return new { message = "OK" };
@@ -100,7 +101,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                if (parceiro.IsValid())
+                if (parceiro.IsValid() && _parceiroNegocioRepository.ValidarDuplicidades(parceiro))
                 {
                     _parceiroNegocioModuloRepository.Delete(a => a.CD_PAR == parceiro.CD_PAR);
 
@@ -121,7 +122,7 @@ namespace P2E.SSO.API.Controllers
                 }
                 else
                 {
-                    return new { message = parceiro.Notifications.FirstOrDefault().Message };
+                    return new { message = parceiro.Messages };
                 }
             }
             catch (Exception ex)

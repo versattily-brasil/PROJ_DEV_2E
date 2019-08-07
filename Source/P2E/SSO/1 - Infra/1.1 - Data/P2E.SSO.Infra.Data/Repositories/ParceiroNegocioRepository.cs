@@ -32,7 +32,6 @@ namespace P2E.SSO.Infra.Data.Repositories
         /// <returns></returns>
         public DataPage<ParceiroNegocio> GetByPage(DataPage<ParceiroNegocio> dataPage, string razaoSocial, string cnpj)
         {
-            
             var sSQL = new StringBuilder();
             dataPage.OrderBy = dataPage.OrderBy ?? "txt_rzsoc";
             var sort = new Sort() { PropertyName = dataPage.OrderBy, Ascending = !dataPage.Descending  };
@@ -72,6 +71,35 @@ namespace P2E.SSO.Infra.Data.Repositories
         {
             return _context.Connection.GetList<ParceiroNegocio>(predicateGroup).Count();
         }
-        
+
+        public bool ValidarDuplicidades(ParceiroNegocio parceiroNegocio)
+        {
+            if (parceiroNegocio.CD_PAR > 0)
+            {
+                if (FindAll(p => p.TXT_RZSOC == parceiroNegocio.TXT_RZSOC && p.CD_PAR != parceiroNegocio.CD_PAR).Any())
+                {
+                    parceiroNegocio.AddNotification("TXT_RZSOC", $"A Razão Social {parceiroNegocio.TXT_RZSOC} já está cadastrada.");
+                }
+
+                if (FindAll(p => p.CNPJ == parceiroNegocio.CNPJ && parceiroNegocio.CD_PAR != p.CD_PAR).Any())
+                {
+                    parceiroNegocio.AddNotification("CNPJ", $"O CNPJ {parceiroNegocio.TXT_RZSOC} já está cadastrado.");
+                }
+            }
+            else
+            {
+                if (FindAll(p => p.TXT_RZSOC == parceiroNegocio.TXT_RZSOC).Any())
+                {
+                    parceiroNegocio.AddNotification("TXT_RZSOC", $"A Razão Social {parceiroNegocio.TXT_RZSOC} já está cadastrada.");
+                }
+
+                if (FindAll(p => p.CNPJ == parceiroNegocio.CNPJ).Any())
+                {
+                    parceiroNegocio.AddNotification("CNPJ", $"O CNPJ {parceiroNegocio.TXT_RZSOC} já está cadastrado.");
+                }
+            }
+
+            return parceiroNegocio.IsValid();
+        }
     }
 }
