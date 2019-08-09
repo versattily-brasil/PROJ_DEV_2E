@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -121,7 +122,8 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(ParceiroNegocioViewModel itemViewModel)
         {
-            HttpResponseMessage result = new HttpResponseMessage();
+            var result = new HttpResponseMessage();
+            string responseBody = string.Empty;
             try
             {
                 var parceiroNegocio = _mapper.Map<ParceiroNegocio>(itemViewModel);
@@ -130,8 +132,8 @@ namespace P2E.Main.UI.Web.Controllers
                     using (var client = new HttpClient())
                     {
                         result = await client.PutAsJsonAsync($"{_urlParceiro}/{parceiroNegocio.CD_PAR}", parceiroNegocio);
+                        responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
-
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Parceiro Negócio"));
                     }
                 }
@@ -145,9 +147,10 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
+                
                 itemViewModel.Modulos = CarregarModulos().Result;
                 itemViewModel.Servicos = CarregarServicos().Result;
-                return View("Form", itemViewModel).WithDanger("Erro", result.ReasonPhrase);
+                return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
 
@@ -161,7 +164,7 @@ namespace P2E.Main.UI.Web.Controllers
             using (var client = new HttpClient())
             {
                 await client.DeleteAsync($"{_urlParceiro}/{Id}");
-                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Parceiro Negócio"));
+                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Parceiro Negócio"));
             }
         }
         #endregion

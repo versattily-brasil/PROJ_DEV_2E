@@ -83,7 +83,7 @@ namespace P2E.SSO.Infra.Data.Repositories
 
                 if (FindAll(p => p.CNPJ == parceiroNegocio.CNPJ &&  p.CD_PAR != parceiroNegocio.CD_PAR).Any())
                 {
-                    parceiroNegocio.AddNotification("CNPJ", $"O CNPJ {parceiroNegocio.TXT_RZSOC} já está cadastrado.");
+                    parceiroNegocio.AddNotification("CNPJ", $"O CNPJ {parceiroNegocio.CNPJ} já está cadastrado.");
                 }
             }
             else
@@ -95,7 +95,7 @@ namespace P2E.SSO.Infra.Data.Repositories
 
                 if (FindAll(p => p.CNPJ == parceiroNegocio.CNPJ).Any())
                 {
-                    parceiroNegocio.AddNotification("CNPJ", $"O CNPJ {parceiroNegocio.TXT_RZSOC} já está cadastrado.");
+                    parceiroNegocio.AddNotification("CNPJ", $"O CNPJ {parceiroNegocio.CNPJ} já está cadastrado.");
                 }
             }
 

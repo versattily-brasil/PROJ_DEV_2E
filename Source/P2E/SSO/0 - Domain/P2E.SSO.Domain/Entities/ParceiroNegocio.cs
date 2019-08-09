@@ -20,8 +20,8 @@ namespace P2E.SSO.Domain.Entities
         
         public ParceiroNegocio(string tXT_RZSOC, string cNPJ)
         {
-            TXT_RZSOC = tXT_RZSOC;
-            CNPJ = cNPJ;
+            TXT_RZSOC = tXT_RZSOC?.Trim();
+            CNPJ = cNPJ?.Trim();
 
             IsValid();
         }
