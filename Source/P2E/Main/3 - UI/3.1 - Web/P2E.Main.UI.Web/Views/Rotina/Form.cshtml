@@ -1,8 +1,8 @@
-﻿@using P2E.Shared.Enum;
-@model P2E.Main.UI.Web.Models.SSO.Rotina.RotinaViewModel
+﻿@model P2E.Main.UI.Web.Models.SSO.Rotina.RotinaViewModel
+@using P2E.Shared.Enum;
 @{
-    ViewData["Title"] = "Cadastro de Rotina";
-    ViewData["PageName"] = "rotina_cadastro";
+    ViewData["Title"] = "Nova Rotina";
+    ViewData["PageName"] = "rotina";
     ViewData["Category1"] = "Rotina";
 
     //Alert info
@@ -22,12 +22,12 @@
         <div class="panel">
             <div class="panel-hdr">
                 <h1>
-                    Cadastro de Rotina
+                    Rotina
                 </h1>
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <form asp-action="Save" method="post">
+                    <form id="form" asp-action="Save" method="post">
 
                         <div class="form-group mb-0">
                             <div class="row">
@@ -58,9 +58,6 @@
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                    </form>
                 </div>
                 <hr />
                 <div class="form-group mb-0">

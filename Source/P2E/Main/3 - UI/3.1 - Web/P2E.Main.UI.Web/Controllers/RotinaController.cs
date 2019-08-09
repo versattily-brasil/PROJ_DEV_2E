@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
@@ -87,7 +88,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Edit(long id)
-        {
+        {           
             try
             {
                 using (var client = new HttpClient())
@@ -104,7 +105,6 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
