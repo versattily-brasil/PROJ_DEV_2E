@@ -142,6 +142,14 @@ namespace P2E.Main.UI.Web.Controllers
                     itemViewModel.Modulos = CarregarModulos().Result;
                     itemViewModel.Servicos = CarregarServicos().Result;
 
+                    int i = 0;
+                    foreach (var pns in itemViewModel.ParceiroNegocioServicoModulo)
+                    {
+                        itemViewModel.ParceiroNegocioServicoModulo[i].Modulo = itemViewModel.Modulos.Find(p => p.CD_MOD == pns.CD_MOD);
+                        itemViewModel.ParceiroNegocioServicoModulo[i].Servico = itemViewModel.Servicos.Find(p => p.CD_SRV == pns.CD_SRV);
+                        i++;
+                    }
+
                     return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Parceiro Negocio", parceiroNegocio.Messages));
                 }
             }
@@ -150,6 +158,15 @@ namespace P2E.Main.UI.Web.Controllers
                 
                 itemViewModel.Modulos = CarregarModulos().Result;
                 itemViewModel.Servicos = CarregarServicos().Result;
+
+                int i = 0;
+                foreach (var pns in itemViewModel.ParceiroNegocioServicoModulo)
+                {
+                    itemViewModel.ParceiroNegocioServicoModulo[i].Modulo = itemViewModel.Modulos.Find(p => p.CD_MOD == pns.CD_MOD);
+                    itemViewModel.ParceiroNegocioServicoModulo[i].Servico = itemViewModel.Servicos.Find(p => p.CD_SRV == pns.CD_SRV);
+                    i++;
+                }
+
                 return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
