@@ -159,7 +159,7 @@ namespace P2E.Main.UI.Web.Controllers
             using (var client = new HttpClient())
             {
                 await client.DeleteAsync($"{_urlRotina}/{Id}");
-                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Rotina"));
+                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Rotina"));
             }
         }
         #endregion        

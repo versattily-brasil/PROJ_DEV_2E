@@ -29,11 +29,10 @@ var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
                 cols += '<td>' + modulo.text + '</td>';
                 cols += '<td>' + servico.text + '</td>';
                 cols += '<td class="text-center">';
+                cols += '<a data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
                 cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>';
+                cols += '</a>';
                 cols += '</td>';
-                //cols += '<a class="btn btn-success btn-m-l btn-icon bt-excluir" data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
-                //cols += '<a data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
-                //cols += '<i class="fal fa-minus-circle"></i>';
                 row += cols;
                 row += "</tr>";
                 $("#tabela_servico_modulo").children("tbody").append(row);
