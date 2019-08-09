@@ -1,6 +1,7 @@
 ﻿using MicroOrm.Dapper.Repositories.Attributes;
 using P2E.Shared.Enum;
 using P2E.Shared.Message;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,6 +27,10 @@ namespace P2E.SSO.Domain.Entities
         public string TX_NOME { get; set; }
         public string TX_DSC { get; set; }
         public eTipoRotina OP_TIPO { get; set; }
+
+        public List<RotinaGrupoOperacao> RotinaGrupoOperacao { get; set; } = new List<RotinaGrupoOperacao>();
+        public List<Grupo> Grupo { get; set; } = new List<Grupo>();
+        public List<Operacao> Operacao { get; set; } = new List<Operacao>();
 
         public bool IsValid()
         {

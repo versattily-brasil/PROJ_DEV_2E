@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
@@ -86,7 +87,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Edit(long id)
-        {
+        {           
             try
             {
                 using (var client = new HttpClient())
@@ -95,14 +96,17 @@ namespace P2E.Main.UI.Web.Controllers
                     result.EnsureSuccessStatusCode();
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
                     var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
+                    rotinaViewModel.Grupos = CarregarGrupos().Result;
+                    rotinaViewModel.Operacoes = CarregarOperacoes().Result;
+
                     return View("Form", rotinaViewModel);
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
+
         }
 
         /// <summary>
@@ -112,7 +116,10 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View("Form");
+            var vm = new RotinaViewModel();
+            vm.Grupos = CarregarGrupos().Result;
+            vm.Operacoes = CarregarOperacoes().Result;
+            return View("Form", vm);            
         }
 
         /// <summary>
@@ -123,6 +130,7 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(RotinaViewModel itemViewModel)
         {
+            HttpResponseMessage result = new HttpResponseMessage();
             try
             {
                 var rotina = _mapper.Map<Rotina>(itemViewModel);
@@ -130,19 +138,24 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        var result = await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
+                        result = await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
                         result.EnsureSuccessStatusCode();
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Rotina"));
                     }
                 }
                 else
                 {
+                    itemViewModel.Grupos = CarregarGrupos().Result;
+                    itemViewModel.Operacoes = CarregarOperacoes().Result;
+
                     return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Rotina", rotina.Messages));
                 }
             }
             catch (Exception ex)
             {
-                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
+                itemViewModel.Grupos = CarregarGrupos().Result;
+                itemViewModel.Operacoes = CarregarOperacoes().Result;
+                return View("Form", itemViewModel).WithDanger("Erro", result.RequestMessage.Content.ReadAsStringAsync().Result);
             }
         }
 
@@ -153,12 +166,37 @@ namespace P2E.Main.UI.Web.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Delete(long Id)
         {
+            HttpResponseMessage result = new HttpResponseMessage();
             using (var client = new HttpClient())
             {
-                await client.DeleteAsync($"{_urlRotina}/{Id}");
+                result = await client.DeleteAsync($"{_urlRotina}/{Id}");
+                result.EnsureSuccessStatusCode();
+
                 return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Rotina"));
             }
         }
         #endregion        
+
+        private async Task<List<Grupo>> CarregarGrupos()
+        {
+            string urlGrupo = this.appSettings.ApiBaseURL + $"sso/v1/grupo/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlGrupo);
+                var lista = await result.Content.ReadAsAsync<List<Grupo>>();
+                return lista;
+            }
+        }
+
+        private async Task<List<Operacao>> CarregarOperacoes()
+        {
+            string urlOperacao = this.appSettings.ApiBaseURL + $"sso/v1/operacao/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlOperacao);
+                var lista = await result.Content.ReadAsAsync<List<Operacao>>();
+                return lista;
+            }
+        }
     }
 }

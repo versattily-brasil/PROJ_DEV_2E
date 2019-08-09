@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
@@ -13,6 +14,15 @@ namespace P2E.SSO.API.Controllers
         public OperacaoController(IOperacaoRepository operacaoRepository)
         {
             _operacaoRepository = operacaoRepository;
+        }
+
+        // GET: api/operacao
+        [HttpGet]
+        [Route("api/v1/operacao/todos")]
+        public IEnumerable<Operacao> Get()
+        {
+            var result = _operacaoRepository.FindAll();
+            return result;
         }
 
         // GET: api/operacao
