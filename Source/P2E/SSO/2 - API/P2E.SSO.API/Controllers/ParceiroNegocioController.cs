@@ -21,7 +21,7 @@ namespace P2E.SSO.API.Controllers
         private readonly IServicoRepository _servicoRepository;
         private readonly IModuloRepository _moduloRepository;
 
-        public ParceiroNegocioController(IParceiroNegocioRepository parceiroNegocioRepository, 
+        public ParceiroNegocioController(IParceiroNegocioRepository parceiroNegocioRepository,
                                          IParceiroNegocioModuloRepository parceiroNegocioModuloRepository,
                                          IModuloRepository moduloRepository,
                                          IServicoRepository servicoRepository)
@@ -62,7 +62,7 @@ namespace P2E.SSO.API.Controllers
                     parceiro.ParceiroNegocioServicoModulo[i].Modulo = parceiro.Modulo.Find(p => p.CD_MOD == pns.CD_MOD);
                     parceiro.ParceiroNegocioServicoModulo[i].Servico = parceiro.Servico.Find(p => p.CD_SRV == pns.CD_SRV);
                     i++;
-                }                    
+                }
 
                 //parceiro
             }

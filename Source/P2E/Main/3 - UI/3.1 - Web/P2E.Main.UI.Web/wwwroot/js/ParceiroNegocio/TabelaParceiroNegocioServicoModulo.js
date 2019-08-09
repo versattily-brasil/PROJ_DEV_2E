@@ -3,9 +3,7 @@ var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
     }
     TabelaParceiroNegocioServicoModulo.prototype.init = function () {
         $(".bt-excluir").on("click", function () {
-            $(this).removeData("fa-minus-circle").removeClass("text-danger");
-            var tr = $(this).closest("tr");
-            $("#tabela_servico_modulo tbody").append(tr);
+            $(this).closest("tr").remove();
         });
         $(".btn-add-parceiro-servico-usuario").on("click", function () {
             var comboModulo = document.getElementById("comboModulo");
@@ -13,7 +11,7 @@ var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
             if (comboModulo.selectedIndex == 0 || comboServico.selectedIndex == 0) {
                 return false;
             }
-            var tabela = document.getElementById("tabela_servico_modulo");
+            //let tabela: HTMLTableElement = <HTMLTableElement>document.getElementById("tabela_servico_modulo");
             var modulo = comboModulo.selectedOptions.item(0);
             var servico = comboServico.selectedOptions.item(0);
             var registroEncontrato = false;
@@ -31,8 +29,8 @@ var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
                 cols += '<td>' + modulo.text + '</td>';
                 cols += '<td>' + servico.text + '</td>';
                 cols += '<td>';
-                cols += '<a class="btn btn-success btn-m-l btn-icon bt-excluir" data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
-                cols += '<i class="fal fa-minus-circle"></i>';
+                cols += '<a data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
+                cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>';
                 cols += '</td>';
                 row += cols;
                 row += "</tr>";
@@ -40,6 +38,25 @@ var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
                 comboModulo.selectedIndex = 0;
                 comboServico.selectedIndex = 0;
             }
+        });
+    };
+    TabelaParceiroNegocioServicoModulo.sortTable = function (name) {
+        var seletor = '#' + name + " tbody  tr";
+        var rows = $(seletor).get();
+        console.log(rows);
+        rows.sort(function (a, b) {
+            var A = $(a).children('td').eq(0).text().toUpperCase();
+            var B = $(b).children('td').eq(0).text().toUpperCase();
+            if (A < B) {
+                return -1;
+            }
+            if (A > B) {
+                return 1;
+            }
+            return 0;
+        });
+        $.each(rows, function (index, row) {
+            $('#' + name).children('tbody').append(row);
         });
     };
     return TabelaParceiroNegocioServicoModulo;

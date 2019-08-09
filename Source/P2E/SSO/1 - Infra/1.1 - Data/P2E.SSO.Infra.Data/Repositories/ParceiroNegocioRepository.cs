@@ -81,7 +81,7 @@ namespace P2E.SSO.Infra.Data.Repositories
                     parceiroNegocio.AddNotification("TXT_RZSOC", $"A Razão Social {parceiroNegocio.TXT_RZSOC} já está cadastrada.");
                 }
 
-                if (FindAll(p => p.CNPJ == parceiroNegocio.CNPJ && parceiroNegocio.CD_PAR != p.CD_PAR).Any())
+                if (FindAll(p => p.CNPJ == parceiroNegocio.CNPJ &&  p.CD_PAR != parceiroNegocio.CD_PAR).Any())
                 {
                     parceiroNegocio.AddNotification("CNPJ", $"O CNPJ {parceiroNegocio.TXT_RZSOC} já está cadastrado.");
                 }
