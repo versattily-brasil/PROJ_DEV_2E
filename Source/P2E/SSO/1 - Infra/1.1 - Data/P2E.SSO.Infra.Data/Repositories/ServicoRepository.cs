@@ -67,21 +67,24 @@ namespace P2E.SSO.Infra.Data.Repositories
             return _ssoContext.Connection.GetList<Servico>(predicateGroup).Count();
         }
 
+        public bool ValidarDuplicidades(Servico servico)
+        {
+            if (servico.CD_SRV > 0)
+            {
+                if (FindAll(p => p.TXT_DEC == servico.TXT_DEC && p.CD_SRV != servico.CD_SRV).Any())
+                {
+                    servico.AddNotification("TXT_DEC", $"A Descrição do Serviço {servico.TXT_DEC} já está cadastrado.");
+                }
+            }
+            else
+            {
+                if (FindAll(p => p.TXT_DEC == servico.TXT_DEC).Any())
+                {
+                    servico.AddNotification("TXT_DEC", $"A Descrição do Serviço {servico.TXT_DEC} já está cadastrado.");
+                }
+            }
 
-
-        //public List<Servico> BuscarPorDescricao(string descricao)
-        //{
-        //    var resultado = new List<Servico>();
-
-        //    var parametros = new DynamicParameters();
-
-        //    parametros.Add("TXT_DEC", descricao, DbType.String, ParameterDirection.Input);
-
-        //    var query = @"SELECT * FROM TB_SRV WHERE TXT_DEC = @TXT_DEC";
-
-        //    resultado = _ssoContext.Connection.Query<Servico>(query, parametros).ToList();
-
-        //    return resultado;
-        //}
+            return servico.IsValid();
+        }
     }
 }

@@ -123,6 +123,8 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(RotinaViewModel itemViewModel)
         {
+            var result = new HttpResponseMessage();
+            string responseBody = string.Empty;
             try
             {
                 var rotina = _mapper.Map<Rotina>(itemViewModel);
@@ -130,7 +132,8 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        var result = await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
+                        result = await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
+                        responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Rotina"));
                     }
@@ -142,7 +145,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
+                return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
 

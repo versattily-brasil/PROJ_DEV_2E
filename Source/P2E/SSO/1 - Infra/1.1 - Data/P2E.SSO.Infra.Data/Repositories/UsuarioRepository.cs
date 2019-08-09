@@ -57,5 +57,25 @@ namespace P2E.SSO.Infra.Data.Repositories
         {
             return _ssoContext.Connection.GetList<Usuario>(predicateGroup).Count();
         }
+
+        public bool ValidarDuplicidades(Usuario usuario)
+        {
+            if (usuario.CD_USR > 0)
+            {
+                if (FindAll(p => p.TX_LOGIN == usuario.TX_LOGIN && p.CD_USR != usuario.CD_USR).Any())
+                {
+                    usuario.AddNotification("TX_LOGIN", $"O Login de Usuário {usuario.TX_LOGIN} já está cadastrado.");
+                }
+            }
+            else
+            {
+                if (FindAll(p => p.TX_LOGIN == usuario.TX_LOGIN).Any())
+                {
+                    usuario.AddNotification("TX_LOGIN", $"O Login de Usuário {usuario.TX_LOGIN} já está cadastrado.");
+                }
+            }
+
+            return usuario.IsValid();
+        }
     }
 }

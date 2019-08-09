@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -55,7 +56,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _servicoRepository.ValidarDuplicidades(item))
                 {
                     _servicoRepository.Insert(item);
                     return new { message = "OK" };
@@ -74,26 +75,28 @@ namespace P2E.SSO.API.Controllers
 
         // PUT: api/Servico/5
         [HttpPut("api/v1/servico/{id}")]
-        public object Put(int id, [FromBody] Servico item)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Put(int id, [FromBody] Servico item)
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _servicoRepository.ValidarDuplicidades(item))
                 {
                     if (id > 0)
                         _servicoRepository.Update(item);
                     else
                         _servicoRepository.Insert(item);
-                    return new { message = "OK" };
+
+                    return Ok(item);
                 }
                 else
                 {
-                    return new { message = item.Notifications.FirstOrDefault().Message };
+                    return BadRequest(item.Messages);
                 }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
             }
         }
 

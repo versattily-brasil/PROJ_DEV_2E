@@ -68,5 +68,25 @@ namespace P2E.SSO.Infra.Data.Repositories
         {
             return _context.Connection.GetList<Rotina>(predicateGroup).Count();
         }
+
+        public bool ValidarDuplicidades(Rotina rotina)
+        {
+            if (rotina.CD_ROT > 0)
+            {
+                if (FindAll(p => p.TX_NOME == rotina.TX_NOME && p.CD_ROT != rotina.CD_ROT).Any())
+                {
+                    rotina.AddNotification("TX_NOME", $"O Nome da Rotina {rotina.TX_NOME} já está cadastrada.");
+                }
+            }
+            else
+            {
+                if (FindAll(p => p.TX_NOME == rotina.TX_NOME).Any())
+                {
+                    rotina.AddNotification("TX_NOME", $"O Nome da Rotina {rotina.TX_NOME} já está cadastrada.");
+                }
+            }
+
+            return rotina.IsValid();
+        }
     }
 }

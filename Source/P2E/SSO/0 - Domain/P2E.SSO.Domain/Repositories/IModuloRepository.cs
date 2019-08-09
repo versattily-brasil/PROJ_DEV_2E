@@ -10,5 +10,7 @@ namespace P2E.SSO.Domain.Repositories
         DataPage<Modulo> GetByPage(DataPage<Modulo> page, string tx_dsc);
 
         int GetTotalRows(PredicateGroup predicateGroup);
+
+        bool ValidarDuplicidades(Modulo modulo);
     }
 }

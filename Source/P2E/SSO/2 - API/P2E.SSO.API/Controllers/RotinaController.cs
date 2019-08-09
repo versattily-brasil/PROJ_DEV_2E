@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
@@ -39,7 +41,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _rotinaRepository.ValidarDuplicidades(item))
                 {
                     _rotinaRepository.Insert(item);
                     return new { message = "OK" };
@@ -59,26 +61,28 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/rotina/5
         [HttpPut]
         [Route("api/v1/rotina/{id}")]
-        public object Put(int id, [FromBody] Rotina item)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Put(int id, [FromBody] Rotina item)
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _rotinaRepository.ValidarDuplicidades(item))
                 {
                     if (id > 0)
                         _rotinaRepository.Update(item);
                     else
                         _rotinaRepository.Insert(item);
-                    return new { message = "OK" };
+
+                    return Ok(item);
                 }
                 else
                 {
-                    return new { message = item.Notifications.FirstOrDefault().Message };
+                    return BadRequest(item.Messages);
                 }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
             }
         }
 

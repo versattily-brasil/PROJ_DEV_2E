@@ -125,6 +125,8 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(ServicoViewModel itemViewModel)
         {
+            var result = new HttpResponseMessage();
+            string responseBody = string.Empty;
             try
             {
                 var modulo = _mapper.Map<Servico>(itemViewModel);
@@ -132,8 +134,9 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        await client.PutAsJsonAsync($"{_urlServico}/{modulo.CD_SRV}", modulo);
-                        _flash.Flash("success", GenericMessages.SucessSave("Serviço"));
+                        result = await client.PutAsJsonAsync($"{_urlServico}/{modulo.CD_SRV}", modulo);
+                        responseBody = await result.Content.ReadAsStringAsync();
+                        result.EnsureSuccessStatusCode();
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Serviço"));
                     }
                 }
@@ -144,7 +147,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
+                return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
 

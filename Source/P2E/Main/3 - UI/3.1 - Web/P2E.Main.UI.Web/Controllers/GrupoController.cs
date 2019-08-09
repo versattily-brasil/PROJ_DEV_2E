@@ -122,6 +122,9 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(GrupoViewModel itemViewModel)
         {
+            var result = new HttpResponseMessage();
+            string responseBody = string.Empty;
+
             try
             {
                 var grupo = _mapper.Map<Grupo>(itemViewModel);
@@ -129,8 +132,9 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        await client.PutAsJsonAsync($"{_urlGrupo}/{grupo.CD_GRP}", grupo);
-                        _flash.Flash("success", GenericMessages.SucessSave("Grupo"));
+                        result = await client.PutAsJsonAsync($"{_urlGrupo}/{grupo.CD_GRP}", grupo);
+                        responseBody = await result.Content.ReadAsStringAsync();
+                        result.EnsureSuccessStatusCode();
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Grupo"));
                     }
                 }
@@ -141,7 +145,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
+                return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
 

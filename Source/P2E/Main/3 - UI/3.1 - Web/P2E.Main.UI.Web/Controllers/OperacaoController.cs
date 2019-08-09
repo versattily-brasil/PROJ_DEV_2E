@@ -120,6 +120,8 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(OperacaoViewModel itemViewModel)
         {
+            var result = new HttpResponseMessage();
+            string responseBody = string.Empty;
             try
             {
                 var operacao = _mapper.Map<Operacao>(itemViewModel);
@@ -127,7 +129,9 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        await client.PutAsJsonAsync($"{_urlOperacao}/{operacao.CD_OPR}", operacao);
+                        result = await client.PutAsJsonAsync($"{_urlOperacao}/{operacao.CD_OPR}", operacao);
+                        responseBody = await result.Content.ReadAsStringAsync();
+                        result.EnsureSuccessStatusCode();
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Operacao"));
                     }
                 }
@@ -138,7 +142,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
+                return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
@@ -75,7 +77,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                if (usuario.IsValid())
+                if (usuario.IsValid() && _usuarioRepository.ValidarDuplicidades(usuario))
                 {
                     _usuarioRepository.Insert(usuario);
                     return new { message = "OK" };
@@ -95,11 +97,12 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/usuario/5
         [HttpPut]
         [Route("api/v1/usuario/{id}")]
-        public object Put(int id, [FromBody] Usuario usuario)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Put(int id, [FromBody] Usuario usuario)
         {
             try
             {
-                if (usuario.IsValid())
+                if (usuario.IsValid() && _usuarioRepository.ValidarDuplicidades(usuario))
                 {
                     _usuarioModuloRepository.Delete(o => o.CD_USR == usuario.CD_USR);
                     _usuarioGrupoRepository.Delete(o => o.CD_USR == usuario.CD_USR);
@@ -121,16 +124,16 @@ namespace P2E.SSO.API.Controllers
                         _usuarioGrupoRepository.Insert(usuarioGrupo);
                     }
 
-                    return new { message = "OK" };
+                    return Ok(usuario);
                 }
                 else
                 {
-                    return new { message = usuario.Notifications.FirstOrDefault().Message };
+                    return BadRequest(usuario.Messages);
                 }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
             }
         }
 

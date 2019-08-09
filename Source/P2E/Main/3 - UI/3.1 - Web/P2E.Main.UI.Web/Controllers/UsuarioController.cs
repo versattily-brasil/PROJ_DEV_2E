@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Usuario;
+using P2E.Main.UI.Web.Models.SSO.Modulo;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
@@ -141,6 +142,8 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(UsuarioViewModel itemViewModel)
         {
+            var result = new HttpResponseMessage();
+            string responseBody = string.Empty;
             try
             {
                 var usuario = _mapper.Map<Usuario>(itemViewModel);
@@ -148,19 +151,32 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        await client.PutAsJsonAsync($"{_urlUsuario}/{usuario.CD_USR}", usuario);
-                        _flash.Flash("success", GenericMessages.SucessSave("Usuario"));
+                        result = await client.PutAsJsonAsync($"{_urlUsuario}/{usuario.CD_USR}", usuario);
+                        responseBody = await result.Content.ReadAsStringAsync();
+                        result.EnsureSuccessStatusCode();
+                        // _flash.Flash("success", GenericMessages.SucessSave("Usuario"));
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Usuario"));
                     }
                 }
                 else
                 {
+                    using (var client = new HttpClient())
+                    {
+                        var results = await client.GetAsync($"{_urlUsuario}/{0}");
+                        results.EnsureSuccessStatusCode();
+                        var usuarios = await results.Content.ReadAsAsync<Usuario>();
+                        var usuarioViewModels = _mapper.Map<UsuarioViewModel>(usuarios);
+
+                        itemViewModel.Modulo = usuarioViewModels.Modulo;
+                        itemViewModel.Grupo = usuarioViewModels.Grupo;
+                    }                
+
                     return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Usuario", usuario.Messages));
                 }
             }
             catch (Exception ex)
             {
-                return View("Form", itemViewModel).WithDanger("Erro", ex.Message);
+                return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
 

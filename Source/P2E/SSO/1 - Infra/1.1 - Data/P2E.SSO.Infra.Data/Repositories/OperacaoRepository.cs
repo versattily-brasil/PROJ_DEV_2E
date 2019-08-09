@@ -61,5 +61,25 @@ namespace P2E.SSO.Infra.Data.Repositories
         {
             return _context.Connection.GetList<Operacao>(predicateGroup).Count();
         }
+
+        public bool ValidarDuplicidades(Operacao operacao)
+        {
+            if (operacao.CD_OPR > 0)
+            {
+                if (FindAll(p => p.TX_DSC == operacao.TX_DSC && p.CD_OPR != operacao.CD_OPR).Any())
+                {
+                    operacao.AddNotification("TX_DSC", $"A Descrição da Operação {operacao.TX_DSC} já está cadastrada.");
+                }
+            }
+            else
+            {
+                if (FindAll(p => p.TX_DSC == operacao.TX_DSC).Any())
+                {
+                    operacao.AddNotification("TX_DSC", $"A Descrição da Operação {operacao.TX_DSC} já está cadastrada.");
+                }
+            }
+
+            return operacao.IsValid();
+        }
     }
 }

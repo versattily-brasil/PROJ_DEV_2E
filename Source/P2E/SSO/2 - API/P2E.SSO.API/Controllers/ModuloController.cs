@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
@@ -52,7 +54,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _moduloRepository.ValidarDuplicidades(item))
                 {
                     _moduloRepository.Insert(item);
                     return new { message = "OK" };
@@ -72,26 +74,28 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/Modulo/5
         [HttpPut]
         [Route("api/v1/modulo/{id}")]
-        public object Put(int id, [FromBody] Modulo item)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Put(int id, [FromBody] Modulo item)
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _moduloRepository.ValidarDuplicidades(item))
                 {
                     if (id > 0)
                         _moduloRepository.Update(item);
                     else
                         _moduloRepository.Insert(item);
-                    return new { message = "OK" };
+
+                    return Ok(item);
                 }
                 else
                 {
-                    return new { message = item.Notifications.FirstOrDefault().Message };
+                    return BadRequest(item.Messages);
                 }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
             }
         }
 

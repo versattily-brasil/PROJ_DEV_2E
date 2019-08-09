@@ -66,18 +66,24 @@ namespace P2E.SSO.Infra.Data.Repositories
             return _ssoContext.Connection.GetList<Modulo>(predicateGroup).Count();
         }
 
-        //public List<Modulo> MetodoCustomizado(int id)
-        //{
-        //    var resultado = new List<Modulo>();
-        //    var parametros = new DynamicParameters();
+        public bool ValidarDuplicidades(Modulo modulo)
+        {
+            if (modulo.CD_MOD > 0)
+            {
+                if (FindAll(p => p.TX_DSC == modulo.TX_DSC && p.CD_MOD != modulo.CD_MOD).Any())
+                {
+                    modulo.AddNotification("TX_DSC", $"A Descrição do Módulo {modulo.TX_DSC} já está cadastrado.");
+                }
+            }
+            else
+            {
+                if (FindAll(p => p.TX_DSC == modulo.TX_DSC).Any())
+                {
+                    modulo.AddNotification("TX_DSC", $"A Descrição do Módulo {modulo.TX_DSC} já está cadastrado.");
+                }
+            }
 
-        //    parametros.Add("CD_MOD", id, System.Data.DbType.Int32, System.Data.ParameterDirection.Input);
-
-        //    var query = @" SELECT * FROM TB_MOD WHERE CD_MOD > @CD_MOD";
-
-        //    resultado = _ssoContext.Connection.Query<Modulo>(query, parametros).ToList();
-
-        //    return resultado;
-        //}
+            return modulo.IsValid();
+        }
     }
 }

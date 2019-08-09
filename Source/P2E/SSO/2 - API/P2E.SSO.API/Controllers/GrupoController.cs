@@ -1,8 +1,10 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
@@ -43,7 +45,7 @@ namespace P2E.SSO.API.Controllers
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _grupoRepository.ValidarDuplicidades(item))
                 {
                     _grupoRepository.Insert(item);
                     return new { message = "OK" };
@@ -63,26 +65,30 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/grupo/5
         [HttpPut]
         [Route("api/v1/grupo/{id}")]
-        public object Put(int id, [FromBody] Grupo item)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Put(int id, [FromBody] Grupo item)
         {
             try
             {
-                if (item.IsValid())
+                if (item.IsValid() && _grupoRepository.ValidarDuplicidades(item))
                 {
                     if (id > 0)
                         _grupoRepository.Update(item);
                     else
                         _grupoRepository.Insert(item);
-                    return new { message = "OK" };
+
+                    return Ok(item);
                 }
                 else
                 {
-                    return new { message = item.Notifications.FirstOrDefault().Message };
+                    return BadRequest(item.Messages);
+                    //return new { message = item.Notifications.FirstOrDefault().Message };
                 }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
+                // return new { message = "Error." + ex.Message };
             }
         }
 

@@ -11,5 +11,7 @@ namespace P2E.SSO.Domain.Repositories
         DataPage<Rotina> GetByPage(DataPage<Rotina> page, string descricao, string nome);
 
         int GetTotalRows(PredicateGroup predicateGroup);
+
+        bool ValidarDuplicidades(Rotina rotina);
     }
 }
