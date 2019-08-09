@@ -54,7 +54,7 @@ namespace P2E.Main.UI.Web.Controllers
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<ParceiroNegocio>>();
                         vm.DataPage.UrlSearch = $"parceironegocio?";
                         return View("Index", vm);
-                    } 
+                    }
                 }
                 if (vm.DataPage.Items.Any())
                 {
@@ -108,8 +108,8 @@ namespace P2E.Main.UI.Web.Controllers
         public IActionResult Create()
         {
             var vm = new ParceiroNegocioViewModel();
-            vm.Modulos =  CarregarModulos().Result;
-            vm.Servicos =  CarregarServicos().Result;
+            vm.Modulos = CarregarModulos().Result;
+            vm.Servicos = CarregarServicos().Result;
             return View("Form", vm);
         }
 

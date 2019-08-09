@@ -2,9 +2,7 @@
     init(): void {
 
         $(".bt-excluir").on("click", function () {
-            $(this).removeData("fa-minus-circle").removeClass("text-danger");
-            var tr = $(this).closest("tr");
-            $("#tabela_servico_modulo tbody").append(tr);
+            $(this).closest("tr").remove();
         });
 
         $(".btn-add-parceiro-servico-usuario").on("click", function () {
@@ -13,10 +11,11 @@
             if (comboModulo.selectedIndex == 0 || comboServico.selectedIndex == 0) {
                 return false
             }
-            let tabela: HTMLTableElement = <HTMLTableElement>document.getElementById("tabela_servico_modulo");
+            //let tabela: HTMLTableElement = <HTMLTableElement>document.getElementById("tabela_servico_modulo");
             let modulo: HTMLOptionElement = comboModulo.selectedOptions.item(0);
             let servico: HTMLOptionElement = comboServico.selectedOptions.item(0);
-            let registroEncontrato: boolean = false
+            let registroEncontrato: boolean = false;
+
             $("#tabela_servico_modulo > tbody > tr").each(function () {
                 var CD_MOD = $(this).data("cdmod");
                 var CD_SRV = $(this).data("cdsrv");
@@ -31,8 +30,8 @@
                 cols += '<td>' + modulo.text + '</td>';
                 cols += '<td>' + servico.text + '</td>';
                 cols += '<td>';
-                cols += '<a class="btn btn-success btn-m-l btn-icon bt-excluir" data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
-                cols += '<i class="fal fa-minus-circle"></i>';
+                cols += '<a data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
+                cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>';
                 cols += '</td>';
                 row += cols;
                 row += "</tr>";
@@ -40,6 +39,33 @@
                 comboModulo.selectedIndex = 0;
                 comboServico.selectedIndex = 0;
             }
+        });
+    }
+
+    static sortTable(name) {
+
+        var seletor = '#' + name + " tbody  tr";
+        var rows = $(seletor).get();
+        console.log(rows);
+        rows.sort(function (a, b) {
+
+            var A = $(a).children('td').eq(0).text().toUpperCase();
+            var B = $(b).children('td').eq(0).text().toUpperCase();
+
+            if (A < B) {
+                return -1;
+            }
+
+            if (A > B) {
+                return 1;
+            }
+
+            return 0;
+
+        });
+
+        $.each(rows, function (index, row) {
+            $('#' + name).children('tbody').append(row);
         });
     }
 }
