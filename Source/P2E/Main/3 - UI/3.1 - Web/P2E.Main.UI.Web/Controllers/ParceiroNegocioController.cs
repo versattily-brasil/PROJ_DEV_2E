@@ -147,7 +147,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 itemViewModel.Modulos = CarregarModulos().Result;
                 itemViewModel.Servicos = CarregarServicos().Result;
-                return View("Form", itemViewModel).WithDanger("Erro", result.RequestMessage.Content.ReadAsStringAsync().Result);
+                return View("Form", itemViewModel).WithDanger("Erro", result.ReasonPhrase);
             }
         }
 

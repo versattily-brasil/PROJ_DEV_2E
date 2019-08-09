@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidator;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.API.ViewModel;
@@ -99,7 +100,8 @@ namespace P2E.SSO.API.Controllers
         // PUT: api/parceironegocio/5
         [HttpPut]
         [Route("api/v1/parceironegocio/{id}")]
-        public object Put(int id, [FromBody] ParceiroNegocio parceiro)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Put(int id, [FromBody] ParceiroNegocio parceiro)
         {
             try
             {
@@ -123,12 +125,13 @@ namespace P2E.SSO.API.Controllers
                 }
                 else
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, parceiro.Messages);
+                    return BadRequest(parceiro.Messages);
+                    //return (parceiro);
                 }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
             }
         }
 

@@ -30,9 +30,22 @@ namespace P2E.SSO.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().ConfigureApiBehaviorOptions(o =>
+            {
+                o.InvalidModelStateResponseFactory = context =>
+                {
+                    var error = new
+                    {
+                        Detail = "Custom error"
+                    };
+
+                    return new BadRequestObjectResult(error);
+                };
+            });
+
             services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+         
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "P2E [SSO-API]", Version = "v1" });
@@ -62,6 +75,7 @@ namespace P2E.SSO.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -69,7 +83,6 @@ namespace P2E.SSO.API
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }

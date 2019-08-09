@@ -42,6 +42,21 @@ namespace P2E.Main.UI.Web
             services.AddAutoMapper();
             services.AddFlashes();
 
+
+            services.AddMvc().ConfigureApiBehaviorOptions(o =>
+            {
+                o.InvalidModelStateResponseFactory = context =>
+                {
+                    var error = new
+                    {
+                        Detail = "Custom error"
+                    };
+
+                    return new BadRequestObjectResult(error);
+                };
+            });
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                                 .AddRazorPagesOptions(options =>
                                 {
@@ -58,6 +73,7 @@ namespace P2E.Main.UI.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
