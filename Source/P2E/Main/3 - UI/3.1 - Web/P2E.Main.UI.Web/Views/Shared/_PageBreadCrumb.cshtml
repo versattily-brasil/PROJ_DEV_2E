@@ -9,5 +9,16 @@
         <li class="breadcrumb-item">@ViewBag.Category2</li>
     }
     <li class="breadcrumb-item active">@ViewBag.Title</li>
-    <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date">Sunday, May 19, 2019</span></li>
+    @{ 
+
+        System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("pt-BR");
+        System.Globalization.DateTimeFormatInfo dtfi = culture.DateTimeFormat;
+
+        int dia = DateTime.Now.Day;
+        int ano = DateTime.Now.Year;
+        string mes = culture.TextInfo.ToTitleCase(dtfi.GetMonthName(DateTime.Now.Month));
+        string diasemana = culture.TextInfo.ToTitleCase(dtfi.GetDayName(DateTime.Now.DayOfWeek));
+        string data = diasemana + ", " + dia + " de " + mes + " de " + ano;
+    }
+    <li class="position-absolute pos-top pos-right d-none d-sm-block"><span>@data</span></li>
 </ol>

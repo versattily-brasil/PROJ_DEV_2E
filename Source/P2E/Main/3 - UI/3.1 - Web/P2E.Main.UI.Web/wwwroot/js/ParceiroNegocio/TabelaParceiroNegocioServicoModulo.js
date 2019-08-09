@@ -28,9 +28,10 @@ var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
                 var cols = "";
                 cols += '<td>' + modulo.text + '</td>';
                 cols += '<td>' + servico.text + '</td>';
-                cols += '<td>';
+                cols += '<td class="text-center">';
                 cols += '<a data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
                 cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>';
+                cols += '</a>';
                 cols += '</td>';
                 row += cols;
                 row += "</tr>";

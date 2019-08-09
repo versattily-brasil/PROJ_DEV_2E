@@ -101,7 +101,11 @@
                                             <tr data-cdmod="@modulo_servico.Modulo.CD_MOD" data-cdsrv="@modulo_servico.Servico.CD_SRV">
                                                 <td>@modulo_servico.Modulo.TX_DSC</td>
                                                 <td>@modulo_servico.Servico.TXT_DEC</td>
-                                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i></td>
+                                                <td class="text-center">
+                                                    <a data-mod="@modulo_servico.CD_MOD" data-srv="@modulo_servico.CD_SRV">
+                                                        <i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>
+                                                        </a>
+                                                </td>
                                             </tr>
 
                                         }

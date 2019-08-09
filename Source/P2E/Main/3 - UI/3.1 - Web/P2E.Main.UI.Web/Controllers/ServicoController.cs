@@ -158,7 +158,7 @@ namespace P2E.Main.UI.Web.Controllers
             using (var client = new HttpClient())
             {
                 await client.DeleteAsync($"{_urlServico}/{Id}");
-                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Serviço"));
+                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Serviço"));
             }
         }
 #endregion
