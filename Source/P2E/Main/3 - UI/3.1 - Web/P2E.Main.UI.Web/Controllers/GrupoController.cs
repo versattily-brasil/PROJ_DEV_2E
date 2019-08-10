@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.Flash2;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
@@ -20,15 +19,13 @@ namespace P2E.Main.UI.Web.Controllers
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
         private string _urlGrupo;
-        private readonly IFlasher _flash;
         #endregion
 
         #region construtor
-        public GrupoController(AppSettings appSettings, IMapper mapper, IFlasher flash)
+        public GrupoController(AppSettings appSettings, IMapper mapper)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
-            _flash = flash;
             _urlGrupo = this.appSettings.ApiBaseURL + $"sso/v1/grupo";
         }
         #endregion

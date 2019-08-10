@@ -19,7 +19,7 @@ namespace P2E.SSO.Domain.Entities
 
         public Servico(string txt_dec)
         {
-            TXT_DEC = txt_dec;
+            TXT_DEC = txt_dec?.Trim();
 
             IsValid();
         }

@@ -66,12 +66,22 @@ namespace P2E.SSO.Infra.Data.Repositories
                 {
                     usuario.AddNotification("TX_LOGIN", $"O Login de Usuário {usuario.TX_LOGIN} já está cadastrado.");
                 }
+
+                if (FindAll(p => p.TX_NOME == usuario.TX_NOME && p.CD_USR != usuario.CD_USR).Any())
+                {
+                    usuario.AddNotification("TX_NOME", $"O Nome {usuario.TX_NOME} já está cadastrado.");
+                }
             }
             else
             {
                 if (FindAll(p => p.TX_LOGIN == usuario.TX_LOGIN).Any())
                 {
                     usuario.AddNotification("TX_LOGIN", $"O Login de Usuário {usuario.TX_LOGIN} já está cadastrado.");
+                }
+
+                if (FindAll(p => p.TX_NOME == usuario.TX_NOME).Any())
+                {
+                    usuario.AddNotification("TX_NOME", $"O Nome {usuario.TX_LOGIN} já está cadastrado.");
                 }
             }
 

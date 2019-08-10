@@ -12,7 +12,7 @@ namespace P2E.SSO.Domain.Entities
 
         public Operacao(string tx_dsc)
         {            
-            TX_DSC = tx_dsc;
+            TX_DSC = tx_dsc?.Trim();
 
             IsValid();
         }
