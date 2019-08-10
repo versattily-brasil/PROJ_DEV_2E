@@ -38,6 +38,7 @@ var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
                 $("#tabela_servico_modulo").children("tbody").append(row);
                 comboModulo.selectedIndex = 0;
                 comboServico.selectedIndex = 0;
+                TabelaParceiroNegocioServicoModulo.sortTable("tabela_servico_modulo");
             }
         });
     };

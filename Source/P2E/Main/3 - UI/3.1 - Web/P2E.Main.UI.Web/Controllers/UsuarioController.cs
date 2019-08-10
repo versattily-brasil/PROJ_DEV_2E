@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Core.Flash2;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
@@ -28,14 +27,12 @@ namespace P2E.Main.UI.Web.Controllers
         private string _urlUsuario;
         private string _urlModulo;
         private string _urlGrupo;
-        private readonly IFlasher _flash;
         #endregion
 
-        public UsuarioController(AppSettings appSettings, IMapper mapper, IFlasher flash)
+        public UsuarioController(AppSettings appSettings, IMapper mapper)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
-            _flash = flash;
             _urlUsuario = this.appSettings.ApiBaseURL + $"sso/v1/usuario";
             _urlModulo = this.appSettings.ApiBaseURL + $"sso/v1/modulo";
             _urlGrupo = this.appSettings.ApiBaseURL + $"sso/v1/grupo";
@@ -149,9 +146,9 @@ namespace P2E.Main.UI.Web.Controllers
         {
             var result = new HttpResponseMessage();
             string responseBody = string.Empty;
+            var usuario = _mapper.Map<Usuario>(itemViewModel);
             try
             {
-                var usuario = _mapper.Map<Usuario>(itemViewModel);
                 if (usuario.IsValid())
                 {
                     using (var client = new HttpClient())
@@ -159,7 +156,6 @@ namespace P2E.Main.UI.Web.Controllers
                         result = await client.PutAsJsonAsync($"{_urlUsuario}/{usuario.CD_USR}", usuario);
                         responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
-                        // _flash.Flash("success", GenericMessages.SucessSave("Usuario"));
                         return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Usuario"));
                     }
                 }
@@ -181,6 +177,17 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
+                using (var client = new HttpClient())
+                {
+                    var results = await client.GetAsync($"{_urlUsuario}/{0}");
+                    results.EnsureSuccessStatusCode();
+                    var usuarios = await results.Content.ReadAsAsync<Usuario>();
+                    var usuarioViewModels = _mapper.Map<UsuarioViewModel>(usuarios);
+
+                    itemViewModel.Modulo = usuarioViewModels.Modulo;
+                    itemViewModel.Grupo = usuarioViewModels.Grupo;
+                }
+
                 return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }

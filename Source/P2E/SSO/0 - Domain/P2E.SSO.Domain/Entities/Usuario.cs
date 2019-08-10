@@ -19,9 +19,9 @@ namespace P2E.SSO.Domain.Entities
         public Usuario(int cd_usr, string tx_login, string tx_nome, string tx_senha, eStatusUsuario op_status)
         {
             CD_USR = cd_usr;
-            TX_LOGIN = tx_login;
-            TX_NOME = tx_nome;
-            TX_SENHA = tx_senha;
+            TX_LOGIN = tx_login?.Trim();
+            TX_NOME = tx_nome?.Trim();
+            TX_SENHA = tx_senha?.Trim();
             OP_STATUS = op_status;
 
             IsValid();

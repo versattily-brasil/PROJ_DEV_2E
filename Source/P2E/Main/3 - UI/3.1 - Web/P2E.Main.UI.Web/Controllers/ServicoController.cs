@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Core.Flash2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
@@ -26,15 +25,13 @@ namespace P2E.Main.UI.Web.Controllers
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
         private string _urlServico;
-        private readonly IFlasher _flash;
         #endregion
 
         #region construtor
-        public ServicoController(AppSettings appSettings, IMapper mapper, IFlasher flash)
+        public ServicoController(AppSettings appSettings, IMapper mapper)
         {
             this.appSettings = appSettings;
             _mapper = mapper;
-            _flash = flash;
             _urlServico = this.appSettings.ApiBaseURL + $"sso/v1/servico";
         }
         #endregion

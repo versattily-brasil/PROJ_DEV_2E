@@ -33,12 +33,13 @@
                 cols += '<a data-mod="' + modulo.value + '" data-srv="' + servico.value + '">';
                 cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>';
                 cols += '</a>';
-                cols += '</td>';
+                cols += '</td>';            
                 row += cols;
                 row += "</tr>";
                 $("#tabela_servico_modulo").children("tbody").append(row);
                 comboModulo.selectedIndex = 0;
                 comboServico.selectedIndex = 0;
+                TabelaParceiroNegocioServicoModulo.sortTable("tabela_servico_modulo");
             }
         });
     }

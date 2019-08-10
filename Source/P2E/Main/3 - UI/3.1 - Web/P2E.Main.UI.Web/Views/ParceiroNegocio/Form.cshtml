@@ -1,6 +1,6 @@
 ﻿@model P2E.Main.UI.Web.Models.SSO.ParceiroNegocio.ParceiroNegocioViewModel
 @{
-    ViewData["Title"] = "Novo Parceiro de Negócio";
+    ViewData["Title"] = "Cadastro";
     ViewData["PageName"] = "parceiro_negocio";
     ViewData["Category1"] = "Parceiro de Negócio";
 
@@ -92,21 +92,21 @@
                                         <tr>
                                             <th>Módulo</th>
                                             <th>Serviço</th>
-                                            <th width="20"></th>
+                                            <th width="20"></th>                                           
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var modulo_servico in Model.ParceiroNegocioServicoModulo)
                                         {
-                                            <tr data-cdmod="@modulo_servico.Modulo.CD_MOD" data-cdsrv="@modulo_servico.Servico.CD_SRV">
-                                                <td>@modulo_servico.Modulo.TX_DSC</td>
-                                                <td>@modulo_servico.Servico.TXT_DEC</td>
-                                                <td class="text-center">
-                                                    <a data-mod="@modulo_servico.CD_MOD" data-srv="@modulo_servico.CD_SRV">
-                                                        <i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>
-                                                        </a>
-                                                </td>
-                                            </tr>
+                                        <tr data-cdmod="@modulo_servico.Modulo.CD_MOD" data-cdsrv="@modulo_servico.Servico.CD_SRV">
+                                            <td>@modulo_servico.Modulo.TX_DSC</td>
+                                            <td>@modulo_servico.Servico.TXT_DEC</td>
+                                            <td class="text-center">
+                                                <a data-mod="@modulo_servico.CD_MOD" data-srv="@modulo_servico.CD_SRV">
+                                                    <i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
 
                                         }
                                     </tbody>
