@@ -1,0 +1,101 @@
+﻿
+@{
+    
+}
+
+@model P2E.Main.UI.Web.Models.SSO.Usuario.UsuarioViewModel
+
+
+@section Header {
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-brands.css">
+}
+@{
+    ViewData["Title"] = "Cadastro de Usuário";
+    ViewData["PageName"] = "usuario_cadastro";
+    ViewData["Category1"] = "Usuário";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+
+    Layout = null;
+}
+
+
+
+<!DOCTYPE html>
+<partial name="_CopyrightHeader" />
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>
+        SmartAdmin WebApp - v4.0
+    </title>
+    <meta name="description" content="SmartAdmin WebApp - v4.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
+    <!-- Call App Mode on ios devices -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- Remove Tap Highlight on Windows Phone IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- base css -->
+    <link rel="stylesheet" media="screen, print" href="~/css/vendors.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/app.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/theme-demo.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/site.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-brands.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-solid.css">
+    <!-- Place favicon.ico in the root directory -->
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="page-inner bg-brand-gradient">
+            <div class="page-content-wrapper bg-transparent m-0">
+
+
+
+
+                <div class="flex-1" style="background: url('/img/P2E/2E_wallpaper_01.jpg') no-repeat center bottom fixed; background-size: cover;">
+                    <div class="container py-4 my-lg-5 px-4 px-sm-0">
+                        <div class="row">
+
+
+                            <div class="col-sm-12 col-md-6 col-lg-5 col-xl-4">
+
+                                <div class="card p-4 rounded-plus bg-faded">
+                                    @if (!string.IsNullOrEmpty(type))
+                                    {
+                                        <partial name="_DisplayMessagePartial" />
+                                    }
+                                    <form asp-controller="Usuario" asp-action="Login" id="js-login" method="post">
+                                        <div class="form-group">
+                                            <label class="form-label" asp-for="@Model.TX_LOGIN">Login</label>
+                                            <input asp-for="@Model.TX_LOGIN" class="form-control" placeholder="Login" required="required" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" asp-for="@Model.TX_SENHA">Senha</label>
+                                            <input type="password" asp-for="@Model.TX_SENHA" class="form-control" placeholder="Senha" required="required" />
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <div class="col-lg-6 pl-lg-1 my-2">
+                                                <button id="js-login-btn" type="submit" class="btn btn-primary btn-block btn-lg">Entrar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

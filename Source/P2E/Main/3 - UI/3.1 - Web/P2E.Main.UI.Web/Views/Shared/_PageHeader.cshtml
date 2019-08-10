@@ -46,14 +46,14 @@
         </div>*@
 
         <!-- app shortcuts -->
-        @*<div>
-            <a href="#" class="header-icon" data-toggle="dropdown" title="My Apps">
-                <i class="fal fa-cube"></i>
+        <div>
+            <span class="header-icon">Usuário: <span class="font-weight-bold">@User.Identity.Name</span></span>
+        </div>
+        <div>
+            <a asp-controller="Usuario" asp-action="Logout" class="header-icon">
+                <i class="fal fa-sign-out font-weight-bold cursor-pointer" title="Sair do sistema"></i>
             </a>
-            <div class="dropdown-menu dropdown-menu-animated w-auto h-auto">
-                <partial name="_DropdownApp" />
-            </div>
-        </div>*@
+        </div>
 
         <!-- app message -->
         @*<a href="#" class="header-icon" data-toggle="modal" data-target=".js-modal-messenger">

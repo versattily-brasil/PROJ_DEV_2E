@@ -12,9 +12,14 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace P2E.Main.UI.Web.Controllers
 {
+    [Authorize]
     public class UsuarioController : Controller
     {
         #region variáveis locais
@@ -193,6 +198,85 @@ namespace P2E.Main.UI.Web.Controllers
                 return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Usuario"));
             }
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Login(UsuarioViewModel itemViewModel)
+        {
+            var result = new HttpResponseMessage();
+            string responseBody = string.Empty;
+
+            try
+            {
+                var usuarioLogin = _mapper.Map<Usuario>(itemViewModel);
+                using (var client = new HttpClient())
+                {
+                    result = await client.PostAsJsonAsync($"{_urlUsuario}/login", usuarioLogin);
+                    responseBody = await result.Content.ReadAsStringAsync();
+                    result.EnsureSuccessStatusCode();
+
+                    var usuario = await result.Content.ReadAsAsync<Usuario>();
+                    if(usuario != null)
+                    {
+                        var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                        identity.AddClaim(new Claim(ClaimTypes.Name, usuario.TX_LOGIN));
+                        var principal = new ClaimsPrincipal(identity);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return View(itemViewModel).WithDanger("Erro.", "Usuário ou Senha inválidos");
+                    }
+                    
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                return View( itemViewModel).WithDanger("Erro", responseBody);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Denied()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login");
+        }
+
         #endregion
 
     }

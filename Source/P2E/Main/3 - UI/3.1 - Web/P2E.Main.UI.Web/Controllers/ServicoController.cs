@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Flash2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
 using P2E.Main.UI.Web.Extensions.Alerts;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {
+    [Authorize]
     public class ServicoController : Controller
     {
 

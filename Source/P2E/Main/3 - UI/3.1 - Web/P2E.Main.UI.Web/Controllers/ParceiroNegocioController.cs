@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
@@ -15,6 +16,7 @@ using P2E.SSO.Domain.Entities;
 
 namespace P2E.Main.UI.Web.Controllers
 {
+    [Authorize]
     public class ParceiroNegocioController : Controller
     {
         #region variáveis locais
