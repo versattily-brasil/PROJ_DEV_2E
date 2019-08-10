@@ -31,6 +31,7 @@ namespace P2E.Main.UI.Web
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<AppSettings>>().Value);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -84,7 +85,7 @@ namespace P2E.Main.UI.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseAuthentication();
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
