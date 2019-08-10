@@ -1,10 +1,13 @@
 var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
     function TabelaParceiroNegocioServicoModulo() {
     }
-    TabelaParceiroNegocioServicoModulo.prototype.init = function () {
+    TabelaParceiroNegocioServicoModulo.prototype.addClickEvent = function () {
         $(".bt-excluir").on("click", function () {
             $(this).closest("tr").remove();
         });
+    };
+    TabelaParceiroNegocioServicoModulo.prototype.init = function () {
+        this.addClickEvent();
         $(".btn-add-parceiro-servico-usuario").on("click", function () {
             var comboModulo = document.getElementById("comboModulo");
             var comboServico = document.getElementById("comboServico");
@@ -39,6 +42,9 @@ var TabelaParceiroNegocioServicoModulo = /** @class */ (function () {
                 comboModulo.selectedIndex = 0;
                 comboServico.selectedIndex = 0;
                 TabelaParceiroNegocioServicoModulo.sortTable("tabela_servico_modulo");
+                $(".bt-excluir").on("click", function () {
+                    $(this).closest("tr").remove();
+                });
             }
         });
     };

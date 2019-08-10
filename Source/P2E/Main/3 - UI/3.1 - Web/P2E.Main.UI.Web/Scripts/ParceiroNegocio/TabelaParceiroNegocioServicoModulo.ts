@@ -1,9 +1,13 @@
 ﻿class TabelaParceiroNegocioServicoModulo {
-    init(): void {
-
+    addClickEvent(): void {
         $(".bt-excluir").on("click", function () {
             $(this).closest("tr").remove();
         });
+    }
+
+    init(): void {              
+
+        this.addClickEvent();
 
         $(".btn-add-parceiro-servico-usuario").on("click", function () {
             let comboModulo: HTMLSelectElement = <HTMLSelectElement>document.getElementById("comboModulo");
@@ -40,6 +44,10 @@
                 comboModulo.selectedIndex = 0;
                 comboServico.selectedIndex = 0;
                 TabelaParceiroNegocioServicoModulo.sortTable("tabela_servico_modulo");
+
+                $(".bt-excluir").on("click", function () {
+                    $(this).closest("tr").remove();
+                });
             }
         });
     }
