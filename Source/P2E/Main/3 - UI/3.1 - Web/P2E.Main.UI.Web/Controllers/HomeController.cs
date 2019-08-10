@@ -9,6 +9,7 @@ using P2E.Main.UI.Web.Models;
 
 namespace P2E.Main.UI.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()

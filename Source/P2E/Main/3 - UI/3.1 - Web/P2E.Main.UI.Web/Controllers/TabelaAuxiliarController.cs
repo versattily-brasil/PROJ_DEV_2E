@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
 using P2E.Main.UI.Web.Extensions.Alerts;
@@ -10,6 +11,7 @@ using P2E.Main.UI.Web.Models;
 
 namespace P2E.Main.UI.Web.Controllers
 {
+    [Authorize]
     public class TabelaAuxiliarController : Controller
     {
         private readonly AppSettings appSettings;

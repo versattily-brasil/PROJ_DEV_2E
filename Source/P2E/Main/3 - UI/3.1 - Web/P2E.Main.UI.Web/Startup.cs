@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Extensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace P2E.Main.UI.Web
 {
@@ -31,6 +32,7 @@ namespace P2E.Main.UI.Web
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<AppSettings>>().Value);
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -56,15 +58,25 @@ namespace P2E.Main.UI.Web
                 };
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.LoginPath = "/Usuario/Login";
+            options.AccessDeniedPath = "/Usuario/Denied";
+            
+        });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                                .AddRazorPagesOptions(options =>
-                                {
-                                    options.AllowAreas = true;
-                                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
-                                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-                                });
-            ;
+            services.AddHttpContextAccessor();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            //                    .AddRazorPagesOptions(options =>
+            //                    {
+            //                        options.AllowAreas = true;
+            //                        options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+            //                        options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+            //                    });
+            //;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,7 +96,7 @@ namespace P2E.Main.UI.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseAuthentication();
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>

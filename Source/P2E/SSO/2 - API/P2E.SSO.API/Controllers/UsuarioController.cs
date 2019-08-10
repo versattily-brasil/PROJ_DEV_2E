@@ -94,6 +94,14 @@ namespace P2E.SSO.API.Controllers
             }
         }
 
+        // POST: api/usuario/login
+        [HttpPost]
+        [Route("api/v1/usuario/login")]
+        public Usuario PostLogin([FromBody] Usuario usuario)
+        {
+            return _usuarioRepository.Find(o => o.TX_LOGIN == usuario.TX_LOGIN && o.TX_SENHA == usuario.TX_SENHA);
+        }
+
         // PUT: api/usuario/5
         [HttpPut]
         [Route("api/v1/usuario/{id}")]
