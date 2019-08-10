@@ -5,10 +5,6 @@
             $(this).closest("tr").remove();
         });
 
-        function Clica() {
-            alert("xxxxxxxxxxxx")
-        }
-
         $(".btn-add-parceiro-servico-usuario").on("click", function () {
             let comboModulo: HTMLSelectElement = <HTMLSelectElement>document.getElementById("comboModulo");
             let comboServico: HTMLSelectElement = <HTMLSelectElement>document.getElementById("comboServico");
@@ -64,34 +60,10 @@
                 comboServico.selectedIndex = 0;
             }
         });
+
+      
     }
 
-    static sortTable(name) {
-
-        var seletor = '#' + name + " tbody  tr";
-        var rows = $(seletor).get();
-        console.log(rows);
-        rows.sort(function (a, b) {
-
-            var A = $(a).children('td').eq(0).text().toUpperCase();
-            var B = $(b).children('td').eq(0).text().toUpperCase();
-
-            if (A < B) {
-                return -1;
-            }
-
-            if (A > B) {
-                return 1;
-            }
-
-            return 0;
-
-        });
-
-        $.each(rows, function (index, row) {
-            $('#' + name).children('tbody').append(row);
-        });
-    }
 }
 
 $(function () {
