@@ -81,7 +81,7 @@ namespace P2E.SSO.Infra.Data.Repositories
 
                 if (FindAll(p => p.TX_NOME == usuario.TX_NOME).Any())
                 {
-                    usuario.AddNotification("TX_NOME", $"O Nome {usuario.TX_LOGIN} já está cadastrado.");
+                    usuario.AddNotification("TX_NOME", $"O Nome {usuario.TX_NOME} já está cadastrado.");
                 }
             }
 
