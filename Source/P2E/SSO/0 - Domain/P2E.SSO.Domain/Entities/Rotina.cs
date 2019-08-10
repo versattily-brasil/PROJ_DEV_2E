@@ -13,8 +13,8 @@ namespace P2E.SSO.Domain.Entities
 
         public Rotina(string tx_nome, string tx_dsc, eTipoRotina op_tipo)
         {
-            TX_NOME = tx_nome;
-            TX_DSC = tx_dsc;
+            TX_NOME = tx_nome?.Trim();
+            TX_DSC = tx_dsc?.Trim();
             OP_TIPO = op_tipo;
 
             IsValid();
