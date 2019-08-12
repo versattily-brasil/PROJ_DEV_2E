@@ -19,52 +19,52 @@
             <partial name="_DisplayMessagePartial" />
         }
 
-        <div class="panel">
-            <div class="panel-hdr">
-                <h1>
-                    Rotina
-                </h1>
-            </div>
+    <div class="panel">
+        <div class="panel-hdr">
+            <h1>
+                Rotina
+            </h1>
+        </div>
+        <form id="form" asp-action="Save" method="post">
             <div class="panel-container show">
                 <div class="panel-content">
-                    <form id="form" asp-action="Save" method="post">
 
-                        <div class="form-group mb-0">
-                            <div class="row">
-                                <div class="col-8">
-                                    <input type="hidden" asp-for="CD_ROT" />
-                                    <div class="form-group">
-                                        <label class="form-label" asp-for="TX_NOME">Nome</label>
-                                        <input type="text" asp-for="TX_NOME" placeholder="Nome" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label class="form-label" asp-for="OP_TIPO">Tipo</label>
-                                        <select class="form-control" asp-for="OP_TIPO" asp-items="Html.GetEnumSelectList<eTipoRotina>()">
-                                            <option selected="selected" value="">Selecione o tipo da rotina</option>
-                                        </select>
-                                    </div>
+                    <div class="form-group mb-0">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="hidden" asp-for="CD_ROT" />
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="TX_NOME">Nome</label>
+                                    <input type="text" asp-for="TX_NOME" placeholder="Nome" class="form-control">
                                 </div>
                             </div>
-                            <br />
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="form-label" asp-for="TX_DSC">Descrição</label>
-                                        <input type="text" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
-                                    </div>
+
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="OP_TIPO">Tipo</label>
+                                    <select class="form-control" asp-for="OP_TIPO" asp-items="Html.GetEnumSelectList<eTipoRotina>()">
+                                        <option selected="selected" value="">Selecione o tipo da rotina</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" asp-for="TX_DSC">Descrição</label>
+                                    <input type="text" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <hr />
                 <div class="form-group mb-0">
                     <div class="panel">
                         <div class="panel-hdr bg-gray-100">
-                            <h3>Vincular</h3>                            
-                        </div>                        
+                            <h3>Vincular</h3>
+                        </div>
                         <div class="panel-container show">
                             <div class="panel-content">
                                 <div class="row">
@@ -130,9 +130,9 @@
                         </div>
                     </div>
                 </div>
-                </form>
             </div>
-        </div>
+        </form>
+    </div>
     </div>
 </div>
 </div>

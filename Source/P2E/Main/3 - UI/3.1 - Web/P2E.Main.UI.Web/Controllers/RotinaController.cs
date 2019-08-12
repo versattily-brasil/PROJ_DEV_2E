@@ -11,6 +11,7 @@ using P2E.Main.UI.Web.Models.SSO.Rotina;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace P2E.Main.UI.Web.Controllers
 {
