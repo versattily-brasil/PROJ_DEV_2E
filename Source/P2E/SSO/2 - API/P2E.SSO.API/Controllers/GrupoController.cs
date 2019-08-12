@@ -23,6 +23,15 @@ namespace P2E.SSO.API.Controllers
 
         // GET: api/grupo
         [HttpGet]
+        [Route("api/v1/grupo/todos")]
+        public IEnumerable<Grupo> Get()
+        {
+            var result = _grupoRepository.FindAll();
+            return result;
+        }
+
+        // GET: api/grupo
+        [HttpGet]
         [Route("api/v1/grupo/")]
         public DataPage<Grupo> Get([FromQuery] string tx_dsc, [FromQuery] DataPage<Grupo> page)
         {

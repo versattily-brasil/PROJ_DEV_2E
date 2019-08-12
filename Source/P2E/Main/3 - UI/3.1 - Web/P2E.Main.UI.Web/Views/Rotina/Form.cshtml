@@ -1,7 +1,7 @@
 ﻿@using P2E.Shared.Enum;
 @model P2E.Main.UI.Web.Models.SSO.Rotina.RotinaViewModel
 @{
-    ViewData["Title"] = "Cadastro";
+    ViewData["Title"] = "Cadastro de Rotina";
     ViewData["PageName"] = "rotina_cadastro";
     ViewData["Category1"] = "Rotina";
 
@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <br />
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -62,7 +62,84 @@
                         <button type="submit" class="btn btn-primary">Salvar</button>
                     </form>
                 </div>
+                <hr />
+                <div class="form-group mb-0">
+                    <div class="panel">
+                        <div class="panel-hdr bg-gray-100">
+                            <h3>Vincular</h3>                            
+                        </div>                        
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="form-group">
+                                            <label class="form-label">Grupo</label>
+                                            <select asp-items="@(new SelectList(@Model.Grupos,"CD_GRP", "TX_DSC"))" class="form-control" id="comboGrupo">
+                                                <option disabled selected>- Selecione um Grupo -</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Serviço</label>
+                                            <select asp-items="@(new SelectList(@Model.Operacoes,"CD_OPR", "TX_DSC"))" class="form-control" id="comboOperacao">
+                                                <option disabled selected>- Selecione uma Operação -</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-1">
+                                        <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina-grupo-operacao">
+                                            <i class="fal fa-download"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover m-0" id="tabela_rotina_grupo_operacao">
+                            <thead class="thead-themed">
+                                <tr>
+                                    <th>Grupo</th>
+                                    <th>Operação</th>
+                                    <th width="20"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var grupo_operacao in Model.RotinaGrupoOperacao)
+                                {
+                                    <tr data-cdgrp="@grupo_operacao.CD_GRP" data-cdopr="@grupo_operacao.CD_OPR">
+                                        <td>@grupo_operacao.Grupo.TX_DSC</td>
+                                        <td>@grupo_operacao.Operacao.TX_DSC</td>
+                                        <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger btn-delete-srv-mod"></i></td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group mb-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <br />
+                            <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+</div>
+@section Scripts {
+    <script src="~/js/Rotina/TabelaRotinaGrupoOperacao.js"></script>
+    <script src="~/js/Rotina/RotinaGrupoOperacao.js"></script>
+}
