@@ -110,7 +110,8 @@ namespace P2E.SSO.API.Controllers
                         _rotinaGrupoOperacaoRepository.Insert(rotinaGrupoOperacao);
                     }
 
-                    return new { message = "OK" };
+                    return Ok(item);
+                    //return new { message = "OK" };
                 }
                 else
                 {
