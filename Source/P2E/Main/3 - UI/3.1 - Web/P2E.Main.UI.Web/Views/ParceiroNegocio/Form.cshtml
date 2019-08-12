@@ -34,13 +34,13 @@
                                     <input type="hidden" asp-for="CD_PAR" />
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TXT_RZSOC">Razão  Social</label>
-                                        <input type="text" asp-for="TXT_RZSOC" placeholder="Razão Social" class="form-control">
+                                        <input type="text" maxlength="100" asp-for="TXT_RZSOC" placeholder="Razão Social" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="CNPJ">CNPJ</label>
-                                        <input type="text" asp-for="CNPJ" placeholder="Valor" class="form-control">
+                                        <input type="text" maxlength="21" asp-for="CNPJ" placeholder="Valor" class="form-control">
                                     </div>
                                 </div>
                             </div>

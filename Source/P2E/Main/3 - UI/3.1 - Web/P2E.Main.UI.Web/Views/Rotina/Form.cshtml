@@ -35,7 +35,7 @@
                                     <input type="hidden" asp-for="CD_ROT" />
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_NOME">Nome</label>
-                                        <input type="text" asp-for="TX_NOME" placeholder="Nome" class="form-control">
+                                        <input type="text" maxlength="40" asp-for="TX_NOME" placeholder="Nome" class="form-control">
                                     </div>
                                 </div>
 
@@ -53,7 +53,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_DSC">Descrição</label>
-                                        <input type="text" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
+                                        <input type="text" maxlength="255" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
                                     </div>
                                 </div>
                             </div>

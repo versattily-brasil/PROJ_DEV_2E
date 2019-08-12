@@ -33,13 +33,13 @@
                                     <input type="hidden" asp-for="CD_USR" />
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_NOME">Nome</label>
-                                        <input type="text" asp-for="TX_NOME" placeholder="Nome" class="form-control">
+                                        <input type="text" maxlength="40" asp-for="TX_NOME" placeholder="Nome" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_LOGIN">Login</label>
-                                        <input type="text" asp-for="TX_LOGIN" placeholder="Login" class="form-control">
+                                        <input type="text" maxlength="40" asp-for="TX_LOGIN" placeholder="Login" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -48,14 +48,14 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_SENHA">Senha</label>
-                                        <input type="password" asp-for="TX_SENHA" placeholder="Senha" class="form-control" id="senha">
+                                        <input type="password" maxlength="255" asp-for="TX_SENHA" placeholder="Senha" class="form-control" id="senha">
                                     </div>
                                 </div>
 
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="form-label">Confirme a Senha</label>
-                                        <input type="password" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha">
+                                        <input type="password" maxlength="255" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha">
                                     </div>
                                 </div>
                             </div>
