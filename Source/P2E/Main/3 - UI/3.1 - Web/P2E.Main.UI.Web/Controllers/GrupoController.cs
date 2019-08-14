@@ -115,7 +115,21 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View("Form");
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var grupoViewModel = new GrupoViewModel();
+
+                    grupoViewModel.Operacoes = CarregarOperacoes().Result;
+                    grupoViewModel.Rotinas = CarregarRotinas().Result;
+                    return View("Form", grupoViewModel);
+                }
+            }
+            catch (Exception)
+            {
+            throw;
+            }
         }
 
         /// <summary>

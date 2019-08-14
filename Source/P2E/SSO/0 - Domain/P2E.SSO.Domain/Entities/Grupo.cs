@@ -1,5 +1,6 @@
 ﻿using MicroOrm.Dapper.Repositories.Attributes;
 using P2E.Shared.Message;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -35,5 +36,7 @@ namespace P2E.SSO.Domain.Entities
         }
 
         public override string ToString() => $"{TX_DSC.ToString()}";
+
+        public List<RotinaGrupoOperacao> RotinaGrupoOperacao { get; set; } = new List<RotinaGrupoOperacao>();
     }
 }

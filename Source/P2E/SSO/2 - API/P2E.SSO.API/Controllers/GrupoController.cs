@@ -16,9 +16,12 @@ namespace P2E.SSO.API.Controllers
     public class GrupoController : ControllerBase
     {
         private readonly IGrupoRepository _grupoRepository;
-        public GrupoController(IGrupoRepository grupoRepository)
+        private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
+        public GrupoController(IGrupoRepository grupoRepository, 
+            IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository )
         {
             _grupoRepository = grupoRepository;
+            _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
         }
 
         // GET: api/grupo
@@ -44,7 +47,9 @@ namespace P2E.SSO.API.Controllers
         [Route("api/v1/grupo/{id}")]
         public Grupo Get(long id)
         {
-            return _grupoRepository.Find(p => p.CD_GRP == id);
+            Grupo grupo = _grupoRepository.Find(p => p.CD_GRP == id);
+            grupo.RotinaGrupoOperacao = _rotinaGrupoOperacaoRepository.FindAll(o => o.CD_GRP == id).ToList();
+            return grupo;
         }
 
         // POST: api/grupo
@@ -81,10 +86,19 @@ namespace P2E.SSO.API.Controllers
             {
                 if (item.IsValid() && _grupoRepository.ValidarDuplicidades(item))
                 {
+                    _rotinaGrupoOperacaoRepository.Delete(o=>o.CD_GRP == item.CD_GRP);
+
                     if (id > 0)
                         _grupoRepository.Update(item);
                     else
                         _grupoRepository.Insert(item);
+
+                    foreach (var rotinaGrupoOperacao in item.RotinaGrupoOperacao)
+                    {
+                        rotinaGrupoOperacao.CD_GRP = item.CD_GRP;
+
+                        _rotinaGrupoOperacaoRepository.Insert(rotinaGrupoOperacao);
+                    }
 
                     return Ok(item);
                 }
@@ -109,6 +123,7 @@ namespace P2E.SSO.API.Controllers
             try
             {
                 var objeto = _grupoRepository.FindById(id);
+                _rotinaGrupoOperacaoRepository.Delete(o => o.CD_GRP == id);
                 _grupoRepository.Delete(objeto);
                 return new { message = "OK" };
             }

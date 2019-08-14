@@ -15,5 +15,6 @@ namespace P2E.Main.UI.Web.Models.SSO.Grupo
         public IList<RotinaViewModel> Rotinas { get; set; } = new List<RotinaViewModel>();
         public List<OperacaoViewModel> Operacoes { get; set; } = new List<OperacaoViewModel>();
 
+        public List<RotinaGrupoViewModel> RotinaGrupoOperacao { get; set; } = new List<RotinaGrupoViewModel>();
     }
 }

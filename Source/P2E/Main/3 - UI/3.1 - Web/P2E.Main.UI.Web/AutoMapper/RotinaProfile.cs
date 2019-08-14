@@ -10,6 +10,9 @@ namespace P2E.Main.UI.Web.AutoMapper
         {
             CreateMap<Rotina, RotinaViewModel>(MemberList.None);
             CreateMap<RotinaViewModel, Rotina>(MemberList.None);
+
+            CreateMap<RotinaGrupoOperacao, RotinaGrupoViewModel>(MemberList.None);
+            CreateMap<RotinaGrupoViewModel, RotinaGrupoOperacao>(MemberList.None);
             AllowNullDestinationValues = true;
         }
     }
