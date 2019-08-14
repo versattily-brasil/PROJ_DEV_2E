@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,14 @@ namespace P2E.SSO.API.Controllers
             _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
             _grupoRepository = grupoRepository;
             _operacaoRepository = operacaoRepository;
+        }
+
+        // GET: api/rotina/todos
+        [HttpGet]
+        [Route("api/v1/rotina/todos")]
+        public IEnumerable<Rotina> Get()
+        {
+            return _rotinaRepository.FindAll();
         }
 
         // GET: api/rotina
