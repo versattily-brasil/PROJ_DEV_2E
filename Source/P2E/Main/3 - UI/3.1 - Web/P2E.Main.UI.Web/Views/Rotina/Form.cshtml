@@ -41,9 +41,9 @@
 
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label class="form-label" asp-for="OP_TIPO">Tipo</label>
-                                        <select class="form-control" asp-for="OP_TIPO" asp-items="Html.GetEnumSelectList<eTipoRotina>()">
-                                            <option selected="selected" value="">Selecione o tipo da rotina</option>
+                                        <label class="form-label" asp-for="Servicos">Serviço</label>
+                                        <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" asp-for="CD_SRV" class="form-control" id="comboServico">
+                                            <option disabled selected>- Selecione um Serviço -</option>
                                         </select>
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <hr />
-                        <div class="form-group mb-0">
+                        @*<div class="form-group mb-0">
                             <div class="panel">
                                 <div class="panel-hdr bg-gray-100">
                                     <h3>Associação de Serviços a Rotina</h3>
@@ -70,7 +70,7 @@
                                             <div class="col-lg-11">
                                                 <div class="form-group">
                                                     <label class="form-label">Serviços</label>
-                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
+                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServicox">
                                                         <option disabled selected>- Selecione um Serviço -</option>
                                                     </select>
                                                 </div>
@@ -85,9 +85,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
 
-                        <div class="form-group mb-0">
+                        @*<div class="form-group mb-0">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover m-0" id="tabela_rotina_servico">
                                     <thead class="thead-themed">
@@ -108,7 +108,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div>*@
 
                         <div class="form-group mb-0">
                             <div class="row">
