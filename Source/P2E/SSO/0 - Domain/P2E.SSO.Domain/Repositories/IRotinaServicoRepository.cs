@@ -6,8 +6,8 @@ using System.Text;
 
 namespace P2E.SSO.Domain.Repositories
 {
-    public interface IRotinaGrupoOperacaoRepository : IDapperRepository<RotinaGrupoOperacao>
+    public interface IRotinaServicoRepository : IDapperRepository<RotinaServico>
     {
-        bool ExcluirRotinaGrupoOperacao(int rotinaGrupoOperacaoId);        
+        bool ExcluirRotinaServico(int rotinaServicoId);        
     }
 }

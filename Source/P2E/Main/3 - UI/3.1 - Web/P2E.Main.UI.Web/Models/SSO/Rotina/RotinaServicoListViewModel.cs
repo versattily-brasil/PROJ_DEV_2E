@@ -3,9 +3,9 @@ using P2E.Shared.Enum;
 
 namespace P2E.Main.UI.Web.Models.SSO.Rotina
 {
-    public class RotinaGrupoListViewModel
+    public class RotinaServicoListViewModel
     {
-        public RotinaGrupoListViewModel()
+        public RotinaServicoListViewModel()
         {
             DataPage = new DataPage<P2E.SSO.Domain.Entities.Rotina>();
         }

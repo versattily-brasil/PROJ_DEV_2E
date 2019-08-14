@@ -28,10 +28,9 @@ namespace P2E.SSO.Domain.Entities
         public string TX_DSC { get; set; }
         public eTipoRotina OP_TIPO { get; set; }
 
-        public List<RotinaGrupoOperacao> RotinaGrupoOperacao { get; set; } = new List<RotinaGrupoOperacao>();
-        public List<Grupo> Grupo { get; set; } = new List<Grupo>();
-        public List<Operacao> Operacao { get; set; } = new List<Operacao>();
-
+        public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();
+        public List<Servico> Servico { get; set; } = new List<Servico>();
+        
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(TX_NOME))

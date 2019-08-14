@@ -62,31 +62,22 @@
                         <div class="form-group mb-0">
                             <div class="panel">
                                 <div class="panel-hdr bg-gray-100">
-                                    <h3>Vincular</h3>
+                                    <h3>Associação: Serviços</h3>
                                 </div>
                                 <div class="panel-container show">
                                     <div class="panel-content">
                                         <div class="row">
-                                            <div class="col-5">
+                                            <div class="col-lg-11">
                                                 <div class="form-group">
-                                                    <label class="form-label">Grupo</label>
-                                                    <select asp-items="@(new SelectList(@Model.Grupos,"CD_GRP", "TX_DSC"))" class="form-control" id="comboGrupo">
-                                                        <option disabled selected>- Selecione um Grupo -</option>
+                                                    <label class="form-label">Serviços</label>
+                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
+                                                        <option disabled selected>- Selecione um Serviço -</option>
                                                     </select>
                                                 </div>
-                                            </div>
+                                            </div>                                            
 
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label class="form-label">Serviço</label>
-                                                    <select asp-items="@(new SelectList(@Model.Operacoes,"CD_OPR", "TX_DSC"))" class="form-control" id="comboOperacao">
-                                                        <option disabled selected>- Selecione uma Operação -</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-1">
-                                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina-grupo-operacao">
+                                            <div class="col-md-1">
+                                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina-servico">
                                                     <i class="fal fa-download"></i>
                                                 </a>
                                             </div>
@@ -98,21 +89,19 @@
 
                         <div class="form-group mb-0">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-hover m-0" id="tabela_rotina_grupo_operacao">
+                                <table class="table table-bordered table-hover m-0" id="tabela_rotina_servico">
                                     <thead class="thead-themed">
                                         <tr>
-                                            <th>Grupo</th>
-                                            <th>Operação</th>
+                                            <th>Serviços</th>
                                             <th width="20"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var grupo_operacao in Model.RotinaGrupoOperacao)
+                                        @foreach (var rotina_servico in Model.RotinaServico)
                                         {
-                                            <tr data-cdgrp="@grupo_operacao.CD_GRP" data-cdopr="@grupo_operacao.CD_OPR">
-                                                <td>@grupo_operacao.Grupo.TX_DSC</td>
-                                                <td>@grupo_operacao.Operacao.TX_DSC</td>
-                                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger btn-delete-srv-mod"></i></td>
+                                            <tr data-cdsrv="@rotina_servico.CD_SRV">
+                                                <td>@rotina_servico.Servico.TXT_DEC</td>                                                
+                                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger btn-delete-srv"></i></td>
                                             </tr>
 
                                         }

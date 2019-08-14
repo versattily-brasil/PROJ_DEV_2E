@@ -13,18 +13,15 @@ namespace P2E.SSO.API.Controllers
     public class RotinaController : ControllerBase
     {
         private readonly IRotinaRepository _rotinaRepository;
-        private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
-        private readonly IGrupoRepository _grupoRepository;
-        private readonly IOperacaoRepository _operacaoRepository;
+        private readonly IRotinaServicoRepository _rotinaServicoRepository;
+        private readonly IServicoRepository _servicoRepository;
         public RotinaController(IRotinaRepository rotinaRepository,
-                                IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository, 
-                                IGrupoRepository grupoRepository, 
-                                IOperacaoRepository operacaoRepository)
+                                IRotinaServicoRepository rotinaServicoRepository,
+                                IServicoRepository servicoRepository)
         {
             _rotinaRepository = rotinaRepository;
-            _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
-            _grupoRepository = grupoRepository;
-            _operacaoRepository = operacaoRepository;
+            _rotinaServicoRepository = rotinaServicoRepository;
+            _servicoRepository = servicoRepository;            
         }
 
         // GET: api/rotina/todos
@@ -54,16 +51,14 @@ namespace P2E.SSO.API.Controllers
             if (id > 0)
             {
                 rotina = _rotinaRepository.Find(p => p.CD_ROT == id);
-                rotina.RotinaGrupoOperacao = _rotinaGrupoOperacaoRepository.FindAll(p => p.CD_ROT == id).ToList();
+                rotina.RotinaServico = _rotinaServicoRepository.FindAll(p => p.CD_ROT == id).ToList();
 
-                rotina.Grupo = _grupoRepository.FindAll().ToList();
-                rotina.Operacao = _operacaoRepository.FindAll().ToList();
+                rotina.Servico = _servicoRepository.FindAll().ToList();
 
                 int i = 0;
-                foreach (var pns in rotina.RotinaGrupoOperacao)
+                foreach (var pns in rotina.RotinaServico)
                 {
-                    rotina.RotinaGrupoOperacao[i].Grupo = rotina.Grupo.Find(p => p.CD_GRP == pns.CD_GRP);
-                    rotina.RotinaGrupoOperacao[i].Operacao = rotina.Operacao.Find(p => p.CD_OPR == pns.CD_OPR);
+                    rotina.RotinaServico[i].Servico = rotina.Servico.Find(p => p.CD_SRV == pns.CD_SRV);                  
                     i++;
                 }
             }
@@ -105,18 +100,18 @@ namespace P2E.SSO.API.Controllers
             {
                 if (item.IsValid() && _rotinaRepository.ValidarDuplicidades(item))
                 {
-                    _rotinaGrupoOperacaoRepository.Delete(a => a.CD_ROT == item.CD_ROT);
+                    _rotinaServicoRepository.Delete(a => a.CD_ROT == item.CD_ROT);
 
                     if (id > 0)
                         _rotinaRepository.Update(item);
                     else
                         _rotinaRepository.Insert(item);
 
-                    foreach (var rotinaGrupoOperacao in item.RotinaGrupoOperacao)
+                    foreach (var rotinaServico in item.RotinaServico)
                     {
-                        rotinaGrupoOperacao.CD_ROT = item.CD_ROT;
+                        rotinaServico.CD_ROT = item.CD_ROT;
 
-                        _rotinaGrupoOperacaoRepository.Insert(rotinaGrupoOperacao);
+                        _rotinaServicoRepository.Insert(rotinaServico);
                     }
 
                     return Ok(item);
@@ -143,9 +138,9 @@ namespace P2E.SSO.API.Controllers
                 var item = this.Get(id);                
                 
                 // Exclui cada Grupo-Operacao vinculado à rotina
-                foreach (var rgo in item.RotinaGrupoOperacao)
+                foreach (var rgo in item.RotinaServico)
                 {
-                    _rotinaGrupoOperacaoRepository.ExcluirRotinaGrupoOperacao(rgo.CD_ROT_GRP);
+                    _rotinaServicoRepository.ExcluirRotinaServico(rgo.CD_ROT_SRV);
                 }
                 
                 _rotinaRepository.Delete(item);

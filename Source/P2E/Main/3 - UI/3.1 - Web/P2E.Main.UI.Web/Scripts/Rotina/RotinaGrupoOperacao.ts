@@ -6,17 +6,15 @@
     init(): void {
         this.btnSalvar.on("click", () => {
 
-            var agrupamento = "RotinaGrupoOperacao";
+            var agrupamento = "RotinaServico";
             var g = 0;
 
-            $("#tabela_rotina_grupo_operacao > tbody > tr").each(function () {
+            $("#tabela_rotina_servico > tbody > tr").each(function () {
 
-                var CD_GRP = $(this).data("cdgrp");
-                var CD_OPR = $(this).data("cdopr");
+                var CD_SRV = $(this).data("cdsrv");
 
-                if (CD_GRP != undefined && CD_OPR != undefined) {
-                    $("#form").append("<input type='hidden' name= '" + agrupamento + "[" + g + "].CD_GRP' value= '" + CD_GRP + "' > ");
-                    $("#form").append("<input type='hidden' name= '" + agrupamento + "[" + g + "].CD_OPR' value= '" + CD_OPR + "' > ");
+                if (CD_SRV != undefined) {
+                    $("#form").append("<input type='hidden' name= '" + agrupamento + "[" + g + "].CD_SRV' value= '" + CD_SRV + "' > ");
                 }
                 g += 1;
             });
