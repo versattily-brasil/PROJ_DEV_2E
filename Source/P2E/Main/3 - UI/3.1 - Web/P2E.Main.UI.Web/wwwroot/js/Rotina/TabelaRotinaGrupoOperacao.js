@@ -2,45 +2,40 @@ var TabelaRotinaGrupoOperacao = /** @class */ (function () {
     function TabelaRotinaGrupoOperacao() {
     }
     TabelaRotinaGrupoOperacao.prototype.addClickEvent = function () {
-        $(".bt-excluir").on("click", function () {
+        $(".btn-delete-srv").on("click", function () {
             $(this).closest("tr").remove();
         });
     };
     TabelaRotinaGrupoOperacao.prototype.init = function () {
         this.addClickEvent();
-        $(".btn-add-rotina-grupo-operacao").on("click", function () {
-            var comboGrupo = document.getElementById("comboGrupo");
-            var comboOperacao = document.getElementById("comboOperacao");
-            if (comboGrupo.selectedIndex == 0 || comboOperacao.selectedIndex == 0) {
+        $(".btn-add-rotina-servico").on("click", function () {
+            var comboServico = document.getElementById("comboServico");
+            if (comboServico.selectedIndex == 0) {
                 return false;
             }
-            var tabela = document.getElementById("tabela_rotina_grupo_operacao");
-            var grupo = comboGrupo.selectedOptions.item(0);
-            var operacao = comboOperacao.selectedOptions.item(0);
+            var tabela = document.getElementById("tabela_rotina_servico");
+            var servico = comboServico.selectedOptions.item(0);
             var registroEncontrato = false;
-            $("#tabela_rotina_grupo_operacao > tbody > tr").each(function () {
-                var CD_GRP = $(this).data("cdgrp");
-                var CD_OPR = $(this).data("cdopr");
-                if (CD_GRP == grupo.value && CD_OPR == operacao.value) {
+            $("#tabela_rotina_servico > tbody > tr").each(function () {
+                var CD_SRV = $(this).data("cdsrv");
+                if (CD_SRV == servico.value) {
                     registroEncontrato = true;
                 }
             });
             if (registroEncontrato === false) {
                 var row = void 0;
-                row = '<tr data-cdgrp="' + grupo.value + '" data-cdopr="' + operacao.value + '">';
+                row = '<tr data-cdsrv="' + servico.value + '">';
                 var cols = "";
-                cols += '<td>' + grupo.text + '</td>';
-                cols += '<td>' + operacao.text + '</td>';
+                cols += '<td>' + servico.text + '</td>';
                 cols += '<td class="text-center">';
-                cols += '<a data-grp="' + grupo.value + '" data-opr="' + operacao.value + '">';
-                cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>';
+                cols += '<a data-srv="' + servico.value + '">';
+                cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger btn-delete-srv"></i>';
                 cols += '</a>';
                 cols += '</td>';
                 row += cols;
                 row += "</tr>";
-                $("#tabela_rotina_grupo_operacao").children("tbody").append(row);
-                comboGrupo.selectedIndex = 0;
-                comboOperacao.selectedIndex = 0;
+                $("#tabela_rotina_servico").children("tbody").append(row);
+                comboServico.selectedIndex = 0;
                 $(".bt-excluir").on("click", function () {
                     $(this).closest("tr").remove();
                 });

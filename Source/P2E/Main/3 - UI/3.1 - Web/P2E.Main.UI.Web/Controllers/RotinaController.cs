@@ -98,8 +98,7 @@ namespace P2E.Main.UI.Web.Controllers
                     result.EnsureSuccessStatusCode();
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
                     var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
-                    rotinaViewModel.Grupos = CarregarGrupos().Result;
-                    rotinaViewModel.Operacoes = CarregarOperacoes().Result;
+                    rotinaViewModel.Servicos = CarregarServico().Result;                    
 
                     return View("Form", rotinaViewModel);
                 }
@@ -118,8 +117,7 @@ namespace P2E.Main.UI.Web.Controllers
         public IActionResult Create()
         {
             var vm = new RotinaViewModel();
-            vm.Grupos = CarregarGrupos().Result;
-            vm.Operacoes = CarregarOperacoes().Result;
+            vm.Servicos = CarregarServico().Result;
             return View("Form", vm);            
         }
 
@@ -148,16 +146,14 @@ namespace P2E.Main.UI.Web.Controllers
                 }
                 else
                 {
-                    itemViewModel.Grupos = CarregarGrupos().Result;
-                    itemViewModel.Operacoes = CarregarOperacoes().Result;
+                    itemViewModel.Servicos = CarregarServico().Result;
 
                     return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Rotina", rotina.Messages));
                 }
             }
             catch (Exception ex)
             {
-                itemViewModel.Grupos = CarregarGrupos().Result;
-                itemViewModel.Operacoes = CarregarOperacoes().Result;
+                itemViewModel.Servicos = CarregarServico().Result;
                 return View("Form", itemViewModel).WithDanger("Erro", result.RequestMessage.Content.ReadAsStringAsync().Result);
             }
         }
@@ -180,24 +176,13 @@ namespace P2E.Main.UI.Web.Controllers
         }
         #endregion        
 
-        private async Task<List<Grupo>> CarregarGrupos()
+        private async Task<List<Servico>> CarregarServico()
         {
-            string urlGrupo = this.appSettings.ApiBaseURL + $"sso/v1/grupo/todos";
+            string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/servico/todos";
             using (var client = new HttpClient())
             {
-                var result = await client.GetAsync(urlGrupo);
-                var lista = await result.Content.ReadAsAsync<List<Grupo>>();
-                return lista;
-            }
-        }
-
-        private async Task<List<Operacao>> CarregarOperacoes()
-        {
-            string urlOperacao = this.appSettings.ApiBaseURL + $"sso/v1/operacao/todos";
-            using (var client = new HttpClient())
-            {
-                var result = await client.GetAsync(urlOperacao);
-                var lista = await result.Content.ReadAsAsync<List<Operacao>>();
+                var result = await client.GetAsync(urlServico);
+                var lista = await result.Content.ReadAsAsync<List<Servico>>();
                 return lista;
             }
         }

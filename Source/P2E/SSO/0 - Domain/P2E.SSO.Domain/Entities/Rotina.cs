@@ -12,11 +12,12 @@ namespace P2E.SSO.Domain.Entities
     {
         public Rotina() {}
 
-        public Rotina(string tx_nome, string tx_dsc, eTipoRotina op_tipo)
+        public Rotina(string tx_nome, string tx_dsc, eTipoRotina op_tipo, int cd_srv)
         {
             TX_NOME = tx_nome?.Trim();
             TX_DSC = tx_dsc?.Trim();
             OP_TIPO = op_tipo;
+            CD_SRV = cd_srv;
 
             IsValid();
         }
@@ -27,11 +28,11 @@ namespace P2E.SSO.Domain.Entities
         public string TX_NOME { get; set; }
         public string TX_DSC { get; set; }
         public eTipoRotina OP_TIPO { get; set; }
+        public int CD_SRV { get; set; }
 
-        public List<RotinaGrupoOperacao> RotinaGrupoOperacao { get; set; } = new List<RotinaGrupoOperacao>();
-        public List<Grupo> Grupo { get; set; } = new List<Grupo>();
-        public List<Operacao> Operacao { get; set; } = new List<Operacao>();
-
+        public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();
+        public List<Servico> Servico { get; set; } = new List<Servico>();
+        
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(TX_NOME))
@@ -40,8 +41,8 @@ namespace P2E.SSO.Domain.Entities
             if (string.IsNullOrEmpty(TX_DSC))
                 AddNotification("TX_DSC", $"A Descrição da Rotina é um campo obrigatório.");
 
-            if (OP_TIPO == 0)
-                AddNotification("OP_TIPO", $"O Tipo da Rotina é um campo obrigatório.");
+            //if (OP_TIPO == 0)
+            //    AddNotification("OP_TIPO", $"O Tipo da Rotina é um campo obrigatório.");
 
             return Valid;
         }

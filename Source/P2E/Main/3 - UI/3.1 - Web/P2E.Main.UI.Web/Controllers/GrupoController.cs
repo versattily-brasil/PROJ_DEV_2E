@@ -196,12 +196,12 @@ namespace P2E.Main.UI.Web.Controllers
 
                 var rotinas = _mapper.Map<List<RotinaViewModel>>(lista);
 
-                var operacoes = _mapper.Map<List<OperacaoViewModel>>(CarregarOperacoes().Result);
+                //var operacoes = _mapper.Map<List<OperacaoViewModel>>(CarregarOperacoes().Result);
 
-                foreach (var item in rotinas)
-                {
-                    item.Operacao.AddRange(operacoes);
-                }
+                //foreach (var item in rotinas)
+                //{
+                //    item.Operacao.AddRange(operacoes);
+                //}
 
                 return rotinas;
             }

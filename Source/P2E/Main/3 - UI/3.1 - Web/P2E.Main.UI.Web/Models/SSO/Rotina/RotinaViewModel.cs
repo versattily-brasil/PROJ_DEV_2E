@@ -1,8 +1,7 @@
 ﻿using P2E.Shared.Enum;
 using System.Collections.Generic;
 using P2E.SSO.Domain.Entities;
-using P2E.Main.UI.Web.Models.SSO.Grupo;
-using P2E.Main.UI.Web.Models.SSO.Operacao;
+using P2E.Main.UI.Web.Models.SSO.Servico;
 
 namespace P2E.Main.UI.Web.Models.SSO.Rotina
 {
@@ -15,13 +14,12 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
         public string TX_NOME { get; set; }        
         public string TX_DSC { get; set; }
         public eTipoRotina OP_TIPO { get; set; }
+        public int CD_SRV { get; set; }
 
-        public List<P2E.SSO.Domain.Entities.Grupo> Grupos { get; set; }
-        public List<P2E.SSO.Domain.Entities.Operacao> Operacoes { get; set; }
+        public List<P2E.SSO.Domain.Entities.Servico> Servicos { get; set; }
 
-        public List<RotinaGrupoOperacao> RotinaGrupoOperacao { get; set; } = new List<RotinaGrupoOperacao>();
+        public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();
 
-        public List<GrupoViewModel> Grupo { get; set; } = new List<GrupoViewModel>();
-        public List<OperacaoViewModel> Operacao { get; set; } = new List<OperacaoViewModel>();
+        public List<ServicoViewModel> Servico { get; set; } = new List<ServicoViewModel>();
     }
 }
