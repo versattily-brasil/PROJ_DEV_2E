@@ -24,7 +24,7 @@
         });
 
 
-        this.btnSalvar.on("live", () => {
+        this.btnSalvar.on("click", () => {
 
             var listaRotinas = "RotinaGrupoOperacao";
             var g = 0;

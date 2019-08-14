@@ -17,7 +17,7 @@ var Grupo = /** @class */ (function () {
             rowRotina += '</tr>';
             $("#tabela_grupo_rotina tbody").append(rowRotina);
         });
-        this.btnSalvar.on("live", function () {
+        this.btnSalvar.on("click", function () {
             var listaRotinas = "RotinaGrupoOperacao";
             var g = 0;
             $(".rotina_selecionada").each(function () {
