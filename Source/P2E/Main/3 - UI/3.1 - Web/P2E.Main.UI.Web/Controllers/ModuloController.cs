@@ -50,7 +50,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
-                        var result =  await client.GetAsync($"{_urlModulo}" +
+                        var result = await client.GetAsync($"{_urlModulo}" +
                                                                                $"?currentpage={vm.DataPage.CurrentPage}" +
                                                                                $"&pagesize={vm.DataPage.PageSize}" +
                                                                                $"&orderby={vm.DataPage.OrderBy}" +
