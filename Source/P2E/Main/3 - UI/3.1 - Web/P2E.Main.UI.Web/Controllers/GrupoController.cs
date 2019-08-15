@@ -14,6 +14,8 @@ using P2E.Main.UI.Web.Models.SSO.Operacao;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
+using P2E.Main.UI.Web.Models.SSO.Servico;
+
 namespace P2E.Main.UI.Web.Controllers
 {
     [Authorize]
@@ -96,8 +98,7 @@ namespace P2E.Main.UI.Web.Controllers
                     var grupo = await result.Content.ReadAsAsync<Grupo>();
                     var grupoViewModel = _mapper.Map<GrupoViewModel>(grupo);
 
-                    grupoViewModel.Operacoes = CarregarOperacoes().Result;
-                    grupoViewModel.Rotinas = CarregarRotinas().Result;                    
+                    CarregarListasComplementares(grupoViewModel);
                     return View("Form", grupoViewModel);
                 }
             }
@@ -121,8 +122,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     var grupoViewModel = new GrupoViewModel();
 
-                    grupoViewModel.Operacoes = CarregarOperacoes().Result;
-                    grupoViewModel.Rotinas = CarregarRotinas().Result;
+                    CarregarListasComplementares(grupoViewModel);
                     return View("Form", grupoViewModel);
                 }
             }
@@ -140,6 +140,7 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(GrupoViewModel itemViewModel)
         {
+
             var result = new HttpResponseMessage();
             string responseBody = string.Empty;
 
@@ -158,11 +159,13 @@ namespace P2E.Main.UI.Web.Controllers
                 }
                 else
                 {
+                    CarregarListasComplementares(itemViewModel);
                     return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Grupo", grupo.Messages));
                 }
             }
             catch (Exception ex)
             {
+                CarregarListasComplementares(itemViewModel);
                 return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
@@ -222,6 +225,32 @@ namespace P2E.Main.UI.Web.Controllers
 
                 return _mapper.Map<List<OperacaoViewModel>>(lista);
             }
+        }
+
+
+        /// <summary>
+        /// Carrega a lista de serviços para a tela, dando a possibilidade de filtrar rotinas para associar ao grupo
+        /// </summary>
+        /// <returns></returns>
+        private async Task<List<ServicoViewModel>> CarregarServiços()
+        {
+            string urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/servico/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlRotina);
+                var lista = await result.Content.ReadAsAsync<List<Servico>>();
+
+                var servicos = _mapper.Map<List<ServicoViewModel>>(lista);
+                
+                return servicos;
+            }
+        }
+
+        private void CarregarListasComplementares(GrupoViewModel itemViewModel)
+        {
+            itemViewModel.Operacoes = CarregarOperacoes().Result;
+            itemViewModel.Rotinas = CarregarRotinas().Result;
+            itemViewModel.Servicos = CarregarServiços().Result;
         }
     }
 }
