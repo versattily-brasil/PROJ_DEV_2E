@@ -14,6 +14,8 @@ using P2E.Main.UI.Web.Models.SSO.Operacao;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
+using P2E.Main.UI.Web.Models.SSO.Servico;
+
 namespace P2E.Main.UI.Web.Controllers
 {
     [Authorize]
@@ -97,7 +99,8 @@ namespace P2E.Main.UI.Web.Controllers
                     var grupoViewModel = _mapper.Map<GrupoViewModel>(grupo);
 
                     grupoViewModel.Operacoes = CarregarOperacoes().Result;
-                    grupoViewModel.Rotinas = CarregarRotinas().Result;                    
+                    grupoViewModel.Rotinas = CarregarRotinas().Result;
+                    grupoViewModel.Servicos = CarregarServiços().Result;
                     return View("Form", grupoViewModel);
                 }
             }
@@ -123,6 +126,7 @@ namespace P2E.Main.UI.Web.Controllers
 
                     grupoViewModel.Operacoes = CarregarOperacoes().Result;
                     grupoViewModel.Rotinas = CarregarRotinas().Result;
+                    grupoViewModel.Servicos = CarregarServiços().Result;
                     return View("Form", grupoViewModel);
                 }
             }
@@ -221,6 +225,25 @@ namespace P2E.Main.UI.Web.Controllers
                 var lista = await result.Content.ReadAsAsync<List<Operacao>>();
 
                 return _mapper.Map<List<OperacaoViewModel>>(lista);
+            }
+        }
+
+
+        /// <summary>
+        /// Carrega a lista de serviços para a tela, dando a possibilidade de filtrar rotinas para associar ao grupo
+        /// </summary>
+        /// <returns></returns>
+        private async Task<List<ServicoViewModel>> CarregarServiços()
+        {
+            string urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/servico/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlRotina);
+                var lista = await result.Content.ReadAsAsync<List<Servico>>();
+
+                var servicos = _mapper.Map<List<ServicoViewModel>>(lista);
+                
+                return servicos;
             }
         }
     }
