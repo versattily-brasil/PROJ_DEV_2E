@@ -32,7 +32,10 @@ namespace P2E.Main.UI.Web.Models
         public static SmartNavigation Carregar(ClaimsPrincipal User)
         {
 
-            var sss = User.Claims.ToList().FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid").Value;
+            //var sss = User.Claims.ToList().FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid").Value;
+
+            //var claims = UserManager.GetClaims(userId);//get claims
+            //var someClaim = claims.FirstOrDefault(c => c.Type == "Date")
 
             var smart = BuildNavigationAsync()?.Result;
             return smart;
