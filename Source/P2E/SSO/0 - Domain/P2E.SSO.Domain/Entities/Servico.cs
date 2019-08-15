@@ -38,5 +38,6 @@ namespace P2E.SSO.Domain.Entities
 
         public override string ToString() => $"{TXT_DEC.ToString()}";
 
+        public List<Rotina> Rotinas { get; set; } = new List<Rotina>();
     }
 }

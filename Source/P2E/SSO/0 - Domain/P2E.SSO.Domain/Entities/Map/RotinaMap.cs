@@ -16,6 +16,7 @@ namespace P2E.SSO.Domain.Entities.Map
             Map(p => p.TX_DSC).Column("TX_DSC");
             Map(p => p.OP_TIPO).Column("OP_TIPO");
             Map(p => p.CD_SRV).Column("CD_SRV");
+            Map(p => p.TX_URL).Column("TX_URL");
         }
     }
 }

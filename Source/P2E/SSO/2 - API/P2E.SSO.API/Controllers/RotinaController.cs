@@ -53,12 +53,12 @@ namespace P2E.SSO.API.Controllers
                 rotina = _rotinaRepository.Find(p => p.CD_ROT == id);
                 rotina.RotinaServico = _rotinaServicoRepository.FindAll(p => p.CD_ROT == id).ToList();
 
-                rotina.Servico = _servicoRepository.FindAll().ToList();
+                rotina.Servicos = _servicoRepository.FindAll().ToList();
 
                 int i = 0;
                 foreach (var pns in rotina.RotinaServico)
                 {
-                    rotina.RotinaServico[i].Servico = rotina.Servico.Find(p => p.CD_SRV == pns.CD_SRV);                  
+                    rotina.RotinaServico[i].Servico = rotina.Servicos.Find(p => p.CD_SRV == pns.CD_SRV);                  
                     i++;
                 }
             }

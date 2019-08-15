@@ -30,8 +30,10 @@ namespace P2E.SSO.Domain.Entities
         public eTipoRotina OP_TIPO { get; set; }
         public int CD_SRV { get; set; }
 
+        public string TX_URL { get; set; }
+
         public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();
-        public List<Servico> Servico { get; set; } = new List<Servico>();
+        public List<Servico> Servicos { get; set; } = new List<Servico>();
         
         public bool IsValid()
         {
@@ -48,5 +50,9 @@ namespace P2E.SSO.Domain.Entities
         }
 
         public override string ToString() => $"{TX_NOME.ToString()}";
+
+        public List<Operacao> Operacoes { get; set; }
+
+        public Servico Servico { get; set; }
     }
 }

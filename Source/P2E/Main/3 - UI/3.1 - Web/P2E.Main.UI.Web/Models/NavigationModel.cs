@@ -1,6 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using P2E.SSO.Domain.Entities;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+
+using System.Security.Policy;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using P2E.Main.UI.Web.Extensions.Alerts;
+using P2E.Main.UI.Web.Models;
+using P2E.Main.UI.Web.Models.SSO.ParceiroNegocio;
+using P2E.Shared.Message;
+using P2E.Shared.Model;
 
 namespace P2E.Main.UI.Web.Models
 {
@@ -8,14 +21,91 @@ namespace P2E.Main.UI.Web.Models
     {
         private const string Underscore = "_";
         private const string Space = " ";
+        private static readonly AppSettings appSettings;
 
-        public static SmartNavigation Seed => BuildNavigation();
+        public static SmartNavigation Seed => Carregar();
 
-        private static SmartNavigation BuildNavigation(bool seedOnly = true)
+        public static SmartNavigation Carregar()
+        {
+            var smart = BuildNavigationAsync()?.Result;
+            return smart;
+
+        }
+
+
+        private static async System.Threading.Tasks.Task<SmartNavigation> BuildNavigationAsync(bool seedOnly = true)
         {
             var jsonText = File.ReadAllText("nav.json",System.Text.Encoding.UTF8);
             var navigation = NavigationBuilder.FromJson(jsonText);
-            var menu = FillProperties(navigation.Lists, seedOnly);
+
+            var usuarioGrupos = new List<UsuarioGrupo>();
+
+            // Carregar Dados do DB
+            string urlUsuario = $"http://localhost:7000/sso/v1/usuario/permissoes/3";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlUsuario);
+                usuarioGrupos = await result.Content.ReadAsAsync<List<UsuarioGrupo>>();
+            }
+
+            
+            var servicos = new List<Servico>();
+
+            foreach (var item in usuarioGrupos)
+            {
+                foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                {
+                    if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                    {
+                        var servico = subitem.Rotina.Servico;
+                        servico.Rotinas = new List<Rotina>();
+                        servico.Rotinas = item.ListaRotinaGrupoOperacao
+                            .Where(p => p.Rotina.CD_SRV == servico.CD_SRV)
+                            .Select(x => x.Rotina)
+                            .Distinct().ToList();
+
+                        servicos.Add(servico);
+                    }
+                }
+
+                for (int i = 0; i < servicos.Count; i++)
+                {
+                    var root = servicos[i].Rotinas;
+                    servicos[i].Rotinas = new List<Rotina>();
+
+                    foreach (var r in root)
+                    {
+                        if (!servicos[i].Rotinas.Any(p => p.CD_ROT == r.CD_ROT))
+                        {
+                            servicos[i].Rotinas.Add(r);
+                        }
+                    }
+                }
+            }
+
+            var listItems = new List<ListItem>();
+
+
+            foreach (var servico in servicos.Distinct())
+            {
+                var item = new ListItem() { Title =  servico.TXT_DEC};
+
+                item.Items = new List<ListItem>();
+
+                foreach (var rotina in servico.Rotinas)
+                {
+                    item.Items.Add(new ListItem()
+                    {
+                        Title = rotina.TX_NOME,
+                        Href = rotina.TX_URL
+                    });
+                }
+
+                listItems.Add(item);
+            }
+
+            var menu = FillProperties(listItems, seedOnly);
+            //var menu = FillProperties(navigation.Lists, seedOnly);
 
             return new SmartNavigation(menu);
         }

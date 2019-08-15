@@ -20,13 +20,21 @@ namespace P2E.SSO.API.Controllers
         private readonly IUsuarioGrupoRepository _usuarioGrupoRepository;
         private readonly IGrupoRepository _grupoRepository;
         private readonly IModuloRepository _moduloRepository;
+        private readonly IRotinaRepository _rotinaRepository;
+        private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
+        private readonly IOperacaoRepository _operacaoRepository;
+        private readonly IServicoRepository _servicoRepository;
 
         private readonly IMapper _mapper;
         public UsuarioController(IUsuarioRepository usuarioRepository, 
                                  IUsuarioModuloRepository usuarioModuloRepository, 
                                  IUsuarioGrupoRepository usuarioGrupoRepository, 
                                  IModuloRepository moduloRepository, 
-                                 IGrupoRepository grupoRepository, 
+                                 IGrupoRepository grupoRepository,
+                                 IRotinaRepository rotinaRepository, 
+                                 IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository, 
+                                 IOperacaoRepository operacaoRepository, 
+                                 IServicoRepository servicoRepository, 
                                  IMapper mapper)
         {
             _mapper = mapper;
@@ -35,6 +43,10 @@ namespace P2E.SSO.API.Controllers
             _usuarioGrupoRepository = usuarioGrupoRepository;
             _grupoRepository = grupoRepository;
             _moduloRepository = moduloRepository;
+            _rotinaRepository = rotinaRepository;
+            _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
+            _operacaoRepository = operacaoRepository;
+            _servicoRepository = servicoRepository;
         }
 
         [HttpGet]
@@ -43,6 +55,36 @@ namespace P2E.SSO.API.Controllers
         {
             page = _usuarioRepository.GetByPage(page, tx_nome);
             return page;
+        }
+
+        [HttpGet]
+        [Route("api/v1/usuario/permissoes/{id}")]
+        public List<UsuarioGrupo> GetPermissoes(int id)
+        {
+            // Obtem os grupos em que o usuario está associado
+            var usuarioGrupos = _usuarioGrupoRepository.FindAll(o => o.CD_USR == id).ToList();
+
+            foreach (var usuarioGrupo in usuarioGrupos)
+            {
+                // Obtem rotinas que estão associadas ao grupo
+                var rotinaGrupos = _rotinaGrupoOperacaoRepository.FindAll(p => p.CD_GRP == usuarioGrupo.CD_GRP);
+
+                foreach (var rotinaGrupo in rotinaGrupos)
+                {
+                    // Carrega a rotina
+                    rotinaGrupo.Rotina = _rotinaRepository.Find(p => p.CD_ROT == rotinaGrupo.CD_ROT);
+
+                    // Carrega as Permissões
+                    rotinaGrupo.Rotina.Operacoes = _operacaoRepository.FindAll(p=> p.CD_OPR == rotinaGrupo.CD_OPR).ToList();
+
+                    // Carrega os Serviços
+                    rotinaGrupo.Rotina.Servico = _servicoRepository.Find(p => p.CD_SRV == rotinaGrupo.Rotina.CD_SRV);
+                }
+
+                usuarioGrupo.ListaRotinaGrupoOperacao.AddRange(rotinaGrupos);
+            }
+
+            return usuarioGrupos;
         }
 
         // GET: api/usuario/5

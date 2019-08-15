@@ -16,5 +16,8 @@ namespace P2E.SSO.Domain.Entities
 
         public Grupo Grupo { get; set; }
         public Operacao Operacao { get; set; }
+
+        public Rotina Rotina { get; set; }
+
     }
 }
