@@ -63,6 +63,7 @@ namespace P2E.Main.UI.Web.Models
 
                 var servicos = new List<Servico>();
 
+                // carregar os serviços
                 foreach (var item in usuarioGrupos)
                 {
                     foreach (var subitem in item.ListaRotinaGrupoOperacao)
@@ -70,30 +71,67 @@ namespace P2E.Main.UI.Web.Models
                         if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
                         {
                             var servico = subitem.Rotina.Servico;
-                            servico.Rotinas = new List<Rotina>();
-                            servico.Rotinas = item.ListaRotinaGrupoOperacao
-                                .Where(p => p.Rotina.CD_SRV == servico.CD_SRV)
-                                .Select(x => x.Rotina)
-                                .Distinct().ToList();
-
                             servicos.Add(servico);
                         }
                     }
+                }
 
-                    for (int i = 0; i < servicos.Count; i++)
+
+                // carregar as rotinas dos serviços
+                // carregar os serviços
+                foreach (var item in usuarioGrupos)
+                {
+                    foreach (var subitem in item.ListaRotinaGrupoOperacao)
                     {
-                        var root = servicos[i].Rotinas;
-                        servicos[i].Rotinas = new List<Rotina>();
+                        var servico = servicos.First(p=> p.CD_SRV == subitem.Rotina.CD_SRV);
 
-                        foreach (var r in root)
+                        if (servico.Rotinas == null)
+                            servico.Rotinas = new List<Rotina>();
+
+                        if (!servico.Rotinas.Any(p => p.CD_ROT == subitem.CD_ROT))
                         {
-                            if (!servicos[i].Rotinas.Any(p => p.CD_ROT == r.CD_ROT))
-                            {
-                                servicos[i].Rotinas.Add(r);
-                            }
+                            servico.Rotinas.Add(subitem.Rotina);
                         }
                     }
                 }
+
+                //foreach (var item in usuarioGrupos)
+                //{
+                //    foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                //    {
+                //        if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                //        {
+                //            var servico = subitem.Rotina.Servico;
+
+                //            servico.Rotinas = new List<Rotina>();
+
+                //            var permissoes = item.ListaRotinaGrupoOperacao
+                //                .Where(p => p.Rotina.CD_SRV == servico.CD_SRV);
+
+                //            foreach (var permissao in permissoes)
+                //            {
+                //                servico.Rotinas.Add(permissao.Rotina);
+                //            }
+
+                //            servicos.Add(servico);
+                //        }
+                //    }
+
+                //}
+
+                //for (int i = 0; i < servicos.Count; i++)
+                //{
+                //    var root = servicos[i].Rotinas;
+                //    servicos[i].Rotinas = new List<Rotina>();
+
+                //    foreach (var r in root)
+                //    {
+                //        if (!servicos[i].Rotinas.Any(p => p.CD_ROT == r.CD_ROT))
+                //        {
+                //            servicos[i].Rotinas.Add(r);
+                //        }
+                //    }
+                //}
 
                 var listItems = new List<ListItem>();
 
