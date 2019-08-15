@@ -53,6 +53,7 @@ namespace P2E.SSO.Domain.Entities
 
         public List<Operacao> Operacoes { get; set; }
 
+        [NotMapped]
         public Servico Servico { get; set; }
     }
 }

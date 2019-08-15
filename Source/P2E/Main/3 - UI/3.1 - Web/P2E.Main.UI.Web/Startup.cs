@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 
 namespace P2E.Main.UI.Web
 {
@@ -33,7 +34,7 @@ namespace P2E.Main.UI.Web
             services.Configure<AppSettings>(appSettingsSection);
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<AppSettings>>().Value);
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+            services.AddDefaultIdentity<IdentityUser>();
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

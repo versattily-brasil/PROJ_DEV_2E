@@ -4,7 +4,7 @@
     <nav id="js-primary-nav" class="primary-nav" role="navigation">
         <partial name="_NavFilter" />
         @*<partial name="_NavInfoCard" />*@
-        <partial name="_PageNavigation" model="@NavigationModel.Seed" />
+        <partial name="_PageNavigation" model="@NavigationModel.Carregar(User)"/>
         <partial name="_NavFilterMsg" />
     </nav>
     <!-- END PRIMARY NAVIGATION -->

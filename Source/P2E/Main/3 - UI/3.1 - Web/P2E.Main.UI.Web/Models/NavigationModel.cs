@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-
+using System.Security.Claims;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -14,6 +14,9 @@ using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.ParceiroNegocio;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Web;
+using Microsoft.AspNetCore.Identity;
 
 namespace P2E.Main.UI.Web.Models
 {
@@ -22,14 +25,17 @@ namespace P2E.Main.UI.Web.Models
         private const string Underscore = "_";
         private const string Space = " ";
         private static readonly AppSettings appSettings;
+        private static string _userId = string.Empty;
 
-        public static SmartNavigation Seed => Carregar();
+        public static SmartNavigation Seed => Carregar(null);
 
-        public static SmartNavigation Carregar()
+        public static SmartNavigation Carregar(ClaimsPrincipal User)
         {
+
+            var sss = User.Claims.ToList().FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid").Value;
+
             var smart = BuildNavigationAsync()?.Result;
             return smart;
-
         }
 
 
@@ -41,6 +47,8 @@ namespace P2E.Main.UI.Web.Models
             var usuarioGrupos = new List<UsuarioGrupo>();
 
             // Carregar Dados do DB
+            
+
             string urlUsuario = $"http://localhost:7000/sso/v1/usuario/permissoes/3";
             using (var client = new HttpClient())
             {
@@ -104,8 +112,8 @@ namespace P2E.Main.UI.Web.Models
                 listItems.Add(item);
             }
 
-            var menu = FillProperties(listItems, seedOnly);
-            //var menu = FillProperties(navigation.Lists, seedOnly);
+            //var menu = FillProperties(listItems, seedOnly);
+            var menu = FillProperties(navigation.Lists, seedOnly);
 
             return new SmartNavigation(menu);
         }

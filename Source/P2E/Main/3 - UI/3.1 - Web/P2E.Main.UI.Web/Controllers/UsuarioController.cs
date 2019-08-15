@@ -245,6 +245,8 @@ namespace P2E.Main.UI.Web.Controllers
                     {
                         var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                         identity.AddClaim(new Claim(ClaimTypes.Name, usuario.TX_LOGIN));
+                        identity.AddClaim(new Claim(ClaimTypes.Sid, usuario.CD_USR.ToString()));
+                        
                         var principal = new ClaimsPrincipal(identity);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
