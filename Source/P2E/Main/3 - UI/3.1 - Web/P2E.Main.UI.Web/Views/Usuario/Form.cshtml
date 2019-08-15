@@ -172,7 +172,14 @@
                         </div>
 
                         <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
-                        <button type="button" class="btn btn-danger" value="Cancel" onclick="history.back();">Cancelar</button>
+                        <button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>
+                        <button data-id="@Model.CD_USR"
+                                data-controller="Usuario"
+                                data-action="Delete"
+                                data-body-message="Deseja excluir este Usuário?"
+                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
+                            Deletar
+                        </button>
                     </div>
                 </form>
             </div>

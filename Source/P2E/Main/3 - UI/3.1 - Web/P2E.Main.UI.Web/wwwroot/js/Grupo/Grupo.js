@@ -2,9 +2,20 @@ var Grupo = /** @class */ (function () {
     function Grupo() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
+        this.btnExcluir = $("#btnExcluir");
     }
     Grupo.prototype.init = function () {
         var _this = this;
+        this.btnExcluir.on("click", function () {
+            var agrupamento = "Grupo";
+            var apagar = confirm('Deseja realmente excluir este registro?');
+            if (apagar) {
+                $(_this).removeAttr($(_this).data("cd_srv"));
+            }
+            else {
+                event.preventDefault();
+            }
+        });
         $("#comboServico").on("change", function () {
             var encontrou = false;
             $("#comboRotina > option").each(function () {
@@ -24,7 +35,7 @@ var Grupo = /** @class */ (function () {
             }
             $('#rotina-selecao-validacao').text("");
         });
-        $(".btn-add-rotina").on("click", function () {
+        $("#btn-add-rotina").on("click", function () {
             $('#rotina-selecao-validacao').text("");
             var existe = false;
             $(".rotina_selecionada").each(function () {

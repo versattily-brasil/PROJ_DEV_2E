@@ -115,7 +115,14 @@
                                 <div class="col-12">
                                     <br />
                                     <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
-                                    <button type="button" class="btn btn-danger" value="Cancel" onclick="history.back();">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>
+                                    <button data-id="@Model.CD_ROT"
+                                            data-controller="Rotina"
+                                            data-action="Delete"
+                                            data-body-message="Deseja excluir esta Rotina?"
+                                            style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
+                                        Deletar
+                                    </button>
                                 </div>
                             </div>
                         </div>

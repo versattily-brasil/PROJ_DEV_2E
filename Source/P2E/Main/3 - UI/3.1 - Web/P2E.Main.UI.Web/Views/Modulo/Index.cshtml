@@ -59,7 +59,6 @@
                                         <th width="100">Código</th>
                                         <th>Descrição</th>
                                         <th width="20"></th>
-                                        <th width="20"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,7 +67,7 @@
                                         <tr>
                                             <td>@item.CD_MOD</td>
                                             <td>@item.TX_DSC</td>
-                                            <td class="text-center">
+                                            @*<td class="text-center">
                                                 <i data-id="@item.CD_MOD"
                                                    data-controller="Modulo"
                                                    data-action="Delete"
@@ -76,7 +75,7 @@
                                                    style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
                                                 </i>
-                                            </td>
+                                            </td>*@
                                             <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_MOD"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
                                         </tr>
                                     }

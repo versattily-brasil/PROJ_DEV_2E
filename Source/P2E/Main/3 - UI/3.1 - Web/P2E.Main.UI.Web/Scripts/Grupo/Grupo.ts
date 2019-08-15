@@ -2,8 +2,23 @@
 
     form = $("#form");
     btnSalvar = $("#btnSalvar");
+    btnExcluir = $("#btnExcluir");
 
     init(): void {
+
+        this.btnExcluir.on("click", () => {
+
+            var agrupamento = "Grupo";
+
+            var apagar = confirm('Deseja realmente excluir este registro?');
+            if (apagar) {
+
+                $(this).removeAttr($(this).data("cd_srv"));
+                
+            } else {
+                event.preventDefault();
+            }
+        });
 
         $("#comboServico").on("change", function () {
 
@@ -26,7 +41,7 @@
             $('#rotina-selecao-validacao').text("");
         });
 
-        $(".btn-add-rotina").on("click", function () {
+        $("#btn-add-rotina").on("click", function () {
 
             $('#rotina-selecao-validacao').text("");
             var existe = false;
@@ -96,7 +111,7 @@
             } else {
                 this.form.submit();
             }
-            
+
         });
 
         $(document).on("click", ".excluir-rotina", function () {

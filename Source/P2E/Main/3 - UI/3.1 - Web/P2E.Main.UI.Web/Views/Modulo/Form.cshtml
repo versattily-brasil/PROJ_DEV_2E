@@ -33,7 +33,14 @@
                             <input type="text" maxlength="40" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-primary">Salvar</button>
-                        <button type="button" class="btn btn-danger" value="Cancel" onclick="history.back();">Cancelar</button>
+                        <button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>
+                        <button data-id="@Model.CD_MOD"
+                                data-controller="Modulo"
+                                data-action="Delete"
+                                data-body-message="Deseja excluir este Modulo?"
+                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
+                            Deletar
+                        </button>
                     </form>
                 </div>
             </div>

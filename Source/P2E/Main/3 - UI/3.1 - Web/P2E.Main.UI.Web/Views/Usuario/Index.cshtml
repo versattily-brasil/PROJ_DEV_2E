@@ -62,7 +62,6 @@
                                         <th>Login</th>
                                         <th>Status</th>
                                         <th width="20"></th>
-                                        <th width="20"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,7 +72,7 @@
                                             <td>@usr.TX_NOME</td>
                                             <td>@usr.TX_LOGIN</td>
                                             <td>@usr?.OP_STATUS.ToDescription()</td>
-                                            <td class="text-center">
+                                            @*<td class="text-center">
                                                 <i data-id="@usr.CD_USR"
                                                    data-controller="Usuario"
                                                    data-action="Delete"
@@ -81,7 +80,7 @@
                                                    style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
                                                 </i>
-                                            </td>
+                                            </td>*@
                                             <td class="text-center"><a asp-action="Edit" asp-route-id="@usr.CD_USR"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
                                         </tr>
                                     }
