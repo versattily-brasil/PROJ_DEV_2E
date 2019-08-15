@@ -45,7 +45,6 @@ namespace P2E.Main.UI.Web
             services.AddAutoMapper();
             services.AddFlashes();
 
-
             services.AddMvc().ConfigureApiBehaviorOptions(o =>
             {
                 o.InvalidModelStateResponseFactory = context =>
@@ -95,10 +94,10 @@ namespace P2E.Main.UI.Web
                 app.UseHsts();
             }
 
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
-            app.UseCookiePolicy();
 
             app.UseMvc(routes =>
             {

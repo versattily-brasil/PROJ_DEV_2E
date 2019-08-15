@@ -53,7 +53,7 @@ namespace P2E.Main.UI.Web.Models
 
             if (!string.IsNullOrEmpty(_userId))
             {
-                string urlUsuario = $"http://localhost:7000/sso/v1/usuario/permissoes/{_userId}";
+                string urlUsuario = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoes/{_userId}";
                 using (var client = new HttpClient())
                 {
                     var result = await client.GetAsync(urlUsuario);

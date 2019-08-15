@@ -246,9 +246,13 @@ namespace P2E.Main.UI.Web.Controllers
                         var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                         identity.AddClaim(new Claim(ClaimTypes.Name, usuario.TX_LOGIN));
                         identity.AddClaim(new Claim(ClaimTypes.Sid, usuario.CD_USR.ToString()));
-                        
+
                         var principal = new ClaimsPrincipal(identity);
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                        var aut = new AuthenticationProperties();
+                        aut.ExpiresUtc = DateTime.Now.AddHours(8);
+
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, aut);
 
 
                         return RedirectToAction("Index", "Home");
