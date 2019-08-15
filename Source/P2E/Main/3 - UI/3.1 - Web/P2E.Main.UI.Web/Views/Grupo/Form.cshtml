@@ -56,11 +56,14 @@
                                                     <label class="form-label">Rotina</label>
                                                     <select class="form-control" id="comboRotina" disabled>
                                                         <option disabled selected>--- Selecione uma rotina ---</option>
-                                                        @foreach(var rotina in Model.Rotinas)
+                                                        @foreach (var rotina in Model.Rotinas)
                                                         {
-                                                        <option data-cd_srv="@rotina.CD_SRV" value="@rotina.CD_ROT">@rotina.TX_NOME</option>
+                                                            <option data-cd_srv="@rotina.CD_SRV" value="@rotina.CD_ROT">@rotina.TX_NOME</option>
                                                         }
                                                     </select>
+                                                    <p class="text-danger" id="rotina-selecao-validacao">
+
+                                                    </p>
                                                 </div>
                                             </div>
 
@@ -120,6 +123,10 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                        <div>
+                            <p class="text-danger" id="rotina-validacao">
+                            </p>
                         </div>
                         <br />
                         <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>

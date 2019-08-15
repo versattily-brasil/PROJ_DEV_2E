@@ -98,9 +98,7 @@ namespace P2E.Main.UI.Web.Controllers
                     var grupo = await result.Content.ReadAsAsync<Grupo>();
                     var grupoViewModel = _mapper.Map<GrupoViewModel>(grupo);
 
-                    grupoViewModel.Operacoes = CarregarOperacoes().Result;
-                    grupoViewModel.Rotinas = CarregarRotinas().Result;
-                    grupoViewModel.Servicos = CarregarServiços().Result;
+                    CarregarListasComplementares(grupoViewModel);
                     return View("Form", grupoViewModel);
                 }
             }
@@ -124,9 +122,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     var grupoViewModel = new GrupoViewModel();
 
-                    grupoViewModel.Operacoes = CarregarOperacoes().Result;
-                    grupoViewModel.Rotinas = CarregarRotinas().Result;
-                    grupoViewModel.Servicos = CarregarServiços().Result;
+                    CarregarListasComplementares(grupoViewModel);
                     return View("Form", grupoViewModel);
                 }
             }
@@ -144,6 +140,7 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(GrupoViewModel itemViewModel)
         {
+
             var result = new HttpResponseMessage();
             string responseBody = string.Empty;
 
@@ -162,11 +159,13 @@ namespace P2E.Main.UI.Web.Controllers
                 }
                 else
                 {
+                    CarregarListasComplementares(itemViewModel);
                     return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Grupo", grupo.Messages));
                 }
             }
             catch (Exception ex)
             {
+                CarregarListasComplementares(itemViewModel);
                 return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
@@ -245,6 +244,13 @@ namespace P2E.Main.UI.Web.Controllers
                 
                 return servicos;
             }
+        }
+
+        private void CarregarListasComplementares(GrupoViewModel itemViewModel)
+        {
+            itemViewModel.Operacoes = CarregarOperacoes().Result;
+            itemViewModel.Rotinas = CarregarRotinas().Result;
+            itemViewModel.Servicos = CarregarServiços().Result;
         }
     }
 }
