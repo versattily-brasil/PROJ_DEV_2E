@@ -65,6 +65,25 @@ namespace P2E.Main.UI.Web.Controllers
                         vm.DataPage.UrlSearch = $"rotina?";
                         if (vm.DataPage.Items.Any())
                         {
+                            //ORGANIZAR CODIGO URGENTE BY LERRON
+                            var results = await client.GetAsync($"{_urlRotina}/{0}");
+                            results.EnsureSuccessStatusCode();
+                            var rotina = await results.Content.ReadAsAsync<Rotina>();
+                            var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
+                            rotinaViewModel.Servicos = CarregarServico().Result;
+
+                            foreach (var dr in rotinaViewModel.Servicos)
+                            {
+                                foreach (var item in vm.DataPage.Items)
+                                {
+                                    if (  dr.CD_SRV == item.CD_SRV  )
+                                    {
+                                        item.TX_URL = dr.TXT_DEC;
+                                    }
+                                }
+                            }
+
+                            vm.Servicos = rotinaViewModel.Servicos;
                             return View("Index", vm);
                         }
                         else

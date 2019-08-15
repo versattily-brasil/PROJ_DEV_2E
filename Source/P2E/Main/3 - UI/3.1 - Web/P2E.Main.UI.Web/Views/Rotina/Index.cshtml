@@ -72,17 +72,9 @@
                                             <td>@item.CD_ROT</td>
                                             <td>@item.TX_NOME</td>
                                             <td>@item.TX_DSC</td>
-                                            <td>@item.CD_SRV</td>
+                                            <td>@item.TX_URL</td>
 
-                                            @*<td class="text-center">
-                                                    <i data-id="@item.CD_ROT"
-                                                       data-controller="Rotina"
-                                                       data-action="Delete"
-                                                       data-body-message="Deseja excluir este registro?"
-                                                       style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
-
-                                                    </i>
-                                                </td>*@
+                                            
                                             <td class="text-center"><a asp-action="Edit" asp-route-id="@item.CD_ROT"><i style="font-weight:bold;cursor:pointer" class="fal fa-edit text-success"></i></a></td>
                                         </tr>
                                     }

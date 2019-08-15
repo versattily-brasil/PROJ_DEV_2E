@@ -23,6 +23,6 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
 
         public List<ServicoViewModel> ServicosViewModels { get; set; } = new List<ServicoViewModel>();
 
-        public P2E.SSO.Domain.Entities.Servico Servico { get; set; }
+        public P2E.SSO.Domain.Entities.Servico ServicoList { get; set; }
     }
 }
