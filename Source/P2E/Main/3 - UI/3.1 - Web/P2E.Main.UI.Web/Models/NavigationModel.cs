@@ -32,7 +32,7 @@ namespace P2E.Main.UI.Web.Models
         public static SmartNavigation Carregar(ClaimsPrincipal User)
         {
 
-            //var sss = User.Claims.ToList().FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid").Value;
+            _userId = User.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid");
 
             //var claims = UserManager.GetClaims(userId);//get claims
             //var someClaim = claims.FirstOrDefault(c => c.Type == "Date")
@@ -50,75 +50,119 @@ namespace P2E.Main.UI.Web.Models
             var usuarioGrupos = new List<UsuarioGrupo>();
 
             // Carregar Dados do DB
-            
 
-            string urlUsuario = $"http://localhost:7000/sso/v1/usuario/permissoes/3";
-            using (var client = new HttpClient())
+            if (!string.IsNullOrEmpty(_userId))
             {
-                var result = await client.GetAsync(urlUsuario);
-                usuarioGrupos = await result.Content.ReadAsAsync<List<UsuarioGrupo>>();
-            }
-
-            
-            var servicos = new List<Servico>();
-
-            foreach (var item in usuarioGrupos)
-            {
-                foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                string urlUsuario = $"http://localhost:7000/sso/v1/usuario/permissoes/{_userId}";
+                using (var client = new HttpClient())
                 {
-                    if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
-                    {
-                        var servico = subitem.Rotina.Servico;
-                        servico.Rotinas = new List<Rotina>();
-                        servico.Rotinas = item.ListaRotinaGrupoOperacao
-                            .Where(p => p.Rotina.CD_SRV == servico.CD_SRV)
-                            .Select(x => x.Rotina)
-                            .Distinct().ToList();
-
-                        servicos.Add(servico);
-                    }
+                    var result = await client.GetAsync(urlUsuario);
+                    usuarioGrupos = await result.Content.ReadAsAsync<List<UsuarioGrupo>>();
                 }
 
-                for (int i = 0; i < servicos.Count; i++)
-                {
-                    var root = servicos[i].Rotinas;
-                    servicos[i].Rotinas = new List<Rotina>();
 
-                    foreach (var r in root)
+                var servicos = new List<Servico>();
+
+                // carregar os serviços
+                foreach (var item in usuarioGrupos)
+                {
+                    foreach (var subitem in item.ListaRotinaGrupoOperacao)
                     {
-                        if (!servicos[i].Rotinas.Any(p => p.CD_ROT == r.CD_ROT))
+                        if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
                         {
-                            servicos[i].Rotinas.Add(r);
+                            var servico = subitem.Rotina.Servico;
+                            servicos.Add(servico);
                         }
                     }
                 }
-            }
-
-            var listItems = new List<ListItem>();
 
 
-            foreach (var servico in servicos.Distinct())
-            {
-                var item = new ListItem() { Title =  servico.TXT_DEC};
-
-                item.Items = new List<ListItem>();
-
-                foreach (var rotina in servico.Rotinas)
+                // carregar as rotinas dos serviços
+                // carregar os serviços
+                foreach (var item in usuarioGrupos)
                 {
-                    item.Items.Add(new ListItem()
+                    foreach (var subitem in item.ListaRotinaGrupoOperacao)
                     {
-                        Title = rotina.TX_NOME,
-                        Href = rotina.TX_URL
-                    });
+                        var servico = servicos.First(p=> p.CD_SRV == subitem.Rotina.CD_SRV);
+
+                        if (servico.Rotinas == null)
+                            servico.Rotinas = new List<Rotina>();
+
+                        if (!servico.Rotinas.Any(p => p.CD_ROT == subitem.CD_ROT))
+                        {
+                            servico.Rotinas.Add(subitem.Rotina);
+                        }
+                    }
                 }
 
-                listItems.Add(item);
+                //foreach (var item in usuarioGrupos)
+                //{
+                //    foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                //    {
+                //        if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                //        {
+                //            var servico = subitem.Rotina.Servico;
+
+                //            servico.Rotinas = new List<Rotina>();
+
+                //            var permissoes = item.ListaRotinaGrupoOperacao
+                //                .Where(p => p.Rotina.CD_SRV == servico.CD_SRV);
+
+                //            foreach (var permissao in permissoes)
+                //            {
+                //                servico.Rotinas.Add(permissao.Rotina);
+                //            }
+
+                //            servicos.Add(servico);
+                //        }
+                //    }
+
+                //}
+
+                //for (int i = 0; i < servicos.Count; i++)
+                //{
+                //    var root = servicos[i].Rotinas;
+                //    servicos[i].Rotinas = new List<Rotina>();
+
+                //    foreach (var r in root)
+                //    {
+                //        if (!servicos[i].Rotinas.Any(p => p.CD_ROT == r.CD_ROT))
+                //        {
+                //            servicos[i].Rotinas.Add(r);
+                //        }
+                //    }
+                //}
+
+                var listItems = new List<ListItem>();
+
+
+                foreach (var servico in servicos.Distinct())
+                {
+                    var item = new ListItem() { Title = servico.TXT_DEC };
+
+                    item.Items = new List<ListItem>();
+
+                    foreach (var rotina in servico.Rotinas)
+                    {
+                        item.Items.Add(new ListItem()
+                        {
+                            Title = rotina.TX_NOME,
+                            Href = rotina.TX_URL
+                        });
+                    }
+
+                    listItems.Add(item);
+                }
+
+                var menu = FillProperties(listItems, seedOnly);
+                //var menu = FillProperties(navigation.Lists, seedOnly);
+
+                return new SmartNavigation(menu);
             }
-
-            //var menu = FillProperties(listItems, seedOnly);
-            var menu = FillProperties(navigation.Lists, seedOnly);
-
-            return new SmartNavigation(menu);
+            else
+            {
+                return new SmartNavigation(null);
+            }
         }
 
         private static List<ListItem> FillProperties(IEnumerable<ListItem> items, bool seedOnly, ListItem parent = null)
