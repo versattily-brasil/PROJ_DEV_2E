@@ -15,7 +15,7 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
         public string TX_DSC { get; set; }
         public eTipoRotina OP_TIPO { get; set; }
         public int CD_SRV { get; set; }
-        public int TX_URL { get; set; }
+        public string TX_URL { get; set; }
 
         public List<P2E.SSO.Domain.Entities.Servico> Servicos { get; set; }
 
