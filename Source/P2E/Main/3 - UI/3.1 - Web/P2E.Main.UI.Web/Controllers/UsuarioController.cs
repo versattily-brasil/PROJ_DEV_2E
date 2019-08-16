@@ -206,6 +206,10 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> Cancel()
+        {
+            return RedirectToAction("Index");
+        }
 
         /// <summary>
         /// 

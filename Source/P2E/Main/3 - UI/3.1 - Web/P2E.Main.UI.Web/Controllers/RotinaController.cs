@@ -21,7 +21,7 @@ namespace P2E.Main.UI.Web.Controllers
         #region variáveis locais
         private readonly AppSettings appSettings;
         private readonly IMapper _mapper;
-        private string _urlRotina;
+        private string _urlRotina, _urlServico;
         #endregion
 
         #region construtor
@@ -30,6 +30,7 @@ namespace P2E.Main.UI.Web.Controllers
             this.appSettings = appSettings;
             _mapper = mapper;
             _urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/rotina";
+            _urlServico = this.appSettings.ApiBaseURL + $"sso/v1/servico";
         }
         #endregion
 
@@ -61,29 +62,19 @@ namespace P2E.Main.UI.Web.Controllers
 
 
                         result.EnsureSuccessStatusCode();
+
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Rotina>>();
+
+                        foreach (Rotina item in vm.DataPage.Items.ToList())
+                        { 
+                            var results= await client.GetAsync($"{_urlServico}/{item.CD_SRV}");
+
+                            item.Servico = await results.Content.ReadAsAsync<Servico>();
+                        }
+
                         vm.DataPage.UrlSearch = $"rotina?";
                         if (vm.DataPage.Items.Any())
-                        {
-                            //ORGANIZAR CODIGO URGENTE BY LERRON
-                            var results = await client.GetAsync($"{_urlRotina}/{0}");
-                            results.EnsureSuccessStatusCode();
-                            var rotina = await results.Content.ReadAsAsync<Rotina>();
-                            var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
-                            rotinaViewModel.Servicos = CarregarServico().Result;
-
-                            foreach (var dr in rotinaViewModel.Servicos)
-                            {
-                                foreach (var item in vm.DataPage.Items)
-                                {
-                                    if (  dr.CD_SRV == item.CD_SRV  )
-                                    {
-                                        item.TX_URL = dr.TXT_DEC;
-                                    }
-                                }
-                            }
-
-                            vm.Servicos = rotinaViewModel.Servicos;
+                        {                         
                             return View("Index", vm);
                         }
                         else

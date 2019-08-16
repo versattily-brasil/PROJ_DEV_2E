@@ -57,14 +57,34 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+
+                            @*<div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_URL">Url</label>
                                         <input type="text" maxlength="255" asp-for="TX_URL" placeholder="Descrição" class="form-control">
                                     </div>
                                 </div>
+                            </div>*@
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Url</label>
+                                        <select asp-for="@Model.TX_URL" class="form-control">
+
+                                            <option selected value="Selecione" disabled>--Selecione---</option>
+                                            <option value="/usuario">usuario</option>
+                                            <option value="/rotina">rotina</option>
+                                            <option value="/grupo">grupo</option>
+                                            <option value="/parceiroNegocio">parceiro</option>
+                                            <option value="/servico">servico</option>
+
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                         <hr />
                         @*<div class="form-group mb-0">

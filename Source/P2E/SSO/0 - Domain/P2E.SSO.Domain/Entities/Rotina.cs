@@ -12,12 +12,13 @@ namespace P2E.SSO.Domain.Entities
     {
         public Rotina() {}
 
-        public Rotina(string tx_nome, string tx_dsc, eTipoRotina op_tipo, int cd_srv)
+        public Rotina(string tx_nome, string tx_dsc, eTipoRotina op_tipo, int cd_srv, string tx_url)
         {
             TX_NOME = tx_nome?.Trim();
             TX_DSC = tx_dsc?.Trim();
             OP_TIPO = op_tipo;
             CD_SRV = cd_srv;
+            TX_URL = tx_url;
 
             IsValid();
         }
