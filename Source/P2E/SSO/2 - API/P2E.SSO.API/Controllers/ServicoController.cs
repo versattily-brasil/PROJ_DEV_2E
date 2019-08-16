@@ -17,10 +17,14 @@ namespace P2E.SSO.API.Controllers
     public class ServicoController : ControllerBase
     {
         private readonly IServicoRepository _servicoRepository;
+        private readonly IRotinaRepository _rotinaRepository;
+        private readonly IRotinaServicoRepository _rotinaServicoRepository;
         
-        public ServicoController(IServicoRepository servicoRepository)
+        public ServicoController(IServicoRepository servicoRepository, IRotinaServicoRepository rotinaServicoRepository, IRotinaRepository rotinaRepository)
         {
             _servicoRepository = servicoRepository;
+            _rotinaServicoRepository = rotinaServicoRepository;
+            _rotinaRepository = rotinaRepository;
         }
 
         // GET: api/Modulo
@@ -102,17 +106,27 @@ namespace P2E.SSO.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("api/v1/servico/{id}")]
-        public object Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {
                 var objeto = _servicoRepository.FindById(id);
-                _servicoRepository.Delete(objeto);
-                return new { message = "OK" };
+
+                var rotinas = _rotinaRepository.Find(p => p.CD_SRV == id);
+
+
+                if (rotinas != null)
+                    return BadRequest("Não foi possivel excluir esse serviço pois ele está associado a alguma rotina.");
+                else
+                {
+                    _servicoRepository.Delete(objeto);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
+
             }
         }
     }
