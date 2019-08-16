@@ -44,8 +44,8 @@ namespace P2E.SSO.Domain.Entities
             if (string.IsNullOrEmpty(TX_DSC))
                 AddNotification("TX_DSC", $"A Descrição da Rotina é um campo obrigatório.");
 
-            //if (OP_TIPO == 0)
-            //    AddNotification("OP_TIPO", $"O Tipo da Rotina é um campo obrigatório.");
+            if (CD_SRV == 0)
+                AddNotification("OP_TIPO", $"O Serviço é um campo obrigatório.");
 
             return Valid;
         }

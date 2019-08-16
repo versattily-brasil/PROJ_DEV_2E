@@ -291,6 +291,11 @@ namespace P2E.Main.UI.Web.Controllers
                     var usuario = await result.Content.ReadAsAsync<Usuario>();
                     if(usuario != null)
                     {
+                        if (usuario.OP_STATUS.ToString().Trim() == "INATIVO")
+                        {
+                            return View(itemViewModel).WithDanger("Acesso Negado", "Usuário Inativo.");
+                        }
+
                         var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                         identity.AddClaim(new Claim(ClaimTypes.Name, usuario.TX_LOGIN));
                         identity.AddClaim(new Claim(ClaimTypes.Sid, usuario.CD_USR.ToString()));
