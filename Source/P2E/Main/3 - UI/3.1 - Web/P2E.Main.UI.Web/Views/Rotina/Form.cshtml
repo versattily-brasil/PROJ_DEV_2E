@@ -21,9 +21,18 @@
 
         <div class="panel">
             <div class="panel-hdr">
-                <h1>
-                    Rotina
-                </h1>
+                @if (Model.CD_ROT > 0)
+                {
+                    <h1>
+                        Edição de Rotina
+                    </h1>
+                }
+                else
+                {
+                    <h1>
+                        Cadastro de Rotina
+                    </h1>
+                }
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
@@ -160,8 +169,8 @@
                                                 data-controller="Rotina"
                                                 data-action="Delete"
                                                 data-body-message="Deseja excluir esta Rotina?"
-                                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
-                                            Deletar
+                                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger"> 
+                                                Deletar
                                         </button>
                                     }
                                 </div>

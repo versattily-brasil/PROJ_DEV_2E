@@ -19,9 +19,18 @@
         }
         <div class="panel">
             <div class="panel-hdr">
-                <h1>
-                    Cadastro de Serviço
-                </h1>
+                @if (Model?.CD_SRV > 0)
+                {
+                    <h1>
+                        Edição de Serviço
+                    </h1>
+                }
+                else
+                {
+                    <h1>
+                        Cadastro de Serviço
+                    </h1>
+                }
             </div>
             <div class="panel-container show">
                 <div class="panel-content">

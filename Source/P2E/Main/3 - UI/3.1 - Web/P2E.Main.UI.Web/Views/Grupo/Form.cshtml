@@ -20,9 +20,18 @@
 
         <div class="panel">
             <div class="panel-hdr">
-                <h1>
-                    Cadastro de Grupos
-                </h1>
+                @if (Model.CD_GRP > 0)
+                {
+                    <h1>
+                        Edição de Grupos
+                    </h1>
+                }
+                else
+                {
+                    <h1>
+                        Cadastro de Grupos
+                    </h1>
+                }
             </div>
             <div class="panel-container show">
                 <div class="panel-content">

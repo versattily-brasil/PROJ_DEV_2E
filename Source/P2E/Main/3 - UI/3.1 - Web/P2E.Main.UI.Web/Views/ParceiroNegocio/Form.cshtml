@@ -3,7 +3,7 @@
     ViewData["Title"] = "Cadastro";
     ViewData["PageName"] = "parceiro_negocio";
     ViewData["Category1"] = "Parceiro de Negócio";
-    
+
     //Alert info
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
@@ -20,9 +20,18 @@
 
         <div class="panel">
             <div class="panel-hdr">
-                <h1>
-                    Parceiro de Negócio
-                </h1>
+                @if (Model.CD_PAR > 0)
+                {
+                    <h1>
+                        Edição de Parceiro de Negócio
+                    </h1>
+                }
+                else
+                {
+                    <h1>
+                        Cadastro de Parceiro de Negócio
+                    </h1>
+                }
             </div>
             <div class="panel-container show">
                 <div class="panel-content">

@@ -19,9 +19,18 @@
         }
         <div class="panel">
             <div class="panel-hdr">
-                <h1>
-                    Cadastro de Usuário
-                </h1>
+                @if (Model.CD_USR > 0)
+                {
+                    <h1>
+                        Edição de Usuário
+                    </h1>
+                }
+                else
+                {
+                    <h1>
+                        Cadastro de Usuário
+                    </h1>
+                }
             </div>
             <div class="panel-container show">
                 <form id="form" asp-action="Save" method="post">
