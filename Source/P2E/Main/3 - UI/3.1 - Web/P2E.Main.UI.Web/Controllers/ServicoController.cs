@@ -172,13 +172,14 @@ namespace P2E.Main.UI.Web.Controllers
                     result = await client.DeleteAsync($"{_urlServico}/{Id}");
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();
-                    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Serviço"));
+                    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Serviço"));
                 }
+
             }
             catch (Exception)
             {
                 return RedirectToAction("Edit", new { id = Id }).WithWarning("Erro.", responseBody);
-            }
+            }           
         }
 #endregion
 

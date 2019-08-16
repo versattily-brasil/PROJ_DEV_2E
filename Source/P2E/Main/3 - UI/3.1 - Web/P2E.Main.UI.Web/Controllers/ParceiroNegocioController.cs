@@ -196,7 +196,7 @@ namespace P2E.Main.UI.Web.Controllers
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();
 
-                    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Parceiro Negócio"));
+                    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Parceiro Negócio"));
                 }
             }
             catch (Exception ex)

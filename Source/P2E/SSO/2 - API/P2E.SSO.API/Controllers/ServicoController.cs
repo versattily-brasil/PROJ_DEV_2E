@@ -111,7 +111,6 @@ namespace P2E.SSO.API.Controllers
             try
             {
                 var objeto = _servicoRepository.FindById(id);
-
                 var rotinas = _rotinaRepository.Find(p => p.CD_SRV == id);
 
 
@@ -126,8 +125,18 @@ namespace P2E.SSO.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
-
             }
+
+            //try
+            //{
+            //    var objeto = _servicoRepository.FindById(id);
+            //    _servicoRepository.Delete(objeto);
+            //    return new { message = "OK" };
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new { message = "Error." + ex.Message };
+            //}
         }
     }
 }
