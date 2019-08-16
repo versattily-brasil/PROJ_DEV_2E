@@ -53,5 +53,6 @@ namespace P2E.SSO.Domain.Entities
         public List<Modulo> Modulo { get; set; } = new List<Modulo>();
         public List<UsuarioGrupo> UsuarioGrupo { get; set; } = new List<UsuarioGrupo>();
         public List<Grupo> Grupo { get; set; } = new List<Grupo>();
+        public List<RotinaUsuarioOperacao> RotinaUsuarioOperacao { get; set; } = new List<RotinaUsuarioOperacao>();
     }
 }
