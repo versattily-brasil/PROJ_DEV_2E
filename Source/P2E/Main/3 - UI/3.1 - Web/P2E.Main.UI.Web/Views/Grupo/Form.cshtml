@@ -130,14 +130,27 @@
                         </div>
                         <br />
                         <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
-                        <button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>
-                        <button data-id="@Model.CD_GRP"
-                                data-controller="Grupo"
-                                data-action="Delete"
-                                data-body-message="Deseja excluir este Grupo?"
-                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">Deletar
+                        @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
+
+                        <button data-controller="Grupo" data-id="@Model.CD_GRP"
+                                data-action="Cancel"
+                                data-body-message="Deseja cancelar as alterações?"
+                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                            Cancelar
                         </button>
 
+
+
+                        @if (Model.CD_GRP > 0)
+                        {
+                            <button data-id="@Model.CD_GRP"
+                                    data-controller="Grupo"
+                                    data-action="Delete"
+                                    data-body-message="Deseja excluir este Grupo?"
+                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
+                                Deletar
+                            </button>
+                        }
                     </form>
                 </div>
             </div>

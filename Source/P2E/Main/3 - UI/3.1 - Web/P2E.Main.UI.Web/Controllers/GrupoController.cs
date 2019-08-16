@@ -183,6 +183,13 @@ namespace P2E.Main.UI.Web.Controllers
                 return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Grupo"));
             }
         }
+
+
+        public async Task<IActionResult> Cancel()
+        {
+            return RedirectToAction("Index");
+        }
+
         #endregion
 
         /// <summary>

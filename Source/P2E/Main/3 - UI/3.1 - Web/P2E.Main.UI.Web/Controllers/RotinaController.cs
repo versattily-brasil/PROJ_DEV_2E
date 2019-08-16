@@ -185,14 +185,31 @@ namespace P2E.Main.UI.Web.Controllers
         public async Task<IActionResult> Delete(long Id)
         {
             HttpResponseMessage result = new HttpResponseMessage();
-            using (var client = new HttpClient())
-            {
-                result = await client.DeleteAsync($"{_urlRotina}/{Id}");
-                result.EnsureSuccessStatusCode();
+            string responseBody = string.Empty;
 
-                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Rotina"));
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    result = await client.DeleteAsync($"{_urlRotina}/{Id}");
+                    responseBody = await result.Content.ReadAsStringAsync();
+                    result.EnsureSuccessStatusCode();
+
+                    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Rotina"));
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Edit", new { id = Id }).WithWarning("Erro.", responseBody);
             }
         }
+
+
+        public async Task<IActionResult> Cancel()
+        {
+            return RedirectToAction("Index");
+        }
+
         #endregion        
 
         private async Task<List<Servico>> CarregarServico()
@@ -205,5 +222,7 @@ namespace P2E.Main.UI.Web.Controllers
                 return lista;
             }
         }
+
+       
     }
 }
