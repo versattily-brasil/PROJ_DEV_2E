@@ -209,7 +209,7 @@ namespace P2E.SSO.API.Controllers
             {
                 var objeto = _usuarioRepository.FindById(id);
 
-                var rotinaGrupos = _rotinaGrupoOperacaoRepository.Find(p => p.CD_USR == id);
+                var rotinaGrupos = _rotinaUsuarioOperacaoRepository.Find(p => p.CD_USR == id);
 
                 if (rotinaGrupos != null)
                     return BadRequest("Não foi possivel excluir esse usuario pois ele já tem associações.");
