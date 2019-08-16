@@ -45,19 +45,40 @@
                             </div>
                             <br />
                             <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="form-label" asp-for="TX_SENHA">Senha</label>
-                                        <input type="password" maxlength="255" asp-for="TX_SENHA" placeholder="Senha" class="form-control" id="senha">
-                                    </div>
-                                </div>
 
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Confirme a Senha</label>
-                                        <input type="password" maxlength="255" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha">
+                                @if (Model.CD_USR > 0)
+                                {
+                                    <input type="hidden" asp-for="TX_SENHA" />
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Senha</label>
+                                            <input type="password" maxlength="255" value="@Model.TX_SENHA" placeholder="Senha" class="form-control" id="senha" disabled>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Confirme a Senha</label>
+                                            <input type="password" maxlength="255" value="@Model.TX_SENHA" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha" disabled>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="form-label" asp-for="TX_SENHA">Senha</label>
+                                            <input type="password" maxlength="255" asp-for="TX_SENHA" placeholder="Senha" class="form-control" id="senha">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Confirme a Senha</label>
+                                            <input type="password" maxlength="255" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha">
+                                        </div>
+                                    </div>
+                                }
+
+
                             </div>
                             <br />
                             <div class="row">
