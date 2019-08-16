@@ -21,6 +21,6 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
         public DataPage<P2E.SSO.Domain.Entities.Rotina> DataPage { get; set; }
 
         public List<P2E.SSO.Domain.Entities.Servico> Servicos { get; set; }
-       // public P2E.SSO.Domain.Entities.Servico Servico { get; set; }
+        public P2E.SSO.Domain.Entities.Servico Servico { get; set; }
     }
 }

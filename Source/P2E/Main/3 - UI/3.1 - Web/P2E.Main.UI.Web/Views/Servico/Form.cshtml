@@ -31,16 +31,27 @@
                             <label class="form-label" asp-for="TXT_DEC">Descrição</label>
                             <input type="text" maxlength="100" asp-for="TXT_DEC" placeholder="Descrição" class="form-control">
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>
-                        <button data-id="@Model.CD_SRV"
-                                data-controller="Servico"
-                                data-action="Delete"
-                                data-body-message="Deseja excluir este Serviço?"
-                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
-                            Deletar
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                        @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
+
+                        <button data-controller="Grupo" data-id="@Model.CD_SRV"
+                                data-action="Cancel"
+                                data-body-message="Deseja cancelar as alterações?"
+                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                            Cancelar
                         </button>
-                    </form>
+
+                        @if (Model.CD_SRV > 0)
+                        {
+                            <button data-id="@Model.CD_SRV"
+                                    data-controller="Servico"
+                                    data-action="Delete"
+                                    data-body-message="Deseja excluir este Serviço?"
+                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
+                                Deletar
+                            </button>
+                        }
+                        </form>
                 </div>
             </div>
         </div>
