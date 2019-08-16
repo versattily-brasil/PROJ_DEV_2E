@@ -6,16 +6,6 @@ var Grupo = /** @class */ (function () {
     }
     Grupo.prototype.init = function () {
         var _this = this;
-        this.btnExcluir.on("click", function () {
-            var agrupamento = "Grupo";
-            var apagar = confirm('Deseja realmente excluir este registro?');
-            if (apagar) {
-                $(_this).removeAttr($(_this).data("cd_srv"));
-            }
-            else {
-                event.preventDefault();
-            }
-        });
         $("#comboServico").on("change", function () {
             var encontrou = false;
             $("#comboRotina > option").each(function () {

@@ -6,20 +6,6 @@
 
     init(): void {
 
-        this.btnExcluir.on("click", () => {
-
-            var agrupamento = "Grupo";
-
-            var apagar = confirm('Deseja realmente excluir este registro?');
-            if (apagar) {
-
-                $(this).removeAttr($(this).data("cd_srv"));
-                
-            } else {
-                event.preventDefault();
-            }
-        });
-
         $("#comboServico").on("change", function () {
 
             var encontrou = false;

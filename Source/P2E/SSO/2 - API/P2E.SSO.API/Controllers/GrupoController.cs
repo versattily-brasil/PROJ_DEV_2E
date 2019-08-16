@@ -17,11 +17,13 @@ namespace P2E.SSO.API.Controllers
     {
         private readonly IGrupoRepository _grupoRepository;
         private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
+        private readonly IUsuarioGrupoRepository _usuarioGrupoRepository;
         public GrupoController(IGrupoRepository grupoRepository, 
-            IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository )
+            IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository, IUsuarioGrupoRepository usuarioGrupoRepository)
         {
             _grupoRepository = grupoRepository;
             _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
+            _usuarioGrupoRepository = usuarioGrupoRepository;
         }
 
         // GET: api/grupo
@@ -125,9 +127,16 @@ namespace P2E.SSO.API.Controllers
                 var objeto = _grupoRepository.FindById(id);
 
                 var rotinaGrupos = _rotinaGrupoOperacaoRepository.Find(p => p.CD_GRP == id);
+                var usuarioGrupos = _usuarioGrupoRepository.Find(p => p.CD_GRP == id);
 
                 if (rotinaGrupos != null)
+                {
                     return BadRequest("Não foi possivel excluir esse grupo pois ela está associada a uma rotina.");
+                }
+                else if (usuarioGrupos != null)
+                {
+                    return BadRequest("Não foi possivel excluir esse grupo pois ela está associada a um usuario.");
+                }                    
                 else
                 {
                     _rotinaGrupoOperacaoRepository.Delete(o => o.CD_GRP == id);
