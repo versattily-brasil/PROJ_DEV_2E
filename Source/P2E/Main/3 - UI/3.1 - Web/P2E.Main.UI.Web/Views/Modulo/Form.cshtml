@@ -32,15 +32,27 @@
                             <label class="form-label" asp-for="TX_DSC">Descrição</label>
                             <input type="text" maxlength="40" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>
-                        <button data-id="@Model.CD_MOD"
-                                data-controller="Modulo"
-                                data-action="Delete"
-                                data-body-message="Deseja excluir este Modulo?"
-                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
-                            Deletar
+                        <button type="submit" class="btn btn-success">Salvar</button>
+                        @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
+
+                        <button data-controller="Grupo" data-id="@Model.CD_MOD"
+                                data-action="Cancel"
+                                data-body-message="Deseja cancelar as alterações?"
+                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                            Cancelar
                         </button>
+
+                        @if (Model.CD_MOD > 0)
+                        {
+                            <button data-id="@Model.CD_MOD"
+                                    data-controller="Modulo"
+                                    data-action="Delete"
+                                    data-body-message="Deseja excluir este Modulo?"
+                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger">
+                                Deletar
+                            </button>
+                        }
+
                     </form>
                 </div>
             </div>
