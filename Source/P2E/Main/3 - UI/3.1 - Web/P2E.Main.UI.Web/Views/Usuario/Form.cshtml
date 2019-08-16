@@ -194,11 +194,6 @@
 
 
                                     <div class="panel">
-                                        <div class="panel-hdr bg-gray-100">
-                                            <h3>
-                                                Associação de Rotinas ao Grupo
-                                            </h3>
-                                        </div>
                                         <div class="panel-container show">
                                             <div class="panel-content">
                                                 <div class="row">
@@ -227,7 +222,7 @@
                                                     </div>
 
                                                     <div class="col-1">
-                                                        <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina">
+                                                        <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
                                                             <i class="fal fa-plus"></i>
                                                         </a>
                                                     </div>
@@ -314,7 +309,10 @@
 
 
                         </div>
-
+                        <div>
+                            <p class="text-danger" id="rotina-validacao">
+                            </p>
+                        </div>
                         <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
                         <button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>
                         <button data-id="@Model.CD_USR"
@@ -330,9 +328,14 @@
         </div>
     </div>
 </div>
+@foreach (var operacao in @Model.Operacoes)
+{
+    <input type="hidden" class="operacao_hidden" data-tx_dsc="@operacao.TX_DSC" data-cd_opr="@operacao.CD_OPR" />
+}
 @section Scripts {
 
     <script src="~/js/Usuario/TabelaUsuarioModulo.js"></script>
     <script src="~/js/Usuario/TabelaUsuarioGrupo.js"></script>
+    <script src="~/js/Usuario/RotinaUsuarioOperacao.js"></script>
     <script src="~/js/Usuario/UsuarioCadastro.js"></script>
 }
