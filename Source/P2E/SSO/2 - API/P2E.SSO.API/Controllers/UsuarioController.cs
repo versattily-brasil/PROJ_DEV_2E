@@ -102,6 +102,7 @@ namespace P2E.SSO.API.Controllers
                 result = _usuarioRepository.Find(p => p.CD_USR == id);
                 result.UsuarioModulo = _usuarioModuloRepository.FindAll(o => o.CD_USR == id).ToList();
                 result.UsuarioGrupo = _usuarioGrupoRepository.FindAll(o => o.CD_USR == id).ToList();
+                result.RotinaUsuarioOperacao = _rotinaUsuarioOperacaoRepository.FindAll(o => o.CD_USR == id).ToList();
                 result.Grupo = _grupoRepository.FindAll().ToList();
                 result.Modulo = _moduloRepository.FindAll().ToList();
 
@@ -112,7 +113,7 @@ namespace P2E.SSO.API.Controllers
                 result.Modulo = _moduloRepository.FindAll().ToList();
             }
 
-            result.RotinaUsuarioOperacao = _rotinaUsuarioOperacaoRepository.FindAll().ToList();
+            
             return result;
         }
 
