@@ -22,6 +22,7 @@ namespace P2E.SSO.API.Controllers
         private readonly IModuloRepository _moduloRepository;
         private readonly IRotinaRepository _rotinaRepository;
         private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
+        private readonly IRotinaUsuarioOperacaoRepository _rotinaUsuarioOperacaoRepository;
         private readonly IOperacaoRepository _operacaoRepository;
         private readonly IServicoRepository _servicoRepository;
 
@@ -32,7 +33,8 @@ namespace P2E.SSO.API.Controllers
                                  IModuloRepository moduloRepository, 
                                  IGrupoRepository grupoRepository,
                                  IRotinaRepository rotinaRepository, 
-                                 IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository, 
+                                 IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository,
+                                 IRotinaUsuarioOperacaoRepository rotinaUsuarioOperacaoRepository,
                                  IOperacaoRepository operacaoRepository, 
                                  IServicoRepository servicoRepository, 
                                  IMapper mapper)
@@ -45,6 +47,7 @@ namespace P2E.SSO.API.Controllers
             _moduloRepository = moduloRepository;
             _rotinaRepository = rotinaRepository;
             _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
+            _rotinaUsuarioOperacaoRepository = rotinaUsuarioOperacaoRepository;
             _operacaoRepository = operacaoRepository;
             _servicoRepository = servicoRepository;
         }
@@ -109,6 +112,7 @@ namespace P2E.SSO.API.Controllers
                 result.Modulo = _moduloRepository.FindAll().ToList();
             }
 
+            result.RotinaUsuarioOperacao = _rotinaUsuarioOperacaoRepository.FindAll().ToList();
             return result;
         }
 
@@ -156,6 +160,7 @@ namespace P2E.SSO.API.Controllers
                 {
                     _usuarioModuloRepository.Delete(o => o.CD_USR == usuario.CD_USR);
                     _usuarioGrupoRepository.Delete(o => o.CD_USR == usuario.CD_USR);
+                    _rotinaUsuarioOperacaoRepository.Delete(o => o.CD_USR == usuario.CD_USR);
 
                     if (id > 0)
                         _usuarioRepository.Update(usuario);
@@ -172,6 +177,13 @@ namespace P2E.SSO.API.Controllers
                     {
                         usuarioGrupo.CD_USR = usuario.CD_USR;
                         _usuarioGrupoRepository.Insert(usuarioGrupo);
+                    }
+
+                    foreach (var rotinaUsuarioOperacao in usuario.RotinaUsuarioOperacao)
+                    {
+                        rotinaUsuarioOperacao.CD_USR = usuario.CD_USR;
+
+                        _rotinaUsuarioOperacaoRepository.Insert(rotinaUsuarioOperacao);
                     }
 
                     return Ok(usuario);
@@ -196,6 +208,7 @@ namespace P2E.SSO.API.Controllers
             {                
                 _usuarioModuloRepository.ExcluirUsuarioModulos(id);                               
                 _usuarioGrupoRepository.ExcluirUsuarioGrupo(id);
+                _rotinaUsuarioOperacaoRepository.Delete(o => o.CD_USR == id);
 
                 var objeto = _usuarioRepository.FindById(id);
                 _usuarioRepository.Delete(objeto);
