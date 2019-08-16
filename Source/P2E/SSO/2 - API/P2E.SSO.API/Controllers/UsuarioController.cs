@@ -203,23 +203,29 @@ namespace P2E.SSO.API.Controllers
         // DELETE: api/usuario/5
         [HttpDelete]
         [Route("api/v1/usuario/{id}")]
-        public object Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
-            {                
-                _usuarioModuloRepository.ExcluirUsuarioModulos(id);                               
-                _usuarioGrupoRepository.ExcluirUsuarioGrupo(id);
-                _rotinaUsuarioOperacaoRepository.Delete(o => o.CD_USR == id);
-
+            {
                 var objeto = _usuarioRepository.FindById(id);
-                _usuarioRepository.Delete(objeto);
 
-                return new { message = "OK" };
+                var rotinaGrupos = _rotinaUsuarioOperacaoRepository.Find(p => p.CD_USR == id);
+
+                if (rotinaGrupos != null)
+                    return BadRequest("Não foi possivel excluir esse usuario pois ele já tem associações.");
+                else
+                {
+                    _usuarioModuloRepository.ExcluirUsuarioModulos(id);
+                    _usuarioGrupoRepository.ExcluirUsuarioGrupo(id);
+                    _rotinaUsuarioOperacaoRepository.Delete(o => o.CD_USR == id);
+                    _usuarioRepository.Delete(objeto);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
-            }
+                return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
+            }            
         }
     }
 }

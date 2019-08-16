@@ -185,11 +185,30 @@ namespace P2E.Main.UI.Web.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Delete(long Id)
         {
-            using (var client = new HttpClient())
+            HttpResponseMessage result = new HttpResponseMessage();
+            string responseBody = string.Empty;
+
+            try
             {
-                await client.DeleteAsync($"{_urlParceiro}/{Id}");
-                return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Parceiro Negócio"));
+                using (var client = new HttpClient())
+                {
+                    result = await client.DeleteAsync($"{_urlParceiro}/{Id}");
+                    responseBody = await result.Content.ReadAsStringAsync();
+                    result.EnsureSuccessStatusCode();
+
+                    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessSave("Parceiro Negócio"));
+                }
             }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Edit", new { id = Id }).WithWarning("Erro.", responseBody);
+            }
+
+            //using (var client = new HttpClient())
+            //{
+            //    await client.DeleteAsync($"{_urlParceiro}/{Id}");
+            //    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Parceiro Negócio"));
+            //}
         }
         #endregion
 

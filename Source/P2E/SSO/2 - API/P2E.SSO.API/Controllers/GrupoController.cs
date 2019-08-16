@@ -118,19 +118,27 @@ namespace P2E.SSO.API.Controllers
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
         [Route("api/v1/grupo/{id}")]
-        public object Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {
                 var objeto = _grupoRepository.FindById(id);
-                _rotinaGrupoOperacaoRepository.Delete(o => o.CD_GRP == id);
-                _grupoRepository.Delete(objeto);
-                return new { message = "OK" };
+
+                var rotinaGrupos = _rotinaGrupoOperacaoRepository.Find(p => p.CD_GRP == id);
+
+                if (rotinaGrupos != null)
+                    return BadRequest("Não foi possivel excluir esse grupo pois ela está associada a uma rotina.");
+                else
+                {
+                    _rotinaGrupoOperacaoRepository.Delete(o => o.CD_GRP == id);
+                    _grupoRepository.Delete(objeto);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
-            }
+                return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
+            }            
         }
     }
 }

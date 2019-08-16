@@ -138,18 +138,37 @@ namespace P2E.SSO.API.Controllers
         // DELETE: api/parceironegocio/5
         [HttpDelete]
         [Route("api/v1/parceironegocio/{id}")]
-        public object Delete(long id)
+        public IActionResult Delete(long id)
         {
             try
             {
                 var item = _parceiroNegocioRepository.FindById(id);
-                _parceiroNegocioRepository.Delete(item);
-                return new { message = "OK" };
+
+                var rotinaGrupos = _parceiroNegocioModuloRepository.Find(p => p.CD_PAR == id);
+
+                if (rotinaGrupos != null)
+                    return BadRequest("Não foi possivel excluir esse parceiro pois ela está associado a Serviço.");
+                else
+                {
+                    _parceiroNegocioRepository.Delete(item);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
             }
+
+            //try
+            //{
+            //    var item = _parceiroNegocioRepository.FindById(id);
+            //    _parceiroNegocioRepository.Delete(item);
+            //    return new { message = "OK" };
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new { message = "Error." + ex.Message };
+            //}
         }
     }
 }

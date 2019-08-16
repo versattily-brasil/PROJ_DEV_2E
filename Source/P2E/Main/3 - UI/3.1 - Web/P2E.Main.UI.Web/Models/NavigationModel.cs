@@ -60,7 +60,6 @@ namespace P2E.Main.UI.Web.Models
                     usuarioGrupos = await result.Content.ReadAsAsync<List<UsuarioGrupo>>();
                 }
 
-
                 var servicos = new List<Servico>();
 
                 // carregar os serviços
@@ -76,9 +75,7 @@ namespace P2E.Main.UI.Web.Models
                     }
                 }
 
-
                 // carregar as rotinas dos serviços
-                // carregar os serviços
                 foreach (var item in usuarioGrupos)
                 {
                     foreach (var subitem in item.ListaRotinaGrupoOperacao)
@@ -95,47 +92,7 @@ namespace P2E.Main.UI.Web.Models
                     }
                 }
 
-                //foreach (var item in usuarioGrupos)
-                //{
-                //    foreach (var subitem in item.ListaRotinaGrupoOperacao)
-                //    {
-                //        if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
-                //        {
-                //            var servico = subitem.Rotina.Servico;
-
-                //            servico.Rotinas = new List<Rotina>();
-
-                //            var permissoes = item.ListaRotinaGrupoOperacao
-                //                .Where(p => p.Rotina.CD_SRV == servico.CD_SRV);
-
-                //            foreach (var permissao in permissoes)
-                //            {
-                //                servico.Rotinas.Add(permissao.Rotina);
-                //            }
-
-                //            servicos.Add(servico);
-                //        }
-                //    }
-
-                //}
-
-                //for (int i = 0; i < servicos.Count; i++)
-                //{
-                //    var root = servicos[i].Rotinas;
-                //    servicos[i].Rotinas = new List<Rotina>();
-
-                //    foreach (var r in root)
-                //    {
-                //        if (!servicos[i].Rotinas.Any(p => p.CD_ROT == r.CD_ROT))
-                //        {
-                //            servicos[i].Rotinas.Add(r);
-                //        }
-                //    }
-                //}
-
                 var listItems = new List<ListItem>();
-
-
                 foreach (var servico in servicos.Distinct())
                 {
                     var item = new ListItem() { Title = servico.TXT_DEC };
