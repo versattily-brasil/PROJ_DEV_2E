@@ -15,13 +15,16 @@ namespace P2E.SSO.API.Controllers
         private readonly IRotinaRepository _rotinaRepository;
         private readonly IRotinaServicoRepository _rotinaServicoRepository;
         private readonly IServicoRepository _servicoRepository;
+        private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
         public RotinaController(IRotinaRepository rotinaRepository,
                                 IRotinaServicoRepository rotinaServicoRepository,
-                                IServicoRepository servicoRepository)
+                                IServicoRepository servicoRepository,
+                                IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository)
         {
             _rotinaRepository = rotinaRepository;
             _rotinaServicoRepository = rotinaServicoRepository;
-            _servicoRepository = servicoRepository;            
+            _servicoRepository = servicoRepository;
+            _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
         }
 
         // GET: api/rotina/todos
@@ -131,25 +134,25 @@ namespace P2E.SSO.API.Controllers
         // DELETE: api/rotina/5
         [HttpDelete]
         [Route("api/v1/rotina/{id}")]
-        public object Delete(long id)
+        public IActionResult Delete(long id)
         {
             try
             {
-                var item = this.Get(id);                
-                
-                // Exclui cada Grupo-Operacao vinculado à rotina
-                foreach (var rgo in item.RotinaServico)
-                {
-                    _rotinaServicoRepository.ExcluirRotinaServico(rgo.CD_ROT_SRV);
-                }
-                
-                _rotinaRepository.Delete(item);
+                var item = this.Get(id);
 
-                return new { message = "OK" };
+                var rotinaGrupos = _rotinaGrupoOperacaoRepository.Find(p => p.CD_ROT == id);
+
+                if(rotinaGrupos != null)
+                    return BadRequest("Não foi possivel excluir essa rotina pois ela está associada a um grupo de usuários.");
+                else
+                {
+                    _rotinaRepository.Delete(item);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
             }
         }        
     }
