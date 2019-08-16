@@ -6,6 +6,7 @@
     init(): void {
         this.btnSalvar.on("click", () => {
 
+            //ASSOCIÇÃO DE GRUPOS
             var listaGrupos = "UsuarioGrupo";
             var g = 0;
 
@@ -17,6 +18,7 @@
                 g += 1;
             });
 
+            //ASSOCIÇÃO DE MÓDULOS
             var listaModulos = "UsuarioModulo";
             var m = 0;
 
@@ -28,7 +30,44 @@
                 m += 1;
             });
 
-            this.form.submit();
+
+            //ASSOCIÇÃO DE ROTINAS
+            var listaRotinas = "RotinaUsuarioOperacao";
+            var indiceRotinas = 0;
+            $('#rotina-validacao').text("");
+
+            var rotinasInvalidas = 0;
+            $("#tabela_grupo_rotina > tbody > tr").each(function () {
+
+                var checked = $(this).find('.rotina_check').is(':checked');
+
+                if (!checked) {
+                    rotinasInvalidas++;
+                }
+            });
+
+            $(".rotina_selecionada").each(function () {
+
+                var checked = $(this).find('.rotina_check').is(':checked');
+                if (checked) {
+
+                    var CD_ROT = $(this).data("cd_rot");
+                    var CD_OPR = $(this).data("cd_opr");
+
+                    $("#form").append("<input type='hidden' name= '" + listaRotinas + "[" + indiceRotinas + "].CD_ROT' value= '" + CD_ROT + "' > ");
+                    $("#form").append("<input type='hidden' name= '" + listaRotinas + "[" + indiceRotinas + "].CD_OPR' value= '" + CD_OPR + "' > ");
+
+                    indiceRotinas += 1;
+                }
+            });
+
+
+            if (rotinasInvalidas > 0) {
+                $('#rotina-validacao').text("É necessário permitir pelo menos uma operação para cada Rotina.");
+            } else {
+                this.form.submit();
+            }
+
         });
     }
 }
