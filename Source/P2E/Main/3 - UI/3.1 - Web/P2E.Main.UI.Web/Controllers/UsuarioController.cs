@@ -15,6 +15,10 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using P2E.Main.UI.Web.Models.SSO.Rotina;
+using P2E.Main.UI.Web.Models.SSO.Operacao;
+using P2E.Main.UI.Web.Models.SSO.Servico;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -99,7 +103,7 @@ namespace P2E.Main.UI.Web.Controllers
                     result.EnsureSuccessStatusCode();
                     var usuario = await result.Content.ReadAsAsync<Usuario>();
                     var usuarioViewModel = _mapper.Map<UsuarioViewModel>(usuario);
-
+                    CarregarListasComplementares(usuarioViewModel);
                     return View("Form", usuarioViewModel);
                 }
             }
@@ -125,7 +129,7 @@ namespace P2E.Main.UI.Web.Controllers
                     result.EnsureSuccessStatusCode();
                     var usuario = await result.Content.ReadAsAsync<Usuario>();
                     var usuarioViewModel = _mapper.Map<UsuarioViewModel>(usuario);
-
+                    CarregarListasComplementares(usuarioViewModel);
                     return View("Form", usuarioViewModel);
                 }
             }
@@ -170,8 +174,8 @@ namespace P2E.Main.UI.Web.Controllers
 
                         itemViewModel.Modulo = usuarioViewModels.Modulo;
                         itemViewModel.Grupo = usuarioViewModels.Grupo;
-                    }                
-
+                    }
+                    CarregarListasComplementares(itemViewModel);
                     return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Usuario", usuario.Messages));
                 }
             }
@@ -187,7 +191,7 @@ namespace P2E.Main.UI.Web.Controllers
                     itemViewModel.Modulo = usuarioViewModels.Modulo;
                     itemViewModel.Grupo = usuarioViewModels.Grupo;
                 }
-
+                CarregarListasComplementares(itemViewModel);
                 return View("Form", itemViewModel).WithDanger("Erro", responseBody);
             }
         }
@@ -289,6 +293,76 @@ namespace P2E.Main.UI.Web.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("Login");
         }
+
+
+        /// <summary>
+        /// Carrega a lista de rotinas para a tela, dando a possibilidade de ser associada ao grupo atribuindo as permissões "Operações"
+        /// </summary>
+        /// <returns></returns>
+        private async Task<List<RotinaViewModel>> CarregarRotinas()
+        {
+            string urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/rotina/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlRotina);
+                var lista = await result.Content.ReadAsAsync<List<Rotina>>();
+
+                var rotinas = _mapper.Map<List<RotinaViewModel>>(lista);
+                
+                return rotinas;
+            }
+        }
+
+        /// <summary>
+        /// Carregar todas as operações para mostrar em colunas para cada rotina adicionada no grid
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private async Task<List<OperacaoViewModel>> CarregarOperacoes()
+        {
+            string urlOperacao = this.appSettings.ApiBaseURL + $"sso/v1/operacao/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlOperacao);
+                var lista = await result.Content.ReadAsAsync<List<Operacao>>();
+
+                return _mapper.Map<List<OperacaoViewModel>>(lista);
+            }
+        }
+
+
+        /// <summary>
+        /// Carrega a lista de serviços para a tela, dando a possibilidade de filtrar rotinas para associar ao grupo
+        /// </summary>
+        /// <returns></returns>
+        private async Task<List<ServicoViewModel>> CarregarServiços()
+        {
+            string urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/servico/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlRotina);
+                var lista = await result.Content.ReadAsAsync<List<Servico>>();
+
+                var servicos = _mapper.Map<List<ServicoViewModel>>(lista);
+
+                return servicos;
+            }
+        }
+
+        private void CarregarListasComplementares(UsuarioViewModel itemViewModel)
+        {
+            itemViewModel.Operacoes = CarregarOperacoes().Result;
+            itemViewModel.Rotinas = CarregarRotinas().Result;
+            itemViewModel.Servicos = CarregarServiços().Result;
+        }
+
+
+
+
+
+
+
+
 
         #endregion
 
