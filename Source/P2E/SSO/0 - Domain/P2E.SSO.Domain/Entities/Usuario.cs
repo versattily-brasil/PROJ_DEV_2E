@@ -54,5 +54,9 @@ namespace P2E.SSO.Domain.Entities
         public List<UsuarioGrupo> UsuarioGrupo { get; set; } = new List<UsuarioGrupo>();
         public List<Grupo> Grupo { get; set; } = new List<Grupo>();
         public List<RotinaUsuarioOperacao> RotinaUsuarioOperacao { get; set; } = new List<RotinaUsuarioOperacao>();
+
+        [NotMapped]
+        //[Compare("Password")]
+        public string CONFIRMA_SENHA { get; set; }
     }
 }

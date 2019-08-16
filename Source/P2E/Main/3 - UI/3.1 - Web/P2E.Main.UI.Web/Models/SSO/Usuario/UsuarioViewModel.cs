@@ -17,6 +17,7 @@ namespace P2E.Main.UI.Web.Models.SSO.Usuario
         public string TX_LOGIN { get; set; }
         public string TX_NOME { get; set; }
         public string TX_SENHA { get; set; }
+        public string CONFIRMA_SENHA { get; set; }
         public eStatusUsuario OP_STATUS { get; set; }
 
         public List<UsuarioModuloViewModel> UsuarioModulo { get; set; } = new List<UsuarioModuloViewModel>();

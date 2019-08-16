@@ -151,6 +151,24 @@ namespace P2E.Main.UI.Web.Controllers
             var result = new HttpResponseMessage();
             string responseBody = string.Empty;
             var usuario = _mapper.Map<Usuario>(itemViewModel);
+
+            if(usuario.TX_SENHA.Trim() != usuario.CONFIRMA_SENHA.Trim())
+            {
+                using (var client = new HttpClient())
+                {
+                    var results = await client.GetAsync($"{_urlUsuario}/{0}");
+                    results.EnsureSuccessStatusCode();
+                    var usuarios = await results.Content.ReadAsAsync<Usuario>();
+                    var usuarioViewModels = _mapper.Map<UsuarioViewModel>(usuarios);
+
+                    itemViewModel.Modulo = usuarioViewModels.Modulo;
+                    itemViewModel.Grupo = usuarioViewModels.Grupo;
+                }
+                CarregarListasComplementares(itemViewModel);
+
+                return View("Form", itemViewModel).WithDanger("Senha Incorreta.", GenericMessages.ErrorComparePassword("Usuario", usuario.Messages));
+            }
+
             try
             {
                 if (usuario.IsValid())

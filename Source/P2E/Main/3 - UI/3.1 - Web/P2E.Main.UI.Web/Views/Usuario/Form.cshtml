@@ -81,8 +81,8 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label class="form-label">Confirme a Senha</label>
-                                            <input type="password" maxlength="255" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha">
+                                            <label class="form-label" asp-for="CONFIRMA_SENHA">Confirme a Senha</label>
+                                            <input type="password" maxlength="255" asp-for="CONFIRMA_SENHA" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha">
                                         </div>
                                     </div>
                                 }
@@ -344,8 +344,8 @@
                             <p class="text-danger" id="rotina-validacao">
                             </p>
                         </div>
+
                         <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
-                        @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
 
                         <button data-controller="Usuario" data-id="@Model.CD_USR"
                                 data-action="Cancel"
@@ -364,7 +364,7 @@
                                 Deletar
                             </button>
                         }
-                        </div>
+                    </div>
                 </form>
             </div>
         </div>

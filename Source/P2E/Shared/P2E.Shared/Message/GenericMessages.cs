@@ -30,5 +30,13 @@ namespace P2E.Shared.Message
             msgReturn.Append(messages);
             return msgReturn.ToString();
         }
+
+        public static string ErrorComparePassword(string param, string messages)
+        {
+            var msgReturn = new StringBuilder();
+            msgReturn.Append($"Senha de confirmação incorreta. {param}.");
+            msgReturn.Append(messages);
+            return msgReturn.ToString();
+        }
     }
 }
