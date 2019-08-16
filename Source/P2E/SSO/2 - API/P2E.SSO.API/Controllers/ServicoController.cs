@@ -17,10 +17,12 @@ namespace P2E.SSO.API.Controllers
     public class ServicoController : ControllerBase
     {
         private readonly IServicoRepository _servicoRepository;
-        
-        public ServicoController(IServicoRepository servicoRepository)
+        private readonly IRotinaRepository _rotinaRepository;
+
+        public ServicoController(IServicoRepository servicoRepository, IRotinaRepository rotinaRepository)
         {
             _servicoRepository = servicoRepository;
+            _rotinaRepository = rotinaRepository;
         }
 
         // GET: api/Modulo
@@ -102,18 +104,37 @@ namespace P2E.SSO.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("api/v1/servico/{id}")]
-        public object Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {
                 var objeto = _servicoRepository.FindById(id);
-                _servicoRepository.Delete(objeto);
-                return new { message = "OK" };
+
+                var rotinaGrupos = _rotinaRepository.Find(p => p.CD_SRV == id);
+
+                if (rotinaGrupos != null)
+                    return BadRequest("Não foi possivel excluir esse usuario pois ele já tem associações.");
+                else
+                {                    
+                    _servicoRepository.Delete(objeto);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {
-                return new { message = "Error." + ex.Message };
+                return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
             }
+
+            //try
+            //{
+            //    var objeto = _servicoRepository.FindById(id);
+            //    _servicoRepository.Delete(objeto);
+            //    return new { message = "OK" };
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new { message = "Error." + ex.Message };
+            //}
         }
     }
 }
