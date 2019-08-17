@@ -2,7 +2,7 @@ var Grupo = /** @class */ (function () {
     function Grupo() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
-        this.btnExcluir = $("#btnExcluir");
+        this.btnExcluir = $("#excluir-rotina");
     }
     Grupo.prototype.init = function () {
         var _this = this;
