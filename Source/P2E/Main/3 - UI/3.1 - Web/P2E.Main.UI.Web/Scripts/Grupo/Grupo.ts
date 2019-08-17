@@ -2,7 +2,7 @@
 
     form = $("#form");
     btnSalvar = $("#btnSalvar");
-    btnExcluir = $("#btnExcluir");
+    btnExcluir = $("#excluir-rotina");
 
     init(): void {
 
@@ -101,7 +101,7 @@
         });
 
         $(document).on("click", ".excluir-rotina", function () {
-            $(this).closest("tr").remove();
+            $(this).closest("tr").remove();           
         });
 
         $("#comboRotina").on("change", function () {
