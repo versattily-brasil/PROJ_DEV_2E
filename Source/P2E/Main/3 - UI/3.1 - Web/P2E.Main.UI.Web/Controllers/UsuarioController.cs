@@ -114,6 +114,28 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> View(long id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync($"{_urlUsuario}/{id}");
+                    result.EnsureSuccessStatusCode();
+                    var usuario = await result.Content.ReadAsAsync<Usuario>();
+                    var usuarioViewModel = _mapper.Map<UsuarioViewModel>(usuario);
+                    CarregarListasComplementares(usuarioViewModel);
+                    return View("View", usuarioViewModel);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>

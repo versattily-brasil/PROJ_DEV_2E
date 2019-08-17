@@ -20,18 +20,9 @@
 
         <div class="panel">
             <div class="panel-hdr">
-                @if (Model.CD_PAR > 0)
-                {
-                    <h1>
-                        Edição de Parceiro de Negócio
-                    </h1>
-                }
-                else
-                {
-                    <h1>
-                        Cadastro de Parceiro de Negócio
-                    </h1>
-                }
+                <h1>
+                    Visualização de Parceiro Negócio
+                </h1>
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
@@ -43,13 +34,13 @@
                                     <input type="hidden" asp-for="CD_PAR" />
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TXT_RZSOC">Razão  Social</label>
-                                        <input type="text" maxlength="100" asp-for="TXT_RZSOC" placeholder="Razão Social" class="form-control">
+                                        <input type="text" maxlength="100" asp-for="TXT_RZSOC" placeholder="Razão Social" class="form-control" disabled="disabled">
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="CNPJ">CNPJ</label>
-                                        <input type="text" maxlength="21" asp-for="CNPJ" placeholder="Valor" class="form-control">
+                                        <input type="text" maxlength="21" asp-for="CNPJ" placeholder="Valor" class="form-control" disabled="disabled">
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +59,7 @@
                                             <div class="col-5">
                                                 <div class="form-group">
                                                     <label class="form-label">Módulo</label>
-                                                    <select asp-items="@(new SelectList(@Model.Modulos,"CD_MOD", "TX_DSC"))" class="form-control" id="comboModulo">
+                                                    <select asp-items="@(new SelectList(@Model.Modulos,"CD_MOD", "TX_DSC"))" disabled="disabled" class="form-control" id="comboModulo">
                                                         <option disabled selected>--- Selecione um módulo ---</option>
                                                     </select>
                                                 </div>
@@ -77,17 +68,17 @@
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label class="form-label">Serviço</label>
-                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
+                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" disabled="disabled" class="form-control" id="comboServico">
                                                         <option disabled selected>--- Selecione um serviço ---</option>
                                                     </select>
                                                 </div>
                                             </div>
 
-                                            <div class="col-1">
+                                            @*<div class="col-1">
                                                 <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-parceiro-servico-usuario">
                                                     <i class="fal fa-download"></i>
                                                 </a>
-                                            </div>
+                                            </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +103,7 @@
                                                 <td>@modulo_servico.Servico.TXT_DEC</td>
                                                 <td class="text-center">
                                                     <a data-mod="@modulo_servico.CD_MOD" data-srv="@modulo_servico.CD_SRV">
-                                                        <i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>
+                                                        <i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger"></i>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -127,26 +118,21 @@
                             <div class="row">
                                 <div class="col-12">
                                     <br />
-                                    <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
-                                    @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
+
+                                    <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
+                                            data-action="Edit"
+                                            data-body-message="Deseja Editar o Registro?"
+                                            style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                        Editar
+                                    </button>
 
                                     <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
                                             data-action="Cancel"
-                                            data-body-message="Deseja cancelar as alterações?"
+                                            data-body-message="Voltar para a tela inicial?"
                                             style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                                         Cancelar
                                     </button>
 
-                                    @if (Model.CD_PAR > 0)
-                                    {
-                                        <button data-id="@Model.CD_PAR"
-                                                data-controller="ParceiroNegocio"
-                                                data-action="Delete"
-                                                data-body-message="Deseja excluir este Parceiro?"
-                                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                            Deletar
-                                        </button>
-                                    }
                                 </div>
                             </div>
                         </div>

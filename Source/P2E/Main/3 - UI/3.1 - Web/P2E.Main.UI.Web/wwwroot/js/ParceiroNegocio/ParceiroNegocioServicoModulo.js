@@ -5,7 +5,12 @@ var ParceiroNegocioServicoModulo = /** @class */ (function () {
     }
     ParceiroNegocioServicoModulo.prototype.init = function () {
         var _this = this;
-        this.btnSalvar.on("click", function () {
+        this.btnSalvar.on("click", function (e) {
+            var a = confirm("Tem certeza que deseja salvar as alterações?");
+            if (!a) {
+                return false;
+            }
+            e.preventDefault();
             var agrupamento = "ParceiroNegocioServicoModulo";
             var g = 0;
             $("#tabela_servico_modulo > tbody > tr").each(function () {

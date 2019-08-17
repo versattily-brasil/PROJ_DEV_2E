@@ -109,6 +109,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<IActionResult> View(long id)
         {
             try

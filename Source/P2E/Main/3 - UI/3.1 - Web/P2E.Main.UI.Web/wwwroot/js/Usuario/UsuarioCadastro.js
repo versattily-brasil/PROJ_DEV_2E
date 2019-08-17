@@ -5,7 +5,12 @@ var UsuarioCadastro = /** @class */ (function () {
     }
     UsuarioCadastro.prototype.init = function () {
         var _this = this;
-        this.btnSalvar.on("click", function () {
+        this.btnSalvar.on("click", function (e) {
+            var a = confirm("Tem certeza que deseja salvar as alterações?");
+            if (!a) {
+                return false;
+            }
+            e.preventDefault();
             //ASSOCIÇÃO DE GRUPOS
             var listaGrupos = "UsuarioGrupo";
             var g = 0;

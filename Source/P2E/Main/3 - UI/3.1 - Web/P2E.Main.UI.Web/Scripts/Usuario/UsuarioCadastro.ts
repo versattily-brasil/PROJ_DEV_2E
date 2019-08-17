@@ -4,7 +4,13 @@
     btnSalvar = $("#btnSalvar");
 
     init(): void {
-        this.btnSalvar.on("click", () => {
+        this.btnSalvar.on("click", (e) => {
+
+            var a = confirm("Tem certeza que deseja salvar as alterações?");
+            if (!a) {
+                return false;
+            }
+            e.preventDefault();
 
             //ASSOCIÇÃO DE GRUPOS
             var listaGrupos = "UsuarioGrupo";

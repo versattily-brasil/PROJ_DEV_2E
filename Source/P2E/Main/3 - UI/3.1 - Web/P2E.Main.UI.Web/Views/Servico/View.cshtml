@@ -1,0 +1,54 @@
+﻿@model P2E.Main.UI.Web.Models.SSO.Servico.ServicoViewModel
+@{
+    ViewData["Title"] = "Cadastro";
+    ViewData["PageName"] = "servico_novo";
+    ViewData["Category1"] = "Serviço";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <partial name="_DisplayMessagePartial" />
+        }
+        <div class="panel">
+            <div class="panel-hdr">
+                <h1>
+                    Visualização do Serviço
+                </h1>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form asp-action="Save" method="post">
+                        <input type="hidden" asp-for="CD_SRV" />
+                        <div class="form-group">
+                            <label class="form-label" asp-for="TXT_DEC">Descrição</label>
+                            <input type="text" maxlength="100" asp-for="TXT_DEC" placeholder="Descrição" class="form-control" disabled>
+                        </div>
+
+                        <button data-controller="Servico" data-id="@Model.CD_SRV"
+                                data-action="Edit"
+                                data-body-message="Deseja Editar o Registro?"
+                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                            Editar
+                        </button>
+
+                        <button data-controller="Servico" data-id="@Model.CD_SRV"
+                                data-action="Cancel"
+                                data-body-message="Voltar para a tela inicial?"
+                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                            Cancelar
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
