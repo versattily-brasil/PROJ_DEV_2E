@@ -4,8 +4,16 @@ var RotinaGrupoOperacao = /** @class */ (function () {
         this.btnSalvar = $("#btnSalvar");
     }
     RotinaGrupoOperacao.prototype.init = function () {
+        //$("#cancel-delete").click(function (e) {
+        //    e.preventDefault();
+        //});
         var _this = this;
-        this.btnSalvar.on("click", function () {
+        this.btnSalvar.on("click", function (e) {
+            var a = confirm("Tem certeza que deseja salvar as alterações?");
+            if (!a) {
+                return false;
+            }
+            e.preventDefault();
             var agrupamento = "RotinaServico";
             var g = 0;
             $("#tabela_rotina_servico > tbody > tr").each(function () {
