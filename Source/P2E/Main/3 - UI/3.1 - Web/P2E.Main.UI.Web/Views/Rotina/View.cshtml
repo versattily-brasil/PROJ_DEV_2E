@@ -1,0 +1,107 @@
+﻿@model P2E.Main.UI.Web.Models.SSO.Rotina.RotinaViewModel
+@using P2E.Shared.Enum;
+@{
+    ViewData["Title"] = "Nova Rotina";
+    ViewData["PageName"] = "rotina";
+    ViewData["Category1"] = "Rotina";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <partial name="_DisplayMessagePartial" />
+        }
+
+        <div class="panel">
+            <div class="panel-hdr">
+                <h1>
+                    Visualização da Rotina
+                </h1>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form id="form" asp-action="Save" method="post">
+
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-8">
+                                    <input type="hidden" asp-for="CD_ROT" />
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_NOME">Nome</label>
+                                        <input type="text" maxlength="40" asp-for="TX_NOME" placeholder="Nome" class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="Servicos">Serviço</label>
+                                        <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" asp-for="CD_SRV" class="form-control" id="comboServico" disabled="disabled">
+                                            <option disabled selected>- Selecione um Serviço -</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_DSC">Descrição</label>
+                                        <input type="text" maxlength="255" asp-for="TX_DSC" placeholder="Descrição" class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Menu</label>
+                                        <select asp-for="@Model.TX_URL" class="form-control" disabled="disabled">
+
+                                            <option selected value="Selecione" disabled>--Selecione---</option>
+                                            <option value="/usuario">usuario</option>
+                                            <option value="/rotina">rotina</option>
+                                            <option value="/grupo">grupo</option>
+                                            <option value="/parceiroNegocio">parceiro</option>
+                                            <option value="/servico">servico</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <hr />
+
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <br />
+
+                                    <button data-controller="Rotina" data-id="@Model.CD_ROT"
+                                            data-action="Edit"
+                                            data-body-message="Deseja Editar o Registro?"
+                                            style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                        Editar
+                                    </button>
+
+                                    <button data-controller="Rotina" data-id="@Model.CD_ROT"
+                                            data-action="Cancel"
+                                            data-body-message="Voltar para a tela inicial?"
+                                            style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                                        Cancelar
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

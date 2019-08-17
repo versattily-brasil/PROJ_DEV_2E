@@ -168,7 +168,7 @@ namespace P2E.Main.UI.Web.Controllers
                     }
                     CarregarListasComplementares(itemViewModel);
 
-                    return View("Form", itemViewModel).WithDanger("Senha Incorreta.", GenericMessages.ErrorComparePassword("Usuario", usuario.Messages));
+                    return View("Form", itemViewModel).WithDanger("Usuário Inativo.", GenericMessages.ErrorComparePassword("Usuario", usuario.Messages));
                 }
             }            
 

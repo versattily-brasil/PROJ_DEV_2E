@@ -119,6 +119,28 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> View(long id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync($"{_urlRotina}/{id}");
+                    result.EnsureSuccessStatusCode();
+                    var rotina = await result.Content.ReadAsAsync<Rotina>();
+                    var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
+                    rotinaViewModel.Servicos = CarregarServico().Result;
+
+                    return View("View", rotinaViewModel);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
