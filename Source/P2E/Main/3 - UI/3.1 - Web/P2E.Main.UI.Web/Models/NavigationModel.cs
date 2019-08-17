@@ -54,8 +54,8 @@ namespace P2E.Main.UI.Web.Models
             if (!string.IsNullOrEmpty(_userId))
             {
                 #region Carrega permissões de Usuario x Grupo
-                //string urlUsuarioGrupo = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesgrupo/{_userId}";
-                string urlUsuarioGrupo = $"http://localhost:7000/sso/v1/usuario/permissoesgrupo/{_userId}";
+                string urlUsuarioGrupo = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesgrupo/{_userId}";
+                //string urlUsuarioGrupo = $"http://localhost:7000/sso/v1/usuario/permissoesgrupo/{_userId}";
                 using (var client = new HttpClient())
                 {
                     var result = await client.GetAsync(urlUsuarioGrupo);
@@ -96,8 +96,8 @@ namespace P2E.Main.UI.Web.Models
                 #endregion
 
                 #region Carrega permissões de Usuario x Rotina
-                //string urlUsuarioRotina = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesusuario/{_userId}";
-                string urlUsuarioRotina = $"http://localhost:7000/sso/v1/usuario/permissoesusuario/{_userId}";
+                string urlUsuarioRotina = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesusuario/{_userId}";
+                //string urlUsuarioRotina = $"http://localhost:7000/sso/v1/usuario/permissoesusuario/{_userId}";
                 using (var client = new HttpClient())
                 {
                     var result = await client.GetAsync(urlUsuarioRotina);

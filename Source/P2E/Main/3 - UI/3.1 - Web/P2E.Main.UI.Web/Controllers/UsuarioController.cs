@@ -252,7 +252,7 @@ namespace P2E.Main.UI.Web.Controllers
 
         public async Task<IActionResult> Cancel()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Usuário")); ;
         }
 
         /// <summary>
@@ -293,7 +293,7 @@ namespace P2E.Main.UI.Web.Controllers
                     {
                         if (usuario.OP_STATUS.ToString().Trim() == "INATIVO")
                         {
-                            return View(itemViewModel).WithDanger("Acesso Negado", "Usuário Inativo.");
+                            return View(itemViewModel).WithDanger("Acesso Negado", "Por favor contacte o administrador do sistema.");
                         }
 
                         var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
