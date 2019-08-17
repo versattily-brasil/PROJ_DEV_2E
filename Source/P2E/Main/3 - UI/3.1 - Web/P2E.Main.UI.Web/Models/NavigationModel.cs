@@ -48,15 +48,17 @@ namespace P2E.Main.UI.Web.Models
             var navigation = NavigationBuilder.FromJson(jsonText);
 
             var usuarioGrupos = new List<UsuarioGrupo>();
+            var usuarioRotinas = new List<RotinaUsuarioOperacao>();
 
             // Carregar Dados do DB
-
             if (!string.IsNullOrEmpty(_userId))
             {
-                string urlUsuario = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoes/{_userId}";
+                #region Carrega permissões de Usuario x Grupo
+                //string urlUsuarioGrupo = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesgrupo/{_userId}";
+                string urlUsuarioGrupo = $"http://localhost:7000/sso/v1/usuario/permissoesgrupo/{_userId}";
                 using (var client = new HttpClient())
                 {
-                    var result = await client.GetAsync(urlUsuario);
+                    var result = await client.GetAsync(urlUsuarioGrupo);
                     usuarioGrupos = await result.Content.ReadAsAsync<List<UsuarioGrupo>>();
                 }
 
@@ -80,7 +82,7 @@ namespace P2E.Main.UI.Web.Models
                 {
                     foreach (var subitem in item.ListaRotinaGrupoOperacao)
                     {
-                        var servico = servicos.First(p=> p.CD_SRV == subitem.Rotina.CD_SRV);
+                        var servico = servicos.First(p => p.CD_SRV == subitem.Rotina.CD_SRV);
 
                         if (servico.Rotinas == null)
                             servico.Rotinas = new List<Rotina>();
@@ -91,6 +93,48 @@ namespace P2E.Main.UI.Web.Models
                         }
                     }
                 }
+                #endregion
+
+                #region Carrega permissões de Usuario x Rotina
+                //string urlUsuarioRotina = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesusuario/{_userId}";
+                string urlUsuarioRotina = $"http://localhost:7000/sso/v1/usuario/permissoesusuario/{_userId}";
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync(urlUsuarioRotina);
+                    usuarioRotinas = await result.Content.ReadAsAsync<List<RotinaUsuarioOperacao>>();
+                }
+
+                // carregar os serviços
+                foreach (var item in usuarioRotinas)
+                {
+                    if (!servicos.Any(p => p.CD_SRV == item.Rotina.Servico.CD_SRV))
+                    {
+                        var servico = item.Rotina.Servico;
+
+                        if (!servicos.Any(p => p.CD_SRV == servico.CD_SRV))
+                        {
+                            servicos.Add(servico);
+                        }
+                    }
+                }
+
+                // carregar as rotinas dos serviços
+                foreach (var item in usuarioRotinas)
+                {
+                    var servico = servicos.First(p => p.CD_SRV == item.Rotina.CD_SRV);
+
+                    if (servico.Rotinas == null)
+                        servico.Rotinas = new List<Rotina>();
+
+                    if (!servico.Rotinas.Any(p => p.CD_ROT == item.CD_ROT))
+                    {
+                        servico.Rotinas.Add(item.Rotina);
+                    }
+                    else
+                    {
+                    }
+                }
+                #endregion
 
                 var listItems = new List<ListItem>();
                 foreach (var servico in servicos.Distinct())

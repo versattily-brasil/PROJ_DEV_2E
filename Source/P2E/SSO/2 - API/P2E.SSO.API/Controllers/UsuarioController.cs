@@ -61,8 +61,8 @@ namespace P2E.SSO.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/v1/usuario/permissoes/{id}")]
-        public List<UsuarioGrupo> GetPermissoes(int id)
+        [Route("api/v1/usuario/permissoesgrupo/{id}")]
+        public List<UsuarioGrupo> GetPermissoesGrupo(int id)
         {
             // Obtem os grupos em que o usuario está associado
             var usuarioGrupos = _usuarioGrupoRepository.FindAll(o => o.CD_USR == id).ToList();
@@ -89,6 +89,29 @@ namespace P2E.SSO.API.Controllers
 
             return usuarioGrupos;
         }
+
+        [HttpGet]
+        [Route("api/v1/usuario/permissoesusuario/{id}")]
+        public List<RotinaUsuarioOperacao> GetPermissoesUsuario(int id)
+        {
+            // Obtem os grupos em que o usuario está associado
+            var rotinaUsuarioOperacoes = _rotinaUsuarioOperacaoRepository.FindAll(o => o.CD_USR == id).ToList();
+
+            foreach (var rotinaUsuario in rotinaUsuarioOperacoes)
+            {
+                // Carrega a rotina
+                rotinaUsuario.Rotina = _rotinaRepository.Find(p => p.CD_ROT == rotinaUsuario.CD_ROT);
+
+                // Carrega as Permissões
+                rotinaUsuario.Rotina.Operacoes = _operacaoRepository.FindAll(p => p.CD_OPR == rotinaUsuario.CD_OPR).ToList();
+
+                // Carrega os Serviços
+                rotinaUsuario.Rotina.Servico = _servicoRepository.Find(p => p.CD_SRV == rotinaUsuario.Rotina.CD_SRV);
+            }
+
+            return rotinaUsuarioOperacoes;
+        }
+
 
         // GET: api/usuario/5
         [HttpGet]
