@@ -16,6 +16,10 @@ namespace P2E.Shared.Message
             return $"{param} ! Registro excluído com sucesso.";
         }
 
+        public static string EditCancel(string param)
+        {
+            return $"{param} ! Edição cancelada";
+        }
 
         public static string ListNull()
         {
