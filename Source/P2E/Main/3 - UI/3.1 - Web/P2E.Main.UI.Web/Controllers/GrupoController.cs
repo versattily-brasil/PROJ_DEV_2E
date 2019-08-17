@@ -109,6 +109,28 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> View(long id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync($"{_urlGrupo}/{id}");
+                    result.EnsureSuccessStatusCode();
+                    var grupo = await result.Content.ReadAsAsync<Grupo>();
+                    var grupoViewModel = _mapper.Map<GrupoViewModel>(grupo);
+
+                    CarregarListasComplementares(grupoViewModel);
+                    return View("View", grupoViewModel);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -200,7 +222,7 @@ namespace P2E.Main.UI.Web.Controllers
 
         public async Task<IActionResult> Cancel()
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Grupo")); ;
         }
 
         #endregion

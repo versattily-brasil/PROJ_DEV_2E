@@ -48,7 +48,12 @@ var Grupo = /** @class */ (function () {
                 $('#rotina-selecao-validacao').text("A Rotina selecionada já foi adicionada.");
             }
         });
-        this.btnSalvar.on("click", function () {
+        this.btnSalvar.on("click", function (e) {
+            var a = confirm("Tem certeza que deseja salvar as alterações?");
+            if (!a) {
+                return false;
+            }
+            e.preventDefault();
             var listaRotinas = "RotinaGrupoOperacao";
             var g = 0;
             $('#rotina-validacao').text("");

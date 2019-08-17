@@ -20,18 +20,9 @@
 
         <div class="panel">
             <div class="panel-hdr">
-                @if (Model.CD_GRP > 0)
-                {
-                    <h1>
-                        Edição de Grupos
-                    </h1>
-                }
-                else
-                {
-                    <h1>
-                        Cadastro de Grupos
-                    </h1>
-                }
+                <h1>
+                    Visualização do Grupo
+                </h1>
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
@@ -39,7 +30,7 @@
                         <input type="hidden" asp-for="CD_GRP" />
                         <div class="form-group">
                             <label class="form-label" asp-for="TX_DSC">Descrição</label>
-                            <input type="text" maxlength="100" asp-for="TX_DSC" placeholder="Descrição" class="form-control">
+                            <input type="text" maxlength="100" asp-for="TX_DSC" placeholder="Descrição" class="form-control" disabled="disabled">
                         </div>
 
                         <div class="form-group mb-0">
@@ -55,7 +46,7 @@
                                             <div class="col-5">
                                                 <div class="form-group">
                                                     <label class="form-label">Serviço</label>
-                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
+                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico" disabled="disabled">
                                                         <option disabled selected>--- Selecione um serviço ---</option>
                                                     </select>
                                                 </div>
@@ -70,17 +61,17 @@
                                                             <option data-cd_srv="@rotina.CD_SRV" value="@rotina.CD_ROT">@rotina.TX_NOME</option>
                                                         }
                                                     </select>
-                                                    <p class="text-danger" id="rotina-selecao-validacao">
+                                                    <p class="text-danger" id="rotina-selecao-validacao" disabled="disabled">
 
                                                     </p>
                                                 </div>
                                             </div>
 
-                                            <div class="col-1">
+                                            @*<div class="col-1">
                                                 <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
-                                                    <i class="fal fa-plus"></i>
+                                                    <i disabled="disabled" class="fal fa-plus"></i>
                                                 </a>
-                                            </div>
+                                            </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -116,16 +107,16 @@
                                                 {
                                                     if (Model.RotinaGrupoOperacao.Any(o => o.CD_OPR == operacao.CD_OPR && o.CD_ROT == opRotina.CD_ROT))
                                                     {
-                                                        <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" type="checkbox" checked /></td>
+                                                        <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" disabled="disabled" type="checkbox" checked /></td>
                                                     }
                                                     else
                                                     {
-                                                        <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" type="checkbox" /></td>
+                                                        <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" disabled="disabled" type="checkbox" /></td>
                                                     }
 
                                                 }
 
-                                                <td><i style="font-weight:bold;cursor:pointer" class="excluir-rotina fal fa-minus-circle text-danger bt-selecao-md"></i></td>
+                                                <td><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-md"></i></td>
 
                                             </tr>
                                         }
@@ -138,26 +129,21 @@
                             </p>
                         </div>
                         <br />
-                        <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
-                        @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
+
+                        <button data-controller="Grupo" data-id="@Model.CD_GRP"
+                                data-action="Edit"
+                                data-body-message="Deseja Editar o Registro?"
+                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                            Editar
+                        </button>
 
                         <button data-controller="Grupo" data-id="@Model.CD_GRP"
                                 data-action="Cancel"
-                                data-body-message="Deseja cancelar as alterações?"
+                                data-body-message="Voltar para a tela inicial?"
                                 style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                             Cancelar
                         </button>
 
-                        @if (Model.CD_GRP > 0)
-                        {
-                            <button data-id="@Model.CD_GRP"
-                                    data-controller="Grupo"
-                                    data-action="Delete"
-                                    data-body-message="Deseja excluir este Grupo?"
-                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                Deletar
-                            </button>
-                        }
                     </form>
                 </div>
             </div>
@@ -166,7 +152,7 @@
 </div>
 @foreach (var operacao in @Model.Operacoes)
 {
-    <input type="hidden" class="operacao_hidden" data-tx_dsc="@operacao.TX_DSC" data-cd_opr="@operacao.CD_OPR" />
+    <input type="hidden" class="operacao_hidden" disabled="disabled" data-tx_dsc="@operacao.TX_DSC" data-cd_opr="@operacao.CD_OPR" />
 }
 @section Scripts {
 
