@@ -3,21 +3,21 @@
     form = $("#form");
     btnSalvar = $("#btnSalvar");
 
+    btnConfirmarSalvar = $("#confirm-delete");
+
     init(): void {        
 
-        //$("#cancel-delete").click(function (e) {
-        //    e.preventDefault();
-        //});
-
-
+        this.btnConfirmarSalvar.on("click", (e) => {
+            this.form.submit();
+        });
 
         this.btnSalvar.on("click", (e) => {           
 
-            var a = confirm("Tem certeza que deseja salvar as alterações?");
-            if (!a) {
-                return false;
-            }
-            e.preventDefault();
+            //var a = confirm("Tem certeza que deseja salvar as alterações?");
+            //if (!a) {
+            //    return false;
+            //}
+            //e.preventDefault();
 
             var agrupamento = "RotinaServico";
             var g = 0;
@@ -33,7 +33,7 @@
             });
 
 
-            this.form.submit();
+            //this.form.submit();
         });
     }
 }
