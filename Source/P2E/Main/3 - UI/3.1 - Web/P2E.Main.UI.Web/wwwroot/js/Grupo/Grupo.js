@@ -81,6 +81,7 @@ var Grupo = /** @class */ (function () {
         });
         $(document).on("click", ".excluir-rotina", function () {
             $(this).closest("tr").remove();
+            this.form.submit();
         });
         $("#comboRotina").on("change", function () {
             $('#rotina-selecao-validacao').text("");
