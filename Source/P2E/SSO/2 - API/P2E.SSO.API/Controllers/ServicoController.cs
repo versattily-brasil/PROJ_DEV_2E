@@ -19,12 +19,14 @@ namespace P2E.SSO.API.Controllers
         private readonly IServicoRepository _servicoRepository;
         private readonly IRotinaRepository _rotinaRepository;
         private readonly IRotinaServicoRepository _rotinaServicoRepository;
-        
-        public ServicoController(IServicoRepository servicoRepository, IRotinaServicoRepository rotinaServicoRepository, IRotinaRepository rotinaRepository)
+        private readonly IParceiroNegocioModuloRepository  _parceiroNegocioModuloRepository;
+
+        public ServicoController(IServicoRepository servicoRepository, IRotinaServicoRepository rotinaServicoRepository, IRotinaRepository rotinaRepository, IParceiroNegocioModuloRepository parceiroNegocioModuloRepository)
         {
             _servicoRepository = servicoRepository;
             _rotinaServicoRepository = rotinaServicoRepository;
             _rotinaRepository = rotinaRepository;
+            _parceiroNegocioModuloRepository = parceiroNegocioModuloRepository;
         }
 
         // GET: api/Modulo
@@ -109,13 +111,20 @@ namespace P2E.SSO.API.Controllers
         public IActionResult Delete(int id)
         {
             try
-            {
+            {                
                 var objeto = _servicoRepository.FindById(id);
                 var rotinas = _rotinaRepository.Find(p => p.CD_SRV == id);
+                var parceiro = _parceiroNegocioModuloRepository.Find(p => p.CD_SRV == id);
 
+                if (parceiro != null)
+                {
+                    return BadRequest("Não foi possivel excluir esse serviço pois ele está associado a um Parceiro Negócio.");
+                }
 
                 if (rotinas != null)
+                {
                     return BadRequest("Não foi possivel excluir esse serviço pois ele está associado a alguma rotina.");
+                }
                 else
                 {
                     _servicoRepository.Delete(objeto);

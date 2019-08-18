@@ -32,12 +32,12 @@
                             <input type="text" maxlength="100" asp-for="TXT_DEC" placeholder="Descrição" class="form-control" disabled>
                         </div>
 
-                        <button data-controller="Servico" data-id="@Model.CD_SRV"
+                        @*<button data-controller="Servico" data-id="@Model.CD_SRV"
                                 data-action="Edit"
                                 data-body-message="Deseja Editar o Registro?"
                                 style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
                             Editar
-                        </button>
+                        </button>*@
 
                         <button data-controller="Servico" data-id="@Model.CD_SRV"
                                 data-action="Cancel"
@@ -45,6 +45,17 @@
                                 style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                             Cancelar
                         </button>
+
+                        @if (Model?.CD_SRV > 0)
+                        {
+                            <button data-id="@Model.CD_SRV"
+                                    data-controller="Servico"
+                                    data-action="Delete"
+                                    data-body-message="Deseja excluir este Serviço?"
+                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                Deletar
+                            </button>
+                        }
 
                     </form>
                 </div>

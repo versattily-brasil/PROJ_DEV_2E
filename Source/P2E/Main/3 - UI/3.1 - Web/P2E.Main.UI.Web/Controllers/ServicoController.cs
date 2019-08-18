@@ -198,7 +198,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Edit", new { id = Id }).WithWarning("Erro.", responseBody);
+                return RedirectToAction("View", new { id = Id }).WithWarning("Erro.", responseBody);
             }           
         }
 #endregion
