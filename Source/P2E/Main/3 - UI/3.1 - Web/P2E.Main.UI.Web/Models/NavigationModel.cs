@@ -70,16 +70,16 @@ namespace P2E.Main.UI.Web.Models
                 {
                     foreach (var subitem in item.ListaRotinaGrupoOperacao)
                     {
-                        //if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
-                        if (!servicosViewModel.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                        if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                        //if (!servicosViewModel.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
                             {
                                 var servico = subitem.Rotina.Servico;
-                                //servicos.Add(servico);
+                                servicos.Add(servico);
 
-                                servicosViewModel.Add(new ServicoViewModel() {
-                                    CD_SRV = servico.CD_SRV,
-                                    TXT_DEC = servico.TXT_DEC
-                                });
+                                //servicosViewModel.Add(new ServicoViewModel() {
+                                //    CD_SRV = servico.CD_SRV,
+                                //    TXT_DEC = servico.TXT_DEC
+                                //});
                         }
                     }
                 }
