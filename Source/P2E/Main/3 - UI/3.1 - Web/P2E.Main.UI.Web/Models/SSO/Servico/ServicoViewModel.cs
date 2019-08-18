@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Models.SSO.Servico
 {
+    [Serializable]
     public class ServicoViewModel
     {
         public long CD_SRV { get; set; }

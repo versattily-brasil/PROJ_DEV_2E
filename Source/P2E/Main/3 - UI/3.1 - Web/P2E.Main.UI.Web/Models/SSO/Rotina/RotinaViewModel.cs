@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using P2E.SSO.Domain.Entities;
 using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.Main.UI.Web.Models.SSO.Operacao;
+using System;
 
 namespace P2E.Main.UI.Web.Models.SSO.Rotina
 {
     /// <summary>
     /// Classe de apresentação de Rotina na View
     /// </summary>
+    [Serializable]
     public class RotinaViewModel
     {
         public int CD_ROT { get; set; }        
