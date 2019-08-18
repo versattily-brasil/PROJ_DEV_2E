@@ -345,7 +345,11 @@
                             </p>
                         </div>
 
-                        <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
+                        <button data-body-message="Confirma as alterações?"
+                                id="btnSalvar"
+                                style="font-weight:normal;cursor:pointer" class="delete btn btn-success">
+                            Salvar
+                        </button>
 
                         <button data-controller="Usuario" data-id="@Model.CD_USR"
                                 data-action="Cancel"

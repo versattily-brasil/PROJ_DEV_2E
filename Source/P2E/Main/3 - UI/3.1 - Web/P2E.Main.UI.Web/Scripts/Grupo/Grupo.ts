@@ -2,9 +2,13 @@
 
     form = $("#form");
     btnSalvar = $("#btnSalvar");
-    btnExcluir = $("#excluir-rotina");
+    btnConfirmarSalvar = $("#confirm-delete");
 
     init(): void {
+
+        this.btnConfirmarSalvar.on("click", (e) => {
+            this.form.submit();
+        });
 
         $("#comboServico").on("change", function () {
 
@@ -56,17 +60,9 @@
                 $('#rotina-selecao-validacao').text("A Rotina selecionada já foi adicionada.");
             }
 
-
-
         });
 
         this.btnSalvar.on("click", (e) => {
-
-            var a = confirm("Tem certeza que deseja salvar as alterações?");
-            if (!a) {
-                return false;
-            }
-            e.preventDefault();
 
             var listaRotinas = "RotinaGrupoOperacao";
             var g = 0;
@@ -101,13 +97,13 @@
             if (rotinasInvalidas > 0) {
                 $('#rotina-validacao').text("É necessário permitir pelo menos uma operação para cada Rotina.");
             } else {
-                this.form.submit();
+                //this.form.submit();
             }
 
-        });
+        });    
 
         $(document).on("click", ".excluir-rotina", function () {
-            $(this).closest("tr").remove();           
+            $(this).closest("tr").remove();
         });
 
         $("#comboRotina").on("change", function () {
