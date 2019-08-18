@@ -60,7 +60,7 @@
                             <table class="table table-bordered table-hover m-0">
                                 <thead class="thead-themed">
                                     <tr>
-                                        <th width="100">#</th>
+                                        @*<th width="100">#</th>*@
                                         <th>Nome</th>
                                         <th>Login</th>
                                         <th>Status</th>
@@ -71,7 +71,7 @@
                                     @foreach (var usr in Model.DataPage.Items)
                                     {
                                         <tr>
-                                            <td>@usr.CD_USR</td>
+                                            @*<td>@usr.CD_USR</td>*@
                                             <td>@usr.TX_NOME</td>
                                             <td>@usr.TX_LOGIN</td>
                                             <td>@usr?.OP_STATUS.ToDescription()</td>
