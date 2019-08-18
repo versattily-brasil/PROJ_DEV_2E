@@ -17,6 +17,7 @@ using P2E.Shared.Model;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Web;
 using Microsoft.AspNetCore.Identity;
+using P2E.Main.UI.Web.Models.SSO.Servico;
 
 namespace P2E.Main.UI.Web.Models
 {
@@ -54,8 +55,7 @@ namespace P2E.Main.UI.Web.Models
             if (!string.IsNullOrEmpty(_userId))
             {
                 #region Carrega permissões de Usuario x Grupo
-                //string urlUsuarioGrupo = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesgrupo/{_userId}";
-                string urlUsuarioGrupo = $"http://localhost:7000/sso/v1/usuario/permissoesgrupo/{_userId}";
+                string urlUsuarioGrupo = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesgrupo/{_userId}";
                 using (var client = new HttpClient())
                 {
                     var result = await client.GetAsync(urlUsuarioGrupo);
@@ -63,16 +63,23 @@ namespace P2E.Main.UI.Web.Models
                 }
 
                 var servicos = new List<Servico>();
+                var servicosViewModel = new List<ServicoViewModel>();
 
                 // carregar os serviços
                 foreach (var item in usuarioGrupos)
                 {
                     foreach (var subitem in item.ListaRotinaGrupoOperacao)
                     {
-                        if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
-                        {
-                            var servico = subitem.Rotina.Servico;
-                            servicos.Add(servico);
+                        //if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                        if (!servicosViewModel.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                            {
+                                var servico = subitem.Rotina.Servico;
+                                //servicos.Add(servico);
+
+                                servicosViewModel.Add(new ServicoViewModel() {
+                                    CD_SRV = servico.CD_SRV,
+                                    TXT_DEC = servico.TXT_DEC
+                                });
                         }
                     }
                 }
@@ -96,8 +103,7 @@ namespace P2E.Main.UI.Web.Models
                 #endregion
 
                 #region Carrega permissões de Usuario x Rotina
-                //string urlUsuarioRotina = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesusuario/{_userId}";
-                string urlUsuarioRotina = $"http://localhost:7000/sso/v1/usuario/permissoesusuario/{_userId}";
+                string urlUsuarioRotina = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesusuario/{_userId}";
                 using (var client = new HttpClient())
                 {
                     var result = await client.GetAsync(urlUsuarioRotina);

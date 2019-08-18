@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using P2E.SSO.Domain.Entities;
 using P2E.Main.UI.Web.Models.SSO.Servico;
+using P2E.Main.UI.Web.Models.SSO.Operacao;
 
 namespace P2E.Main.UI.Web.Models.SSO.Rotina
 {
@@ -21,8 +22,10 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
 
         public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();
 
-        public List<ServicoViewModel> ServicosViewModels { get; set; } = new List<ServicoViewModel>();
+        //public List<ServicoViewModel> ServicosViewModels { get; set; } = new List<ServicoViewModel>();
 
         public P2E.SSO.Domain.Entities.Servico Servico { get; set; }
+
+        public List<OperacaoViewModel> OperacoesViewModel { get; set; }
     }
 }
