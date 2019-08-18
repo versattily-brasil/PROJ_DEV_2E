@@ -440,7 +440,7 @@ namespace P2E.Main.UI.Web.Controllers
             var usuarioRotinas = new List<RotinaUsuarioOperacao>();
 
             #region Carrega permissões de Usuario x Grupo
-            string urlUsuarioGrupo = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesgrupo/{usuarioid}";
+            string urlUsuarioGrupo = $"{_urlUsuario}/permissoesgrupo/{usuarioid}";
             using (var client = new HttpClient())
             {
                 var result = await client.GetAsync(urlUsuarioGrupo);
@@ -490,14 +490,47 @@ namespace P2E.Main.UI.Web.Controllers
                             TX_URL = subitem.Rotina.TX_URL
                         };
 
+                        if (rotinaViewModel.OperacoesViewModel == null)
+                        {
+                            rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                        }
+
+                        if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == subitem.CD_OPR))
+                        {
+                            rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                            {
+                                CD_OPR = subitem.CD_OPR,
+                                TX_DSC = subitem.Operacao.TX_DSC
+                            });
+                        }
+
                         servico.RotinasViewModel.Add(rotinaViewModel);
+                    }
+                    else
+                    {
+                        var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p=> p.CD_ROT == subitem.CD_ROT);
+
+                        if (rotinaViewModel.OperacoesViewModel == null)
+                        {
+                            rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                        }
+
+                        if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == subitem.CD_OPR))
+                        {
+                            rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                            {
+                                CD_OPR = subitem.CD_OPR,
+                                TX_DSC = subitem.Operacao.TX_DSC
+                            });
+                        }
+
                     }
                 }
             }
             #endregion
 
             #region Carrega permissões de Usuario x Rotina
-            string urlUsuarioRotina = $"http://gateway.2e.versattily.com/sso/v1/usuario/permissoesusuario/{usuarioid}";
+            string urlUsuarioRotina = $"{_urlUsuario}/permissoesusuario/{usuarioid}";
             using (var client = new HttpClient())
             {
                 var result = await client.GetAsync(urlUsuarioRotina);

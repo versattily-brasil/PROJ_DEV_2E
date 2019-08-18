@@ -79,6 +79,9 @@ namespace P2E.SSO.API.Controllers
 
                     // Carrega as Permissões
                     rotinaGrupo.Rotina.Operacoes = _operacaoRepository.FindAll(p=> p.CD_OPR == rotinaGrupo.CD_OPR).ToList();
+                    rotinaGrupo.Operacao = _operacaoRepository.Find(p=> p.CD_OPR == rotinaGrupo.CD_OPR);
+
+
 
                     // Carrega os Serviços
                     rotinaGrupo.Rotina.Servico = _servicoRepository.Find(p => p.CD_SRV == rotinaGrupo.Rotina.CD_SRV);
@@ -104,6 +107,8 @@ namespace P2E.SSO.API.Controllers
 
                 // Carrega as Permissões
                 rotinaUsuario.Rotina.Operacoes = _operacaoRepository.FindAll(p => p.CD_OPR == rotinaUsuario.CD_OPR).ToList();
+                rotinaUsuario.Operacao = _operacaoRepository.Find(p => p.CD_OPR == rotinaUsuario.CD_OPR);
+
 
                 // Carrega os Serviços
                 rotinaUsuario.Rotina.Servico = _servicoRepository.Find(p => p.CD_SRV == rotinaUsuario.Rotina.CD_SRV);
