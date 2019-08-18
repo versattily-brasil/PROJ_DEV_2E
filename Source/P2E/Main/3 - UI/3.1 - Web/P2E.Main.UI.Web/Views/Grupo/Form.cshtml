@@ -138,7 +138,13 @@
                             </p>
                         </div>
                         <br />
-                        <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
+
+                        <button data-body-message="Confirma as alterações?"
+                                id="btnSalvar"
+                                style="font-weight:normal;cursor:pointer" class="delete btn btn-success">
+                            Salvar
+                        </button>
+
                         @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
 
                         <button data-controller="Grupo" data-id="@Model.CD_GRP"
@@ -171,4 +177,5 @@
 @section Scripts {
 
     <script src="~/js/Grupo/Grupo.js"></script>
+    
 }

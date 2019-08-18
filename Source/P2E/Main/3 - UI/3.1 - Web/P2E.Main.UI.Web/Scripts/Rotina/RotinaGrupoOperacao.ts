@@ -13,12 +13,6 @@
 
         this.btnSalvar.on("click", (e) => {           
 
-            //var a = confirm("Tem certeza que deseja salvar as alterações?");
-            //if (!a) {
-            //    return false;
-            //}
-            //e.preventDefault();
-
             var agrupamento = "RotinaServico";
             var g = 0;
 
