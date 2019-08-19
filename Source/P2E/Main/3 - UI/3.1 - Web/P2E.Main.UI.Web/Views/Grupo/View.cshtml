@@ -9,7 +9,7 @@
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
 
-        var nome_rotina =  "Grupos de Usuários";
+    var nome_rotina = "Grupos de Usuários";
 
 }
 
@@ -150,6 +150,20 @@
                                 style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                             Cancelar
                         </button>
+
+                        @if (Model.CD_GRP > 0)
+                        {
+                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Deletar", User))
+                            {
+                                <button data-id="@Model.CD_GRP"
+                                        data-controller="Grupo"
+                                        data-action="Delete"
+                                        data-body-message="Deseja excluir este Grupo?"
+                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                    Deletar
+                                </button>
+                            }
+                        }
 
                     </form>
                 </div>

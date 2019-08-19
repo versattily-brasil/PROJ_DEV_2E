@@ -97,6 +97,21 @@
                                         Cancelar
                                     </button>
 
+                                    @if (Model.CD_ROT > 0)
+                                    {
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotina", "Deletar", User))
+                                        {
+                                            <button data-id="@Model.CD_ROT"
+                                                    data-controller="Rotina"
+                                                    data-action="Delete"
+                                                    data-body-message="Deseja excluir esta Rotina?"
+                                                    style="font-weight:normal;cursor:pointer"
+                                                    class="delete btn btn-danger fa-pull-right">
+                                                Deletar
+                                            </button>
+                                        }
+                                    }
+
                                 </div>
                             </div>
                         </div>

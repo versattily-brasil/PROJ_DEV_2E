@@ -307,6 +307,20 @@
                             Cancelar
                         </button>
 
+                        @if (Model.CD_USR > 0)
+                        {
+                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Usuário", "Deletar", User))
+                            {
+                                <button data-id="@Model.CD_USR"
+                                        data-controller="Usuario"
+                                        data-action="Delete"
+                                        data-body-message="Deseja excluir este Usuário?"
+                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                    Deletar
+                                </button>
+                            }
+                        }
+
                     </div>
                 </form>
             </div>

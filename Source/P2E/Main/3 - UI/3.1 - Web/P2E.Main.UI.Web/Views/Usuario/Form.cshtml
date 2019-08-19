@@ -200,25 +200,6 @@
                                 </div>
                             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             <div class="tab-pane fade" id="tab_direction-3" role="tabpanel">
                                 <div class="container container-demo">
 
@@ -304,41 +285,8 @@
                                             </tbody>
                                         </table>
                                     </div>
-
-
-
-
-
-
-
-
-
                                 </div>
                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         </div>
                         <div>
                             <p class="text-danger" id="rotina-validacao">
@@ -358,19 +306,6 @@
                             Cancelar
                         </button>
 
-                        @if (Model.CD_USR > 0)
-                        {
-                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Usuário", "Deletar", User))
-                            {
-                                <button data-id="@Model.CD_USR"
-                                        data-controller="Usuario"
-                                        data-action="Delete"
-                                        data-body-message="Deseja excluir este Usuário?"
-                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                    Deletar
-                                </button>
-                             }
-                         }
                     </div>
                 </form>
             </div>

@@ -9,7 +9,7 @@
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
 
-        var nome_rotina =  "Parceiro de Negócio";
+    var nome_rotina = "Parceiro de Negócio";
 
 }
 
@@ -78,10 +78,10 @@
                                             </div>
 
                                             @*<div class="col-1">
-                                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-parceiro-servico-usuario">
-                                                    <i class="fal fa-download"></i>
-                                                </a>
-                                            </div>*@
+                                                    <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-parceiro-servico-usuario">
+                                                        <i class="fal fa-download"></i>
+                                                    </a>
+                                                </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -136,6 +136,20 @@
                                             style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                                         Cancelar
                                     </button>
+
+                                    @if (Model.CD_PAR > 0)
+                                    {
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Deletar", User))
+                                        {
+                                            <button data-id="@Model.CD_PAR"
+                                                    data-controller="ParceiroNegocio"
+                                                    data-action="Delete"
+                                                    data-body-message="Deseja excluir este Parceiro?"
+                                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                                Deletar
+                                            </button>
+                                        }
+                                    }
 
                                 </div>
                             </div>
