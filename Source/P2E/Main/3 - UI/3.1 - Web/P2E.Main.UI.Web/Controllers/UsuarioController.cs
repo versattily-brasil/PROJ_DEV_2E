@@ -20,6 +20,7 @@ using P2E.Main.UI.Web.Models.SSO.Rotina;
 using P2E.Main.UI.Web.Models.SSO.Operacao;
 using P2E.Main.UI.Web.Models.SSO.Servico;
 using Newtonsoft.Json;
+using P2E.Main.UI.Web.Extensions.Util;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -322,17 +323,11 @@ namespace P2E.Main.UI.Web.Controllers
                         var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                         identity.AddClaim(new Claim(ClaimTypes.Name, usuario.TX_LOGIN));
                         identity.AddClaim(new Claim(ClaimTypes.Sid, usuario.CD_USR.ToString()));
-
-                        var permissoes = CarregarPermissoesAsync(usuario.CD_USR).Result;
-
-                        identity.AddClaim(new Claim(ClaimTypes.UserData, permissoes));
+                        identity.AddClaim(new Claim(ClaimTypes.Uri, this.appSettings.ApiBaseURL));
 
                         var principal = new ClaimsPrincipal(identity);
-
-                        var aut = new AuthenticationProperties();
-                        aut.ExpiresUtc = DateTime.Now.AddHours(8);
-
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, aut);
+                      
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
 
                         return RedirectToAction("Index", "Home");
@@ -503,7 +498,7 @@ namespace P2E.Main.UI.Web.Controllers
                     }
                     else
                     {
-                        var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p=> p.CD_ROT == subitem.CD_ROT);
+                        var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p => p.CD_ROT == subitem.CD_ROT);
 
                         if (rotinaViewModel.OperacoesViewModel == null)
                         {
