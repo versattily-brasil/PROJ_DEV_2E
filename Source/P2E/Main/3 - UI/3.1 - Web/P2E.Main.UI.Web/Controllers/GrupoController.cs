@@ -109,6 +109,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -169,6 +170,13 @@ namespace P2E.Main.UI.Web.Controllers
             try
             {
                 var grupo = _mapper.Map<Grupo>(itemViewModel);
+
+                if (grupo.RotinaGrupoOperacao.Count <= 0)
+                {
+                    CarregarListasComplementares(itemViewModel);
+                    return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Grupo", "Você precisa associar Rotina ao Grupo"));
+                }
+
                 if (grupo.IsValid())
                 {
                     using (var client = new HttpClient())

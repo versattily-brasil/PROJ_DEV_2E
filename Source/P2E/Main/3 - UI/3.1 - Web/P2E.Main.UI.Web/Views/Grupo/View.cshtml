@@ -8,6 +8,9 @@
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
+
+    var nome_rotina = "Grupos de Usuários";
+
 }
 
 <div class="row">
@@ -21,7 +24,7 @@
         <div class="panel">
             <div class="panel-hdr">
                 <h1>
-                    Visualização do Grupo
+                    Visualização do Grupo de Usuário
                 </h1>
             </div>
             <div class="panel-container show">
@@ -68,10 +71,10 @@
                                             </div>
 
                                             @*<div class="col-1">
-                                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
-                                                    <i disabled="disabled" class="fal fa-plus"></i>
-                                                </a>
-                                            </div>*@
+                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
+                                    <i disabled="disabled" class="fal fa-plus"></i>
+                                </a>
+                            </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -130,12 +133,16 @@
                         </div>
                         <br />
 
-                        <button data-controller="Grupo" data-id="@Model.CD_GRP"
-                                data-action="Edit"
-                                data-body-message="Deseja Editar o Registro?"
-                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
-                            Editar
-                        </button>
+                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Editar", User))
+                        {
+
+                            <button data-controller="Grupo" data-id="@Model.CD_GRP"
+                                    data-action="Edit"
+                                    data-body-message="Deseja Editar o Registro?"
+                                    style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                Editar
+                            </button>
+                        }
 
                         <button data-controller="Grupo" data-id="@Model.CD_GRP"
                                 data-action="Cancel"
@@ -143,6 +150,20 @@
                                 style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                             Cancelar
                         </button>
+
+                        @if (Model.CD_GRP > 0)
+                        {
+                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Deletar", User))
+                            {
+                                <button data-id="@Model.CD_GRP"
+                                        data-controller="Grupo"
+                                        data-action="Delete"
+                                        data-body-message="Deseja excluir este Grupo?"
+                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                    Deletar
+                                </button>
+                            }
+                        }
 
                     </form>
                 </div>
@@ -153,8 +174,4 @@
 @foreach (var operacao in @Model.Operacoes)
 {
     <input type="hidden" class="operacao_hidden" disabled="disabled" data-tx_dsc="@operacao.TX_DSC" data-cd_opr="@operacao.CD_OPR" />
-}
-@section Scripts {
-
-    <script src="~/js/Grupo/Grupo.js"></script>
 }

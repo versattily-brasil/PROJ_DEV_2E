@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\NewFolder\**" />
+    <Content Remove="Extensions\NewFolder\**" />
+    <EmbeddedResource Remove="Extensions\NewFolder\**" />
+    <None Remove="Extensions\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Rotina\Cadastro.cshtml" />
     <Content Remove="Views\Rotina\Lista.cshtml" />
   </ItemGroup>

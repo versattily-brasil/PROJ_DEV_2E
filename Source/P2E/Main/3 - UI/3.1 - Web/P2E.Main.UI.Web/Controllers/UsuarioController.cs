@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using P2E.Main.UI.Web.Models.SSO.Rotina;
 using P2E.Main.UI.Web.Models.SSO.Operacao;
 using P2E.Main.UI.Web.Models.SSO.Servico;
+using Newtonsoft.Json;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -105,6 +106,28 @@ namespace P2E.Main.UI.Web.Controllers
                     var usuarioViewModel = _mapper.Map<UsuarioViewModel>(usuario);
                     CarregarListasComplementares(usuarioViewModel);
                     return View("Form", usuarioViewModel);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> View(long id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync($"{_urlUsuario}/{id}");
+                    result.EnsureSuccessStatusCode();
+                    var usuario = await result.Content.ReadAsAsync<Usuario>();
+                    var usuarioViewModel = _mapper.Map<UsuarioViewModel>(usuario);
+                    CarregarListasComplementares(usuarioViewModel);
+                    return View("View", usuarioViewModel);
                 }
             }
             catch (Exception)
@@ -300,6 +323,10 @@ namespace P2E.Main.UI.Web.Controllers
                         identity.AddClaim(new Claim(ClaimTypes.Name, usuario.TX_LOGIN));
                         identity.AddClaim(new Claim(ClaimTypes.Sid, usuario.CD_USR.ToString()));
 
+                        var permissoes = CarregarPermissoesAsync(usuario.CD_USR).Result;
+
+                        identity.AddClaim(new Claim(ClaimTypes.UserData, permissoes));
+
                         var principal = new ClaimsPrincipal(identity);
 
                         var aut = new AuthenticationProperties();
@@ -405,15 +432,183 @@ namespace P2E.Main.UI.Web.Controllers
             itemViewModel.Servicos = CarregarServiços().Result;
         }
 
-
-
-
-
-
-
-
-
         #endregion
+
+        public async Task<string> CarregarPermissoesAsync(long usuarioid)
+        {
+            List<UsuarioGrupo> usuarioGrupos = new List<UsuarioGrupo>();
+            var usuarioRotinas = new List<RotinaUsuarioOperacao>();
+
+            #region Carrega permissões de Usuario x Grupo
+            string urlUsuarioGrupo = $"{_urlUsuario}/permissoesgrupo/{usuarioid}";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlUsuarioGrupo);
+                usuarioGrupos = await result.Content.ReadAsAsync<List<UsuarioGrupo>>();
+            }
+
+            var servicosViewModel = new List<ServicoViewModel>();
+
+            // carregar os serviços
+            foreach (var item in usuarioGrupos)
+            {
+                foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                {
+                    if (!servicosViewModel.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                    {
+                        var servico = subitem.Rotina.Servico;
+                        servicosViewModel.Add(new ServicoViewModel()
+                        {
+                            CD_SRV = servico.CD_SRV,
+                            TXT_DEC = servico.TXT_DEC
+                        });
+                    }
+                }
+            }
+
+            // carregar as rotinas dos serviços
+            foreach (var item in usuarioGrupos)
+            {
+                foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                {
+                    var servico = servicosViewModel.First(p => p.CD_SRV == subitem.Rotina.CD_SRV);
+
+                    if (servico.RotinasViewModel == null)
+                        servico.RotinasViewModel = new List<RotinaViewModel>();
+
+                    if (!servico.RotinasViewModel.Any(p => p.CD_ROT == subitem.CD_ROT))
+                    {
+                        var rotinaViewModel = new RotinaViewModel()
+                        {
+                            CD_ROT = subitem.Rotina.CD_ROT,
+                            TX_NOME = subitem.Rotina.TX_NOME,
+                            TX_URL = subitem.Rotina.TX_URL
+                        };
+
+                        if (rotinaViewModel.OperacoesViewModel == null)
+                        {
+                            rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                        }
+
+                        if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == subitem.CD_OPR))
+                        {
+                            rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                            {
+                                CD_OPR = subitem.CD_OPR,
+                                TX_DSC = subitem.Operacao.TX_DSC
+                            });
+                        }
+
+                        servico.RotinasViewModel.Add(rotinaViewModel);
+                    }
+                    else
+                    {
+                        var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p=> p.CD_ROT == subitem.CD_ROT);
+
+                        if (rotinaViewModel.OperacoesViewModel == null)
+                        {
+                            rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                        }
+
+                        if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == subitem.CD_OPR))
+                        {
+                            rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                            {
+                                CD_OPR = subitem.CD_OPR,
+                                TX_DSC = subitem.Operacao.TX_DSC
+                            });
+                        }
+
+                    }
+                }
+            }
+            #endregion
+
+            #region Carrega permissões de Usuario x Rotina
+            string urlUsuarioRotina = $"{_urlUsuario}/permissoesusuario/{usuarioid}";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlUsuarioRotina);
+                usuarioRotinas = await result.Content.ReadAsAsync<List<RotinaUsuarioOperacao>>();
+            }
+
+            // carregar os serviços
+            foreach (var item in usuarioRotinas)
+            {
+                if (!servicosViewModel.Any(p => p.CD_SRV == item.Rotina.Servico.CD_SRV))
+                {
+                    var servico = item.Rotina.Servico;
+
+                    if (!servicosViewModel.Any(p => p.CD_SRV == servico.CD_SRV))
+                    {
+                        servicosViewModel.Add(new ServicoViewModel()
+                        {
+                            CD_SRV = servico.CD_SRV,
+                            TXT_DEC = servico.TXT_DEC
+                        });
+                    }
+                }
+            }
+
+            // carregar as rotinas dos serviços
+            foreach (var item in usuarioRotinas)
+            {
+                var servico = servicosViewModel.First(p => p.CD_SRV == item.Rotina.CD_SRV);
+
+                if (servico.RotinasViewModel == null)
+                    servico.RotinasViewModel = new List<RotinaViewModel>();
+
+                if (!servico.RotinasViewModel.Any(p => p.CD_ROT == item.CD_ROT))
+                {
+                    var rotinaViewModel = new RotinaViewModel()
+                    {
+                        CD_ROT = item.Rotina.CD_ROT,
+                        TX_NOME = item.Rotina.TX_NOME,
+                        TX_URL = item.Rotina.TX_URL
+                    };
+
+                    if (rotinaViewModel.OperacoesViewModel == null)
+                    {
+                        rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                    }
+
+                    if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == item.CD_OPR))
+                    {
+                        rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                        {
+                            CD_OPR = item.CD_OPR,
+                            TX_DSC = item.Operacao.TX_DSC
+                        });
+                    }
+
+                    servico.RotinasViewModel.Add(rotinaViewModel);
+                }
+                else
+                {
+                    var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p => p.CD_ROT == item.CD_ROT);
+
+                    if (rotinaViewModel.OperacoesViewModel == null)
+                    {
+                        rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                    }
+
+                    if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == item.CD_OPR))
+                    {
+                        rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                        {
+                            CD_OPR = item.CD_OPR,
+                            TX_DSC = item.Operacao.TX_DSC
+                        });
+                    }
+
+                }
+            }
+            #endregion
+
+            var permissoes = JsonConvert.SerializeObject(servicosViewModel);
+
+            return permissoes;
+        }
 
     }
 }

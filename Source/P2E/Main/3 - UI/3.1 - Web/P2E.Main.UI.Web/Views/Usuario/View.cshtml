@@ -22,7 +22,7 @@
                 @if (Model.CD_USR > 0)
                 {
                     <h1>
-                        Edição de Usuário
+                        Visualizar Usuário
                     </h1>
                 }
                 else
@@ -42,13 +42,13 @@
                                     <input type="hidden" asp-for="CD_USR" />
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_NOME">Nome</label>
-                                        <input type="text" maxlength="40" asp-for="TX_NOME" placeholder="Nome" class="form-control">
+                                        <input type="text" maxlength="40" asp-for="TX_NOME" placeholder="Nome" class="form-control" disabled>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_LOGIN">Login</label>
-                                        <input type="text" maxlength="40" asp-for="TX_LOGIN" placeholder="Login" class="form-control">
+                                        <input type="text" maxlength="40" asp-for="TX_LOGIN" placeholder="Login" class="form-control" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -87,14 +87,13 @@
                                     </div>
                                 }
 
-
                             </div>
                             <br />
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="form-group">
+                                    <div class="form-group" disabled>
                                         <label class="form-label" asp-for="OP_STATUS">Status</label>
-                                        <select asp-for="OP_STATUS" class="form-control" asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
+                                        <select asp-for="OP_STATUS" class="form-control" disabled asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +125,7 @@
                                                     {
                                                         <tr data-mod="@modulo.CD_MOD">
                                                             <td>@modulo.TX_DSC</td>
-                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao-md"></i></td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success "></i></td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -145,7 +144,7 @@
                                                     {
                                                         <tr data-mod="@modulo.CD_MOD">
                                                             <td>@modulo.TX_DSC</td>
-                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-md"></i></td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger "></i></td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -171,7 +170,7 @@
                                                     {
                                                         <tr data-grp="@grupo.CD_GRP">
                                                             <td>@grupo.TX_DSC</td>
-                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao-grp"></i></td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success "></i></td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -190,7 +189,7 @@
                                                     {
                                                         <tr data-grp="@grupo.CD_GRP">
                                                             <td>@grupo.TX_DSC</td>
-                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-grp"></i></td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger "></i></td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -199,7 +198,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="tab-pane fade" id="tab_direction-3" role="tabpanel">
                                 <div class="container container-demo">
 
@@ -212,7 +210,7 @@
                                                     <div class="col-5">
                                                         <div class="form-group">
                                                             <label class="form-label">Serviço</label>
-                                                            <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
+                                                            <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico" disabled>
                                                                 <option disabled selected>--- Selecione um serviço ---</option>
                                                             </select>
                                                         </div>
@@ -227,17 +225,17 @@
                                                                     <option data-cd_srv="@rotina.CD_SRV" value="@rotina.CD_ROT">@rotina.TX_NOME</option>
                                                                 }
                                                             </select>
-                                                            <p class="text-danger" id="rotina-selecao-validacao">
+                                                            <p class="text-danger" id="rotina-selecao-validacao" disabled>
 
                                                             </p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-1">
-                                                        <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
-                                                            <i class="fal fa-plus"></i>
-                                                        </a>
-                                                    </div>
+                                                    @*<div class="col-1">
+                                        <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
+                                            <i class="fal fa-plus"></i>
+                                        </a>
+                                    </div>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -278,7 +276,7 @@
 
                                                         }
 
-                                                        <td><i style="font-weight:bold;cursor:pointer" class="excluir-rotina fal fa-minus-circle text-danger bt-selecao-md"></i></td>
+                                                        <td><i style="font-weight:bold;cursor:pointer" class="excluir-rotina fal fa-minus-circle text-danger "></i></td>
 
                                                     </tr>
                                                 }
@@ -292,19 +290,36 @@
                             <p class="text-danger" id="rotina-validacao">
                             </p>
                         </div>
-
-                        <button data-body-message="Confirma as alterações?"
-                                id="btnSalvar"
-                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                            Salvar
-                        </button>
+                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Usuário", "Editar", User))
+                        {
+                            <button data-controller="Usuario" data-id="@Model.CD_USR"
+                                    data-action="Edit"
+                                    data-body-message="Deseja Editar o Registro?"
+                                    style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                Editar
+                            </button>
+                        }
 
                         <button data-controller="Usuario" data-id="@Model.CD_USR"
                                 data-action="Cancel"
-                                data-body-message="Deseja cancelar as alterações?"
+                                data-body-message="Voltar para a tela inicial?"
                                 style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                             Cancelar
                         </button>
+
+                        @if (Model.CD_USR > 0)
+                        {
+                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Usuário", "Deletar", User))
+                            {
+                                <button data-id="@Model.CD_USR"
+                                        data-controller="Usuario"
+                                        data-action="Delete"
+                                        data-body-message="Deseja excluir este Usuário?"
+                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                    Deletar
+                                </button>
+                            }
+                        }
 
                     </div>
                 </form>
@@ -315,11 +330,4 @@
 @foreach (var operacao in @Model.Operacoes)
 {
     <input type="hidden" class="operacao_hidden" data-tx_dsc="@operacao.TX_DSC" data-cd_opr="@operacao.CD_OPR" />
-}
-@section Scripts {
-
-    <script src="~/js/Usuario/TabelaUsuarioModulo.js"></script>
-    <script src="~/js/Usuario/TabelaUsuarioGrupo.js"></script>
-    <script src="~/js/Usuario/RotinaUsuarioOperacao.js"></script>
-    <script src="~/js/Usuario/UsuarioCadastro.js"></script>
 }

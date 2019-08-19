@@ -106,6 +106,26 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> View(long id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync($"{_urlServico}/{id}");
+                    result.EnsureSuccessStatusCode();
+                    var modulo = await result.Content.ReadAsAsync<Servico>();
+                    var moduloViewModel = _mapper.Map<ServicoViewModel>(modulo);
+                    return View("View", moduloViewModel);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -178,7 +198,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Edit", new { id = Id }).WithWarning("Erro.", responseBody);
+                return RedirectToAction("View", new { id = Id }).WithWarning("Erro.", responseBody);
             }           
         }
 #endregion

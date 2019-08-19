@@ -2,10 +2,19 @@ var UsuarioCadastro = /** @class */ (function () {
     function UsuarioCadastro() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
+        this.btnConfirmarSalvar = $("#confirm-save");
     }
     UsuarioCadastro.prototype.init = function () {
         var _this = this;
-        this.btnSalvar.on("click", function () {
+        this.btnConfirmarSalvar.on("click", function (e) {
+            _this.form.submit();
+        });
+        this.btnSalvar.on("click", function (e) {
+            //var a = confirm("Tem certeza que deseja salvar as alterações?");
+            //if (!a) {
+            //    return false;
+            //}
+            //e.preventDefault();
             //ASSOCIÇÃO DE GRUPOS
             var listaGrupos = "UsuarioGrupo";
             var g = 0;
@@ -47,7 +56,7 @@ var UsuarioCadastro = /** @class */ (function () {
                 $('#rotina-validacao').text("É necessário permitir pelo menos uma operação para cada Rotina.");
             }
             else {
-                _this.form.submit();
+                //this.form.submit();
             }
         });
     };

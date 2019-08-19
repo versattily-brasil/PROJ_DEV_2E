@@ -141,15 +141,15 @@
                                 <div class="col-12">
                                     <br />
 
-                                    @*<button data-body-message="Confirma as alterações?"
-                                                id="btnSalvar"
-                                                style="font-weight:normal;cursor:pointer" class="delete btn btn-success">
-                                            Salvar
-                                        </button>*@
+                                    <button data-body-message="Confirma as alterações?"
+                                            id="btnSalvar"
+                                            style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                        Salvar
+                                    </button>
 
 
 
-                                    <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
+                                    @*      <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>*@
 
                                     <button data-controller="Rotina" data-id="@Model.CD_ROT"
                                             data-action="Cancel"
@@ -157,19 +157,7 @@
                                             style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                                         Cancelar
                                     </button>
-
-
-                                    @if (Model.CD_ROT > 0)
-                                    {
-                                        <button data-id="@Model.CD_ROT"
-                                                data-controller="Rotina"
-                                                data-action="Delete"
-                                                data-body-message="Deseja excluir esta Rotina?"
-                                                style="font-weight:normal;cursor:pointer"
-                                                class="delete btn btn-danger fa-pull-right">
-                                            Deletar
-                                        </button>
-                                    }
+                                    
                                 </div>
                             </div>
                         </div>

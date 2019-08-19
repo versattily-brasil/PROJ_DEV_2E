@@ -2,9 +2,21 @@
 
     form = $("#form");
     btnSalvar = $("#btnSalvar");
+    btnConfirmarSalvar = $("#confirm-save");
 
     init(): void {
-        this.btnSalvar.on("click", () => {
+
+        this.btnConfirmarSalvar.on("click", (e) => {
+            this.form.submit();
+        });
+
+        this.btnSalvar.on("click", (e) => {
+
+            //var a = confirm("Tem certeza que deseja salvar as alterações?");
+            //if (!a) {
+            //    return false;
+            //}
+            //e.preventDefault();
 
             //ASSOCIÇÃO DE GRUPOS
             var listaGrupos = "UsuarioGrupo";
@@ -65,7 +77,7 @@
             if (rotinasInvalidas > 0) {
                 $('#rotina-validacao').text("É necessário permitir pelo menos uma operação para cada Rotina.");
             } else {
-                this.form.submit();
+                //this.form.submit();
             }
 
         });

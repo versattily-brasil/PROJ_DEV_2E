@@ -103,6 +103,29 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> View(long id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync($"{_urlParceiro}/{id}");
+                    result.EnsureSuccessStatusCode();
+                    var parceiroNegocio = await result.Content.ReadAsAsync<ParceiroNegocio>();
+                    var parceiroNegocioViewModel = _mapper.Map<ParceiroNegocioViewModel>(parceiroNegocio);
+                    parceiroNegocioViewModel.Modulos = CarregarModulos().Result;
+                    parceiroNegocioViewModel.Servicos = CarregarServicos().Result;
+
+                    return View("View", parceiroNegocioViewModel);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>

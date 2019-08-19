@@ -2,9 +2,21 @@
 
     form = $("#form");
     btnSalvar = $("#btnSalvar");
+    btnConfirmarSalvar = $("#confirm-save");
 
     init(): void {
-        this.btnSalvar.on("click", () => {
+
+        this.btnConfirmarSalvar.on("click", (e) => {
+            this.form.submit();
+        });
+
+        this.btnSalvar.on("click", (e) => {
+
+            //var a = confirm("Tem certeza que deseja salvar as alterações?");
+            //if (!a) {
+            //    return false;
+            //}
+            //e.preventDefault();
 
             var agrupamento = "ParceiroNegocioServicoModulo";
             var g = 0;
@@ -22,7 +34,7 @@
             });
 
 
-            this.form.submit();
+            //this.form.submit();
         });
     }
 }

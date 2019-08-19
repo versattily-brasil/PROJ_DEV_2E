@@ -2,10 +2,13 @@ var Grupo = /** @class */ (function () {
     function Grupo() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
-        this.btnExcluir = $("#excluir-rotina");
+        this.btnConfirmarSalvar = $("#confirm-save");
     }
     Grupo.prototype.init = function () {
         var _this = this;
+        this.btnConfirmarSalvar.on("click", function (e) {
+            _this.form.submit();
+        });
         $("#comboServico").on("change", function () {
             var encontrou = false;
             $("#comboRotina > option").each(function () {
@@ -49,11 +52,6 @@ var Grupo = /** @class */ (function () {
             }
         });
         this.btnSalvar.on("click", function (e) {
-            var a = confirm("Tem certeza que deseja salvar as alterações?");
-            if (!a) {
-                return false;
-            }
-            e.preventDefault();
             var listaRotinas = "RotinaGrupoOperacao";
             var g = 0;
             $('#rotina-validacao').text("");
@@ -78,11 +76,12 @@ var Grupo = /** @class */ (function () {
                 $('#rotina-validacao').text("É necessário permitir pelo menos uma operação para cada Rotina.");
             }
             else {
-                _this.form.submit();
+                //this.form.submit();
             }
         });
         $(document).on("click", ".excluir-rotina", function () {
             $(this).closest("tr").remove();
+            this.form.submit();
         });
         $("#comboRotina").on("change", function () {
             $('#rotina-selecao-validacao').text("");

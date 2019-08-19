@@ -8,6 +8,9 @@
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
+
+    var nome_rotina = "Grupos de Usuários";
+
 }
 
 <div class="row">
@@ -23,13 +26,13 @@
                 @if (Model.CD_GRP > 0)
                 {
                     <h1>
-                        Edição de Grupos
+                        Edição de Grupos de Usuários
                     </h1>
                 }
                 else
                 {
                     <h1>
-                        Cadastro de Grupos
+                        Cadastro de Grupos de Usuários
                     </h1>
                 }
             </div>
@@ -138,7 +141,13 @@
                             </p>
                         </div>
                         <br />
-                        <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>
+
+                        <button data-body-message="Confirma as alterações?"
+                                id="btnSalvar"
+                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                            Salvar
+                        </button>
+
                         @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
 
                         <button data-controller="Grupo" data-id="@Model.CD_GRP"
@@ -147,17 +156,7 @@
                                 style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                             Cancelar
                         </button>
-
-                        @if (Model.CD_GRP > 0)
-                        {
-                            <button data-id="@Model.CD_GRP"
-                                    data-controller="Grupo"
-                                    data-action="Delete"
-                                    data-body-message="Deseja excluir este Grupo?"
-                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                Deletar
-                            </button>
-                        }
+                        
                     </form>
                 </div>
             </div>
@@ -171,4 +170,5 @@
 @section Scripts {
 
     <script src="~/js/Grupo/Grupo.js"></script>
+
 }
