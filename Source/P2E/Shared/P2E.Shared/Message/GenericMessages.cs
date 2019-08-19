@@ -38,7 +38,7 @@ namespace P2E.Shared.Message
         public static string ErrorComparePassword(string param, string messages)
         {
             var msgReturn = new StringBuilder();
-            msgReturn.Append($"Por favor contacte o administrador do sistema. {param}.");
+            msgReturn.Append($"Senha de confirmação incorreta. {param}.");
             msgReturn.Append(messages);
             return msgReturn.ToString();
         }

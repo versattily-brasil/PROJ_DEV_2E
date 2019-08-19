@@ -293,11 +293,22 @@
                             </p>
                         </div>
 
-                        <button data-body-message="Confirma as alterações?"
-                                id="btnSalvar"
-                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                            Salvar
-                        </button>
+                        @if (Model.CD_USR > 0)
+                        {
+                            <button data-body-message="Confirmar alteração do registro?"
+                                    id="btnSalvar"
+                                    style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                Salvar
+                            </button>
+                        }
+                        else
+                        {
+                            <button data-body-message="Confirmar salvar o registro?"
+                                    id="btnSalvar"
+                                    style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                Salvar
+                            </button>
+                        }
 
                         <button data-controller="Usuario" data-id="@Model.CD_USR"
                                 data-action="Cancel"

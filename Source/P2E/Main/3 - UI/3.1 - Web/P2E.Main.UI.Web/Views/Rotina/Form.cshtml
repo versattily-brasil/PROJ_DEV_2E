@@ -141,11 +141,22 @@
                                 <div class="col-12">
                                     <br />
 
-                                    <button data-body-message="Confirma as alterações?"
-                                            id="btnSalvar"
-                                            style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                                        Salvar
-                                    </button>
+                                    @if (Model.CD_ROT > 0)
+                                    {
+                                        <button data-body-message="Confirmar alteração do registro?"
+                                                id="btnSalvar"
+                                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                            Salvar
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button data-body-message="Confirmar salvar o registro?"
+                                                id="btnSalvar"
+                                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                            Salvar
+                                        </button>
+                                    }
 
 
 
@@ -157,7 +168,7 @@
                                             style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                                         Cancelar
                                     </button>
-                                    
+
                                 </div>
                             </div>
                         </div>

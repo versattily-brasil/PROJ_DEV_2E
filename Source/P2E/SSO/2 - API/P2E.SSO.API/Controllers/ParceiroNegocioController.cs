@@ -144,6 +144,9 @@ namespace P2E.SSO.API.Controllers
             {
                 var item = _parceiroNegocioRepository.FindById(id);
 
+                //_parceiroNegocioRepository.Delete(item);
+                //return Ok();
+
                 var rotinaGrupos = _parceiroNegocioModuloRepository.Find(p => p.CD_PAR == id);
 
                 if (rotinaGrupos != null)
@@ -158,17 +161,6 @@ namespace P2E.SSO.API.Controllers
             {
                 return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
             }
-
-            //try
-            //{
-            //    var item = _parceiroNegocioRepository.FindById(id);
-            //    _parceiroNegocioRepository.Delete(item);
-            //    return new { message = "OK" };
-            //}
-            //catch (Exception ex)
-            //{
-            //    return new { message = "Error." + ex.Message };
-            //}
         }
     }
 }

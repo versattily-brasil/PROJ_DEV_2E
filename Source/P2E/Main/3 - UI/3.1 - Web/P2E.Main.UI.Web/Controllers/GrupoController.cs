@@ -170,15 +170,15 @@ namespace P2E.Main.UI.Web.Controllers
             try
             {
                 var grupo = _mapper.Map<Grupo>(itemViewModel);
-
-                if (grupo.RotinaGrupoOperacao.Count <= 0)
-                {
-                    CarregarListasComplementares(itemViewModel);
-                    return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Grupo", "Você precisa associar Rotina ao Grupo"));
-                }
-
+                                
                 if (grupo.IsValid())
                 {
+                    if (grupo.RotinaGrupoOperacao.Count <= 0)
+                    {
+                        CarregarListasComplementares(itemViewModel);
+                        return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Grupo", "Você precisa associar Rotina ao Grupo"));
+                    }
+
                     using (var client = new HttpClient())
                     {
                         result = await client.PutAsJsonAsync($"{_urlGrupo}/{grupo.CD_GRP}", grupo);
