@@ -81,14 +81,15 @@
                             <div class="row">
                                 <div class="col-12">
                                     <br />
-
-                                    <button data-controller="Rotina" data-id="@Model.CD_ROT"
-                                            data-action="Edit"
-                                            data-body-message="Deseja Editar o Registro?"
-                                            style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
-                                        Editar
-                                    </button>
-
+                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotina", "Editar", User))
+                                    {
+                                        <button data-controller="Rotina" data-id="@Model.CD_ROT"
+                                                data-action="Edit"
+                                                data-body-message="Deseja Editar o Registro?"
+                                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                            Editar
+                                        </button>
+                                    }
                                     <button data-controller="Rotina" data-id="@Model.CD_ROT"
                                             data-action="Cancel"
                                             data-body-message="Voltar para a tela inicial?"

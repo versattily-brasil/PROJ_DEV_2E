@@ -2,7 +2,7 @@ var RotinaGrupoOperacao = /** @class */ (function () {
     function RotinaGrupoOperacao() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
-        this.btnConfirmarSalvar = $("#confirm-delete");
+        this.btnConfirmarSalvar = $("#confirm-save");
     }
     RotinaGrupoOperacao.prototype.init = function () {
         var _this = this;

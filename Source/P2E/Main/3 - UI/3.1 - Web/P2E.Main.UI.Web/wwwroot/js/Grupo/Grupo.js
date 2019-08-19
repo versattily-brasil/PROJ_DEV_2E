@@ -2,7 +2,7 @@ var Grupo = /** @class */ (function () {
     function Grupo() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
-        this.btnConfirmarSalvar = $("#confirm-delete");
+        this.btnConfirmarSalvar = $("#confirm-save");
     }
     Grupo.prototype.init = function () {
         var _this = this;

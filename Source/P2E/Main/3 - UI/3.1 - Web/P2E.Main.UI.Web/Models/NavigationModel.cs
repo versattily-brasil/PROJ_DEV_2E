@@ -171,13 +171,13 @@ namespace P2E.Main.UI.Web.Models
                 //#endregion
 
                 var listItems = new List<ListItem>();
-                foreach (var servico in servicosViewModel.Distinct())
+                foreach (var servico in servicosViewModel.Where(p=> p.RotinasViewModel.Any(x=> x.OperacoesViewModel.Any(q=> q.TX_DSC.Contains("Consultar")))))
                 {
                     var item = new ListItem() { Title = servico.TXT_DEC };
 
                     item.Items = new List<ListItem>();
 
-                    foreach (var rotina in servico.RotinasViewModel)
+                    foreach (var rotina in servico.RotinasViewModel.Where(p=> p.OperacoesViewModel.Any(x=> x.TX_DSC.Contains("Consultar"))))
                     {
                         item.Items.Add(new ListItem()
                         {

@@ -26,7 +26,10 @@
                     </h1>
                 </div>
                 <div class="col-lg-7 text-lg-right">
-                    <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotina", "Criar", User))
+                    {
+                        <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                    }
                 </div>
 
             </div>
@@ -76,9 +79,12 @@
 
 
                                             <td class="text-center">
-                                                <a asp-action="View" asp-route-id="@item.CD_ROT">
-                                                <i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i>
-                                                </a>
+                                                @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotina", "Visualizar", User))
+                                                {
+                                                    <a asp-action="View" asp-route-id="@item.CD_ROT">
+                                                        <i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i>
+                                                    </a>
+                                                }
                                             </td>
                                         </tr>
                                     }

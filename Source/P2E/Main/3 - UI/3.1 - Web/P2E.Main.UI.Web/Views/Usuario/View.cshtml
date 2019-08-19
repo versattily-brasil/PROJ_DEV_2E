@@ -22,7 +22,7 @@
                 @if (Model.CD_USR > 0)
                 {
                     <h1>
-                        Edição de Usuário
+                        Visualizar Usuário
                     </h1>
                 }
                 else
@@ -93,7 +93,7 @@
                                 <div class="col-6">
                                     <div class="form-group" disabled>
                                         <label class="form-label" asp-for="OP_STATUS">Status</label>
-                                        <select asp-for="OP_STATUS" class="form-control" asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
+                                        <select asp-for="OP_STATUS" class="form-control" disabled asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
                                     </div>
                                 </div>
                             </div>
@@ -232,10 +232,10 @@
                                                     </div>
 
                                                     @*<div class="col-1">
-                                                            <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
-                                                                <i class="fal fa-plus"></i>
-                                                            </a>
-                                                        </div>*@
+                                        <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
+                                            <i class="fal fa-plus"></i>
+                                        </a>
+                                    </div>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -290,13 +290,15 @@
                             <p class="text-danger" id="rotina-validacao">
                             </p>
                         </div>
-
-                        <button data-controller="Usuario" data-id="@Model.CD_USR"
-                                data-action="Edit"
-                                data-body-message="Deseja Editar o Registro?"
-                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
-                            Editar
-                        </button>
+                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Usuário", "Editar", User))
+                        {
+                            <button data-controller="Usuario" data-id="@Model.CD_USR"
+                                    data-action="Edit"
+                                    data-body-message="Deseja Editar o Registro?"
+                                    style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                Editar
+                            </button>
+                        }
 
                         <button data-controller="Usuario" data-id="@Model.CD_USR"
                                 data-action="Cancel"

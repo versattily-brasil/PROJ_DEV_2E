@@ -2,7 +2,7 @@
 
     form = $("#form");
     btnSalvar = $("#btnSalvar");
-    btnConfirmarSalvar = $("#confirm-delete");
+    btnConfirmarSalvar = $("#confirm-save");
 
     init(): void {
 

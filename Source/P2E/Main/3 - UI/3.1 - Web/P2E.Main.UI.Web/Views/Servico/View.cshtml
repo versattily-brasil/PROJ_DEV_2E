@@ -8,6 +8,9 @@
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
+
+    var nome_rotina =  "Serviços";
+
 }
 
 <div class="row">
@@ -33,11 +36,11 @@
                         </div>
 
                         @*<button data-controller="Servico" data-id="@Model.CD_SRV"
-                                data-action="Edit"
-                                data-body-message="Deseja Editar o Registro?"
-                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
-                            Editar
-                        </button>*@
+                data-action="Edit"
+                data-body-message="Deseja Editar o Registro?"
+                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+            Editar
+        </button>*@
 
                         <button data-controller="Servico" data-id="@Model.CD_SRV"
                                 data-action="Cancel"
@@ -48,14 +51,18 @@
 
                         @if (Model?.CD_SRV > 0)
                         {
-                            <button data-id="@Model.CD_SRV"
-                                    data-controller="Servico"
-                                    data-action="Delete"
-                                    data-body-message="Deseja excluir este Serviço?"
-                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                Deletar
-                            </button>
-                        }
+                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Deletar", User))
+
+                            {
+                                <button data-id="@Model.CD_SRV"
+                                        data-controller="Servico"
+                                        data-action="Delete"
+                                        data-body-message="Deseja excluir este Serviço?"
+                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                    Deletar
+                                </button>
+                                }
+                            }
 
                     </form>
                 </div>

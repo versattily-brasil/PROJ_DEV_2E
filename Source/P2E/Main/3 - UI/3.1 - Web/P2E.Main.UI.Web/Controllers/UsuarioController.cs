@@ -447,7 +447,6 @@ namespace P2E.Main.UI.Web.Controllers
                 usuarioGrupos = await result.Content.ReadAsAsync<List<UsuarioGrupo>>();
             }
 
-            //var servicos = new List<Servico>();
             var servicosViewModel = new List<ServicoViewModel>();
 
             // carregar os serviços
@@ -455,12 +454,9 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 foreach (var subitem in item.ListaRotinaGrupoOperacao)
                 {
-                    //if (!servicos.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
                     if (!servicosViewModel.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
                     {
                         var servico = subitem.Rotina.Servico;
-                        //     servicos.Add(servico);
-
                         servicosViewModel.Add(new ServicoViewModel()
                         {
                             CD_SRV = servico.CD_SRV,
@@ -475,7 +471,6 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 foreach (var subitem in item.ListaRotinaGrupoOperacao)
                 {
-                    //var servico = servicos.First(p => p.CD_SRV == subitem.Rotina.CD_SRV);
                     var servico = servicosViewModel.First(p => p.CD_SRV == subitem.Rotina.CD_SRV);
 
                     if (servico.RotinasViewModel == null)
@@ -546,7 +541,6 @@ namespace P2E.Main.UI.Web.Controllers
 
                     if (!servicosViewModel.Any(p => p.CD_SRV == servico.CD_SRV))
                     {
-                        //   servicosViewModel.Add(servico);
                         servicosViewModel.Add(new ServicoViewModel()
                         {
                             CD_SRV = servico.CD_SRV,
@@ -573,7 +567,40 @@ namespace P2E.Main.UI.Web.Controllers
                         TX_URL = item.Rotina.TX_URL
                     };
 
+                    if (rotinaViewModel.OperacoesViewModel == null)
+                    {
+                        rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                    }
+
+                    if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == item.CD_OPR))
+                    {
+                        rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                        {
+                            CD_OPR = item.CD_OPR,
+                            TX_DSC = item.Operacao.TX_DSC
+                        });
+                    }
+
                     servico.RotinasViewModel.Add(rotinaViewModel);
+                }
+                else
+                {
+                    var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p => p.CD_ROT == item.CD_ROT);
+
+                    if (rotinaViewModel.OperacoesViewModel == null)
+                    {
+                        rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                    }
+
+                    if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == item.CD_OPR))
+                    {
+                        rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                        {
+                            CD_OPR = item.CD_OPR,
+                            TX_DSC = item.Operacao.TX_DSC
+                        });
+                    }
+
                 }
             }
             #endregion

@@ -2,7 +2,7 @@ var UsuarioCadastro = /** @class */ (function () {
     function UsuarioCadastro() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
-        this.btnConfirmarSalvar = $("#confirm-delete");
+        this.btnConfirmarSalvar = $("#confirm-save");
     }
     UsuarioCadastro.prototype.init = function () {
         var _this = this;

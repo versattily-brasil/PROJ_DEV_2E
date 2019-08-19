@@ -8,6 +8,9 @@
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
+
+    var nome_rotina =  "Parceiro de Negócio";
+
 }
 
 <div class="row">
@@ -26,7 +29,10 @@
                     </h1>
                 </div>
                 <div class="col-lg-7 text-lg-right">
-                    <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Criar", User))
+                    {
+                        <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                    }
                 </div>
 
             </div>
@@ -66,21 +72,24 @@
                                 <tbody>
                                     @foreach (var item in Model.DataPage.Items)
                                     {
-                                        <tr>
-                                            @*<td>@item.CD_PAR</td>*@
-                                            <td>@item.TXT_RZSOC</td>
-                                            <td>@item.CNPJ</td>
-                                            @*<td class="text-center">
-                                                <i data-id="@item.CD_PAR"
-                                                   data-controller="ParceiroNegocio"
-                                                   data-action="Delete"
-                                                   data-body-message="Deseja excluir este registro?"
-                                                   style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+                                    <tr>
+                                        @*<td>@item.CD_PAR</td>*@
+                                        <td>@item.TXT_RZSOC</td>
+                                        <td>@item.CNPJ</td>
+                                        @*<td class="text-center">
+            <i data-id="@item.CD_PAR"
+               data-controller="ParceiroNegocio"
+               data-action="Delete"
+               data-body-message="Deseja excluir este registro?"
+               style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-                                                </i>
-                                            </td>*@
+            </i>
+        </td>*@
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
+                                        {
                                             <td class="text-center"><a asp-action="View" asp-route-id="@item.CD_PAR"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a></td>
-                                        </tr>
+                                        }
+                                    </tr>
                                     }
                                 </tbody>
                             </table>

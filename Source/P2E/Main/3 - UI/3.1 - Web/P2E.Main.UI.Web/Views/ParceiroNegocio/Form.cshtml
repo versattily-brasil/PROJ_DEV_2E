@@ -8,6 +8,9 @@
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
+    var nome_rotina =  "Parceiro de Negócio";
+
+
 }
 
 <div class="row">
@@ -129,7 +132,7 @@
                                     <br />
                                     <button data-body-message="Confirma as alterações?"
                                             id="btnSalvar"
-                                            style="font-weight:normal;cursor:pointer" class="delete btn btn-success">
+                                            style="font-weight:normal;cursor:pointer" class="save btn btn-success">
                                         Salvar
                                     </button>
 
@@ -144,14 +147,17 @@
 
                                     @if (Model.CD_PAR > 0)
                                     {
-                                        <button data-id="@Model.CD_PAR"
-                                                data-controller="ParceiroNegocio"
-                                                data-action="Delete"
-                                                data-body-message="Deseja excluir este Parceiro?"
-                                                style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                            Deletar
-                                        </button>
-                                    }
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Deletar", User))
+                                        {
+                                            <button data-id="@Model.CD_PAR"
+                                                    data-controller="ParceiroNegocio"
+                                                    data-action="Delete"
+                                                    data-body-message="Deseja excluir este Parceiro?"
+                                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                                Deletar
+                                            </button>
+                                            }
+                                        }
                                 </div>
                             </div>
                         </div>

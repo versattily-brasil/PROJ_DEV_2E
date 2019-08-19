@@ -8,6 +8,9 @@
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
+
+    var nome_rotina =  "Serviços";
+
 }
 
 <div class="row">
@@ -76,7 +79,12 @@
 
                                                 </i>
                                             </td>*@
-                                            <td class="text-center"><a asp-action="View" asp-route-id="@item.CD_SRV"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a></td>
+                                        <td class="text-center">
+                                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
+                                            {
+                                                <a asp-action="View" asp-route-id="@item.CD_SRV"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a>
+                                            }
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

@@ -8,6 +8,9 @@
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
+
+        var nome_rotina =  "Parceiro de Negócio";
+
 }
 
 <div class="row">
@@ -118,14 +121,15 @@
                             <div class="row">
                                 <div class="col-12">
                                     <br />
-
-                                    <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
-                                            data-action="Edit"
-                                            data-body-message="Deseja Editar o Registro?"
-                                            style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
-                                        Editar
-                                    </button>
-
+                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Editar", User))
+                                    {
+                                        <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
+                                                data-action="Edit"
+                                                data-body-message="Deseja Editar o Registro?"
+                                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                            Editar
+                                        </button>
+                                    }
                                     <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
                                             data-action="Cancel"
                                             data-body-message="Voltar para a tela inicial?"

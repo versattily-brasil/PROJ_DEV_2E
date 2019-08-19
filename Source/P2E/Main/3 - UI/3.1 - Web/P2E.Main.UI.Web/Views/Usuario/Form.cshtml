@@ -347,7 +347,7 @@
 
                         <button data-body-message="Confirma as alterações?"
                                 id="btnSalvar"
-                                style="font-weight:normal;cursor:pointer" class="delete btn btn-success">
+                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
                             Salvar
                         </button>
 
@@ -360,14 +360,17 @@
 
                         @if (Model.CD_USR > 0)
                         {
-                            <button data-id="@Model.CD_USR"
-                                    data-controller="Usuario"
-                                    data-action="Delete"
-                                    data-body-message="Deseja excluir este Usuário?"
-                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                Deletar
-                            </button>
-                        }
+                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Usuário", "Deletar", User))
+                            {
+                                <button data-id="@Model.CD_USR"
+                                        data-controller="Usuario"
+                                        data-action="Delete"
+                                        data-body-message="Deseja excluir este Usuário?"
+                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                    Deletar
+                                </button>
+                             }
+                         }
                     </div>
                 </form>
             </div>

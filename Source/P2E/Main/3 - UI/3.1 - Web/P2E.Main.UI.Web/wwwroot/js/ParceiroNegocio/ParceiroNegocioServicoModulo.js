@@ -2,7 +2,7 @@ var ParceiroNegocioServicoModulo = /** @class */ (function () {
     function ParceiroNegocioServicoModulo() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
-        this.btnConfirmarSalvar = $("#confirm-delete");
+        this.btnConfirmarSalvar = $("#confirm-save");
     }
     ParceiroNegocioServicoModulo.prototype.init = function () {
         var _this = this;
