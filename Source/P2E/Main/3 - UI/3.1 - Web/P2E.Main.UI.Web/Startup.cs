@@ -59,12 +59,13 @@ namespace P2E.Main.UI.Web
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-        .AddCookie(options =>
-        {
-            options.LoginPath = "/Usuario/Login";
-            options.AccessDeniedPath = "/Usuario/Denied";
-            
-        });
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Usuario/Login";
+                options.AccessDeniedPath = "/Usuario/Denied";
+                options.Cookie.Expiration = TimeSpan.FromMinutes(60);
+
+            });
 
             services.AddHttpContextAccessor();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -98,7 +99,7 @@ namespace P2E.Main.UI.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
