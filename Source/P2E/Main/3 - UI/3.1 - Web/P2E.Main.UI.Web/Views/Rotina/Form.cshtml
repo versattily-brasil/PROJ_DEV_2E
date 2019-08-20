@@ -11,6 +11,7 @@
     var body = (string)TempData["_alert.body"];
 
     var mensagemConfirma = "Confirma salvar o registro?";
+    var actionCancel = "CancelInsert";
 }
 
 <div class="row">
@@ -156,8 +157,13 @@
 
                                     @*      <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>*@
 
+                                    @if (Model.CD_ROT > 0)
+                                    {
+                                        actionCancel = "CancelEdit";
+                                    }
+
                                     <button data-controller="Rotina" data-id="@Model.CD_ROT"
-                                            data-action="Cancel"
+                                            data-action="@actionCancel"
                                             data-body-message="Deseja cancelar as alterações?"
                                             style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                                         Cancelar

@@ -11,6 +11,7 @@
 
     var nome_rotina = "Grupos de Usuários";
     var mensagemConfirma = "Confirma salvar o registro?";
+    var actionCancel = "CancelInsert";
 
 }
 
@@ -79,13 +80,13 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                            
-                                                <div class="col-1" >
-                                                    <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
-                                                        <i class="fal fa-plus"></i>
-                                                    </a>
-                                                </div>
-                                            
+
+                                            <div class="col-1">
+                                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
+                                                    <i class="fal fa-plus"></i>
+                                                </a>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -156,8 +157,13 @@
 
                         @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
 
+                        @if (Model.CD_GRP > 0)
+                        {
+                            actionCancel = "CancelEdit";
+                        }
+
                         <button data-controller="Grupo" data-id="@Model.CD_GRP"
-                                data-action="Cancel"
+                                data-action="@actionCancel"
                                 data-body-message="Deseja cancelar as alterações?"
                                 style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
                             Cancelar

@@ -11,6 +11,7 @@
     var nome_rotina = "Parceiro de Negócio";
 
     var mensagemConfirma = "Confirma salvar o registro?";
+    var actionCancel = "CancelInsert";
 }
 
 <div class="row">
@@ -140,27 +141,19 @@
                                             style="font-weight:normal;cursor:pointer" class="save btn btn-success">
                                         Salvar
                                     </button>
-
-                                    @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
-
+                                    
                                     @if (Model.CD_PAR > 0)
                                     {
-                                        <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
-                                                data-action="CancelEdit"
-                                                data-body-message="Deseja cancelar as alterações?"
-                                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
-                                            Cancelar
-                                        </button>
+                                        actionCancel = "CancelEdit";
                                     }
-                                    else
-                                    {
-                                        <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
-                                                data-action="CancelInsert"
-                                                data-body-message="Deseja cancelar as alterações?"
-                                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
-                                            Cancelar
-                                        </button>
-                                    }
+
+                                    <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
+                                            data-action="@actionCancel"
+                                            data-body-message="Deseja cancelar as alterações?"
+                                            style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                                        Cancelar
+                                    </button>
+
                                 </div>
                             </div>
                         </div>

@@ -206,17 +206,17 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> CancelEdit()
+        public async Task<IActionResult>CancelEdit()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Parceiro Negócio"));
         }
 
-        public async Task<IActionResult> CancelInsert()
+        public async Task<IActionResult>CancelInsert()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.InsertCancel("Parceiro Negócio"));
         }
 
-        public async Task<IActionResult> CancelView()
+        public async Task<IActionResult>CancelView()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Parceiro Negócio"));
         }

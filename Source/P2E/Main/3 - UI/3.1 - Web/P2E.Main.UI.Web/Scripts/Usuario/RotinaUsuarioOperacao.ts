@@ -27,6 +27,11 @@
         });
 
         $("#btn-add-rotina").on("click", function () {
+            let comboRotina: HTMLSelectElement = <HTMLSelectElement>document.getElementById("comboRotina");
+            let comboServico: HTMLSelectElement = <HTMLSelectElement>document.getElementById("comboServico");
+            if (comboRotina.selectedIndex == 0 || comboServico.selectedIndex == 0) {
+                return false
+            }
 
             $('#rotina-selecao-validacao').text("");
             var existe = false;

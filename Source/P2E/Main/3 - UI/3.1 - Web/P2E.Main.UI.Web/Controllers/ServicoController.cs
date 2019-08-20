@@ -175,9 +175,9 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> Cancel()
+        public async Task<IActionResult> CancelView()
         {
-            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Serviço")); ;
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Servico"));
         }
 
         /// <summary>

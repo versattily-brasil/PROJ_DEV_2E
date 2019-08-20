@@ -224,10 +224,19 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-
-        public async Task<IActionResult> Cancel()
+        public async Task<IActionResult> CancelEdit()
         {
-            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Rotina")); ;
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Rotina"));
+        }
+
+        public async Task<IActionResult> CancelInsert()
+        {
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.InsertCancel("Rotina"));
+        }
+
+        public async Task<IActionResult> CancelView()
+        {
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Rotina"));
         }
 
         #endregion        
