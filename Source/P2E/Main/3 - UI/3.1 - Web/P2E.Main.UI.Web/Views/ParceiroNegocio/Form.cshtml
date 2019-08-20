@@ -143,13 +143,24 @@
 
                                     @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
 
-                                    <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
-                                            data-action="Cancel"
-                                            data-body-message="Deseja cancelar as alterações?"
-                                            style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
-                                        Cancelar
-                                    </button>
-
+                                    @if (Model.CD_PAR > 0)
+                                    {
+                                        <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
+                                                data-action="CancelEdit"
+                                                data-body-message="Deseja cancelar as alterações?"
+                                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                                            Cancelar
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
+                                                data-action="CancelInsert"
+                                                data-body-message="Deseja cancelar as alterações?"
+                                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                                            Cancelar
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         </div>

@@ -11,6 +11,7 @@ using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Extensions.Filters;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.ParceiroNegocio;
+using P2E.Shared.Enum;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
@@ -32,6 +33,9 @@ namespace P2E.Main.UI.Web.Controllers
             this.appSettings = appSettings;
             _mapper = mapper;
             _urlParceiro = this.appSettings.ApiBaseURL + $"sso/v1/parceironegocio";
+
+
+
         }
         #endregion
 
@@ -44,7 +48,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="razaosocial"></param>
         /// <param name="cnpj"></param>
         /// <returns></returns>
-        [HttpGet] 
+        [HttpGet]
         [PermissaoFilter("Parceiro de Negócio", "Consultar")]
         public async Task<IActionResult> Index([FromQuery] ParceiroNegocioListViewModel vm)
         {
@@ -58,6 +62,7 @@ namespace P2E.Main.UI.Web.Controllers
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<ParceiroNegocio>>();
                         vm.DataPage.UrlSearch = $"parceironegocio?";
+
                         return View("Index", vm);
                     }
                 }
@@ -185,7 +190,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-                
+
                 itemViewModel.Modulos = CarregarModulos().Result;
                 itemViewModel.Servicos = CarregarServicos().Result;
 
@@ -201,9 +206,19 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> Cancel()
+        public async Task<IActionResult> CancelEdit()
         {
-            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Parceiro Negócio")); ;
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Parceiro Negócio"));
+        }
+
+        public async Task<IActionResult> CancelInsert()
+        {
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.InsertCancel("Parceiro Negócio"));
+        }
+
+        public async Task<IActionResult> CancelView()
+        {
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Parceiro Negócio"));
         }
 
         /// <summary>
