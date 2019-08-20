@@ -21,6 +21,7 @@ using P2E.Main.UI.Web.Models.SSO.Operacao;
 using P2E.Main.UI.Web.Models.SSO.Servico;
 using Newtonsoft.Json;
 using P2E.Main.UI.Web.Extensions.Util;
+using P2E.Main.UI.Web.Extensions.Filters;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -53,6 +54,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="descricao"></param>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilterAttribute("Usuário", "Consultar")]
         public async Task<IActionResult> Index(UsuarioListViewModel vm)
         {
             try
@@ -95,6 +97,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilterAttribute("Usuário", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {
             try
@@ -117,6 +120,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
+        [PermissaoFilterAttribute("Usuário", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -143,6 +147,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilterAttribute("Usuário", "Criar")]
         public async Task<IActionResult> Create(long id)
         {
             try
@@ -246,6 +251,8 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        /// 
+        [PermissaoFilterAttribute("Usuário", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             HttpResponseMessage result = new HttpResponseMessage();

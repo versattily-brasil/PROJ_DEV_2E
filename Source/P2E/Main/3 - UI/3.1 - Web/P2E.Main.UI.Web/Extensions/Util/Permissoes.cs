@@ -26,7 +26,7 @@ namespace P2E.Main.UI.Web.Extensions.Util
                 var permissoesJson = principal.FindFirstValue("permissoes");
                 var servicosViewModel = JsonConvert.DeserializeObject<List<ServicoViewModel>>(permissoesJson);
 
-                if (servicosViewModel.Any(p => p.RotinasViewModel.Any(x => x.TX_NOME.Contains(rotina) && x.OperacoesViewModel.Any(o => o.TX_DSC.Contains(operacao)))))
+                if (servicosViewModel.Any(p => p.RotinasViewModel.Any(x => x.TX_NOME.Equals(rotina) && x.OperacoesViewModel.Any(o => o.TX_DSC.Contains(operacao)))))
                 {
                     return true;
                 }
