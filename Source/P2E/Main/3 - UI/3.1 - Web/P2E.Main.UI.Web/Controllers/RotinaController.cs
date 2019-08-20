@@ -45,7 +45,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="nome"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilter("Rotina", "Consultar")]
+        [PermissaoFilter("Rotinas", "Consultar")]
         public async Task<IActionResult> Index(RotinaListViewModel vm)
         {
             try
