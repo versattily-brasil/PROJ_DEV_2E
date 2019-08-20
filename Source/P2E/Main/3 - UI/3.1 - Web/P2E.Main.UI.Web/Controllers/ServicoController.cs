@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
 using P2E.Main.UI.Web.Extensions.Alerts;
+using P2E.Main.UI.Web.Extensions.Filters;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.Shared.Message;
@@ -45,6 +46,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="descricao"></param>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Serviços", "Consultar")]
         public async Task<IActionResult> Index(ServicoListViewModel vm)
         {
             try
@@ -87,6 +89,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Serviços", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {
             try
@@ -107,6 +110,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
+        [PermissaoFilter("Serviços", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -131,6 +135,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Serviços", "Criar")]
         public IActionResult Create()
         {
             return View("Form");
@@ -180,6 +185,8 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        /// 
+        [PermissaoFilter("Serviços", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             string responseBody = string.Empty;

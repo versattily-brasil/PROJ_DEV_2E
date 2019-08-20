@@ -15,6 +15,7 @@ using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using P2E.Main.UI.Web.Models.SSO.Servico;
+using P2E.Main.UI.Web.Extensions.Filters;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -45,6 +46,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="descricao"></param>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Grupos de Usuários", "Consultar")]
         public async Task<IActionResult> Index(GrupoListViewModel vm)
         {
             try
@@ -87,6 +89,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Grupos de Usuários", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {
             try
@@ -110,6 +113,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
+        [PermissaoFilter("Grupos de Usuários", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -137,6 +141,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Grupos de Usuários", "Criar")]
         public IActionResult Create()
         {
             try
@@ -205,6 +210,8 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        /// 
+        [PermissaoFilter("Grupos de Usuários", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             HttpResponseMessage result = new HttpResponseMessage();

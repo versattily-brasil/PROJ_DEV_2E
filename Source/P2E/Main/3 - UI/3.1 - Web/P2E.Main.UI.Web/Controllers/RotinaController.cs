@@ -12,6 +12,7 @@ using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using P2E.Main.UI.Web.Extensions.Filters;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -44,6 +45,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="nome"></param>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Rotina", "Consultar")]
         public async Task<IActionResult> Index(RotinaListViewModel vm)
         {
             try
@@ -98,6 +100,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Rotina", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {           
             try
@@ -120,6 +123,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
+        [PermissaoFilter("Rotina", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -146,6 +150,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [PermissaoFilter("Rotina", "Criar")]
         public IActionResult Create()
         {
             var vm = new RotinaViewModel();
@@ -195,6 +200,8 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        /// 
+        [PermissaoFilter("Rotina", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             HttpResponseMessage result = new HttpResponseMessage();
