@@ -10,7 +10,7 @@
     var body = (string)TempData["_alert.body"];
     var nome_rotina = "Parceiro de Negócio";
 
-
+    var mensagemConfirma = "Confirma salvar o registro?";
 }
 
 <div class="row">
@@ -133,20 +133,13 @@
 
                                     @if (Model.CD_PAR > 0)
                                     {
-                                        <button data-body-message="Confirmar alteração do registro?"
-                                                id="btnSalvar"
-                                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                                            Salvar
-                                        </button>
+                                        mensagemConfirma = "Confirma alteração do registro?";
                                     }
-                                    else
-                                    {
-                                        <button data-body-message="Confirmar salvar o registro?"
-                                                id="btnSalvar"
-                                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                                            Salvar
-                                        </button>
-                                    }
+                                    <button data-body-message="@mensagemConfirma"
+                                            id="btnSalvar"
+                                            style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                        Salvar
+                                    </button>
 
                                     @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
 
