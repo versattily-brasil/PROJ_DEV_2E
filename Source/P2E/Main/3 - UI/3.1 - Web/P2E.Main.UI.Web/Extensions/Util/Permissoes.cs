@@ -23,7 +23,7 @@ namespace P2E.Main.UI.Web.Extensions.Util
         {
             try
             {
-                var permissoesJson = principal.FindFirstValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata");
+                var permissoesJson = principal.FindFirstValue("permissoes");
                 var servicosViewModel = JsonConvert.DeserializeObject<List<ServicoViewModel>>(permissoesJson);
 
                 if (servicosViewModel.Any(p => p.RotinasViewModel.Any(x => x.TX_NOME.Contains(rotina) && x.OperacoesViewModel.Any(o => o.TX_DSC.Contains(operacao)))))
@@ -41,18 +41,27 @@ namespace P2E.Main.UI.Web.Extensions.Util
 
         public static async Task<string> CarregarPermissoesAsync(ClaimsPrincipal principal)
         {
-
             try
             {
+                var identity = principal.Identities.FirstOrDefault();
+
+                var usuarioId = identity.Claims.FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid");
+
                 string urlBase = principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri");
-                string userId = principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid");
                 string urlUsuario = urlBase + $"sso/v1/usuario";
+
+                var claimPermissoes = identity.Claims.FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2008/06/identity/claims/userdata");
+
+                if (claimPermissoes != null)
+                {
+                    identity.TryRemoveClaim(claimPermissoes);
+                }
 
                 List<UsuarioGrupo> usuarioGrupos = new List<UsuarioGrupo>();
                 var usuarioRotinas = new List<RotinaUsuarioOperacao>();
 
                 #region Carrega permissões de Usuario x Grupo
-                string urlUsuarioGrupo = $"{urlUsuario}/permissoesgrupo/{userId}";
+                string urlUsuarioGrupo = $"{urlUsuario}/permissoesgrupo/{usuarioId.Value}";
                 using (var client = new HttpClient())
                 {
                     var result = await client.GetAsync(urlUsuarioGrupo);
@@ -137,7 +146,7 @@ namespace P2E.Main.UI.Web.Extensions.Util
                 #endregion
 
                 #region Carrega permissões de Usuario x Rotina
-                string urlUsuarioRotina = $"{urlUsuario}/permissoesusuario/{userId}";
+                string urlUsuarioRotina = $"{urlUsuario}/permissoesusuario/{usuarioId.Value}";
                 using (var client = new HttpClient())
                 {
                     var result = await client.GetAsync(urlUsuarioRotina);
@@ -218,7 +227,6 @@ namespace P2E.Main.UI.Web.Extensions.Util
                 #endregion
 
                 var permissoes = JsonConvert.SerializeObject(servicosViewModel);
-
                 return permissoes;
             }
             catch (Exception ex)
