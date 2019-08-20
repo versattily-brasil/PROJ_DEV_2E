@@ -206,24 +206,6 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-        //public async Task<IActionResult> Cancel()
-        //{
-        //    switch (rotina)
-        //    {
-        //        case eTipoRotina.Cadastrar:
-
-        //            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.InsertCancel("Parceiro Negócio"));
-
-        //        case eTipoRotina.Alterar:
-
-        //            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Parceiro Negócio"));
-
-        //        default:
-
-        //            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Parceiro Negócio"));
-        //    }
-        //}
-
         public async Task<IActionResult> CancelEdit()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Parceiro Negócio"));
