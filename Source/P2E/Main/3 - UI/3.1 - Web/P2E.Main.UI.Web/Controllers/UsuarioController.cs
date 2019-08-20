@@ -333,7 +333,7 @@ namespace P2E.Main.UI.Web.Controllers
                         var prop = new AuthenticationProperties()
                         {
                             IsPersistent = true,
-                            ExpiresUtc = DateTime.UtcNow.AddHours(2)
+                            ExpiresUtc = DateTime.UtcNow.AddHours(8)                            
                         };
 
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, prop);

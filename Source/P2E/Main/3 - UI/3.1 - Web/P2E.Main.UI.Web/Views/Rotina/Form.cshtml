@@ -9,6 +9,8 @@
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
+
+    var mensagemConfirma = "Confirma salvar o registro?";
 }
 
 <div class="row">
@@ -143,21 +145,13 @@
 
                                     @if (Model.CD_ROT > 0)
                                     {
-                                        <button data-body-message="Confirmar alteração do registro?"
-                                                id="btnSalvar"
-                                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                                            Salvar
-                                        </button>
+                                        mensagemConfirma = "Confirma alteração do registro?";
                                     }
-                                    else
-                                    {
-                                        <button data-body-message="Confirmar salvar o registro?"
-                                                id="btnSalvar"
-                                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                                            Salvar
-                                        </button>
-                                    }
-
+                                    <button data-body-message="@mensagemConfirma"
+                                            id="btnSalvar"
+                                            style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                        Salvar
+                                    </button>
 
 
                                     @*      <button type="button" id="btnSalvar" class="btn btn-success">Salvar</button>*@
