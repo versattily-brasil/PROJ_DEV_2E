@@ -29,6 +29,11 @@ var Grupo = /** @class */ (function () {
             $('#rotina-selecao-validacao').text("");
         });
         $("#btn-add-rotina").on("click", function () {
+            var comboRotina = document.getElementById("comboRotina");
+            var comboServico = document.getElementById("comboServico");
+            if (comboRotina.selectedIndex == 0 || comboServico.selectedIndex == 0) {
+                return false;
+            }
             $('#rotina-selecao-validacao').text("");
             var existe = false;
             $(".rotina_selecionada").each(function () {

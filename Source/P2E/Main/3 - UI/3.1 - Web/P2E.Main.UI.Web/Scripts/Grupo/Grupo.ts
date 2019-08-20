@@ -32,15 +32,20 @@
         });
 
         $("#btn-add-rotina").on("click", function () {
+            let comboRotina: HTMLSelectElement = <HTMLSelectElement>document.getElementById("comboRotina");
+            let comboServico: HTMLSelectElement = <HTMLSelectElement>document.getElementById("comboServico");
+            if (comboRotina.selectedIndex == 0 || comboServico.selectedIndex == 0) {
+                return false
+            }
 
             $('#rotina-selecao-validacao').text("");
             var existe = false;
+
             $(".rotina_selecionada").each(function () {
 
                 if ($(this).data('cd_rot') == $('#comboRotina').val()) {
                     existe = true;
                 }
-
             });
 
             if (!existe) {
@@ -100,16 +105,17 @@
                 //this.form.submit();
             }
 
-        });    
+        });
 
         $(document).on("click", ".excluir-rotina", function () {
             $(this).closest("tr").remove();
             this.form.submit();
         });
-        
+
         $("#comboRotina").on("change", function () {
             $('#rotina-selecao-validacao').text("");
         });
+
     }
 }
 
