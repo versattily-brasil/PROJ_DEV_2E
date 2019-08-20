@@ -45,7 +45,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="cnpj"></param>
         /// <returns></returns>
         [HttpGet] 
-        [PermissaoFilterAttribute("Parceiro de Negócio", "Consultar")]
+        [PermissaoFilter("Parceiro de Negócio", "Consultar")]
         public async Task<IActionResult> Index([FromQuery] ParceiroNegocioListViewModel vm)
         {
             try
@@ -83,7 +83,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilterAttribute("Parceiro de Negócio", "Editar")]
+        [PermissaoFilter("Parceiro de Negócio", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {
             try
@@ -107,7 +107,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
-        [PermissaoFilterAttribute("Parceiro de Negócio", "Visualizar")]
+        [PermissaoFilter("Parceiro de Negócio", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -135,7 +135,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilterAttribute("Parceiro de Negócio", "Criar")]
+        [PermissaoFilter("Parceiro de Negócio", "Criar")]
         public IActionResult Create()
         {
             var vm = new ParceiroNegocioViewModel();
@@ -212,7 +212,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         /// 
-        [PermissaoFilterAttribute("Parceiro de Negócio", "Deletar")]
+        [PermissaoFilter("Parceiro de Negócio", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             HttpResponseMessage result = new HttpResponseMessage();

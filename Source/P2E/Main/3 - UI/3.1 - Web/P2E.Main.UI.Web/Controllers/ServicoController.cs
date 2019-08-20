@@ -46,7 +46,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="descricao"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilterAttribute("Serviços", "Consultar")]
+        [PermissaoFilter("Serviços", "Consultar")]
         public async Task<IActionResult> Index(ServicoListViewModel vm)
         {
             try
@@ -89,7 +89,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilterAttribute("Serviços", "Editar")]
+        [PermissaoFilter("Serviços", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {
             try
@@ -110,7 +110,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
-        [PermissaoFilterAttribute("Serviços", "Visualizar")]
+        [PermissaoFilter("Serviços", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -135,7 +135,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilterAttribute("Serviços", "Criar")]
+        [PermissaoFilter("Serviços", "Criar")]
         public IActionResult Create()
         {
             return View("Form");
@@ -186,7 +186,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         /// 
-        [PermissaoFilterAttribute("Serviços", "Deletar")]
+        [PermissaoFilter("Serviços", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             string responseBody = string.Empty;

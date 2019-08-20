@@ -46,7 +46,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="descricao"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilterAttribute("Grupos de Usuários", "Consultar")]
+        [PermissaoFilter("Grupos de Usuários", "Consultar")]
         public async Task<IActionResult> Index(GrupoListViewModel vm)
         {
             try
@@ -89,7 +89,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilterAttribute("Grupos de Usuários", "Editar")]
+        [PermissaoFilter("Grupos de Usuários", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {
             try
@@ -113,7 +113,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
-        [PermissaoFilterAttribute("Grupos de Usuários", "Visualizar")]
+        [PermissaoFilter("Grupos de Usuários", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -141,7 +141,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilterAttribute("Grupos de Usuários", "Criar")]
+        [PermissaoFilter("Grupos de Usuários", "Criar")]
         public IActionResult Create()
         {
             try
@@ -211,7 +211,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         /// 
-        [PermissaoFilterAttribute("Grupos de Usuários", "Deletar")]
+        [PermissaoFilter("Grupos de Usuários", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             HttpResponseMessage result = new HttpResponseMessage();
