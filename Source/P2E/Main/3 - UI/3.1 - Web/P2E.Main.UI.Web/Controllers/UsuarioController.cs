@@ -377,7 +377,7 @@ namespace P2E.Main.UI.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login");
         }
 
