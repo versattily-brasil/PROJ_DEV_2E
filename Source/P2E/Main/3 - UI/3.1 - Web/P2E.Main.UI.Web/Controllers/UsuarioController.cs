@@ -39,9 +39,9 @@ namespace P2E.Main.UI.Web.Controllers
         {
             this.appSettings = appSettings;
             _mapper = mapper;
-            _urlUsuario = this.appSettings.ApiBaseURL + $"sso/v1/usuario";
-            _urlModulo = this.appSettings.ApiBaseURL + $"sso/v1/modulo";
-            _urlGrupo = this.appSettings.ApiBaseURL + $"sso/v1/grupo";
+            _urlUsuario = this?.appSettings?.ApiBaseURL + $"sso/v1/usuario";
+            _urlModulo = this?.appSettings?.ApiBaseURL + $"sso/v1/modulo";
+            _urlGrupo = this?.appSettings?.ApiBaseURL + $"sso/v1/grupo";
         }
 
         #region Métodos
@@ -325,9 +325,18 @@ namespace P2E.Main.UI.Web.Controllers
                         identity.AddClaim(new Claim(ClaimTypes.Sid, usuario.CD_USR.ToString()));
                         identity.AddClaim(new Claim(ClaimTypes.Uri, this.appSettings.ApiBaseURL));
 
+                        var permissoes = CarregarPermissoesAsync(usuario.CD_USR).Result;
+                        identity.AddClaim(new Claim("permissoes", permissoes));
+
                         var principal = new ClaimsPrincipal(identity);
-                      
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                        var prop = new AuthenticationProperties()
+                        {
+                            IsPersistent = true,
+                            ExpiresUtc = DateTime.UtcNow.AddHours(2)
+                        };
+
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, prop);
 
 
                         return RedirectToAction("Index", "Home");
@@ -429,13 +438,13 @@ namespace P2E.Main.UI.Web.Controllers
 
         #endregion
 
-        public async Task<string> CarregarPermissoesAsync(long usuarioid)
+        public async Task<string> CarregarPermissoesAsync(int usuarioId)
         {
             List<UsuarioGrupo> usuarioGrupos = new List<UsuarioGrupo>();
             var usuarioRotinas = new List<RotinaUsuarioOperacao>();
 
             #region Carrega permissões de Usuario x Grupo
-            string urlUsuarioGrupo = $"{_urlUsuario}/permissoesgrupo/{usuarioid}";
+            string urlUsuarioGrupo = $"{_urlUsuario}/permissoesgrupo/{usuarioId}";
             using (var client = new HttpClient())
             {
                 var result = await client.GetAsync(urlUsuarioGrupo);
@@ -520,7 +529,7 @@ namespace P2E.Main.UI.Web.Controllers
             #endregion
 
             #region Carrega permissões de Usuario x Rotina
-            string urlUsuarioRotina = $"{_urlUsuario}/permissoesusuario/{usuarioid}";
+            string urlUsuarioRotina = $"{_urlUsuario}/permissoesusuario/{usuarioId}";
             using (var client = new HttpClient())
             {
                 var result = await client.GetAsync(urlUsuarioRotina);
@@ -600,10 +609,10 @@ namespace P2E.Main.UI.Web.Controllers
             }
             #endregion
 
+
             var permissoes = JsonConvert.SerializeObject(servicosViewModel);
 
             return permissoes;
         }
-
     }
 }

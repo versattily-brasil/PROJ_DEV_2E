@@ -21,6 +21,7 @@ using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.Main.UI.Web.Models.SSO.Rotina;
 using Newtonsoft.Json;
 using P2E.Main.UI.Web.Extensions.Util;
+using P2E.Main.UI.Web.Controllers;
 
 namespace P2E.Main.UI.Web.Models
 {
@@ -29,13 +30,13 @@ namespace P2E.Main.UI.Web.Models
         private const string Underscore = "_";
         private const string Space = " ";
         private static string _userId = string.Empty;
-        private static ClaimsPrincipal _user;
+        private static ClaimsPrincipal _principal;
         public static SmartNavigation Seed => Carregar(null);
 
-        public static SmartNavigation Carregar(ClaimsPrincipal User)
+        public static SmartNavigation Carregar(ClaimsPrincipal principal)
         {
 
-            _user = User;
+            _principal = principal;
             var smart = BuildNavigation();
             return smart;
         }
@@ -45,10 +46,8 @@ namespace P2E.Main.UI.Web.Models
         {
             try
             {
-                var jsonText = File.ReadAllText("nav.json", System.Text.Encoding.UTF8);
-                var navigation = NavigationBuilder.FromJson(jsonText);
+                var permissoesJson = Permissoes.CarregarPermissoesAsync(_principal).Result;
 
-                var permissoesJson = Permissoes.CarregarPermissoesAsync(_user).Result;
 
                 // Carregar Dados do DB
                 if (!string.IsNullOrEmpty(permissoesJson))
@@ -75,8 +74,6 @@ namespace P2E.Main.UI.Web.Models
                     }
 
                     var menu = FillProperties(listItems, seedOnly);
-                    //var menu = FillProperties(navigation.Lists, seedOnly);
-
                     return new SmartNavigation(menu);
                 }
                 else
