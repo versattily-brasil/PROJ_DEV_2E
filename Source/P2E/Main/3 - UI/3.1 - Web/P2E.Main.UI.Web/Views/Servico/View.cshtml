@@ -9,7 +9,7 @@
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
 
-    var nome_rotina =  "Serviços";
+    var nome_rotina = "Serviços";
 
 }
 
@@ -36,16 +36,16 @@
                         </div>
 
                         @*<button data-controller="Servico" data-id="@Model.CD_SRV"
-                data-action="Edit"
-                data-body-message="Deseja Editar o Registro?"
-                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
-            Editar
-        </button>*@
+                                    data-action="Edit"
+                                    data-body-message="Deseja Editar o Registro?"
+                                    style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                Editar
+                            </button>*@
 
                         <button data-controller="Servico" data-id="@Model.CD_SRV"
                                 data-action="CancelView"
                                 data-body-message="Voltar para a tela inicial?"
-                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                                style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
                             Cancelar
                         </button>
 
@@ -61,8 +61,8 @@
                                         style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
                                     Deletar
                                 </button>
-                                }
                             }
+                        }
 
                     </form>
                 </div>

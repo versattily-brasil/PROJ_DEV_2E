@@ -126,23 +126,29 @@ namespace P2E.SSO.API.Controllers
             {
                 var objeto = _grupoRepository.FindById(id);
 
-                var rotinaGrupos = _rotinaGrupoOperacaoRepository.Find(p => p.CD_GRP == id);
-                var usuarioGrupos = _usuarioGrupoRepository.Find(p => p.CD_GRP == id);
+                _usuarioGrupoRepository.Delete(o => o.CD_GRP == id);
+                _rotinaGrupoOperacaoRepository.Delete(o => o.CD_GRP == id);
+                _grupoRepository.Delete(objeto);
+                return Ok();
 
-                if (rotinaGrupos != null)
-                {
-                    return BadRequest("Não foi possivel excluir esse grupo pois ela está associada a uma rotina.");
-                }
-                else if (usuarioGrupos != null)
-                {
-                    return BadRequest("Não foi possivel excluir esse grupo pois ela está associada a um usuario.");
-                }                    
-                else
-                {
-                    _rotinaGrupoOperacaoRepository.Delete(o => o.CD_GRP == id);
-                    _grupoRepository.Delete(objeto);
-                    return Ok();
-                }
+                //var rotinaGrupos = _rotinaGrupoOperacaoRepository.Find(p => p.CD_GRP == id);
+                //var usuarioGrupos = _usuarioGrupoRepository.Find(p => p.CD_GRP == id);
+
+                //if (rotinaGrupos != null)
+                //{
+                //    return BadRequest("Não foi possivel excluir esse grupo pois ela está associada a uma rotina.");
+                //}
+                //else if (usuarioGrupos != null)
+                //{
+                //    return BadRequest("Não foi possivel excluir esse grupo pois ela está associada a um usuario.");
+                //}                    
+                //else
+                //{
+                //    _usuarioGrupoRepository.Delete(o => o.CD_GRP == id);
+                //    _rotinaGrupoOperacaoRepository.Delete(o => o.CD_GRP == id);
+                //    _grupoRepository.Delete(objeto);
+                //    return Ok();
+                //}
             }
             catch (Exception ex)
             {

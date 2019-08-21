@@ -237,18 +237,24 @@ namespace P2E.SSO.API.Controllers
             {
                 var objeto = _usuarioRepository.FindById(id);
 
-                var rotinaGrupos = _rotinaUsuarioOperacaoRepository.Find(p => p.CD_USR == id);
+                _usuarioModuloRepository.ExcluirUsuarioModulos(id);
+                _usuarioGrupoRepository.ExcluirUsuarioGrupo(id);
+                _rotinaUsuarioOperacaoRepository.Delete(o => o.CD_USR == id);
+                _usuarioRepository.Delete(objeto);
+                return Ok();
 
-                if (rotinaGrupos != null)
-                    return BadRequest("Não foi possivel excluir esse usuario pois ele já tem associações.");
-                else
-                {
-                    _usuarioModuloRepository.ExcluirUsuarioModulos(id);
-                    _usuarioGrupoRepository.ExcluirUsuarioGrupo(id);
-                    _rotinaUsuarioOperacaoRepository.Delete(o => o.CD_USR == id);
-                    _usuarioRepository.Delete(objeto);
-                    return Ok();
-                }
+                //var rotinaGrupos = _rotinaUsuarioOperacaoRepository.Find(p => p.CD_USR == id);
+
+                //if (rotinaGrupos != null)
+                //    return BadRequest("Não foi possivel excluir esse usuario pois ele já tem associações.");
+                //else
+                //{
+                //    _usuarioModuloRepository.ExcluirUsuarioModulos(id);
+                //    _usuarioGrupoRepository.ExcluirUsuarioGrupo(id);
+                //    _rotinaUsuarioOperacaoRepository.Delete(o => o.CD_USR == id);
+                //    _usuarioRepository.Delete(objeto);
+                //    return Ok();
+                //}
             }
             catch (Exception ex)
             {

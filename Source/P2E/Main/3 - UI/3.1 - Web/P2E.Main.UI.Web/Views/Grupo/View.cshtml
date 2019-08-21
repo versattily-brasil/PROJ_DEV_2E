@@ -71,10 +71,10 @@
                                             </div>
 
                                             @*<div class="col-1">
-                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
-                                    <i disabled="disabled" class="fal fa-plus"></i>
-                                </a>
-                            </div>*@
+                                                    <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
+                                                        <i disabled="disabled" class="fal fa-plus"></i>
+                                                    </a>
+                                                </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                             <button data-controller="Grupo" data-id="@Model.CD_GRP"
                                     data-action="Edit"
                                     data-body-message="Deseja Editar o Registro?"
-                                    style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                    style="font-weight:normal;cursor:pointer" class=" edit btn btn-success">
                                 Editar
                             </button>
                         }
@@ -147,7 +147,7 @@
                         <button data-controller="Grupo" data-id="@Model.CD_GRP"
                                 data-action="CancelView"
                                 data-body-message="Voltar para a tela inicial?"
-                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                                style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
                             Cancelar
                         </button>
 
@@ -162,6 +162,7 @@
                                         style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
                                     Deletar
                                 </button>
+
                             }
                         }
 

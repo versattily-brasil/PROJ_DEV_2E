@@ -140,15 +140,19 @@ namespace P2E.SSO.API.Controllers
             {
                 var item = this.Get(id);
 
-                var rotinaGrupos = _rotinaGrupoOperacaoRepository.Find(p => p.CD_ROT == id);
+                _rotinaGrupoOperacaoRepository.Delete(o => o.CD_ROT == id);
+                _rotinaRepository.Delete(item);
+                return Ok();
 
-                if(rotinaGrupos != null)
-                    return BadRequest("Não foi possivel excluir essa rotina pois ela está associada a um grupo de usuários.");
-                else
-                {
-                    _rotinaRepository.Delete(item);
-                    return Ok();
-                }
+                //var rotinaGrupos = _rotinaGrupoOperacaoRepository.Find(p => p.CD_ROT == id);
+
+                //if(rotinaGrupos != null)
+                //    return BadRequest("Não foi possivel excluir essa rotina pois ela está associada a um grupo de usuários.");
+                //else
+                //{                
+                //    _rotinaRepository.Delete(item);
+                //    return Ok();
+                //}
             }
             catch (Exception ex)
             {
