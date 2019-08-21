@@ -367,7 +367,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-                return View( itemViewModel).WithDanger("Erro", responseBody);
+                return View( itemViewModel).WithDanger("Erro", responseBody + ex.Message);
             }
         }
 
