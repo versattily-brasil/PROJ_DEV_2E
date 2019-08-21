@@ -280,17 +280,17 @@ namespace P2E.Main.UI.Web.Controllers
             //    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Usuario"));
             //}
         }
-        public async Task<IActionResult> CancelEdit()
+        public IActionResult CancelEdit()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Usuario"));
         }
 
-        public async Task<IActionResult> CancelInsert()
+        public IActionResult CancelInsert()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.InsertCancel("Usuario"));
         }
 
-        public async Task<IActionResult> CancelView()
+        public IActionResult CancelView()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Usuario"));
         }

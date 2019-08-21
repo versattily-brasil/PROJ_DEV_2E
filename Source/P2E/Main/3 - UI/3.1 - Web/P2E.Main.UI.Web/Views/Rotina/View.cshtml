@@ -81,7 +81,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <br />
-                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotina", "Editar", User))
+                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotinas", "Editar", User))
                                     {
                                         <button data-controller="Rotina" data-id="@Model.CD_ROT"
                                                 data-action="Edit"
@@ -99,7 +99,7 @@
 
                                     @if (Model.CD_ROT > 0)
                                     {
-                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotina", "Deletar", User))
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotinas", "Deletar", User))
                                         {
                                             <button data-id="@Model.CD_ROT"
                                                     data-controller="Rotina"
