@@ -168,9 +168,12 @@ namespace P2E.Main.UI.Web.Controllers
         {
             var result = new HttpResponseMessage();
             string responseBody = string.Empty;
+
+            var rotina = _mapper.Map<Rotina>(itemViewModel);
+
             try
             {
-                var rotina = _mapper.Map<Rotina>(itemViewModel);
+
                 if (rotina.IsValid())
                 {
                     using (var client = new HttpClient())
@@ -190,8 +193,14 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-                itemViewModel.Servicos = CarregarServico().Result;
-                return View("Form", itemViewModel).WithDanger("Erro", result.RequestMessage.Content.ReadAsStringAsync().Result);
+                using (var client = new HttpClient())
+                {
+                    result = await client.GetAsync($"{_urlRotina}/{0}");
+                    result.EnsureSuccessStatusCode();
+
+                    itemViewModel.Servicos = CarregarServico().Result;
+                    return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Rotina", responseBody));
+                }
             }
         }
 
