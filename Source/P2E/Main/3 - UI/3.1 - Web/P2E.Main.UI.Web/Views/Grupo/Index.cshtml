@@ -9,8 +9,7 @@
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
 
-    var nome_rotina =  "Grupos de Usuários";
-
+    var nome_rotina = "Grupos de Usuários";
 }
 
 <div class="row">
@@ -53,7 +52,6 @@
 
                         </div><br />
                     </form>
-
                     <hr />
                     @if (Model.DataPage.Items.Any())
                     {
@@ -69,26 +67,26 @@
                                 <tbody>
                                     @foreach (var item in Model.DataPage.Items)
                                     {
-                                    <tr>
-                                        @*<td>@item.CD_GRP</td>*@
-                                        <td>@item.TX_DSC</td>
-                                        @*<td class="text-center">
-            <i data-id="@item.CD_GRP"
-               data-controller="Grupo"
-               data-action="Delete"
-               data-body-message="Deseja excluir este Grupo?"
-               style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+                                        <tr>
+                                            @*<td>@item.CD_GRP</td>*@
+                                            <td>@item.TX_DSC</td>
+                                            @*<td class="text-center">
+                                                    <i data-id="@item.CD_GRP"
+                                                       data-controller="Grupo"
+                                                       data-action="Delete"
+                                                       data-body-message="Deseja excluir este Grupo?"
+                                                       style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-            </i>
-        </td>*@
+                                                    </i>
+                                                </td>*@
 
-                                    <td class="text-center">
-                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
-                                        {
-                                            <a asp-action="View" asp-route-id="@item.CD_GRP"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a>
-                                        }
-                                        </td>
-                                    </tr>
+                                            <td class="text-center">
+                                                @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
+                                                {
+                                                    <a asp-action="View" asp-route-id="@item.CD_GRP"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a>
+                                                }
+                                            </td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
@@ -96,45 +94,45 @@
 
                             <!-- pager -->
                             @if (Model.DataPage.Pages != null && Model.DataPage.Pages.Any())
-                                    {
+                            {
                                 <nav class="table-responsive">
                                     <ul class="pagination justify-content-center d-flex flex-wrap">
                                         @if (Model.DataPage.CurrentPage > 1)
-                                    {
+                                        {
                                             <li class="page-item">
                                                 <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.FirstPage)">Primeiro</a>
                                             </li>
                                             <li class="page-item">
                                                 <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.PriorPage)">Anterior</a>
                                             </li>
-                                    }
+                                        }
 
                                         @for (int i = 1; i <= Model.DataPage.TotalPages; i++)
-                                    {
-                                        var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
+                                        {
+                                            var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
 
                                             <li class="page-item @(pg.PageNumber == Model.DataPage.CurrentPage ? "active" : "")">
                                                 <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", pg.PageNumber)">@pg.PageNumber</a>
                                             </li>
-                                    }
+                                        }
 
 
                                         @if (Model.DataPage.CurrentPage < Model.DataPage.TotalPages)
-                                    {
+                                        {
                                             <li class="page-item">
                                                 <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.NextPage)">Próximo</a>
                                             </li>
                                             <li class="page-item">
                                                 <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.LastPage)">Último</a>
                                             </li>
-                                    }
+                                        }
                                     </ul>
                                 </nav>
-                                    }
+                            }
 
                         </div>
                     }
-                    </div>
+                </div>
             </div>
         </div>
     </div>

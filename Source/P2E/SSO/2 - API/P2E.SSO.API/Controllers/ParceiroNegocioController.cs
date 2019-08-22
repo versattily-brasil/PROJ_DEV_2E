@@ -144,18 +144,20 @@ namespace P2E.SSO.API.Controllers
             {
                 var item = _parceiroNegocioRepository.FindById(id);
 
-                //_parceiroNegocioRepository.Delete(item);
-                //return Ok();
+                _parceiroNegocioModuloRepository.Delete(o => o.CD_PAR == id);
+                _parceiroNegocioRepository.Delete(item);
+                return Ok();
 
-                var rotinaGrupos = _parceiroNegocioModuloRepository.Find(p => p.CD_PAR == id);
+                //var rotinaGrupos = _parceiroNegocioModuloRepository.Find(p => p.CD_PAR == id);
 
-                if (rotinaGrupos != null)
-                    return BadRequest("Não foi possivel excluir esse parceiro pois ela está associado a Serviço.");
-                else
-                {
-                    _parceiroNegocioRepository.Delete(item);
-                    return Ok();
-                }
+                //if (rotinaGrupos != null)
+                //    return BadRequest("Não foi possivel excluir esse parceiro pois ela está associado a Serviço.");
+                //else
+                //{
+                //   
+                //    _parceiroNegocioRepository.Delete(item);
+                //    return Ok();
+                //}
             }
             catch (Exception ex)
             {

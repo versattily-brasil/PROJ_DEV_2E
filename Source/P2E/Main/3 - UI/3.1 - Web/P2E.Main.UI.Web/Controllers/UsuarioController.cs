@@ -183,7 +183,7 @@ namespace P2E.Main.UI.Web.Controllers
             
             try
             {
-                if (usuario.CONFIRMA_SENHA != null)
+                if (usuario.CONFIRMA_SENHA != null && usuario.TX_SENHA != null)
                 {
                     if (usuario.TX_SENHA.Trim() != usuario.CONFIRMA_SENHA.Trim())
                     {
@@ -201,6 +201,21 @@ namespace P2E.Main.UI.Web.Controllers
 
                         return View("Form", itemViewModel).WithDanger("Senha.", GenericMessages.ErrorComparePassword("Usuario", usuario.Messages));
                     }
+                }
+                else
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var results = await client.GetAsync($"{_urlUsuario}/{0}");
+                        results.EnsureSuccessStatusCode();
+                        var usuarios = await results.Content.ReadAsAsync<Usuario>();
+                        var usuarioViewModels = _mapper.Map<UsuarioViewModel>(usuarios);
+
+                        itemViewModel.Modulo = usuarioViewModels.Modulo;
+                        itemViewModel.Grupo = usuarioViewModels.Grupo;
+                    }
+                    CarregarListasComplementares(itemViewModel);
+                    return View("Form", itemViewModel).WithDanger("Erro.", GenericMessages.ErrorSave("Usuario", "Confirme a Senha para finalizar o cadastro!"));
                 }
 
                 if (usuario.IsValid())
@@ -280,17 +295,17 @@ namespace P2E.Main.UI.Web.Controllers
             //    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Usuario"));
             //}
         }
-        public async Task<IActionResult> CancelEdit()
+        public IActionResult CancelEdit()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Usuario"));
         }
 
-        public async Task<IActionResult> CancelInsert()
+        public IActionResult CancelInsert()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.InsertCancel("Usuario"));
         }
 
-        public async Task<IActionResult> CancelView()
+        public IActionResult CancelView()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Usuario"));
         }
@@ -367,7 +382,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception ex)
             {
-                return View( itemViewModel).WithDanger("Erro", responseBody);
+                return View( itemViewModel).WithDanger("Erro", responseBody + ex.Message);
             }
         }
 

@@ -81,25 +81,25 @@
                             <div class="row">
                                 <div class="col-12">
                                     <br />
-                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotina", "Editar", User))
+                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotinas", "Editar", User))
                                     {
                                         <button data-controller="Rotina" data-id="@Model.CD_ROT"
                                                 data-action="Edit"
                                                 data-body-message="Deseja Editar o Registro?"
-                                                style="font-weight:normal;cursor:pointer" class=" delete btn btn-success">
+                                                style="font-weight:normal;cursor:pointer" class=" edit btn btn-success">
                                             Editar
                                         </button>
                                     }
                                     <button data-controller="Rotina" data-id="@Model.CD_ROT"
                                             data-action="CancelView"
                                             data-body-message="Voltar para a tela inicial?"
-                                            style="font-weight:normal;cursor:pointer" class=" delete btn btn-primary">
+                                            style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
                                         Cancelar
                                     </button>
 
                                     @if (Model.CD_ROT > 0)
                                     {
-                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotina", "Deletar", User))
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotinas", "Deletar", User))
                                         {
                                             <button data-id="@Model.CD_ROT"
                                                     data-controller="Rotina"

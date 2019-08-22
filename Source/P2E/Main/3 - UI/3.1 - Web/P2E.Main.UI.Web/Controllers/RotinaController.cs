@@ -45,7 +45,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="nome"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilter("Rotina", "Consultar")]
+        [PermissaoFilter("Rotinas", "Consultar")]
         public async Task<IActionResult> Index(RotinaListViewModel vm)
         {
             try
@@ -100,7 +100,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilter("Rotina", "Editar")]
+        [PermissaoFilter("Rotinas", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {           
             try
@@ -123,7 +123,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
-        [PermissaoFilter("Rotina", "Visualizar")]
+        [PermissaoFilter("Rotinas", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -150,7 +150,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilter("Rotina", "Criar")]
+        [PermissaoFilter("Rotinas", "Criar")]
         public IActionResult Create()
         {
             var vm = new RotinaViewModel();
@@ -201,7 +201,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         /// 
-        [PermissaoFilter("Rotina", "Deletar")]
+        [PermissaoFilter("Rotinas", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             HttpResponseMessage result = new HttpResponseMessage();
@@ -224,17 +224,17 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> CancelEdit()
+        public IActionResult CancelEdit()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Rotina"));
         }
 
-        public async Task<IActionResult> CancelInsert()
+        public IActionResult CancelInsert()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.InsertCancel("Rotina"));
         }
 
-        public async Task<IActionResult> CancelView()
+        public IActionResult CancelView()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Rotina"));
         }
