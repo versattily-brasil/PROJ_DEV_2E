@@ -3,9 +3,14 @@ var ParceiroNegocioServicoModulo = /** @class */ (function () {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
         this.btnConfirmarSalvar = $("#confirm-save");
+        this.txCnpj = $("#txt-cnpj");
     }
     ParceiroNegocioServicoModulo.prototype.init = function () {
         var _this = this;
+        this.txCnpj.focusout(function () {
+            var texto = _this.MascaraCnpj(_this.txCnpj.val().toString());
+            _this.txCnpj.val(texto);
+        });
         this.btnConfirmarSalvar.on("click", function (e) {
             _this.form.submit();
         });
@@ -28,6 +33,12 @@ var ParceiroNegocioServicoModulo = /** @class */ (function () {
             });
             //this.form.submit();
         });
+    };
+    ParceiroNegocioServicoModulo.prototype.MascaraCnpj = function (cnpj) {
+        return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g, "\$1.\$2.\$3\/\$4\-\$5");
+    };
+    ParceiroNegocioServicoModulo.prototype.MascaraCpf = function (cpf) {
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, "\$1.\$2.\$3\-\$4");
     };
     return ParceiroNegocioServicoModulo;
 }());
