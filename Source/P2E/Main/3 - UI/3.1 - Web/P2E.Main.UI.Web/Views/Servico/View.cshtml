@@ -49,20 +49,20 @@
                             Cancelar
                         </button>
 
-                        @if (Model?.CD_SRV > 0)
-                        {
-                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Deletar", User))
-
+                        @*@if (Model?.CD_SRV > 0)
                             {
-                                <button data-id="@Model.CD_SRV"
-                                        data-controller="Servico"
-                                        data-action="Delete"
-                                        data-body-message="Deseja excluir este Serviço?"
-                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                    Deletar
-                                </button>
-                            }
-                        }
+                                @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Deletar", User))
+
+                                {
+                                    <button data-id="@Model.CD_SRV"
+                                            data-controller="Servico"
+                                            data-action="Delete"
+                                            data-body-message="Deseja excluir este Serviço?"
+                                            style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                        Deletar
+                                    </button>
+                                }
+                            }*@
 
                     </form>
                 </div>
