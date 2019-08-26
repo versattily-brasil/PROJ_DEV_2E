@@ -12,6 +12,7 @@
     var nome_rotina = "Grupos de Usuários";
 }
 
+@*<body onbeforeunload="return myFunction()">*@
 <div class="row">
     <div class="col-xl-12">
 
@@ -35,11 +36,12 @@
                 </div>
             </div>
             <div class="panel-container show">
-                <div class="panel-content">
-                    <form asp-action="/" method="get">
+                <form asp-action="/" method="get" id="formLista">
+                    <div class="panel-content">
+
                         <input type="hidden" asp-for="DataPage.CurrentPage" value="1" />
                         <input type="hidden" asp-for="DataPage.Descending" />
-                        <input type="hidden" asp-for="DataPage.PageSize" />
+                        @*<input type="hidden" asp-for="DataPage.PageSize" />*@
 
                         <div class="row">
                             <div class="col-md-6">
@@ -51,89 +53,115 @@
                             </div>
 
                         </div><br />
-                    </form>
-                    <hr />
-                    @if (Model.DataPage.Items.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover m-0">
-                                <thead class="thead-themed">
-                                    <tr>
-                                        @*<th width="100">Código</th>*@
-                                        <th>Descrição</th>
-                                        <th width="20"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.DataPage.Items)
-                                    {
-                                        <tr>
-                                            @*<td>@item.CD_GRP</td>*@
-                                            <td>@item.TX_DSC</td>
-                                            @*<td class="text-center">
-                                                    <i data-id="@item.CD_GRP"
-                                                       data-controller="Grupo"
-                                                       data-action="Delete"
-                                                       data-body-message="Deseja excluir este Grupo?"
-                                                       style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-                                                    </i>
-                                                </td>*@
+                        <div class="row">
+                            <div class="col-sm-9 "></div>
+                            <div class="col form-text">Exibir</div>
+                            <div class="col text-lg-right">
+                                <select asp-for="DataPage.PageSize" class="form-control" style="width: 70px" id="comboQtdRegistro">
 
-                                            <td class="text-center">
-                                                @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
-                                                {
-                                                    <a asp-action="View" asp-route-id="@item.CD_GRP"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                            <br />
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
 
-                            <!-- pager -->
-                            @if (Model.DataPage.Pages != null && Model.DataPage.Pages.Any())
-                            {
-                                <nav class="table-responsive">
-                                    <ul class="pagination justify-content-center d-flex flex-wrap">
-                                        @if (Model.DataPage.CurrentPage > 1)
-                                        {
-                                            <li class="page-item">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.FirstPage)">Primeiro</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.PriorPage)">Anterior</a>
-                                            </li>
-                                        }
-
-                                        @for (int i = 1; i <= Model.DataPage.TotalPages; i++)
-                                        {
-                                            var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
-
-                                            <li class="page-item @(pg.PageNumber == Model.DataPage.CurrentPage ? "active" : "")">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", pg.PageNumber)">@pg.PageNumber</a>
-                                            </li>
-                                        }
-
-
-                                        @if (Model.DataPage.CurrentPage < Model.DataPage.TotalPages)
-                                        {
-                                            <li class="page-item">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.NextPage)">Próximo</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.LastPage)">Último</a>
-                                            </li>
-                                        }
-                                    </ul>
-                                </nav>
-                            }
-
+                                </select>
+                            </div>
+                            <div class="col form-text">Registros</div>
                         </div>
-                    }
-                </div>
+
+                        <hr />
+                        @if (Model.DataPage.Items.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover m-0">
+                                    <thead class="thead-themed">
+                                        <tr>
+                                            @*<th width="100">Código</th>*@
+                                            <th>Descrição</th>
+                                            <th width="20"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.DataPage.Items)
+                                        {
+                                            <tr>
+                                                @*<td>@item.CD_GRP</td>*@
+                                                <td>@item.TX_DSC</td>
+                                                @*<td class="text-center">
+                                                        <i data-id="@item.CD_GRP"
+                                                           data-controller="Grupo"
+                                                           data-action="Delete"
+                                                           data-body-message="Deseja excluir este Grupo?"
+                                                           style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+
+                                                        </i>
+                                                    </td>*@
+
+                                                <td class="text-center">
+                                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
+                                                    {
+                                                        <a asp-action="View" asp-route-id="@item.CD_GRP"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                                <br />
+
+                                <!-- pager -->
+                                @if (Model.DataPage.Pages != null && Model.DataPage.Pages.Any())
+                                {
+                                    <nav class="table-responsive">
+
+                                        <ul class="pagination justify-content-start d-flex flex-wrap">
+                                            @if (Model.DataPage.CurrentPage > 1)
+                                            {
+                                                <li class="page-item">
+                                                    <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.FirstPage)">Primeiro</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.PriorPage)">Anterior</a>
+                                                </li>
+                                            }
+
+                                            @for (int i = 1; i <= Model.DataPage.TotalPages; i++)
+                                            {
+                                                var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
+
+                                                <li class="page-item @(pg.PageNumber == Model.DataPage.CurrentPage ? "active" : "")">
+                                                    <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", pg.PageNumber)">@pg.PageNumber</a>
+                                                </li>
+                                            }
+
+
+                                            @if (Model.DataPage.CurrentPage < Model.DataPage.TotalPages)
+                                            {
+                                                <li class="page-item">
+                                                    <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.NextPage)">Próximo</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="@Model.DataPage.GetLinkPage($"descricao={""}", Model.DataPage.LastPage)">Último</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </nav>
+                                }
+
+                            </div>
+                        }
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script src="~/js/Grupo/GrupoIndex.js"></script>
+
+}

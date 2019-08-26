@@ -37,10 +37,10 @@
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <form asp-action="/" method="get">
+                    <form asp-action="/" method="get" id="formLista">
                         <input type="hidden" asp-for="DataPage.CurrentPage" value="1" />
                         <input type="hidden" asp-for="DataPage.Descending" />
-                        <input type="hidden" asp-for="DataPage.PageSize" />
+                        @*<input type="hidden" asp-for="DataPage.PageSize" />*@
 
                         <div class="row">
                             <div class="col-md-2">
@@ -55,6 +55,24 @@
                             </div>
 
                         </div><br />
+
+                        <div class="row">
+                            <div class="col-sm-9 "></div>
+                            <div class="col form-text">Exibir</div>
+                            <div class="col text-lg-right">
+                                <select asp-for="DataPage.PageSize" class="form-control" style="width: 70px" id="comboQtdRegistro">
+
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+
+                                </select>
+                            </div>
+                            <div class="col form-text">Registros</div>
+                        </div>
+
                     </form>
                     <hr />
                     @if (Model.DataPage.Items.Any())
@@ -136,3 +154,9 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script src="~/js/Rotina/RotinaIndex.js"></script>
+
+}

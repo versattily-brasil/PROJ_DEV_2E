@@ -9,7 +9,7 @@
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
 
-    var nome_rotina =  "Serviços";
+    var nome_rotina = "Serviços";
 
 }
 
@@ -28,16 +28,16 @@
                     </h1>
                 </div>
                 @*<div class="col-lg-7 text-lg-right">
-                    <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
-                </div>*@
+                        <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                    </div>*@
 
             </div>
             <div class="panel-container show">
                 <div class="panel-content">
-                    <form asp-action="/" method="get">
-                        <input type="hidden" asp-for="DataPage.CurrentPage"  value="1"/>
+                    <form asp-action="/" method="get" id="formLista">
+                        <input type="hidden" asp-for="DataPage.CurrentPage" value="1" />
                         <input type="hidden" asp-for="DataPage.Descending" />
-                        <input type="hidden" asp-for="DataPage.PageSize" />
+                        @*<input type="hidden" asp-for="DataPage.PageSize" />*@
 
                         <div class="row">
                             <div class="col-md-6">
@@ -49,6 +49,24 @@
                             </div>
 
                         </div><br />
+
+                        <div class="row">
+                            <div class="col-sm-9 "></div>
+                            <div class="col form-text">Exibir</div>
+                            <div class="col text-lg-right">
+                                <select asp-for="DataPage.PageSize" class="form-control" style="width: 70px" id="comboQtdRegistro">
+
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+
+                                </select>
+                            </div>
+                            <div class="col form-text">Registros</div>
+                        </div>
+
                     </form>
 
                     <hr />
@@ -71,19 +89,19 @@
                                             @*<td>@item.CD_SRV</td>*@
                                             <td>@item.TXT_DEC</td>
                                             @*<td class="text-center">
-                                                <i data-id="@item.CD_SRV"
-                                                   data-controller="Servico"
-                                                   data-action="Delete"
-                                                   data-body-message="Deseja excluir este Módulo?"
-                                                   style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+                                                    <i data-id="@item.CD_SRV"
+                                                       data-controller="Servico"
+                                                       data-action="Delete"
+                                                       data-body-message="Deseja excluir este Módulo?"
+                                                       style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-                                                </i>
-                                            </td>*@
-                                        <td class="text-center">
-                                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
-                                            {
-                                                <a asp-action="View" asp-route-id="@item.CD_SRV"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a>
-                                            }
+                                                    </i>
+                                                </td>*@
+                                            <td class="text-center">
+                                                @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
+                                                {
+                                                    <a asp-action="View" asp-route-id="@item.CD_SRV"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a>
+                                                }
                                             </td>
                                         </tr>
                                     }
@@ -136,3 +154,8 @@
         </div>
     </div>
 </div>
+@section Scripts {
+
+    <script src="~/js/Servico/ServicoIndex.js"></script>
+
+}

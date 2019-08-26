@@ -41,6 +41,7 @@ namespace P2E.SSO.API.Controllers
         public DataPage<Grupo> Get([FromQuery] string tx_dsc, [FromQuery] DataPage<Grupo> page)
         {
             page = _grupoRepository.GetByPage(page, tx_dsc);
+            
             return page;
         }
 

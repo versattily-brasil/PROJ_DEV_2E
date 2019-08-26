@@ -24,8 +24,8 @@ namespace P2E.Shared.Model
             }
         }
 
-        
 
+        public int MaxItems { get; set; }
         public int MaxPages { get; set; }
         public int PageSize { get; set; } = 10;
         public int FirstPage { get { return (1); } }

@@ -20,12 +20,17 @@
 
   <ItemGroup>
     <None Remove="Scripts\Grupo\Grupo.ts" />
+    <None Remove="Scripts\Grupo\GrupoIndex.ts" />
+    <None Remove="Scripts\ParceiroNegocio\ParceiroNegocioIndex.ts" />
     <None Remove="Scripts\ParceiroNegocio\ParceiroNegocioServicoModulo.ts" />
     <None Remove="Scripts\ParceiroNegocio\TabelaParceiroNegocioServicoModulo.ts" />
+    <None Remove="Scripts\Rotina\RotinaIndex.ts" />
+    <None Remove="Scripts\Servico\ServicoIndex.ts" />
     <None Remove="Scripts\Usuario\RotinaUsuarioOperacao.ts" />
     <None Remove="Scripts\Usuario\TabelaUsuarioModulo.ts" />
     <None Remove="Scripts\Usuario\UsuarioCadastro.ts" />
     <None Remove="Scripts\Usuario\TabelaUsuarioGrupo.ts" />
+    <None Remove="Scripts\Usuario\UsuarioIndex.ts" />
   </ItemGroup>
 
 
@@ -50,12 +55,17 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Grupo\Grupo.ts" />
+    <TypeScriptCompile Include="Scripts\Grupo\GrupoIndex.ts" />
+    <TypeScriptCompile Include="Scripts\ParceiroNegocio\ParceiroNegocioIndex.ts" />
     <TypeScriptCompile Include="Scripts\ParceiroNegocio\TabelaParceiroNegocioServicoModulo.ts" />
     <TypeScriptCompile Include="Scripts\ParceiroNegocio\ParceiroNegocioServicoModulo.ts" />
+    <TypeScriptCompile Include="Scripts\Rotina\RotinaIndex.ts" />
+    <TypeScriptCompile Include="Scripts\Servico\ServicoIndex.ts" />
     <TypeScriptCompile Include="Scripts\Usuario\RotinaUsuarioOperacao.ts" />
     <TypeScriptCompile Include="Scripts\Usuario\TabelaUsuarioModulo.ts" />
     <TypeScriptCompile Include="Scripts\Usuario\UsuarioCadastro.ts" />
     <TypeScriptCompile Include="Scripts\Usuario\TabelaUsuarioGrupo.ts" />
+    <TypeScriptCompile Include="Scripts\Usuario\UsuarioIndex.ts" />
   </ItemGroup>
 
 

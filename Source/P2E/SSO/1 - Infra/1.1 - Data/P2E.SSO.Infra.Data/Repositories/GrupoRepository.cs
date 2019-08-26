@@ -56,8 +56,9 @@ namespace P2E.SSO.Infra.Data.Repositories
             predicateGroup.Operator = (predicateGroup.Predicates.Count > 1 ? GroupOperator.And : GroupOperator.Or);
 
             dataPage.Items = _ssoContext.Connection.GetPage<Grupo>(predicateGroup, listSort, dataPage.CurrentPage - 1, dataPage.PageSize).ToList();
-
+            
             dataPage.TotalItems = GetTotalRows(predicateGroup);
+
             return dataPage;
         }
 

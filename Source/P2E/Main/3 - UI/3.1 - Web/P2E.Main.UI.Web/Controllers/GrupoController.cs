@@ -56,11 +56,11 @@ namespace P2E.Main.UI.Web.Controllers
                     using (var client = new HttpClient())
                     {
                         var result = await client.GetAsync($"{_urlGrupo}" +
-                                                                               $"?currentpage={vm.DataPage.CurrentPage}" +
-                                                                               $"&pagesize={vm.DataPage.PageSize}" +
-                                                                               $"&orderby={vm.DataPage.OrderBy}" +
-                                                                               $"&Descending={vm.DataPage.Descending}" +
-                                                                               $"&tx_dsc={vm.descricao}");
+                                                           $"?currentpage={vm.DataPage.CurrentPage}" +
+                                                           $"&pagesize={vm.DataPage.PageSize}" +
+                                                           $"&orderby={vm.DataPage.OrderBy}" +
+                                                           $"&Descending={vm.DataPage.Descending}" +
+                                                           $"&tx_dsc={vm.descricao}");
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Grupo>>();
                         vm.DataPage.UrlSearch = $"grupo?";
