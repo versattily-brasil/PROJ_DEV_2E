@@ -15,6 +15,7 @@
 
 }
 
+@*<body onbeforeunload="return myFunction()">*@
 <div class="row">
     <div class="col-xl-12">
 
@@ -175,6 +176,14 @@
         </div>
     </div>
 </div>
+@*<script>
+            function myFunction() {
+                return "Write something clever here...";
+            }
+        </script>
+
+    </body>*@
+
 @foreach (var operacao in @Model.Operacoes)
 {
     <input type="hidden" class="operacao_hidden" data-tx_dsc="@operacao.TX_DSC" data-cd_opr="@operacao.CD_OPR" />
