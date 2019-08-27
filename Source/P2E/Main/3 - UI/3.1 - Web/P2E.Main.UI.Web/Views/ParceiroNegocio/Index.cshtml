@@ -59,8 +59,8 @@
 
                         <div class="row">
                             <div class="col-sm-9 "></div>
-                            <div class="col form-text">Exibir</div>
-                            <div class="col text-lg-right">
+                            <div class="col-sm-0 form-text text-right">Exibir</div>
+                            <div class="col-sm-1 text-lg-right">
                                 <select asp-for="DataPage.PageSize" class="form-control" style="width: 70px" id="comboQtdRegistro">
 
                                     <option value="5">5</option>
@@ -71,7 +71,7 @@
 
                                 </select>
                             </div>
-                            <div class="col form-text">Registros</div>
+                            <div class="col-sm-0 form-text text-left" style="width: 10px">Registros</div>
                         </div>
 
                     </form>
@@ -96,14 +96,14 @@
                                             <td>@item.TXT_RZSOC</td>
                                             <td>@item.CNPJ</td>
                                             @*<td class="text-center">
-                                    <i data-id="@item.CD_PAR"
-                                       data-controller="ParceiroNegocio"
-                                       data-action="Delete"
-                                       data-body-message="Deseja excluir este registro?"
-                                       style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
+                                                    <i data-id="@item.CD_PAR"
+                                                       data-controller="ParceiroNegocio"
+                                                       data-action="Delete"
+                                                       data-body-message="Deseja excluir este registro?"
+                                                       style="font-weight:bold;cursor:pointer" class="delete fal fa-trash-alt text-danger">
 
-                                    </i>
-                                </td>*@
+                                                    </i>
+                                                </td>*@
                                             @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
                                             {
                                                 <td class="text-center"><a asp-action="View" asp-route-id="@item.CD_PAR"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a></td>

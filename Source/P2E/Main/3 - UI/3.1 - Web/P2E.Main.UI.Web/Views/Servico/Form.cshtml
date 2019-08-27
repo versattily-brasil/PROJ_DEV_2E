@@ -12,59 +12,67 @@
     var mensagemConfirma = "Confirma salvar o registro?";
 }
 
-<div class="row">
-    <div class="col-xl-12">
+<body onbeforeunload="return myFunction()">
+    <div class="row">
+        <div class="col-xl-12">
 
-        @if (!string.IsNullOrEmpty(type))
-        {
-            <partial name="_DisplayMessagePartial" />
-        }
-        <div class="panel">
-            <div class="panel-hdr">
-                @if (Model?.CD_SRV > 0)
-                {
-                    <h1>
-                        Edição de Serviço
-                    </h1>
-                }
-                else
-                {
-                    <h1>
-                        Cadastro de Serviço
-                    </h1>
-                }
-            </div>
-            <div class="panel-container show">
-                <div class="panel-content">
-                    <form asp-action="Save" method="post">
-                        <input type="hidden" asp-for="CD_SRV" />
-                        <div class="form-group">
-                            <label class="form-label" asp-for="TXT_DEC">Descrição</label>
-                            <input type="text" maxlength="100" asp-for="TXT_DEC" placeholder="Descrição" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-success">Salvar</button>
-                        @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
+            @if (!string.IsNullOrEmpty(type))
+            {
+                <partial name="_DisplayMessagePartial" />
+            }
+            <div class="panel">
+                <div class="panel-hdr">
+                    @if (Model?.CD_SRV > 0)
+                    {
+                        <h1>
+                            Edição de Serviço
+                        </h1>
+                    }
+                    else
+                    {
+                        <h1>
+                            Cadastro de Serviço
+                        </h1>
+                    }
+                </div>
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <form asp-action="Save" method="post">
+                            <input type="hidden" asp-for="CD_SRV" />
+                            <div class="form-group">
+                                <label class="form-label" asp-for="TXT_DEC">Descrição</label>
+                                <input type="text" maxlength="100" asp-for="TXT_DEC" placeholder="Descrição" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-success">Salvar</button>
+                            @*<button type="button" class="btn btn-primary" value="Cancel" onclick="history.back();">Cancelar</button>*@
 
-                        <button data-controller="Servico" data-id="@Model?.CD_SRV"
-                                data-action="Cancel"
-                                data-body-message="Deseja cancelar as alterações?"
-                                style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
-                            Cancelar
-                        </button>
-
-                        @if (Model?.CD_SRV > 0)
-                        {
-                            <button data-id="@Model.CD_SRV"
-                                    data-controller="Servico"
-                                    data-action="Delete"
-                                    data-body-message="Deseja excluir este Serviço?"
-                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
-                                Deletar
+                            <button data-controller="Servico" data-id="@Model?.CD_SRV"
+                                    data-action="Cancel"
+                                    data-body-message="Deseja cancelar as alterações?"
+                                    style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
+                                Cancelar
                             </button>
-                        }
+
+                            @if (Model?.CD_SRV > 0)
+                            {
+                                <button data-id="@Model.CD_SRV"
+                                        data-controller="Servico"
+                                        data-action="Delete"
+                                        data-body-message="Deseja excluir este Serviço?"
+                                        style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                    Deletar
+                                </button>
+                            }
                         </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <script>
+        function myFunction() {
+            return "Write something clever here...";
+        }
+    </script>
+
+</body>
