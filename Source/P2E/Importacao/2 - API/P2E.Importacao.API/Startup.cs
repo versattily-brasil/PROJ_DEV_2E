@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using P2E.Importacao.Domain.Repositories;
+using P2E.Importacao.Infra.Data.Repository;
+using P2E.SSO.Infra.Data.DataContext;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace P2E.Importacao.API
@@ -34,8 +30,8 @@ namespace P2E.Importacao.API
                 c.SwaggerDoc("v1", new Info { Title = "P2E [Importação-API]", Version = "v1" });
             });
 
-            //services.AddScoped<MainContext, MainContext>();
-            //services.AddTransient<IExemploRepository, ExemploRepository>();
+            services.AddScoped<ImportacaoContext, ImportacaoContext>();
+            services.AddTransient<IImportacaoRepository, ImportacaoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
