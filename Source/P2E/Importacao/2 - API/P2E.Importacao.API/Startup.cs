@@ -40,29 +40,45 @@ namespace P2E.Importacao.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-
-
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "P2E Importação - API V1");
-                c.RoutePrefix = "api/docs";
-                c.DocumentTitle = "P2E Importação - API";
-            });
-
             app.UseMvc();
-
         }
+
+        //public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        //{
+        //    if (env.IsDevelopment())
+        //    {
+        //        app.UseDeveloperExceptionPage();
+        //    }
+        //    else
+        //    {
+        //        app.UseHsts();
+        //    }
+
+        //    app.UseHttpsRedirection();
+
+
+        //    // Enable middleware to serve generated Swagger as a JSON endpoint.
+        //    app.UseSwagger();
+
+        //    // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+        //    // specifying the Swagger JSON endpoint.
+        //    app.UseSwaggerUI(c =>
+        //    {
+        //        c.SwaggerEndpoint("/swagger/v1/swagger.json", "P2E Importação - API V1");
+        //        c.RoutePrefix = "api/docs";
+        //        c.DocumentTitle = "P2E Importação - API";
+        //    });
+
+        //    app.UseMvc();
+
+        //}
     }
 }
