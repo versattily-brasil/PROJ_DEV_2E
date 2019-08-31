@@ -24,10 +24,12 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
         {
             try
             {
+
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("http://localhost:7000/");
-                    var result = client.GetAsync($"sso/v1/grupo/{5}").Result;
+                    var result = client.GetAsync($"imp/v1/tbimportacao/todos").Result;
+                    //var result = client.GetAsync($"sso/v1/grupo/{5}").Result;
                     result.EnsureSuccessStatusCode();
 
 

@@ -20,7 +20,7 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/Importacao
         [HttpGet]
-        [Route("api/v1/Importacao/todos")]
+        [Route("api/v1/importacao/todos")]
         public IEnumerable<TBImportacao> Get()
         {
             var result = _ImportacaoRepository.FindAll();
@@ -29,7 +29,7 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/Importacao
         [HttpGet]
-        [Route("api/v1/Importacao/")]
+        [Route("api/v1/importacao/")]
         public DataPage<TBImportacao> Get([FromQuery] string tx_dsc, [FromQuery] DataPage<TBImportacao> page)
         {
             page = _ImportacaoRepository.GetByPage(page, tx_dsc);
@@ -39,7 +39,7 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/Importacao/5
         [HttpGet]
-        [Route("api/v1/Importacao/{id}")]
+        [Route("api/v1/importacao/{id}")]
         public TBImportacao Get(long id)
         {
             TBImportacao Importacao = _ImportacaoRepository.Find(p => p.CD_IMP == id);
@@ -49,7 +49,7 @@ namespace P2E.Importacao.API.Controllers
 
         // POST: api/Importacao
         [HttpPost]
-        [Route("api/v1/Importacao")]
+        [Route("api/v1/importacao")]
         public object Post([FromBody] TBImportacao item)
         {
             try
@@ -65,7 +65,7 @@ namespace P2E.Importacao.API.Controllers
 
         // PUT: api/Importacao/5
         [HttpPut]
-        [Route("api/v1/Importacao/{id}")]
+        [Route("api/v1/importacao/{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Put(int id, [FromBody] TBImportacao item)
         {
@@ -87,7 +87,7 @@ namespace P2E.Importacao.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        [Route("api/v1/Importacao/{id}")]
+        [Route("api/v1/importacao/{id}")]
         public IActionResult Delete(int id)
         {
             try

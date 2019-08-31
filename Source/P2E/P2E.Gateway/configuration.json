@@ -39,9 +39,9 @@
       "UpstreamPathTemplate": "/financeiro/",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
     },
-    // Importacao
+    // Importação
     {
-      "DownstreamPathTemplate": "/api/{everything}/",
+      "DownstreamPathTemplate": "/api/{version}/{everything}/",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -49,7 +49,7 @@
           "Port": 7004
         }
       ],
-      "UpstreamPathTemplate": "/importacao/",
+      "UpstreamPathTemplate": "/imp/{version}/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
     },
     // SSO
