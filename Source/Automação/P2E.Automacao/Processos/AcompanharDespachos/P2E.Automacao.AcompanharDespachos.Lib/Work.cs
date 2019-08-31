@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Net.Http;
 using System.Xml;
+using static P2E.Automacao.AcompanharDespachos.Lib.Entities.Importacao;
 
 namespace P2E.Automacao.AcompanharDespachos.Lib
 {
@@ -18,20 +19,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
    
         #endregion
 
-        public class TBImportacao
-        {
-            public int CD_IMP { get; set; }
-            public int NUM_PI { get; set; }
-            public int NR_NUM_DEC { get; set; }
-            public string TX_STATUS { get; set; }
-            public string TX_CANAL { get; set; }
-            public DateTime DT_DATA_DES { get; set; }
-            public decimal VL_MULTA { get; set; }
-            public string TX_NOME_FISCAL { get; set; }
-            public DateTime DT_DATA_CANAL { get; set; }
-            public DateTime DT_DATA_DISTR { get; set; }
-        }
-
         public async void Executar()
         {
             try
@@ -39,8 +26,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                 using (var client = new HttpClient())
                 {
                     TBImportacao tbImportacao = null;
-
-                    XmlDocument doc = new XmlDocument();
 
                     client.BaseAddress = new Uri("http://localhost:7000/");
                     var result = client.GetAsync($"imp/v1/tbimportacao/todos").Result;
@@ -64,35 +49,30 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine("Número da declaração está incorreto! " + e.ToString());
             }
         }
 
-        public async Task AtualizaStatus(TBImportacao import, string cd_imp)
+        public static async Task AtualizaStatus(TBImportacao import, string cd_imp)
         {
-            var resultado = new HttpResponseMessage();
-            string responseBody = string.Empty;
-
             try
             {
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("http://localhost:7000/");
-                    
-                    resultado =  await client.PutAsJsonAsync($"imp/v1/tbimportacao/{cd_imp}", import);
-                    responseBody = await resultado.Content.ReadAsStringAsync();
+
+                    var resultado = await client.PutAsJsonAsync($"imp/v1/tbimportacao/{cd_imp}", import);
+                    var responseBody = await resultado.Content.ReadAsStringAsync();
                     resultado.EnsureSuccessStatusCode();
-
-
                 }
-
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
         }
-        protected void Acessar(TBImportacao import, string numero, string cd_imp)
+
+        public void Acessar(TBImportacao import, string numero, string cd_imp)
         {
             using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
             {
@@ -142,6 +122,8 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             var data = element.Text;
                             import.DT_DATA_DES = Convert.ToDateTime(data);
 
+                            import.TX_STATUS = "DESEMBARACO";
+
                             break;
 
                         case "EM ANALISE FISCAL":
@@ -174,7 +156,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
 
                     AtualizaStatus(import, cd_imp);
 
-                    Console.WriteLine(element.Text);
+                    Console.WriteLine(import.ToString());
                 }
             }
         }
