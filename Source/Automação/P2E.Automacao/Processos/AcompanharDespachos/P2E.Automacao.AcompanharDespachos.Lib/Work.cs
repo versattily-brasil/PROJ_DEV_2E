@@ -1,9 +1,12 @@
-﻿using OpenQA.Selenium.PhantomJS;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Shared.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Xml;
 
 namespace P2E.Automacao.AcompanharDespachos.Lib
 {
@@ -19,39 +22,97 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
         private string _urlImportacao;
         private readonly AppSettings appSettings;
 
+        private List<TBImportacao> _tbImportacao;
+
         #endregion
-        public void Executar()
+
+        public class TBImportacao
+        {
+            public int CD_IMP { get; set; }
+            public int NUM_PI { get; set; }
+            public int NR_NUM_DEC { get; set; }
+            public string TX_STATUS { get; set; }
+            public string TX_CANAL { get; set; }
+            public DateTime DT_DATA_DES { get; set; }
+            public decimal VL_MULTA { get; set; }
+            public string TX_NOME_FISCAL { get; set; }
+            public DateTime DT_DATA_CANAL { get; set; }
+            public DateTime DT_DATA_DISTR { get; set; }
+        }
+
+        public async void Executar()
         {
             try
             {
-
                 using (var client = new HttpClient())
                 {
+                    TBImportacao tbImportacao = null;
+
+                    XmlDocument doc = new XmlDocument();
+
                     client.BaseAddress = new Uri("http://localhost:7000/");
                     var result = client.GetAsync($"imp/v1/tbimportacao/todos").Result;
-                    //var result = client.GetAsync($"sso/v1/grupo/{5}").Result;
                     result.EnsureSuccessStatusCode();
-
 
                     if (result.IsSuccessStatusCode)
                     {
-                      
+                        var aux = await result.Content.ReadAsStringAsync();
+                        var importacao = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+
+                        foreach (var item in importacao)
+                        {
+                            if (item.NR_NUM_DEC.ToString().Length == 10)
+                            {
+                                Acessar(item, item.NR_NUM_DEC.ToString());
+                            }
+                        }
                     }
-                                       
                 }
 
             }
             catch (Exception e)
             {
-                throw;
+                Console.WriteLine(e.ToString());
             }
-
-
-
-            Acessar();
         }
 
-        protected void Acessar()
+        static async Task AtualizaStatus (TBImportacao import, string cd_imp)
+        {
+            var resultado = new HttpResponseMessage();
+            string responseBody = string.Empty;
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://localhost:7000/");
+
+                    resultado = client.PutAsJsonAsync($"imp/v1/tbimportacao/todos/{cd_imp}", import);
+                    responseBody = await resultado.Content.ReadAsStringAsync();
+                    resultado.EnsureSuccessStatusCode();
+
+
+
+                    //client.BaseAddress = new Uri("http://localhost:7000/");
+                    //var result = client.GetAsync($"imp/v1/tbimportacao/{cd_imp}").Result;
+                    //result.EnsureSuccessStatusCode();
+
+                    //if (result.IsSuccessStatusCode)
+                    //{
+                    //    var aux = await result.Content.ReadAsStringAsync();
+                    //    var importacao = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+
+
+                    //}
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+        protected void Acessar(TBImportacao import, string numero)
         {
             using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
             {
@@ -61,7 +122,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                 service.AddArgument("no-sandbox");
                 service.HideCommandPromptWindow = true;
 
-                var numDeclaracao = "1915359807";
+                var numDeclaracao = numero;
 
                 using (var _driver = new PhantomJSDriver(service))
                 {
@@ -75,8 +136,8 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                     element = _driver.FindElementByCssSelector(@"#botoes > input:nth-child(1)");
                     element.Click();
 
-                    string Numero = numDeclaracao.Substring(0, 2) +"/" + 
-                                    numDeclaracao.Substring(2, 7) + "-"+
+                    string Numero = numDeclaracao.Substring(0, 2) + "/" +
+                                    numDeclaracao.Substring(2, 7) + "-" +
                                     numDeclaracao.Substring(9, 1);
 
                     // clica no link contendo o ...
@@ -84,7 +145,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                     element.Click();
 
                     //localiza o status do despacho
-                    element = _driver.FindElementByCssSelector("#tr_"+ numDeclaracao + " > td:nth-child(2)");
+                    element = _driver.FindElementByCssSelector("#tr_" + numDeclaracao + " > td:nth-child(2)");
                     var status = element.Text;
 
                     switch (status)
@@ -98,7 +159,9 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             //Data do Desembaraço
                             element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(6) > td:nth-child(2)");
                             var data = element.Text;
-                                                       
+
+                            
+
                             break;
 
                         case "EM ANALISE FISCAL":
