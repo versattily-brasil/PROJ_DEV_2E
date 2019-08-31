@@ -1,4 +1,5 @@
-﻿using System;
+﻿using P2E.Automacao.BaixarExtratos.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,9 @@ namespace P2E.Automaccao.BaixarExtratos.Console
     {
         static void Main(string[] args)
         {
+            Work work = new Work();
+
+            work.Executar();
         }
     }
 }
