@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using P2E.Importacao.Domain.Repositories;
 using P2E.Importacao.Infra.Data.Repository;
-using P2E.SSO.Infra.Data.DataContext;
+using P2E.Importacao.Infra.Data.DataContext;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace P2E.Importacao.API
@@ -22,8 +23,21 @@ namespace P2E.Importacao.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddControllersAsServices();
+            services.AddMvc().ConfigureApiBehaviorOptions(o =>
+            {
+                o.InvalidModelStateResponseFactory = context =>
+                {
+                    var error = new
+                    {
+                        Detail = "Custom error"
+                    };
+
+                    return new BadRequestObjectResult(error);
+                };
+            });
+
+            services.AddAutoMapper();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c =>
             {

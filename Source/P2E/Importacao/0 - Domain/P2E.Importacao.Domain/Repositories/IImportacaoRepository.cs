@@ -1,7 +1,6 @@
-﻿using DapperExtensions;
-using MicroOrm.Dapper.Repositories;
-using P2E.Shared.Model;
+﻿using MicroOrm.Dapper.Repositories;
 using P2E.Importacao.Domain.Entities;
+using P2E.Shared.Model;
 
 namespace P2E.Importacao.Domain.Repositories
 {

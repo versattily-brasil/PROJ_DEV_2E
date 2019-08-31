@@ -2,7 +2,7 @@
 
 namespace P2E.Importacao.Domain.Entities.Map
 {
-    public class ImportacaoMap : ClassMapper<Importacao>
+    public class ImportacaoMap : ClassMapper<TBImportacao>
     {
         public ImportacaoMap()
         {

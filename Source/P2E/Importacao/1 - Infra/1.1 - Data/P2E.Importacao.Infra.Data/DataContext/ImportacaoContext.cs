@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dapper;
+using DapperExtensions;
+using P2E.Importacao.Domain.Entities.Map;
+using P2E.Shared.TypeHandler;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
-using P2E.Importacao.Domain.Entities.Map;
-using DapperExtensions;
-using Dapper;
-using P2E.Shared.TypeHandler;
 
-namespace P2E.SSO.Infra.Data.DataContext
+namespace P2E.Importacao.Infra.Data.DataContext
 {
     public class ImportacaoContext : IDisposable
     {

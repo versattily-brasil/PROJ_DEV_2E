@@ -1,15 +1,12 @@
-﻿ using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using P2E.Shared.Model;
+using P2E.SSO.Domain.Entities;
+using P2E.SSO.Domain.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using P2E.Shared.Model;
-using P2E.SSO.API.ViewModel;
-using P2E.SSO.Domain.Entities;
-using P2E.SSO.Domain.Repositories;
 
 namespace P2E.SSO.API.Controllers
 {
