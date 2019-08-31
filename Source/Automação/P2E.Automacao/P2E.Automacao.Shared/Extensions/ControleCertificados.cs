@@ -16,5 +16,10 @@ namespace P2E.Automacao.Shared.Extensions
             service.AddArgument($"--ssl-client-key-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.key");
             service.AddArgument($"--ssl-client-key-passphrase=2e123456$");
         }
+
+        public static string CertificadoPath()
+        {
+            return $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
+        }
     }
 }
