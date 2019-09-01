@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace P2E.Automacao.Shared.Extensions
@@ -15,11 +16,6 @@ namespace P2E.Automacao.Shared.Extensions
             service.AddArgument(cert);
             service.AddArgument($"--ssl-client-key-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.key");
             service.AddArgument($"--ssl-client-key-passphrase=2e123456$");
-        }
-
-        public static string CertificadoPath()
-        {
-            return $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
         }
     }
 }
