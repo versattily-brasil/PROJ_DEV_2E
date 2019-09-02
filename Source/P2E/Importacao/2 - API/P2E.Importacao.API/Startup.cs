@@ -46,6 +46,7 @@ namespace P2E.Importacao.API
 
             services.AddScoped<ImportacaoContext, ImportacaoContext>();
             services.AddTransient<IImportacaoRepository, ImportacaoRepository>();
+            services.AddTransient<IHistoricoRepository, HistoricoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
