@@ -45,7 +45,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 service.AddArgument("test-type");
                 service.AddArgument("no-sandbox");
                 service.HideCommandPromptWindow = true;
-                
+
 
                 using (var _driver = new PhantomJSDriver(service))
                 {
@@ -74,18 +74,18 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     //indo para a página de consulta de declaração de importação.
                     _driver.FindElement(By.Id("btnRegistrarDI")).Click();
 
-                    var teste = _driver.FileDetector;
+                    DownloadExtrato3(_driver);
 
-                   bool result = DownloadExtrato(_driver);
+                    //bool result = DownloadExtrato2(_urlDownloadExtrato,_driver);
 
-                    if (result)
-                    {
-                        Console.WriteLine("Download completo");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Erro!");
-                    }
+                    //if (result)
+                    //{
+                    //    Console.WriteLine("Download completo");
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine("Erro!");
+                    //}
 
                     Console.WriteLine(_driver.PageSource);
 
@@ -94,9 +94,18 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
         }
 
-        protected void Importar()
+        public X509Certificate FindClientCertificate(string serialNumber)
         {
-            
+            return
+                FindCertificate(StoreLocation.CurrentUser) ??
+                FindCertificate(StoreLocation.LocalMachine);
+            X509Certificate FindCertificate(StoreLocation location)
+            {
+                X509Store store = new X509Store(location);
+                store.Open(OpenFlags.OpenExistingOnly);
+                var certs = store.Certificates.Find(X509FindType.FindBySerialNumber, serialNumber, true);
+                return certs.OfType<X509Certificate>().FirstOrDefault();
+            };
         }
 
         protected bool DownloadExtrato(PhantomJSDriver driver)
@@ -117,21 +126,19 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     request.CookieContainer.Add(cookie);
                 }
 
-                var certificado = new X509Certificate();
+                var certificado = FindClientCertificate("511d1904137f8ed4");
 
-                string diretorioCert = ControleCertificados.CertificadoPath();
+                request.ClientCertificates.Add(certificado);
 
-                string path = Path.Combine(diretorioCert, "client - certificate");
-
-                request.ClientCertificates.Add(new X509Certificate(path, "pass"));
+                string arquivoPath = Path.Combine("C:\\Users\\Jorge.PATRIMONIO\\Desktop\\arquivo", "ExtratoDI.pdf");
 
                 // download file
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream responseStream = response.GetResponseStream())
-                using (FileStream fileStream = File.Create("C:\\Users\\Jorge.PATRIMONIO\\Desktop\\arquivo\\ExtratoTeste"))
+                using (FileStream fileStream = File.Create(arquivoPath))
                 {
                     var buffer = new byte[4096];
-                    int bytesRead;
+                    int bytesRead = 0;
 
                     while ((bytesRead = responseStream.Read(buffer, 0, buffer.Length)) > 0)
                     {
@@ -143,8 +150,76 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
             catch (Exception e)
             {
-                Console.WriteLine("Erro: "+e.Message);
+                Console.WriteLine("Erro: " + e.Message);
                 return false;
+            }
+        }
+
+        protected bool DownloadExtrato2(string url, PhantomJSDriver driver)
+        {
+            try
+            {
+                // Construct HTTP request to get the file
+                HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(url);
+                
+                httpRequest.CookieContainer = new CookieContainer();
+
+                foreach (OpenQA.Selenium.Cookie c in driver.Manage().Cookies.AllCookies)
+                {
+                    System.Net.Cookie cookie = new System.Net.Cookie(c.Name, c.Value, c.Path, c.Domain);
+
+                    httpRequest.CookieContainer.Add(cookie);
+                }
+
+
+                var certificado = FindClientCertificate("511d1904137f8ed4");
+
+                httpRequest.ClientCertificates.Add(certificado);
+
+                string arquivoPath = Path.Combine("C:\\Users\\Jorge.PATRIMONIO\\Desktop\\arquivo", "ExtratoDI.pdf");
+
+                //HttpStatusCode responseStatus;
+
+                // Get back the HTTP response for web server
+                HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+                Stream httpResponseStream = httpResponse.GetResponseStream();
+
+                // Define buffer and buffer size
+                int bufferSize = 1024;
+                byte[] buffer = new byte[bufferSize];
+                int bytesRead = 0;
+
+                // Read from response and write to file
+                FileStream fileStream = File.Create(arquivoPath);
+
+                var teste = httpResponseStream.Read(buffer, 0, bufferSize);
+
+                while ((bytesRead = httpResponseStream.Read(buffer, 0, bufferSize)) != 0)
+                {
+                    fileStream.Write(buffer, 0, bytesRead);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        protected void DownloadExtrato3(PhantomJSDriver driver)
+        {
+            var certificado = FindClientCertificate("511d1904137f8ed4");
+
+            string arquivoPath = Path.Combine("C:\\Users\\Jorge.PATRIMONIO\\Desktop", "ExtratoDI.pdf");
+
+            using (WebClient myWebClient = new P2EWebClient(certificado, driver))
+            {
+                myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
+                // Download the Web resource and save it into the current filesystem folder.
+                Thread.Sleep(4000);
+
+                myWebClient.DownloadFile(_urlDownloadExtrato, arquivoPath);
             }
         }
     }
