@@ -62,7 +62,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                     client.BaseAddress = new Uri("http://localhost:7000/");
 
                     var resultado = await client.PutAsJsonAsync($"imp/v1/tbimportacao/{cd_imp}", import);
-                    var responseBody = await resultado.Content.ReadAsStringAsync();
+                   
                     resultado.EnsureSuccessStatusCode();
                 }
             }
