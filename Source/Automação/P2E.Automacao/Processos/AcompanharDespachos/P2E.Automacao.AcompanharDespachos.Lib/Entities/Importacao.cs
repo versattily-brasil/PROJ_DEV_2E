@@ -12,7 +12,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib.Entities
         {
             public int CD_IMP { get; set; }
             public int NUM_PI { get; set; }
-            public int NR_NUM_DEC { get; set; }
+            public string TX_NUM_DEC { get; set; }
             public string TX_STATUS { get; set; }
             public string TX_CANAL { get; set; }
             public DateTime DT_DATA_DES { get; set; }
@@ -20,6 +20,8 @@ namespace P2E.Automacao.AcompanharDespachos.Lib.Entities
             public string TX_NOME_FISCAL { get; set; }
             public DateTime DT_DATA_CANAL { get; set; }
             public DateTime DT_DATA_DISTR { get; set; }
+            public string TX_DOSSIE { get; set; }
+            public DateTime DT_DATA_DOSS { get; set; }
         }
     }
 }
