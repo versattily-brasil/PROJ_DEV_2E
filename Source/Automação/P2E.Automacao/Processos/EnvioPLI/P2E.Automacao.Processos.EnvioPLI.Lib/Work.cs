@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Ionic.Zip;
+using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Processos.EnviarPLI.Lib.Entidades.EstruturaPLI;
 using P2E.Automacao.Shared.Extensions;
@@ -10,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.IO.Compression;
 
 namespace P2E.Automacao.Processos.EnvioPLI.Lib
 {
@@ -43,7 +43,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
             // Registrar Erros
         }
 
-        protected void EnviarArquivo()
+        private void EnviarArquivo()
         {
             using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
             {
@@ -67,40 +67,33 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
                     element = _driver.FindElementByName("btLogar");
                     element.Click();
 
-                    // etapa 2
+                    // localizar ~link com o texto "Enviar PLI e efetuar o click"
                     element = _driver.FindElementByPartialLinkText("Enviar PLI");
                     element.Click();
 
-                    // etapa 3
+                    // localizar o elemento File com o nome manter-arquivo
                     element = _driver.FindElementByName("field(-manter-arquivo)");
-                    element.SendKeys(ObterArquivoTemporario());
+
+                    // seleciona o arquivo
+                    element.SendKeys(GerarArquivoPLI());
+
+                    //localiza e clica no botão Enviar PLI
                     element = _driver.FindElementById("btnEnviarpli");
                     element.Click();
-                    // etapa 4
-                    element = _driver.FindElementById("ERROR");
 
+                    // Recupera a mensagem de erro caso exista.
+                    try
+                    {
+                        element = _driver.FindElementById("ERROR");
+                    }
+                    catch (Exception){}
 
                     Console.WriteLine(element.Text);
                 }
             }
         }
 
-        private string ObterArquivoTemporario()
-        {
-            //string temp = Path.GetTempPath() + "\\temp.txt";
-
-            //if (!File.Exists(temp))
-            //{
-            //    StreamWriter writer = new StreamWriter(temp);
-            //    writer.WriteLine("Teste Envio PLI." + DateTime.Now.ToString());
-            //    writer.Close();
-            //}
-
-            //return temp;
-            return GerarArquivoTeste();
-        }
-
-        private string GerarArquivoTeste()
+        private string GerarArquivoPLI()
         {
             #region Obtem dados da PLI
             var importador = new Importador();
@@ -140,7 +133,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
             System.Xml.Serialization.XmlSerializer writer =
                 new System.Xml.Serialization.XmlSerializer(typeof(Importador));
 
-            string path = Directory.GetCurrentDirectory() + @"\pli_xml";
+            string path = Path.GetTempPath();
 
             if (!Directory.Exists(path))
             {
@@ -150,21 +143,74 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
             string fileName = Guid.NewGuid().ToString();
 
             var filePath = path + "\\" + fileName + ".xml";
-            System.IO.FileStream file = System.IO.File.Create(path);
-
-            writer.Serialize(file, importador);
-            file.Close();
+            using (StreamWriter file = File.AppendText(filePath))
+            {
+                writer.Serialize(file, importador);
+                file.Close();
+            }
             #endregion
 
             #region zipa arquivo
-        
-            using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Update))
-            {
-                archive.CreateEntryFromFile(filePath, fileName);
-            }
+            var files = Directory.GetFiles(path, fileName + ".xml");
 
-            return filePath;
+            //provide the path and name for the zip file to create
+            string zipFile = path + "\\" + fileName + ".PL5ZIP";
+
+            CriarArquivoZip(files.ToList(), zipFile);
+
+            return zipFile;
             #endregion
+        }
+
+        private static void CriarArquivoZip(List<string> arquivos, string ArquivoDestino)
+        {
+            using (ZipFile zip = new ZipFile())
+            {
+                // percorre todos os arquivos da lista
+                foreach (string item in arquivos)
+                {
+                    // se o item é um arquivo
+                    if (File.Exists(item))
+                    {
+                        try
+                        {
+                            // Adiciona o arquivo na pasta raiz dentro do arquivo zip
+                            zip.AddFile(item, "");
+                        }
+                        catch
+                        {
+                            throw;
+                        }
+                    }
+                    // se o item é uma pasta
+                    else if (Directory.Exists(item))
+                    {
+                        try
+                        {
+                            // Adiciona a pasta no arquivo zip com o nome da pasta 
+                            zip.AddDirectory(item, new DirectoryInfo(item).Name);
+                        }
+                        catch
+                        {
+                            throw;
+                        }
+                    }
+                }
+                // Salva o arquivo zip para o destino
+                try
+                {
+                    zip.Save(ArquivoDestino);
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+        }
+
+        private void ObterCredenciaisSuframa()
+        {
+
         }
     }
 }
