@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
+using P2E.Automacao.Processos.EnviarPLI.Lib.Entidades.EstruturaPLI;
 using P2E.Automacao.Shared.Extensions;
 using Selenium.Utils.Html;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.IO.Compression;
 
 namespace P2E.Automacao.Processos.EnvioPLI.Lib
 {
@@ -77,6 +79,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
                     // etapa 4
                     element = _driver.FindElementById("ERROR");
 
+
                     Console.WriteLine(element.Text);
                 }
             }
@@ -84,16 +87,84 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
 
         private string ObterArquivoTemporario()
         {
-            string temp = Path.GetTempPath() + "\\temp.txt";
+            //string temp = Path.GetTempPath() + "\\temp.txt";
 
-            if (!File.Exists(temp))
+            //if (!File.Exists(temp))
+            //{
+            //    StreamWriter writer = new StreamWriter(temp);
+            //    writer.WriteLine("Teste Envio PLI." + DateTime.Now.ToString());
+            //    writer.Close();
+            //}
+
+            //return temp;
+            return GerarArquivoTeste();
+        }
+
+        private string GerarArquivoTeste()
+        {
+            #region Obtem dados da PLI
+            var importador = new Importador();
+            importador.tipoImportador = 2;
+            importador.cdImportador = 12345678900014;
+
+            var item1 = new ItemMatriz();
+            item1.cdNcmProdFinal = 12345678;
+            item1.cdSuframa = 1234;
+            item1.cdDestinacao = 12;
+            item1.cdUtilizacao = 34;
+            item1.cdTributacao = "ABCD";
+            item1.numDecreto = 888882019;
+            item1.dtInicioBeneficio = 20190101;
+            item1.dtFimBeneficio = 20191031;
+
+            importador.itemMatriz = new List<ItemMatriz>();
+
+            importador.itemMatriz.Add(item1);
+
+            var item2 = new ItemMatriz();
+            item2.cdNcmProdFinal = 12345678;
+            item2.cdSuframa = 1234;
+            item2.cdDestinacao = 12;
+            item2.cdUtilizacao = 34;
+            item2.cdTributacao = "ABCD";
+            item2.numDecreto = 888882019;
+            item2.dtInicioBeneficio = 20190101;
+            item2.dtFimBeneficio = 20191031;
+
+            importador.itemMatriz.Add(item2);
+            #endregion
+
+            #region gera Xml
+            System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(importador.GetType());
+
+            System.Xml.Serialization.XmlSerializer writer =
+                new System.Xml.Serialization.XmlSerializer(typeof(Importador));
+
+            string path = Directory.GetCurrentDirectory() + @"\pli_xml";
+
+            if (!Directory.Exists(path))
             {
-                StreamWriter writer = new StreamWriter(temp);
-                writer.WriteLine("Teste Envio PLI." + DateTime.Now.ToString());
-                writer.Close();
+                Directory.CreateDirectory(path);
             }
 
-            return temp;
+            string fileName = Guid.NewGuid().ToString();
+
+            var filePath = path + "\\" + fileName + ".xml";
+            System.IO.FileStream file = System.IO.File.Create(path);
+
+            writer.Serialize(file, importador);
+            file.Close();
+            #endregion
+
+            #region zipa arquivo
+        
+            using (ZipArchive archive = ZipFile.Open(path, ZipArchiveMode.Update))
+            {
+                archive.CreateEntryFromFile(filePath, fileName);
+            }
+
+            return filePath;
+            #endregion
         }
     }
 }
