@@ -97,7 +97,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
 
         private string GerarArquivoPLI()
         {
-            #region Obtem dados da PLI
+            #region Obtem dados da PLI  -  Dados Mockados
             var importador = new Importador();
             importador.tipoImportador = 2;
             importador.cdImportador = 12345678900014;
