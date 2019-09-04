@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entidades\CredenciaisSuframa.cs" />
     <Compile Include="Entidades\EstruturaPLI\Importador.cs" />
     <Compile Include="Entidades\EstruturaPLI\ItemMatriz.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,6 +1,7 @@
 ﻿using Ionic.Zip;
 using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
+using P2E.Automacao.Processos.EnviarPLI.Lib.Entidades;
 using P2E.Automacao.Processos.EnviarPLI.Lib.Entidades.EstruturaPLI;
 using P2E.Automacao.Shared.Extensions;
 using Selenium.Utils.Html;
@@ -10,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P2E.Automacao.Processos.EnvioPLI.Lib
@@ -22,13 +24,12 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
         private string _senhaSite = string.Empty;
         private string _msgRetorno = string.Empty;
         #endregion
-        public void Executar()
+        public void Executar(object o)
         {
+            //Thread.Sleep(10000);
             // Obter processos não registrados
 
-            // Obter credenciais para acesso ao site
-            _loginSite = "08281892000158";
-            _senhaSite = "2edespachos";
+           
             // Gerar Arquivo PLI ?
 
             // Preparar Arquivo PLI para envio
@@ -45,7 +46,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
 
         private void EnviarArquivo()
         {
-            using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+            using (var service = PhantomJSDriverService.CreateDefaultService())
             {
                 service.AddArgument("test-type");
                 service.AddArgument("no-sandbox");
@@ -57,12 +58,13 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
 
                     OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
 
-                    element.SendKeys(_loginSite);
+                    var credencial = ObterCredenciaisSuframa();
+
+                    element.SendKeys(credencial.Usuario);
 
                     element = _driver.FindElementByName("field(-senha)");
 
-                    element.SendKeys(_senhaSite);
-
+                    element.SendKeys(credencial.Senha);
 
                     element = _driver.FindElementByName("btLogar");
                     element.Click();
@@ -133,7 +135,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
             System.Xml.Serialization.XmlSerializer writer =
                 new System.Xml.Serialization.XmlSerializer(typeof(Importador));
 
-            string path = Path.GetTempPath();
+            string path = Path.GetTempPath() + "//xml";
 
             if (!Directory.Exists(path))
             {
@@ -208,9 +210,10 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
             }
         }
 
-        private void ObterCredenciaisSuframa()
+        private CredenciaisSuframa ObterCredenciaisSuframa()
         {
-
+            // Obter credenciais para acesso ao site
+            return new CredenciaisSuframa() { Usuario = "08281892000158", Senha = "2edespachos" };
         }
     }
 }
