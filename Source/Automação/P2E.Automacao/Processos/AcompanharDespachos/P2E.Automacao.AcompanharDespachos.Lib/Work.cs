@@ -49,7 +49,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
 
                         foreach (var item in importacao)
                         {
-                            if (item.TX_NUM_DEC.Trim().Length == 10)
+                            if (item.TX_NUM_DEC.Trim().Length == 10 && item.CD_IMP_CANAL != 1)
                             {
                                 Console.WriteLine("DI: " + item.TX_NUM_DEC);
 
