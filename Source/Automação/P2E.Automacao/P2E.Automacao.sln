@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Shared", "P2E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.TomarCiencia.Console", "Processos\TomarCiencia\P2E.Automacao.TomarCiencia.Console\P2E.Automacao.TomarCiencia.Console.csproj", "{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Gerenciador", "Gerenciador\P2E.Automacao.Gerenciador\P2E.Automacao.Gerenciador.csproj", "{EACB8289-1C49-4A6A-9394-F80623AC4006}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EACB8289-1C49-4A6A-9394-F80623AC4006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EACB8289-1C49-4A6A-9394-F80623AC4006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EACB8289-1C49-4A6A-9394-F80623AC4006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EACB8289-1C49-4A6A-9394-F80623AC4006}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +118,7 @@ Global
 		{B636F0EE-9ADB-4A78-9562-40AB057CE927} = {DD342039-5134-4B8A-BC63-CE42392FE7BA}
 		{D05AD0B7-5353-49D3-9351-9079657B20CF} = {30FDDBAD-F129-4F9B-944D-2934DE2B1E58}
 		{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8} = {DD342039-5134-4B8A-BC63-CE42392FE7BA}
+		{EACB8289-1C49-4A6A-9394-F80623AC4006} = {DF8CD0B8-840E-490E-9A4B-D83F7727159D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E02BF6DF-AE47-425E-A0E6-4B3FE6ACBCD3}
