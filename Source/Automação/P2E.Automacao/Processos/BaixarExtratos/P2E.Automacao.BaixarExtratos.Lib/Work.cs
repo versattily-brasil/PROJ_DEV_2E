@@ -76,17 +76,17 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     element.Click();
 
                     //indo para a página de consulta de declaração de importação.
-                    //_driver.FindElement(By.Id("btnRegistrarDI")).Click();
+                    _driver.FindElement(By.Id("btnRegistrarDI")).Click();
 
-                    //bool result = DownloadExtrato(_driver);
+                    DownloadExtrato(_driver);
 
-                    element = _driver.FindElement(By.Id("consultarXmlDi"));
+                    //element = _driver.FindElement(By.Id("consultarXmlDi"));
+
+                    //DownloadXML2(_driver);
 
                     //element.Click();
 
-                    DownloadXml(_driver);
-
-                    
+                    //DownloadXml(_driver);
 
                     Console.ReadKey();
                 }
@@ -177,6 +177,73 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         private void MyWebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             Console.WriteLine("Download Concluído.");
+        }
+
+        private void DownloadXML2(PhantomJSDriver driver)
+        {
+            try
+            {
+                #region oldCode
+                //HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(_urlDownloadXML);
+
+                //var certificado = FindClientCertificate("511d1904137f8ed4");
+
+                //httpRequest.ClientCertificates.Add(certificado);
+
+                //httpRequest.CookieContainer = new CookieContainer();
+
+                //foreach (OpenQA.Selenium.Cookie c in driver.Manage().Cookies.AllCookies)
+                //{
+                //    System.Net.Cookie cookie = new System.Net.Cookie(c.Name, c.Value, c.Path, c.Domain);
+
+                //    httpRequest.CookieContainer.Add(cookie);
+                //}
+
+                //using (HttpWebResponse response = (HttpWebResponse)httpRequest.GetResponse())
+                //using (Stream stream = response.GetResponseStream())
+                //using (StreamReader reader = new StreamReader(stream))
+                //{
+                //    var html = reader.ReadToEnd();
+
+                //    Console.WriteLine(reader.ReadToEnd());
+                //} 
+                #endregion
+
+                var requisicaoWeb = WebRequest.CreateHttp(_urlDownloadXML);
+                requisicaoWeb.Method = "GET";
+                requisicaoWeb.UserAgent = "RequisicaoWebDemo";
+
+                foreach (OpenQA.Selenium.Cookie c in driver.Manage().Cookies.AllCookies)
+                {
+                    System.Net.Cookie cookie = new System.Net.Cookie(c.Name, c.Value, c.Path, c.Domain);
+
+                    requisicaoWeb.CookieContainer = new CookieContainer();
+
+                    requisicaoWeb.CookieContainer.Add(cookie);
+                }
+
+                requisicaoWeb.ClientCertificates = new X509CertificateCollection();
+
+                requisicaoWeb.ClientCertificates.Add(FindClientCertificate("511d1904137f8ed4"));
+
+                using (var resposta = requisicaoWeb.GetResponse())
+                {
+                    var streamDados = resposta.GetResponseStream();
+                    StreamReader reader = new StreamReader(streamDados);
+                    object objResponse = reader.ReadToEnd();
+                    Console.WriteLine(objResponse.ToString());
+                    Console.ReadLine();
+                    streamDados.Close();
+                    resposta.Close();
+                }
+
+                Console.WriteLine("Download concluído!");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Erro: "+e.Message);
+            }
+
         }
     }
 }
