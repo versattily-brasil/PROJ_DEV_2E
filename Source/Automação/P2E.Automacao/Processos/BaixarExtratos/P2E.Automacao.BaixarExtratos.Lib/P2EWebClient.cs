@@ -23,6 +23,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         protected override WebRequest GetWebRequest(Uri address)
         {
             HttpWebRequest httpRequest = (HttpWebRequest)base.GetWebRequest(address);
+
             httpRequest.ClientCertificates.Add(certificate);
 
             httpRequest.CookieContainer = new CookieContainer();
@@ -34,7 +35,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 httpRequest.CookieContainer.Add(cookie);
             }
 
-            httpRequest.Timeout = 5000;
+            //httpRequest.Timeout = 5000;
 
             return httpRequest;
         }
