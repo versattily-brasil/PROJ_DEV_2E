@@ -95,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
-    <Compile Include="Controller\ImportacaoController.cs" />
     <Compile Include="Entities\Historico.cs" />
     <Compile Include="Entities\Importacao.cs" />
     <Compile Include="Entities\Vistoria.cs" />

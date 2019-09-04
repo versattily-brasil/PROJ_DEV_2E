@@ -11,7 +11,7 @@ namespace P2E.Automacao.AcompanharDespachos.Console
         static void Main(string[] args)
         {
             var cc = new P2E.Automacao.AcompanharDespachos.Lib.Work();
-            cc.Executar();
+            cc.Executar(args);
         }
     }
 }

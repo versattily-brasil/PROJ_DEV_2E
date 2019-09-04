@@ -81,6 +81,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Processos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib\P2E.Automacao.AcompanharDespachos.Lib.csproj">
+      <Project>{c98d07c3-081f-48a5-bdf5-e245406d6c73}</Project>
+      <Name>P2E.Automacao.AcompanharDespachos.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Processos\EnvioPLI\P2E.Automacao.Processos.EnvioPLI.Lib\P2E.Automacao.Processos.EnviarPLI.Lib.csproj">
       <Project>{ede400c3-1a56-4ade-a22b-8438e3f4153d}</Project>
       <Name>P2E.Automacao.Processos.EnviarPLI.Lib</Name>
