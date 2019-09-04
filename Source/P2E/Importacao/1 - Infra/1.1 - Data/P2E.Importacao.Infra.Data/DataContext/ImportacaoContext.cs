@@ -21,7 +21,8 @@ namespace P2E.Importacao.Infra.Data.DataContext
             var conf = new DapperExtensionsConfiguration(null,
                 new[]
                 {
-                    typeof(ImportacaoMap).Assembly
+                    typeof(ImportacaoMap).Assembly,
+                    typeof(EnvioPLIMap).Assembly
                 }, dialect);
             DapperExtensions.DapperExtensions.Configure(conf);
         }
@@ -38,7 +39,8 @@ namespace P2E.Importacao.Infra.Data.DataContext
         {
             DapperExtensions.DapperExtensions.SetMappingAssemblies(new[]
             {
-                typeof(ImportacaoMap).Assembly
+                typeof(ImportacaoMap).Assembly,
+                typeof(EnvioPLIMap).Assembly
             }
             );
 
