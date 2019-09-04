@@ -12,9 +12,9 @@ namespace P2E.Automacao.AcompanharDespachos.Lib.Entities
         {
             public int CD_IMP { get; set; }
             public int NUM_PI { get; set; }
+            public int CD_IMP_STATUS { get; set; }
+            public int CD_IMP_CANAL { get; set; }
             public string TX_NUM_DEC { get; set; }
-            public string TX_STATUS { get; set; }
-            public string TX_CANAL { get; set; }
             public DateTime DT_DATA_DES { get; set; }
             public decimal VL_MULTA { get; set; }
             public string TX_NOME_FISCAL { get; set; }

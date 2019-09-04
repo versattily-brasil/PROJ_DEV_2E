@@ -19,6 +19,8 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
         string urlAcompanhaDespacho = @"https://www1c.siscomex.receita.fazenda.gov.br/impdespacho-web-7/AcompanharSituacaoDespachoMenu.do";
         string corStatus = string.Empty;
         string data = string.Empty;
+        string fiscal = string.Empty;
+        string dossie, dataDossie = string.Empty;
         #endregion
 
         public async void Executar()
@@ -29,6 +31,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                 {
                     TBImportacao tbImportacao = null;
                     Historico historicoImp = new Historico();
+                    Vistoria vistoriaImp = new Vistoria();
 
                     client.BaseAddress = new Uri("http://localhost:7000/");
                     var result = client.GetAsync($"imp/v1/importacao/todos").Result;
@@ -43,7 +46,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                         {
                             if (item.TX_NUM_DEC.Trim().Length == 10)
                             {
-                                Acessar(item, item.TX_NUM_DEC, item.CD_IMP.ToString(), historicoImp);
+                                Acessar(item, item.TX_NUM_DEC, item.CD_IMP.ToString(), historicoImp, vistoriaImp);
                             }
                         }
                     }
@@ -94,7 +97,54 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
             }
         }
 
-        public void Acessar(TBImportacao import, string numero, string cd_imp, Historico historicoImp)
+        public static async Task AtualizaVistoria(string cd_imp, Vistoria vistoriaImp)
+        {
+            try
+            {
+                HttpResponseMessage resultado;
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://localhost:7000/");
+                    var result = client.GetAsync($"imp/v1/vistoria/{cd_imp}").Result;
+                    result.EnsureSuccessStatusCode();
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using (var clientH = new HttpClient())
+                        {
+                            clientH.BaseAddress = new Uri("http://localhost:7000/");
+
+                            var imp=0;
+                            if (result.ReasonPhrase == "No Content")
+                            {
+                                imp = 0;
+                            }
+                            else
+                            {
+                                var resultadoDelete = await clientH.DeleteAsync($"imp/v1/vistoria/{cd_imp}");
+                                resultadoDelete.EnsureSuccessStatusCode();
+                            }
+
+                            var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/vistoria/{imp}", vistoriaImp);
+
+                            resultadoHist.EnsureSuccessStatusCode();
+
+                            if (resultadoHist.IsSuccessStatusCode)
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        public void Acessar(TBImportacao import, string numero, string cd_imp, Historico historicoImp, Vistoria vistoriaImp)
         {
             using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
             {
@@ -137,7 +187,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             //Cor do Canal
                             element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(4) > td:nth-child(3)");
                             corStatus = element.Text;
-                            import.TX_CANAL = corStatus;
 
                             switch (corStatus)
                             {
@@ -146,6 +195,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                                     element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(6) > td:nth-child(2)");
                                     data = element.Text;
                                     import.DT_DATA_DES = Convert.ToDateTime(data);
+                                    import.CD_IMP_CANAL = 1;
 
                                     break;
 
@@ -156,7 +206,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                                     import.DT_DATA_DES = Convert.ToDateTime(data);
 
                                     element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(5) > td:nth-child(2)");
-                                    var fiscal = element.Text;
+                                    fiscal = element.Text;
                                     import.TX_NOME_FISCAL = fiscal;
 
                                     element = _driver.FindElementByCssSelector("#TABLE_3 > tbody > tr:nth-child(2) > td:nth-child(1)");
@@ -167,15 +217,17 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                                     var dataDossie = element.Text;
                                     import.DT_DATA_DOSS = Convert.ToDateTime(dataDossie);
 
+                                    import.CD_IMP_CANAL = 3;
+
                                     break;
 
                                 default:
                                     break;
                             }
 
-                            import.TX_STATUS = status;
+                            import.CD_IMP_STATUS = 11;
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
 
@@ -184,86 +236,261 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             //Cor do Canal
                             element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(3) > td:nth-child(3)");
                             corStatus = element.Text;
-                            import.TX_CANAL = corStatus;
 
                             switch (corStatus)
                             {
                                 case "Verde":
 
                                     element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(4) > td:nth-child(2)");
-                                    var data = element.Text;
+                                    data = element.Text;
                                     import.DT_DATA_DISTR = Convert.ToDateTime(data);
-
-
+                                    import.CD_IMP_CANAL = 1;
 
                                     break;
 
                                 case "Vermelho":
+
+                                    import.CD_IMP_CANAL = 3;
                                     break;
 
                                 default:
                                     break;
                             }
 
-                            import.TX_STATUS = status;
+                            import.CD_IMP_STATUS = 1;
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
 
                         case "SELECIONADA PARA CONFERENCIA PELA ADUANA":
 
-                            import.TX_STATUS = status;
+                            switch (corStatus)
+                            {
+                                case "Verde":
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                                    import.CD_IMP_CANAL = 1;
+
+                                    break;
+
+                                case "Vermelho":
+
+                                    import.CD_IMP_CANAL = 3;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            import.CD_IMP_STATUS = 3;
+
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
 
                         case "EM DESEMBARACO":
 
-                            import.TX_STATUS = status;
+                            switch (corStatus)
+                            {
+                                case "Verde":
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                                    import.CD_IMP_CANAL = 1;
+
+                                    break;
+
+                                case "Vermelho":
+
+                                    import.CD_IMP_CANAL = 3;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            import.CD_IMP_STATUS = 4;
+
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
 
                         case "AGUARDANDO DISTRIBUICAO":
 
-                            import.TX_STATUS = status;
+                            switch (corStatus)
+                            {
+                                case "Verde":
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                                    import.CD_IMP_CANAL = 1;
+
+                                    break;
+
+                                case "Vermelho":
+
+                                    import.CD_IMP_CANAL = 3;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            import.CD_IMP_STATUS = 5;
+
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
 
                         case "EM DISTRIBUICAO":
 
-                            import.TX_STATUS = status;
+                            switch (corStatus)
+                            {
+                                case "Verde":
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                                    import.CD_IMP_CANAL = 1;
+
+                                    break;
+
+                                case "Vermelho":
+
+                                    import.CD_IMP_CANAL = 3;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            import.CD_IMP_STATUS = 7;
+
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
 
-                        case "AGUARDANDO RECEPCAO DOS DOCUMENTOS":
+                        case "DI AGUARDANDO RECEPCAO DE DOCUMENTOS":
 
-                            import.TX_STATUS = status;
+                            //Cor do Canal
+                            element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(4) > td:nth-child(3)");
+                            corStatus = element.Text;
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                            switch (corStatus)
+                            {
+                                case "Verde":
+
+                                    import.CD_IMP_CANAL = 1;
+
+                                    break;
+
+                                case "Vermelho":
+
+                                    import.CD_IMP_CANAL = 3;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            import.CD_IMP_STATUS = 8;
+
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
 
                         case "DECLARACAO EM ANALISE":
 
-                            import.TX_STATUS = status;
+                            element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(7) > td:nth-child(2)");
+                            data = element.Text;
+                            import.DT_DATA_DISTR = Convert.ToDateTime(data);
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                            element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(6) > td:nth-child(2)");
+                            fiscal = element.Text;
+                            import.TX_NOME_FISCAL = fiscal;
+
+                            //Cor do Canal
+                            element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(4) > td:nth-child(3)");
+                            corStatus = element.Text;
+
+                            element = _driver.FindElementByCssSelector("#TABLE_3 > tbody > tr:nth-child(2) > td:nth-child(1)");
+                            dossie = element.Text;
+                            import.TX_DOSSIE = dossie;
+
+                            element = _driver.FindElementByCssSelector("#TABLE_3 > tbody > tr:nth-child(2) > td:nth-child(2)");
+                            dataDossie = element.Text;
+                            import.DT_DATA_DOSS = Convert.ToDateTime(dataDossie);
+
+                            switch (corStatus)
+                            {
+                                case "Verde":
+
+                                    import.CD_IMP_CANAL = 1;
+
+                                    break;
+
+                                case "Vermelho":
+
+                                    import.CD_IMP_CANAL = 3;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            import.CD_IMP_STATUS = 9;
+
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
 
                         case "DESPACHO INTERROMPIDO":
 
-                            import.TX_STATUS = status;
+                            element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(6) > td:nth-child(2)");
+                            fiscal = element.Text;
+                            import.TX_NOME_FISCAL = fiscal;
 
-                            SalvaHistoricoImp(numDeclaracao, historicoImp, status);
+                            //Cor do Canal
+                            element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(4) > td:nth-child(3)");
+                            corStatus = element.Text;
+
+                            element = _driver.FindElementByCssSelector("#TABLE_3 > tbody > tr:nth-child(2) > td:nth-child(1)");
+                            dossie = element.Text;
+                            import.TX_DOSSIE = dossie;
+
+                            element = _driver.FindElementByCssSelector("#TABLE_3 > tbody > tr:nth-child(2) > td:nth-child(2)");
+                            dataDossie = element.Text;
+                            import.DT_DATA_DOSS = Convert.ToDateTime(dataDossie);
+
+                            // clica no link contendo o ...
+                            element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(8) > td:nth-child(5) > a > img");
+                            element.Click();
+
+                            //ESCOLHE A NOVA JANELA ABERTA COM O CLIQUE
+                            _driver.SwitchTo().Window(_driver.WindowHandles[1]);
+
+                            element = _driver.FindElementByCssSelector("#box > div > div > textarea");
+                            var motivo = element.Text;
+
+                            //salva vistoria
+                            vistoriaImp.CD_IMP = import.CD_IMP;
+                            vistoriaImp.TX_DESC = motivo.Trim();
+
+                            import.CD_IMP_STATUS = 10;
+
+                            switch (corStatus)
+                            {
+                                case "Verde":
+
+                                    import.CD_IMP_CANAL = 1;
+
+                                    break;
+
+                                case "Vermelho":
+
+                                    import.CD_IMP_CANAL = 3;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+
+                            SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
+
+                            AtualizaVistoria(cd_imp, vistoriaImp);
 
                             break;
 
@@ -271,18 +498,19 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             break;
                     }
 
-                    AtualizaStatus(import, cd_imp, historicoImp);
+                    var atualizastatus = AtualizaStatus(import, cd_imp, historicoImp);
 
                     Console.WriteLine(import.ToString());
                 }
             }
         }
 
-        private void SalvaHistoricoImp(string numDeclaracao, Historico historicoImp, string status)
+        private void SalvaHistoricoImp(string numDeclaracao, Historico historicoImp, int cd_imp, int cd_imp_status, int cd_imp_canal)
         {
+            historicoImp.CD_IMP = cd_imp;
+            historicoImp.CD_IMP_STATUS = cd_imp_status;
+            historicoImp.CD_IMP_CANAL = cd_imp_canal;
             historicoImp.TX_NUM_DEC = numDeclaracao;
-            historicoImp.TX_STATUS = status;
-            historicoImp.TX_CANAL = corStatus;
             historicoImp.DT_DATA = DateTime.Now.Date;
             historicoImp.HR_HORA = DateTime.Now;
         }

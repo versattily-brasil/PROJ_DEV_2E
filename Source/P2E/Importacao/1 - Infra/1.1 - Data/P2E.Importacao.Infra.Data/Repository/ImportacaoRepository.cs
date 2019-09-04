@@ -29,7 +29,7 @@ namespace P2E.Importacao.Infra.Data.Repository
         {
 
             var sSQL = new StringBuilder();
-            dataPage.OrderBy = dataPage.OrderBy ?? "tx_status";
+            dataPage.OrderBy = dataPage.OrderBy ?? "cd_imp";
             var sort = new Sort() { PropertyName = dataPage.OrderBy, Ascending = !dataPage.Descending };
 
             #region Ordenação
@@ -43,7 +43,7 @@ namespace P2E.Importacao.Infra.Data.Repository
 
             if (!string.IsNullOrEmpty(descricao))
             {
-                var predicate = Predicates.Field<TBImportacao>(p => p.TX_STATUS, Operator.Like, "%" + descricao.Trim() + "%", false);
+                var predicate = Predicates.Field<TBImportacao>(p => p.CD_IMP, Operator.Like, "%" + descricao.Trim() + "%", false);
                 predicateGroup.Predicates.Add(predicate);
             }
 

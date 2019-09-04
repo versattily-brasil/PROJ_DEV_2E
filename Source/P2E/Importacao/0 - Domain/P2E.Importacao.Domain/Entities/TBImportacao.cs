@@ -15,22 +15,22 @@ namespace P2E.Importacao.Domain.Entities
         }
 
         public TBImportacao(int num_pi,
-                          string tx_num_dec, 
-                          string tx_status,
-                          string tx_canal,
-                          DateTime dt_data_des,
-                          decimal vl_multa,
-                          string tx_nome_fiscal,
-                          DateTime dt_data_canal,
-                          DateTime dt_data_distr,
-                          string tx_dossie,
-                          DateTime dt_data_doss)
+                            int cd_imp_status,
+                            int cd_imp_canal,
+                            string tx_num_dec, 
+                            DateTime dt_data_des,
+                            decimal vl_multa,
+                            string tx_nome_fiscal,
+                            DateTime dt_data_canal,
+                            DateTime dt_data_distr,
+                            string tx_dossie,
+                            DateTime dt_data_doss)
         {
 
             NUM_PI = num_pi;
             TX_NUM_DEC = tx_num_dec;
-            TX_STATUS = tx_status;
-            TX_CANAL = tx_canal;
+            CD_IMP_STATUS = cd_imp_status;
+            CD_IMP_CANAL = cd_imp_canal;
             DT_DATA_DES = dt_data_des;
             VL_MULTA = vl_multa;
             TX_NOME_FISCAL = tx_nome_fiscal;
@@ -44,9 +44,9 @@ namespace P2E.Importacao.Domain.Entities
         [Identity]
         public int CD_IMP { get; set; }
         public int NUM_PI { get; set; }
+        public int CD_IMP_STATUS { get; set; }
+        public int CD_IMP_CANAL { get; set; }
         public string TX_NUM_DEC { get; set; }
-        public string TX_STATUS { get; set; }
-        public string TX_CANAL { get; set; }
         public DateTime DT_DATA_DES { get; set; }
         public decimal VL_MULTA { get; set; }
         public string TX_NOME_FISCAL { get; set; }

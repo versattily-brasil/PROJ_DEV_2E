@@ -98,6 +98,7 @@
     <Compile Include="Controller\ImportacaoController.cs" />
     <Compile Include="Entities\Historico.cs" />
     <Compile Include="Entities\Importacao.cs" />
+    <Compile Include="Entities\Vistoria.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Work.cs" />
   </ItemGroup>

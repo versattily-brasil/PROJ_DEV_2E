@@ -10,13 +10,13 @@ using System.Text;
 
 namespace P2E.Importacao.Infra.Data.Repository
 {
-    public class HistoricoRepository : DapperRepository<Historico>, IHistoricoRepository
+    public class VistoriaRepository : DapperRepository<Vistoria>, IVistoriaRepository
     {
-        private readonly ImportacaoContext _historicoContext;
+        private readonly ImportacaoContext _vistoriaContext;
 
-        public HistoricoRepository(ImportacaoContext histContext) : base(histContext.Connection)
+        public VistoriaRepository(ImportacaoContext vistContext) : base(vistContext.Connection)
         {
-            _historicoContext = histContext;
+            _vistoriaContext = vistContext;
         }
 
         /// <summary>
@@ -25,11 +25,11 @@ namespace P2E.Importacao.Infra.Data.Repository
         /// <param name="dataPage"></param>
         /// <param name="descricao"></param>      
         /// <returns></returns>
-        public DataPage<Historico> GetByPage(DataPage<Historico> dataPage, string descricao)
+        public DataPage<Vistoria> GetByPage(DataPage<Vistoria> dataPage, string descricao)
         {
 
             var sSQL = new StringBuilder();
-            dataPage.OrderBy = dataPage.OrderBy ?? "cd_hist";
+            dataPage.OrderBy = dataPage.OrderBy ?? "tx_desc";
             var sort = new Sort() { PropertyName = dataPage.OrderBy, Ascending = !dataPage.Descending };
 
             #region Ordenação
@@ -43,7 +43,7 @@ namespace P2E.Importacao.Infra.Data.Repository
 
             if (!string.IsNullOrEmpty(descricao))
             {
-                var predicate = Predicates.Field<Historico>(p => p.CD_HIST, Operator.Like, "%" + descricao.Trim() + "%", false);
+                var predicate = Predicates.Field<Vistoria>(p => p.TX_DESC, Operator.Like, "%" + descricao.Trim() + "%", false);
                 predicateGroup.Predicates.Add(predicate);
             }
 
@@ -51,7 +51,7 @@ namespace P2E.Importacao.Infra.Data.Repository
 
             predicateGroup.Operator = (predicateGroup.Predicates.Count > 1 ? GroupOperator.And : GroupOperator.Or);
 
-            dataPage.Items = _historicoContext.Connection.GetPage<Historico>(predicateGroup, listSort, dataPage.CurrentPage - 1, dataPage.PageSize).ToList();
+            dataPage.Items = _vistoriaContext.Connection.GetPage<Vistoria>(predicateGroup, listSort, dataPage.CurrentPage - 1, dataPage.PageSize).ToList();
 
             return dataPage;
         }
