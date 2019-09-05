@@ -30,6 +30,15 @@ namespace P2E.Importacao.API.Controllers
             return result;
         }
 
+        // GET: api/enviopli
+        [HttpGet]
+        [Route("api/v1/enviopli/pendentes")]
+        public IEnumerable<EnvioPLI> Pendentes()
+        {
+            var result = _envioPLIRepository.FindAll(p=> p.OP_STATUS == 0);
+            return result;
+        }
+
 
         // GET: api/enviopli/5
         [HttpGet]
