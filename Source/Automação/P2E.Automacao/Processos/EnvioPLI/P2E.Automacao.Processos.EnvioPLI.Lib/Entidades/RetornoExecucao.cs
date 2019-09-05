@@ -17,6 +17,7 @@ namespace P2E.Automacao.Processos.EnviarPLI.Lib.Entidades
 
     public enum eStatus
     {
+        PENDENTE,
         CONCLUIDO_COM_ERRO,
         CONCLUIDO_SEM_ERRO
     }

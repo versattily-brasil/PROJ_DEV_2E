@@ -1,4 +1,5 @@
 ﻿using Ionic.Zip;
+using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Processos.EnviarPLI.Lib.Entidades;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -23,30 +25,59 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
         private string _loginSite = string.Empty;
         private string _senhaSite = string.Empty;
         private string _msgRetorno = string.Empty;
+        private string _urlApiBase;
         #endregion
-        public void Executar(object o)
+
+        public Work()
         {
-            //Thread.Sleep(10000);
-            // Obter processos não registrados
-
-           
-            // Gerar Arquivo PLI ?
-
-            // Preparar Arquivo PLI para envio
-
-            // Enviar arquivo ZIP
-            EnviarArquivo();
-
-            // Recuperar Erros ocorrerem
-
-            // Registrar Execução
-
-            // Registrar Erros
+            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        private void EnviarArquivo()
+        public void Executar(object o)
         {
-            using (var service = PhantomJSDriverService.CreateDefaultService())
+            // Obter processos não registrados
+            var registros = ObterRegistrosPendentesAsync().Result;
+
+            if (registros != null)
+            {
+                foreach (var item in registros)
+                {
+                    // gerar e preparar arquivo
+                    string nomeArquivo = GerarArquivoPLI();
+
+                    // enviar arquivo
+                    EnviarArquivo(nomeArquivo, item);
+
+                    // atualizar registro
+                    AtualizarRegistroAsync(item);
+                
+                }
+            }
+        }
+
+        private async Task AtualizarRegistroAsync(EnvioPLIDTO item)
+        {
+            item.DT_DATA_EXEC = DateTime.Now;
+
+            HttpResponseMessage resultado;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_urlApiBase);
+
+                resultado = await client.PutAsJsonAsync($"imp/v1/enviopli/{item.CD_ENV_PLI}", item);
+
+                resultado.EnsureSuccessStatusCode();
+
+                Console.WriteLine("Registro salvo com sucesso.");
+            }
+        }
+
+        private void EnviarArquivo(string nomeArquivo, EnvioPLIDTO envioPLIDTO)
+        {
+            try
+            {
+                using (var service = PhantomJSDriverService.CreateDefaultService())
             {
                 service.AddArgument("test-type");
                 service.AddArgument("no-sandbox");
@@ -77,7 +108,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
                     element = _driver.FindElementByName("field(-manter-arquivo)");
 
                     // seleciona o arquivo
-                    element.SendKeys(GerarArquivoPLI());
+                    element.SendKeys(nomeArquivo);
 
                     //localiza e clica no botão Enviar PLI
                     element = _driver.FindElementById("btnEnviarpli");
@@ -87,11 +118,30 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
                     try
                     {
                         element = _driver.FindElementById("ERROR");
-                    }
-                    catch (Exception){}
 
-                    Console.WriteLine(element.Text);
+                            if (element == null || string.IsNullOrEmpty(element.Text))
+                            {
+                                envioPLIDTO.TX_LOG = "Arquivo enviado com sucesso.";
+                                envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_SEM_ERRO;
+                            }
+                            else
+                            {
+                                envioPLIDTO.TX_LOG = element.Text;
+                                envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_COM_ERRO;
+                            }
+                        }
+                    catch (Exception)
+                    {
+                            envioPLIDTO.TX_LOG = "Arquivo enviado com sucesso.";
+                            envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_SEM_ERRO;
+                        }
                 }
+            }
+            }
+            catch (Exception exs)
+            {
+                envioPLIDTO.TX_LOG = exs.Message;
+                envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_COM_ERRO;
             }
         }
 
@@ -214,6 +264,20 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
         {
             // Obter credenciais para acesso ao site
             return new CredenciaisSuframa() { Usuario = "08281892000158", Senha = "2edespachos" };
+        }
+
+        private async Task<List<EnvioPLIDTO>> ObterRegistrosPendentesAsync()
+        {
+            HttpResponseMessage resultado;
+
+            string urlEnvioPli = _urlApiBase + $"imp/v1/enviopli/todos";
+
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlEnvioPli);
+                var lista = await result.Content.ReadAsAsync<List<EnvioPLIDTO>>();
+                return lista;
+            }
         }
     }
 }

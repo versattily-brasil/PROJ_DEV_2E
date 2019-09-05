@@ -11,7 +11,7 @@ namespace P2E.Automacao.EnviarPLI.Console
         static void Main(string[] args)
         {
             var cc = new P2E.Automacao.Processos.EnvioPLI.Lib.Work();
-            cc.Executar();
+            cc.Executar("");
         }
     }
 }
