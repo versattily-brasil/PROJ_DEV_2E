@@ -21,9 +21,9 @@ namespace P2E.Importacao.API.Controllers
             _envioPLIRepository = envioPLIRepository;
         }
 
-        // GET: api/enviarpli
+        // GET: api/enviopli
         [HttpGet]
-        [Route("api/v1/enviarpli/todos")]
+        [Route("api/v1/enviopli/todos")]
         public IEnumerable<EnvioPLI> Get()
         {
             var result = _envioPLIRepository.FindAll();
@@ -31,9 +31,9 @@ namespace P2E.Importacao.API.Controllers
         }
 
 
-        // GET: api/enviarpli/5
+        // GET: api/enviopli/5
         [HttpGet]
-        [Route("api/v1/enviarpli/{id}")]
+        [Route("api/v1/enviopli/{id}")]
         public EnvioPLI Get(int id)
         {
             //carregar as informações da importação
@@ -42,9 +42,9 @@ namespace P2E.Importacao.API.Controllers
             return vistoria;
         }
 
-        // POST: api/enviarpli
+        // POST: api/enviopli
         [HttpPost]
-        [Route("api/v1/enviarpli")]
+        [Route("api/v1/enviopli")]
         public object Post([FromBody] EnvioPLI item)
         {
             try
@@ -58,9 +58,9 @@ namespace P2E.Importacao.API.Controllers
             }
         }
 
-        // PUT: api/enviarpli/5
+        // PUT: api/enviopli/5
         [HttpPut]
-        [Route("api/v1/enviarpli/{id}")]
+        [Route("api/v1/enviopli/{id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Put(int id, [FromBody] EnvioPLI item)
         {
@@ -79,9 +79,9 @@ namespace P2E.Importacao.API.Controllers
             }
         }
 
-        // DELETE: api/enviarpli/5
+        // DELETE: api/enviopli/5
         [HttpDelete]
-        [Route("api/v1/enviarpli/{id}")]
+        [Route("api/v1/enviopli/{id}")]
         public IActionResult Delete(int id)
         {
             try
