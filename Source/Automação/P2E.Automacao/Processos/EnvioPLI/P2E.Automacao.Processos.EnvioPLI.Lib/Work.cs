@@ -270,7 +270,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
         {
             HttpResponseMessage resultado;
 
-            string urlEnvioPli = _urlApiBase + $"imp/v1/enviopli/todos";
+            string urlEnvioPli = _urlApiBase + $"imp/v1/enviopli/pendentes";
 
             using (var client = new HttpClient())
             {
