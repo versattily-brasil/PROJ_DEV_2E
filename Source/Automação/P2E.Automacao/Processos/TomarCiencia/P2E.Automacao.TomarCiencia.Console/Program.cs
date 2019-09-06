@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using P2E.Automacao.TomarCiencia.Lib;
 
 namespace P2E.Automacao.TomarCiencia.Console
 {
@@ -10,6 +6,8 @@ namespace P2E.Automacao.TomarCiencia.Console
     {
         static void Main(string[] args)
         {
+            var tc = new Work();
+            tc.Start();
         }
     }
 }
