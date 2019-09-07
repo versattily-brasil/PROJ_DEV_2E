@@ -91,6 +91,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Importacao.cs" />
+    <Compile Include="P2EWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Work.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

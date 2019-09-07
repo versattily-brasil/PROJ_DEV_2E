@@ -48,7 +48,6 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 service.AddArgument("no-sandbox");
                 service.HideCommandPromptWindow = true;
 
-
                 using (var _driver = new PhantomJSDriver(service))
                 {
                     Console.WriteLine("Inciando processo de navegação...");
