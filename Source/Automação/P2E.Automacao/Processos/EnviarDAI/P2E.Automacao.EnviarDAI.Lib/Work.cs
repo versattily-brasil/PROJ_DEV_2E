@@ -12,7 +12,7 @@ namespace P2E.Automacao.EnviarDAI.Lib
     public class Work
     {
         #region Variaveis Estáticas
-        private string _urlSite = "";
+        private string _urlSite = "http://sistemas.sefaz.am.gov.br/GDDI/publico/uploadDiXmlAction.do";
         private string _loginSite = string.Empty;
         private string _senhaSite = string.Empty;
         private string _msgRetorno = string.Empty;
@@ -31,14 +31,35 @@ namespace P2E.Automacao.EnviarDAI.Lib
                 service.HideCommandPromptWindow = true;
 
                 // carrega o cerificado.. retirar se não for necessário.
-                ControleCertificados.CarregarCertificado(service);
+                //OBS.: ver necessidade do certicadfo
+                //ControleCertificados.CarregarCertificado(service);
 
 
                 using (var _driver = new PhantomJSDriver(service))
                 {
                     _driver.Navigate().GoToUrl(_urlSite);
+
+                    OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
+
+                    //var credencial = ObterCredenciaisSuframa();
+
+                    //Localiza o caminho e o nome do arquivo
+                    element = _driver.FindElementByName("theFIle");
+                    element.SendKeys("@C:\temp\DAI.xml");
+
+                    //localiza e clica no botão Enviar DAI
+                    element = _driver.FindElementById("confirm");
+                    element.Click();
+
                 }
             }
         }
+
+        //private CredenciaisSuframa ObterCredenciaisSuframa()
+        //{
+        //    // Obter credenciais para acesso ao site
+        //    return new CredenciaisSuframa() { Usuario = "08281892000158", Senha = "2edespachos" };
+        //}
+
     }
 }

@@ -10,6 +10,8 @@ namespace P2E.Automacao.EnviarDAI.Console
     {
         static void Main(string[] args)
         {
+            var cc = new P2E.Automacao.EnviarDAI.Lib.Work();
+            cc.Executar();
         }
     }
 }
