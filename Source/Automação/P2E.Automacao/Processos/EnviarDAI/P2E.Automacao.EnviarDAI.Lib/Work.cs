@@ -32,7 +32,7 @@ namespace P2E.Automacao.EnviarDAI.Lib
 
                 // carrega o cerificado.. retirar se não for necessário.
                 //OBS.: ver necessidade do certicadfo
-                ControleCertificados.CarregarCertificado(service);
+                //ControleCertificados.CarregarCertificado(service);
 
 
                 using (var _driver = new PhantomJSDriver(service))
@@ -41,12 +41,11 @@ namespace P2E.Automacao.EnviarDAI.Lib
 
                     OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
 
-                    var credencial = ObterCredenciaisSuframa();
+                    //var credencial = ObterCredenciaisSuframa();
 
-
-                    // localizar ~link com o texto "Enviar PLI e efetuar o click"
-                    element = _driver.FindElementByPartialLinkText("DAI Eletrônical");
-                    element.Click();
+                    //Localiza o caminho e o nome do arquivo
+                    element = _driver.FindElementByName("theFIle");
+                    element.SendKeys("@C:\temp\DAI.xml");
 
                     //localiza e clica no botão Enviar DAI
                     element = _driver.FindElementById("confirm");
@@ -56,11 +55,11 @@ namespace P2E.Automacao.EnviarDAI.Lib
             }
         }
 
-        private CredenciaisSuframa ObterCredenciaisSuframa()
-        {
-            // Obter credenciais para acesso ao site
-            return new CredenciaisSuframa() { Usuario = "08281892000158", Senha = "2edespachos" };
-        }
+        //private CredenciaisSuframa ObterCredenciaisSuframa()
+        //{
+        //    // Obter credenciais para acesso ao site
+        //    return new CredenciaisSuframa() { Usuario = "08281892000158", Senha = "2edespachos" };
+        //}
 
     }
 }
