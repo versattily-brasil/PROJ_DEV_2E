@@ -11,6 +11,7 @@ namespace P2E.Automacao.Shared.Extensions
     {
         public static void CarregarCertificado(PhantomJSDriverService service)
         {
+            Console.WriteLine("Carregando Certificado.");
             service.IgnoreSslErrors = true;
             string cert = $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
             service.AddArgument(cert);
