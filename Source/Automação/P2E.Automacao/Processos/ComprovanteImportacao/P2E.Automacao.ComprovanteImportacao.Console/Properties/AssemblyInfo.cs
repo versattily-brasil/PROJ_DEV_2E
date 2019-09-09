@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("P2E.Automacao.AcompanharDespachos.Console")]
+[assembly: AssemblyTitle("P2E.Automacao.ComprovanteImportacao.Console")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("P2E.Automacao.AcompanharDespachos.Console")]
+[assembly: AssemblyProduct("P2E.Automacao.ComprovanteImportacao.Console")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("91675b88-7ef4-46fe-95b2-9dd800eb876a")]
+[assembly: Guid("0e8fd3a6-628d-416c-9177-9ffa27a9d98a")]
 
 // Version information for an assembly consists of the following four values:
 //

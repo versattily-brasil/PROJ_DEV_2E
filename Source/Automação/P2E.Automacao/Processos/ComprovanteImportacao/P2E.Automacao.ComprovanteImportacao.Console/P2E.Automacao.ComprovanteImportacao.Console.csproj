@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{91675B88-7EF4-46FE-95B2-9DD800EB876A}</ProjectGuid>
+    <ProjectGuid>{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>P2E.Automacao.AcompanharDespachos.Console</RootNamespace>
-    <AssemblyName>P2E.Automacao.AcompanharDespachos.Console</AssemblyName>
+    <RootNamespace>P2E.Automacao.ComprovanteImportacao.Console</RootNamespace>
+    <AssemblyName>P2E.Automacao.ComprovanteImportacao.Console</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj">
+      <Project>{f268cfe9-9338-4739-a4cb-0f458585cc38}</Project>
+      <Name>P2E.Automacao.ComprovanteImportacao.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
