@@ -26,6 +26,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
 
         public Work()
         {
+            Console.WriteLine("ROBÔ 04 – EXONERAÇÃO DO ICMS");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
@@ -52,6 +53,9 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                         }
                     }
                 }
+            }
+            else {
+                Console.WriteLine("Não existe DI's pendente de exoneração.");
             }
         }
 
@@ -117,19 +121,28 @@ namespace P2E.Automacao.ExonerarIcms.Lib
 
         private async Task AtualizarRegistroAsync(ImportacaoDTO item)
         {
-            item.DT_DATA_EXO_ICMS = DateTime.Now;
+            Console.WriteLine($"Atualizando DI nº {item.TX_NUM_DEC}.");
 
-            HttpResponseMessage resultado;
-
-            using (var client = new HttpClient())
+            try
             {
-                client.BaseAddress = new Uri(_urlApiBase);
+                item.DT_DATA_EXO_ICMS = DateTime.Now;
 
-                resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{item.CD_IMP}", item);
+                HttpResponseMessage resultado;
 
-                resultado.EnsureSuccessStatusCode();
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_urlApiBase);
 
-                Console.WriteLine("Registro salvo com sucesso.");
+                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{item.CD_IMP}", item);
+
+                    resultado.EnsureSuccessStatusCode();
+
+                    Console.WriteLine("Registro salvo com sucesso.");
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Erro ao atualizar a DI nº {item.TX_NUM_DEC}.");
             }
         }
 
