@@ -29,8 +29,9 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         public Work()
         {
             Console.WriteLine("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
-            _urlApiBase = "http://localhost:7000/"; //System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
-                                                            // client.BaseAddress = new Uri("http://localhost:7000/");
+            _urlApiBase = "http://localhost:7000/";
+            //_urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+
         }
 
         public async Task ExecutarAsync()
@@ -52,7 +53,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 if (registros != null && registros.Any())
                 {
-                    using (var service = PhantomJSDriverService.CreateDefaultService())
+                    using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                     {
                         Console.WriteLine("CARREGANDO O CERTIFICADO...");
                         ControleCertificados.CarregarCertificado(service);
@@ -112,7 +113,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
             DownloadExtrato(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         /// <summary>
