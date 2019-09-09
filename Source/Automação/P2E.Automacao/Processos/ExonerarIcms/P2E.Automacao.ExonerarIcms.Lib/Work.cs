@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 
 namespace P2E.Automacao.ExonerarIcms.Lib
 {
-
+    /// <summary>
+    /// Objetivo: Realizar a exoneração de ICMS para um DI.
+    /// </summary>
     public class Work
     {
         private string uUrlInicio = @"https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/inicio.html";
@@ -30,9 +32,13 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
+        /// <summary>
+        /// Método que inicia o processo de exoneração
+        /// </summary>
+        /// <returns></returns>
         public async Task ExecutarAsync()
         {
-            Console.WriteLine("Obtendo DI's para exoneração.");
+            // Carrega todas as DI's que ainda não foram exoneradas.
             await CarregarListaDIAsync();
 
             if (registros != null && registros.Any())
@@ -47,31 +53,45 @@ namespace P2E.Automacao.ExonerarIcms.Lib
 
                     using (var _driver = new PhantomJSDriver(service))
                     {
+                        // percorre todos os registros para tentar a exoneração.
                         foreach (var di in registros)
                         {
-                            ExonerarDIAsync(_driver, di);
+                            await ExonerarDIAsync(_driver, di);
                         }
                     }
                 }
             }
-            else {
+            else
+            {
                 Console.WriteLine("Não existe DI's pendente de exoneração.");
             }
         }
 
+        /// <summary>
+        /// Método responsável por realizar a tentativa de exonerar as DI's
+        /// </summary>
+        /// <param name="_driver"></param>
+        /// <param name="di"></param>
+        /// <returns></returns>
         private async Task ExonerarDIAsync(PhantomJSDriver _driver, ImportacaoDTO di)
         {
+            Console.WriteLine($".......................................................................................");
             Console.WriteLine($"Exonerando DI nº {di.TX_NUM_DEC}.");
+            Console.WriteLine($".......................................................................................");
+            Console.WriteLine($"Acessando Endereço: {urlInicioPrivado}");
             _driver.Navigate().GoToUrl(urlInicioPrivado);
-
+            Console.WriteLine($".......................................................................................");
+            Console.WriteLine($"Autenticação efeturada.");
+            Console.WriteLine($".......................................................................................");
+            Console.WriteLine($"Acessando Endereço: {urlDeclararICMS}");
             _driver.Navigate().GoToUrl(urlDeclararICMS);
+            Console.WriteLine($".......................................................................................");
+            Console.WriteLine($"Seleciona combo: Exoneração do ICMS");
+            Select selectTipo = new Select(_driver, By.Id("tp"));
+            selectTipo.SelectByText("Exoneração do ICMS");
 
-            Select selectObject = new Select(_driver, By.Id("tp"));
-
-            selectObject.SelectByText("Exoneração do ICMS");
-
+            Console.WriteLine($"Preenchendo campo DI: {di.TX_NUM_DEC}");
             IWebElement element = _driver.FindElement(By.Id("numDI"));
-
             element.SendKeys(di.TX_NUM_DEC);
 
             Select selectUf = new Select(_driver, By.Id("uf"));
@@ -108,17 +128,32 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             }
         }
 
+        /// <summary>
+        /// Recupera todas as di's que ainda não foram exoneradas.
+        /// </summary>
+        /// <returns></returns>
         private async Task CarregarListaDIAsync()
         {
+            Console.WriteLine("Obtendo DI's para exoneração.");
+
+            // monta url para api de importação.
             string urlExoneracao = _urlApiBase + $"imp/v1/importacao/obter-exoneracao-icms";
 
+            // realiza a requisição para a api de importação
             using (var client = new HttpClient())
             {
                 var result = await client.GetAsync(urlExoneracao);
+
+                // recupera os registros.
                 registros = await result.Content.ReadAsAsync<List<ImportacaoDTO>>();
             }
         }
 
+        /// <summary>
+        /// Atualiza a data de exoneração
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private async Task AtualizarRegistroAsync(ImportacaoDTO item)
         {
             Console.WriteLine($"Atualizando DI nº {item.TX_NUM_DEC}.");
@@ -145,6 +180,5 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                 Console.WriteLine($"Erro ao atualizar a DI nº {item.TX_NUM_DEC}.");
             }
         }
-
     }
 }
