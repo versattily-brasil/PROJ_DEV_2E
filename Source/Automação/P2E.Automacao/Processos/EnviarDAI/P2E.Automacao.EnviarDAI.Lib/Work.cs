@@ -39,13 +39,15 @@ namespace P2E.Automacao.EnviarDAI.Lib
                 {
                     _driver.Navigate().GoToUrl(_urlSite);
 
-                    OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
+                    //OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
+
+                    OpenQA.Selenium.IWebElement element;
 
                     //var credencial = ObterCredenciaisSuframa();
 
                     //Localiza o caminho e o nome do arquivo
                     element = _driver.FindElementByName("theFIle");
-                    element.SendKeys("@C:\\temp\\DAI.xml");
+                    element.SendKeys("C:\\temp\\DAI.xml");
 
                     //localiza e clica no botão Enviar DAI
                     element = _driver.FindElementById("confirm");
