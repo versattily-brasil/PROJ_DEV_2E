@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.EnviarDAI.Console
+namespace P2E.Automacao.ComprovanteImportacao.Console
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var cc = new P2E.Automacao.EnviarDAI.Lib.Work();
-            cc.Executar();
+            var cc = new P2E.Automacao.ComprovanteImportacao.Lib.Work();
+            cc.Executar(args);
         }
     }
 }

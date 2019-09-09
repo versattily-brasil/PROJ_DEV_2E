@@ -27,6 +27,19 @@ namespace P2E.Importacao.API.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Obtem uma lista de DI's que ainda não passaram pelo processo de exoneração de ICMS
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/Importacao
+        [HttpGet]
+        [Route("api/v1/importacao/obter-exoneracao-icms")]
+        public IEnumerable<TBImportacao> ObterExoneracaoIcms()
+        {
+            var result = _ImportacaoRepository.FindAll();
+            return result;
+        }
+
         // GET: api/Importacao
         [HttpGet]
         [Route("api/v1/importacao/")]
