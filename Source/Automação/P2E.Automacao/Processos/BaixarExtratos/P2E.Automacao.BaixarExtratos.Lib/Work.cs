@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.BaixarExtratos.Lib.Entities;
 using P2E.Automacao.Shared.Extensions;
-using Selenium.Utils.Html;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace P2E.Automacao.BaixarExtratos.Lib
 {
@@ -27,8 +22,6 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         public string _urlConsultaDI = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do";
         public string _urlDownloadPDF = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ExtratoDI.do";//?nrDeclaracao=19/0983204-0&consulta=true";
         public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do";
-        private string _pathDir = @"C:\Users\Jorge.PATRIMONIO\Desktop\arquivo";
-        private string _nrDeclaracao = "1909832040";
         private string _urlApiBase;
         private List<TBImportacao> registros;
 
@@ -36,13 +29,13 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         public Work()
         {
             Console.WriteLine("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
-            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
-           // client.BaseAddress = new Uri("http://localhost:7000/");
+            _urlApiBase = "http://localhost:7000/"; //System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+                                                            // client.BaseAddress = new Uri("http://localhost:7000/");
         }
 
         public async Task ExecutarAsync()
         {
-            Console.WriteLine("Obtendo DI's para exoneração.");
+            Console.WriteLine("Obtendo DI's para Baixar Extrato.");
             await CarregarListaDIAsync();
         }
 
@@ -55,7 +48,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 Console.WriteLine("ABRINDO CONEXAO...");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
-                var importacao = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+                registros = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
 
                 if (registros != null && registros.Any())
                 {
@@ -104,7 +97,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             IWebElement element = _driver.FindElementById("nrDeclaracao");
 
             //inserindo o numero da declaração.
-            element.SendKeys(_nrDeclaracao);
+            element.SendKeys(numero);
 
             element = _driver.FindElement(By.Name("enviar"));
 
