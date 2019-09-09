@@ -25,6 +25,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
 
         public void Executar(object o)
         {
+            Console.WriteLine("#####################  INICIALIZANDO - ACOMPANHAMENTO DE DESPACHO  ##################### ");
             CarregarImportacao();
         }
 
@@ -38,6 +39,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                     Historico historicoImp = new Historico();
                     Vistoria vistoriaImp = new Vistoria();
 
+                    Console.WriteLine("ABRINDO CONEXAO...");
                     client.BaseAddress = new Uri("http://localhost:7000/");
                     var result = client.GetAsync($"imp/v1/importacao/todos").Result;
                     result.EnsureSuccessStatusCode();
@@ -51,7 +53,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                         {
                             if (item.TX_NUM_DEC.Trim().Length == 10 && item.CD_IMP_CANAL != 1 && item.CD_IMP_STATUS != 11)
                             {
-                                Console.WriteLine("DI: " + item.TX_NUM_DEC);
+                                Console.WriteLine("################## DI: " + item.TX_NUM_DEC + " ##################");
 
                                 Acessar(item, item.TX_NUM_DEC, item.CD_IMP.ToString(), historicoImp, vistoriaImp);
                             }
@@ -79,8 +81,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                     resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
 
                     resultado.EnsureSuccessStatusCode();
-
-                    Console.WriteLine("Atualiza Status: " + resultado.ReasonPhrase);
                 }
 
                 if (resultado.IsSuccessStatusCode)
@@ -92,8 +92,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                         var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/historico/{0}", historico);
 
                         resultadoHist.EnsureSuccessStatusCode();
-
-                        Console.WriteLine("Atualiza Historico: " + resultado.ReasonPhrase);
 
                         if (resultadoHist.IsSuccessStatusCode)
                         {
@@ -118,8 +116,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                     var result = client.GetAsync($"imp/v1/vistoria/{cd_imp}").Result;
                     result.EnsureSuccessStatusCode();
 
-                    Console.WriteLine("Carrega Vistoria" + result.ReasonPhrase);
-
                     if (result.IsSuccessStatusCode)
                     {
                         using (var clientH = new HttpClient())
@@ -140,9 +136,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/vistoria/{imp}", vistoriaImp);
 
                             resultadoHist.EnsureSuccessStatusCode();
-
-                            Console.WriteLine("Atualiza Vistoria: " + resultadoHist.ReasonPhrase);
-
                             if (resultadoHist.IsSuccessStatusCode)
                             {
 
@@ -161,6 +154,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
         {
             using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
             {
+                Console.WriteLine("CARREGANDO O CERTIFICADO E ACESSANDO O SITE PARA CONSULTA...");
                 ControleCertificados.CarregarCertificado(service);
 
                 service.AddArgument("test-type");
@@ -172,6 +166,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                 using (var _driver = new PhantomJSDriver(service))
                 {
                     _driver.Navigate().GoToUrl(_urlSite);
+                    
                     _driver.Navigate().GoToUrl(urlAcompanhaDespacho);
 
                     OpenQA.Selenium.IWebElement element = _driver.FindElementById("nrDeclaracao");
@@ -192,7 +187,8 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                     //localiza o status do despacho
                     element = _driver.FindElementByCssSelector("#tr_" + numDeclaracao + " > td:nth-child(2)");
                     var status = element.Text;
-                    Console.WriteLine(status);
+                    Console.WriteLine("-----" + status + "-----");
+
                     switch (status)
                     {
                         case "DECLARACAO DESEMBARACADA":
@@ -239,7 +235,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             }
 
                             import.CD_IMP_STATUS = 11;
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
@@ -271,7 +267,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             }
 
                             import.CD_IMP_STATUS = 1;
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
@@ -296,7 +292,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             }
 
                             import.CD_IMP_STATUS = 3;
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
@@ -321,7 +317,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             }
 
                             import.CD_IMP_STATUS = 4;
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
@@ -346,7 +342,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             }
 
                             import.CD_IMP_STATUS = 5;
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
@@ -371,7 +367,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             }
 
                             import.CD_IMP_STATUS = 7;
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
@@ -400,7 +396,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             }
 
                             import.CD_IMP_STATUS = 8;
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
@@ -445,7 +441,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             }
 
                             import.CD_IMP_STATUS = 9;
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                             break;
@@ -500,9 +496,9 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                                 default:
                                     break;
                             }
-
+                            Console.WriteLine("ATUALIZANDO HISTORICO...");
                             SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
-
+                            Console.WriteLine("ATUALIZANDO VISTORIA...");
                             AtualizaVistoria(cd_imp, vistoriaImp);
 
                             break;
@@ -510,10 +506,8 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                         default:
                             break;
                     }
-
+                    Console.WriteLine("ATUALIZANDO STATUS...");
                     AtualizaStatus(import, cd_imp, historicoImp);
-
-                    Console.WriteLine(import.ToString());
                 }
             }
         }

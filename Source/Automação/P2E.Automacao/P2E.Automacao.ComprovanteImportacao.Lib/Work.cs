@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace P2E.Automacao.ComprovanteImportacao.Lib
 {
@@ -24,6 +25,7 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
         #endregion
         public void Executar(object o)
         {
+            Console.WriteLine("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ");
             CarregarImportacao();
         }
 
@@ -35,6 +37,7 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
                 {
                     TBImportacao tbImportacao = null;
 
+                    Console.WriteLine("ABRE CONEXAO...");
                     client.BaseAddress = new Uri("http://localhost:7000/");
                     var result = client.GetAsync($"imp/v1/importacao/todos").Result;
                     result.EnsureSuccessStatusCode();
@@ -43,12 +46,12 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
                     {
                         var aux = await result.Content.ReadAsStringAsync();
                         var importacao = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
-
+                        Console.WriteLine("CARREGA DI's");
                         foreach (var item in importacao)
                         {
                             if (item.TX_NUM_DEC.Trim().Length == 10)
                             {
-                                Console.WriteLine("DI: " + item.TX_NUM_DEC);
+                                Console.WriteLine("################# DI: " + item.TX_NUM_DEC + " #################");
 
                                 Acessar(item, item.TX_NUM_DEC);
                             }
@@ -67,6 +70,7 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
         {
             using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
             {
+                Console.WriteLine("CARREGANDO CERTIFICADO...");
                 // carrega o cerificado.. retirar se não for necessário.
                 ControleCertificados.CarregarCertificado(service);
 
@@ -78,8 +82,12 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
 
                 using (var _driver = new PhantomJSDriver(service))
                 {
+                    Console.WriteLine("ACESSANDO SITE...");
                     _driver.Navigate().GoToUrl(_urlSite);
+                   
+                    Console.WriteLine("ACESSAO PAGINA DE CONSULTA...");
                     _driver.Navigate().GoToUrl(_urlTelaConsulta);
+                    
 
                     OpenQA.Selenium.IWebElement element = _driver.FindElementById("nrDeclaracao");
                     element.SendKeys(numDeclaracao);
@@ -101,6 +109,7 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
 
                     if (status.Contains("COMPROVANTE JA EMITIDO. UTILIZAR EMISSAO SEGUNDA VIA"))
                     {
+                        Console.WriteLine(status);
                         // clica no botao OK
                         element = _driver.FindElementByCssSelector(@"#botoes > input");
                         element.Click();
@@ -118,6 +127,7 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
                     }
                     else if (status.Contains("DECLARACAO NAO ESTA DESEMBARACADA."))
                     {
+                        Console.WriteLine(status);
                         return;
                     }
 
@@ -128,24 +138,17 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
 
                     if (status.Contains("COMPROVANTE RECUPERADO COM SUCESSO"))
                     {
-                        DownloadComprovante(_driver, _urlImprimir + "?id=" + Numero);
+                        Console.WriteLine(status);
+
+                        string numeroDec = numDeclaracao.Substring(0, 2) + "%2F" +
+                                    numDeclaracao.Substring(2, 7) + "-" +
+                                    numDeclaracao.Substring(9, 1);
+
+                        Console.WriteLine("DOWNLOAD DE COMPROVANTE PDF...");
+                        DownloadComprovante(_driver, _urlImprimir + "?nrDeclaracao=" + numeroDec);
                     }
                 }
             }
-        }
-
-        public X509Certificate FindClientCertificate(string serialNumber)
-        {
-            return
-                FindCertificate(StoreLocation.CurrentUser) ??
-                FindCertificate(StoreLocation.LocalMachine);
-            X509Certificate FindCertificate(StoreLocation location)
-            {
-                X509Store store = new X509Store(location);
-                store.Open(OpenFlags.OpenExistingOnly);
-                var certs = store.Certificates.Find(X509FindType.FindBySerialNumber, serialNumber, true);
-                return certs.OfType<X509Certificate>().FirstOrDefault();
-            };
         }
 
         private void MyWebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -153,54 +156,11 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
             Console.WriteLine("Download Concluído.");
         }
 
-        public static bool DownloadFile(string url, IWebDriver driver)
-        {
-            try
-            {
-                // Construct HTTP request to get the file
-                HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpRequest.CookieContainer = new System.Net.CookieContainer();
-
-                for (int i = 0; i < driver.Manage().Cookies.AllCookies.Count - 1; i++)
-                {
-                    System.Net.Cookie ck = new System.Net.Cookie(driver.Manage().Cookies.AllCookies[i].Name, driver.Manage().Cookies.AllCookies[i].Value, driver.Manage().Cookies.AllCookies[i].Path, driver.Manage().Cookies.AllCookies[i].Domain);
-                    httpRequest.CookieContainer.Add(ck);
-                }
-
-                httpRequest.Accept = "text/html, application/xhtml+xml, */*";
-                httpRequest.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko";
-
-                //HttpStatusCode responseStatus;
-
-                // Get back the HTTP response for web server
-                HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-                Stream httpResponseStream = httpResponse.GetResponseStream();
-
-                // Define buffer and buffer size
-                int bufferSize = 1024;
-                byte[] buffer = new byte[bufferSize];
-                int bytesRead = 0;
-
-                // Read from response and write to file
-                FileStream fileStream = File.Create("C:\\Versatilly\\COMPROVANTE_DI.pdf");
-                while ((bytesRead = httpResponseStream.Read(buffer, 0, bufferSize)) != 0)
-                {
-                    fileStream.Write(buffer, 0, bytesRead);
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
         protected bool DownloadComprovante(PhantomJSDriver driver, string _url)
         {
             try
             {
-                var certificado = FindClientCertificate("511d19041380bd8e");
+                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
 
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
@@ -209,10 +169,10 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
                     System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", "COMPROVANTE_DI.pdf");
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-COMPROVANTE_DI.pdf");
 
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
-                {
+                {   
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
 
                     myWebClient.DownloadFile(_url, arquivoPath);

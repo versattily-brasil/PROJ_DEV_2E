@@ -45,7 +45,7 @@ namespace P2E.Automacao.EnviarDAI.Lib
 
                     //Localiza o caminho e o nome do arquivo
                     element = _driver.FindElementByName("theFIle");
-                    element.SendKeys("@C:\temp\DAI.xml");
+                    element.SendKeys("@C:\\temp\\DAI.xml");
 
                     //localiza e clica no botão Enviar DAI
                     element = _driver.FindElementById("confirm");
