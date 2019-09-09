@@ -44,8 +44,7 @@ namespace P2E.Automacao.Gerenciador
                 switch (selecionado.Cells[0].Value)
                 {
                     case 1:
-                        var acompanhaDespacho = new P2E.Automacao.AcompanharDespachos.Lib.Work();
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(acompanhaDespacho.Executar), "Executar");
+                        
                         break;
                     case 2:
                         break;

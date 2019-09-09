@@ -24,37 +24,53 @@ namespace P2E.Automacao.EnviarDAI.Lib
 
         protected void Acessar()
         {
-            using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+
+            try
             {
-                service.AddArgument("test-type");
-                service.AddArgument("no-sandbox");
-                service.HideCommandPromptWindow = true;
-
-                // carrega o cerificado.. retirar se não for necessário.
-                //OBS.: ver necessidade do certicadfo
-                //ControleCertificados.CarregarCertificado(service);
-
-
-                using (var _driver = new PhantomJSDriver(service))
+                using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                 {
-                    _driver.Navigate().GoToUrl(_urlSite);
 
-                    //OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
+                    service.AddArgument("test-type");
+                    service.AddArgument("no-sandbox");
+                    service.HideCommandPromptWindow = true;
 
-                    OpenQA.Selenium.IWebElement element;
+                    // carrega o cerificado.. retirar se não for necessário.
+                    //OBS.: ver necessidade do certicadfo
+                    //ControleCertificados.CarregarCertificado(service);
 
-                    //var credencial = ObterCredenciaisSuframa();
 
-                    //Localiza o caminho e o nome do arquivo
-                    element = _driver.FindElementByName("theFIle");
-                    element.SendKeys("C:\\temp\\DAI.xml");
+                    using (var _driver = new PhantomJSDriver(service))
+                    {
+                        _driver.Navigate().GoToUrl(_urlSite);
 
-                    //localiza e clica no botão Enviar DAI
-                    element = _driver.FindElementById("confirm");
-                    element.Click();
+                        //OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
 
+                        OpenQA.Selenium.IWebElement element;
+
+                        //var credencial = ObterCredenciaisSuframa();
+
+                        //Localiza o caminho e o nome do arquivo
+                        element = _driver.FindElementByName("theFile");
+                        element.SendKeys(@"C:\temp\DAI.xml");
+
+                        //localiza e clica no botão Enviar DAI
+                        element = _driver.FindElementById("confirm");
+                        element.Click();
+
+                        element = _driver.FindElementById("Versão não Autorizada");
+
+                    }
                 }
+
             }
+            catch (Exception e)
+            {
+
+                var msn = e.Message;
+            }
+
+
+
         }
 
         //private CredenciaisSuframa ObterCredenciaisSuframa()

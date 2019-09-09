@@ -9,11 +9,17 @@ namespace P2E.Automaccao.BaixarExtratos.Console
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Work work = new Work();
+            try
+            {
+                var lib = new P2E.Automacao.BaixarExtratos.Lib.Work();
+                await lib.ExecutarAsync();
+            }
+            catch (Exception ex)
+            {
 
-            work.Executar();
+            }
         }
     }
 }

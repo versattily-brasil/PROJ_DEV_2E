@@ -1,18 +1,16 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
+using P2E.Automacao.BaixarExtratos.Lib.Entities;
 using P2E.Automacao.Shared.Extensions;
-using Selenium.Utils.Html;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace P2E.Automacao.BaixarExtratos.Lib
 {
@@ -20,90 +18,102 @@ namespace P2E.Automacao.BaixarExtratos.Lib
     {
         #region Variaveis Estáticas
 
-        private string _urlSite = "https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
-        private string _urlConsultaDI = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do";
-        private string _urlDownloadPDF = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ExtratoDI.do?nrDeclaracao=19/0983204-0&consulta=true";
-        private string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do";
-        private string _pathDir = @"C:\Users\Jorge.PATRIMONIO\Desktop\arquivo";
-        private string _loginSite = string.Empty;
-        private string _senhaSite = string.Empty;
-        private string _msgRetorno = string.Empty;
-        private string _nrDeclaracao = "1909832040";
+        public string _urlSite = "https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
+        public string _urlConsultaDI = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do";
+        public string _urlDownloadPDF = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ExtratoDI.do";//?nrDeclaracao=19/0983204-0&consulta=true";
+        public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do";
+        private string _urlApiBase;
+        private List<TBImportacao> registros;
 
         #endregion
-        public void Executar()
+        public Work()
         {
-            Acessar();
+            Console.WriteLine("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
+            _urlApiBase = "http://localhost:7000/";
+            //_urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+
         }
 
-        protected void Acessar()
+        public async Task ExecutarAsync()
         {
-            using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+            Console.WriteLine("Obtendo DI's para Baixar Extrato.");
+            await CarregarListaDIAsync();
+        }
+
+        private async Task CarregarListaDIAsync()
+        {
+            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/todos";
+
+            using (var client = new HttpClient())
             {
+                Console.WriteLine("ABRINDO CONEXAO...");
+                var result = await client.GetAsync(urlAcompanha);
+                var aux = await result.Content.ReadAsStringAsync();
+                registros = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
 
-                // carrega o cerificado.. retirar se não for necessário.
-                ControleCertificados.CarregarCertificado(service);
-
-                service.AddArgument("test-type");
-                service.AddArgument("no-sandbox");
-                service.HideCommandPromptWindow = true;
-
-                using (var _driver = new PhantomJSDriver(service))
+                if (registros != null && registros.Any())
                 {
-                    Console.WriteLine("Inciando processo de navegação...");
+                    using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+                    {
+                        Console.WriteLine("CARREGANDO O CERTIFICADO...");
+                        ControleCertificados.CarregarCertificado(service);
 
+                        service.AddArgument("test-type");
+                        service.AddArgument("no-sandbox");
+                        service.HideCommandPromptWindow = true;
 
+                        using (var _driver = new PhantomJSDriver(service))
+                        {
+                            foreach (var di in registros)
+                            {
+                                Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
 
-                    //navega para primeira url.
-                    //onde é realizado o login através do certificado.
-                    _driver.Navigate().GoToUrl(_urlSite);
-                    Console.WriteLine(_driver.Url);
-
-                    //Navega para seguinda url.
-                    //página da consulta DI.
-                    _driver.Navigate().GoToUrl(_urlConsultaDI);
-                    Console.WriteLine(_driver.Url);
-
-                    //obtendo o campo de numero de declaração.
-                    IWebElement element = _driver.FindElementById("nrDeclaracao");
-
-                    //inserindo o numero da declaração.
-                    element.SendKeys(_nrDeclaracao);
-
-                    element = _driver.FindElement(By.Name("enviar"));
-
-                    element.Click();
-
-                    //indo para a página de consulta de declaração de importação.
-                    _driver.FindElement(By.Id("btnRegistrarDI")).Click();
-
-                    DownloadExtrato(_driver);
-
-                    //element = _driver.FindElement(By.Id("consultarXmlDi"));
-
-                    //DownloadXML2(_driver);
-
-                    //element.Click();
-
-                    //DownloadXml(_driver);
-
-                    Console.ReadKey();
+                                Acessar(di.TX_NUM_DEC, _driver);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
                 }
             }
         }
 
-        public X509Certificate FindClientCertificate(string serialNumber)
+        private async Task Acessar(string numero, PhantomJSDriver _driver)
         {
-            return
-                FindCertificate(StoreLocation.CurrentUser) ??
-                FindCertificate(StoreLocation.LocalMachine);
-            X509Certificate FindCertificate(StoreLocation location)
-            {
-                X509Store store = new X509Store(location);
-                store.Open(OpenFlags.OpenExistingOnly);
-                var certs = store.Certificates.Find(X509FindType.FindBySerialNumber, serialNumber, true);
-                return certs.OfType<X509Certificate>().FirstOrDefault();
-            };
+            Console.WriteLine("Inciando processo de navegação...");
+
+            //navega para primeira url.
+            //onde é realizado o login através do certificado.
+            _driver.Navigate().GoToUrl(_urlSite);
+            Console.WriteLine(_driver.Url);
+
+            //Navega para seguinda url.
+            //página da consulta DI.
+            _driver.Navigate().GoToUrl(_urlConsultaDI);
+            Console.WriteLine(_driver.Url);
+
+            //obtendo o campo de numero de declaração.
+            IWebElement element = _driver.FindElementById("nrDeclaracao");
+
+            //inserindo o numero da declaração.
+            element.SendKeys(numero);
+
+            element = _driver.FindElement(By.Name("enviar"));
+
+            element.Click();
+
+            //indo para a página de consulta de declaração de importação.
+            _driver.FindElement(By.Id("btnRegistrarDI")).Click();
+
+            string numeroDec = numero.Substring(0, 2) + "%2F" +
+                            numero.Substring(2, 7) + "-" +
+                            numero.Substring(9, 1);
+
+            DownloadExtrato(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
+
+            //Console.ReadKey();
         }
 
         /// <summary>
@@ -119,21 +129,27 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         /// </summary>
         /// <param name="driver"></param>
         /// <returns></returns>
-        protected bool DownloadExtrato(PhantomJSDriver driver)
+        protected bool DownloadExtrato(PhantomJSDriver driver, string _url)
         {
             try
             {
-                var certificado = FindClientCertificate("511d1904137f8ed4");
+                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
 
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
-                string arquivoPath = Path.Combine("C:\\Users\\Jorge.PATRIMONIO\\Desktop", "ExtratoDI" + horaData + ".pdf");
+                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                {
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                }
+
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.pdf");
 
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
                 {
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
 
-                    myWebClient.DownloadFile(_urlDownloadPDF, arquivoPath);
+                    myWebClient.DownloadFile(_url, arquivoPath);
                 }
 
                 return true;
@@ -152,7 +168,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                var certificado = FindClientCertificate("511d1904137f8ed4");
+                var certificado = ControleCertificados.FindClientCertificate("511d1904137f8ed4");
 
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
@@ -223,7 +239,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 requisicaoWeb.ClientCertificates = new X509CertificateCollection();
 
-                requisicaoWeb.ClientCertificates.Add(FindClientCertificate("511d1904137f8ed4"));
+                requisicaoWeb.ClientCertificates.Add(ControleCertificados.FindClientCertificate("511d1904137f8ed4"));
 
                 using (var resposta = requisicaoWeb.GetResponse())
                 {
@@ -240,7 +256,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
             catch (Exception e)
             {
-                Console.WriteLine("Erro: "+e.Message);
+                Console.WriteLine("Erro: " + e.Message);
             }
 
         }
