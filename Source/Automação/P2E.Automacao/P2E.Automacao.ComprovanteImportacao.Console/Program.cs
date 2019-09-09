@@ -8,10 +8,17 @@ namespace P2E.Automacao.ComprovanteImportacao.Console
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var cc = new P2E.Automacao.ComprovanteImportacao.Lib.Work();
-            cc.Executar(args);
+            try
+            {
+                var lib = new P2E.Automacao.ComprovanteImportacao.Lib.Work();
+                await lib.ExecutarAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
