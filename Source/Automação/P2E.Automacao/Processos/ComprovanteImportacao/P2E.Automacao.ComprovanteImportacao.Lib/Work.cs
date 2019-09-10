@@ -10,7 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.ComprovanteImportacao.Lib
+namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 {
     public class Work
     {

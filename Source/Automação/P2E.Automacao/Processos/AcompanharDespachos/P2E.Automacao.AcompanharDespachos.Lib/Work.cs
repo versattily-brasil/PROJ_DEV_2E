@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using static P2E.Automacao.AcompanharDespachos.Lib.Entities.Importacao;
 
-namespace P2E.Automacao.AcompanharDespachos.Lib
+namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 {
     public class Work
     {
@@ -459,11 +459,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                         var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/historico/{0}", historico);
 
                         resultadoHist.EnsureSuccessStatusCode();
-
-                        if (resultadoHist.IsSuccessStatusCode)
-                        {
-
-                        }
                     }
                 }
             }
@@ -503,10 +498,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/vistoria/{imp}", vistoriaImp);
 
                             resultadoHist.EnsureSuccessStatusCode();
-                            if (resultadoHist.IsSuccessStatusCode)
-                            {
-
-                            }
+                            
                         }
                     }
                 }

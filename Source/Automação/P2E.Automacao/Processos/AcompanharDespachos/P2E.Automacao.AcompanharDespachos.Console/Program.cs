@@ -9,7 +9,7 @@ namespace P2E.Automacao.AcompanharDespachos.Console
         {
             try
             {
-                var lib = new P2E.Automacao.AcompanharDespachos.Lib.Work();
+                var lib = new P2E.Automacao.Processos.AcompanharDespachos.Lib.Work();
                 await lib.ExecutarAsync();
             }
             catch (Exception ex)
