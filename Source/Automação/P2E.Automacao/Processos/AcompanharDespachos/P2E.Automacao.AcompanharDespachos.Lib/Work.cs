@@ -27,6 +27,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
         {
             Console.WriteLine("#####################  INICIALIZANDO - ACOMPANHAMENTO DE DESPACHO  ##################### ");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+            //_urlApiBase = "http://localhost:7000/";
         }
 
         public async Task ExecutarAsync()
@@ -72,6 +73,8 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                                 }
                             }
                         }
+
+                        Console.ReadKey();
                     }
                 }
                 else

@@ -28,6 +28,7 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
         {
             Console.WriteLine("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+            //_urlApiBase = "http://localhost:7000/";
         }
 
         public async Task ExecutarAsync()
@@ -66,6 +67,8 @@ namespace P2E.Automacao.ComprovanteImportacao.Lib
 
                                 Acessar( di.TX_NUM_DEC, _driver);
                             }
+
+                            Console.ReadKey();
                         }
                     }
                 }
