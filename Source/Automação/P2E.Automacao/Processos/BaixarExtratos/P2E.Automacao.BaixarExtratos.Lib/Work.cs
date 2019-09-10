@@ -99,23 +99,29 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             //obtendo o campo de numero de declaração.
             IWebElement element = _driver.FindElementById("nrDeclaracao");
 
-            //inserindo o numero da declaração.
+            Console.WriteLine("inserindo o numero da declaração");
             element.SendKeys(numero);
 
-            element = _driver.FindElement(By.Name("enviar"));
+            Console.WriteLine("Acionando o Click no enviar.");
+            Thread.Sleep(2000);
 
+            element = _driver.FindElement(By.Name("enviar"));
+            Thread.Sleep(1000);
             element.Click();
+
+            Thread.Sleep(2000);
 
             //indo para a página de consulta de declaração de importação.
             _driver.FindElement(By.Id("btnRegistrarDI")).Click();
 
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
 
             string numeroDec = numero.Substring(0, 2) + "%2F" +
                             numero.Substring(2, 7) + "-" +
                             numero.Substring(9, 1);
 
-            Thread.Sleep(3000);
+            Console.WriteLine("Baixando o Extrato - PDF.");
+            Thread.Sleep(2000);
 
             DownloadExtrato(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
 
@@ -154,7 +160,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
                 {
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
-
+                    Thread.Sleep(2000);
                     myWebClient.DownloadFile(_url, arquivoPath);
                 }
 
