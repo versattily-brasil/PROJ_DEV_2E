@@ -30,7 +30,10 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
 
         public Work()
         {
+            Console.WriteLine($"********************************************************************************************************************");
+            Console.WriteLine("ROBÔ 12 – ENVIAR PLI");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+            Console.WriteLine($"********************************************************************************************************************");
         }
 
         public void Executar(object o)
@@ -85,55 +88,62 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
 
                 using (var _driver = new PhantomJSDriver(service))
                 {
-                    _driver.Navigate().GoToUrl(_urlSite);
+                        try
+                        {
+                            _driver.Navigate().GoToUrl(_urlSite);
 
-                    OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
+                            OpenQA.Selenium.IWebElement element = _driver.FindElementById("login");
 
-                    var credencial = ObterCredenciaisSuframa();
+                            var credencial = ObterCredenciaisSuframa();
 
-                    element.SendKeys(credencial.Usuario);
+                            element.SendKeys(credencial.Usuario);
 
-                    element = _driver.FindElementByName("field(-senha)");
+                            element = _driver.FindElementByName("field(-senha)");
 
-                    element.SendKeys(credencial.Senha);
+                            element.SendKeys(credencial.Senha);
 
-                    element = _driver.FindElementByName("btLogar");
-                    element.Click();
+                            element = _driver.FindElementByName("btLogar");
+                            element.Click();
 
-                    // localizar ~link com o texto "Enviar PLI e efetuar o click"
-                    element = _driver.FindElementByPartialLinkText("Enviar PLI");
-                    element.Click();
+                            // localizar ~link com o texto "Enviar PLI e efetuar o click"
+                            element = _driver.FindElementByPartialLinkText("Enviar PLI");
+                            element.Click();
 
-                    // localizar o elemento File com o nome manter-arquivo
-                    element = _driver.FindElementByName("field(-manter-arquivo)");
+                            // localizar o elemento File com o nome manter-arquivo
+                            element = _driver.FindElementByName("field(-manter-arquivo)");
 
-                    // seleciona o arquivo
-                    element.SendKeys(nomeArquivo);
+                            // seleciona o arquivo
+                            element.SendKeys(nomeArquivo);
 
-                    //localiza e clica no botão Enviar PLI
-                    element = _driver.FindElementById("btnEnviarpli");
-                    element.Click();
+                            //localiza e clica no botão Enviar PLI
+                            element = _driver.FindElementById("btnEnviarpli");
+                            element.Click();
 
-                    // Recupera a mensagem de erro caso exista.
-                    try
-                    {
-                        element = _driver.FindElementById("ERROR");
+                            // Recupera a mensagem de erro caso exista.
+                            try
+                            {
+                                element = _driver.FindElementById("ERROR");
 
-                            if (element == null || string.IsNullOrEmpty(element.Text))
+                                if (element == null || string.IsNullOrEmpty(element.Text))
+                                {
+                                    envioPLIDTO.TX_LOG = "Arquivo enviado com sucesso.";
+                                    envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_SEM_ERRO;
+                                }
+                                else
+                                {
+                                    envioPLIDTO.TX_LOG = element.Text;
+                                    envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_COM_ERRO;
+                                }
+                            }
+                            catch (Exception)
                             {
                                 envioPLIDTO.TX_LOG = "Arquivo enviado com sucesso.";
                                 envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_SEM_ERRO;
                             }
-                            else
-                            {
-                                envioPLIDTO.TX_LOG = element.Text;
-                                envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_COM_ERRO;
-                            }
                         }
-                    catch (Exception)
-                    {
-                            envioPLIDTO.TX_LOG = "Arquivo enviado com sucesso.";
-                            envioPLIDTO.OP_STATUS = eStatus.CONCLUIDO_SEM_ERRO;
+                        catch (Exception)
+                        {
+                            _driver.Close();
                         }
                 }
             }
@@ -216,6 +226,8 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
 
         private static void CriarArquivoZip(List<string> arquivos, string ArquivoDestino)
         {
+            Console.WriteLine("Criando arquivo .PL5ZIP");
+
             using (ZipFile zip = new ZipFile())
             {
                 // percorre todos os arquivos da lista
@@ -260,16 +272,22 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
             }
         }
 
-        private CredenciaisSuframa ObterCredenciaisSuframa()
+        private CredenciaisSisComex ObterCredenciaisSuframa()
         {
+            Console.WriteLine("Obtendo credenciais siscomex.");
+
             // Obter credenciais para acesso ao site
-            return new CredenciaisSuframa() { Usuario = "08281892000158", Senha = "2edespachos" };
+            return new CredenciaisSisComex() { Usuario = "08281892000158", Senha = "2edespachos" };
         }
 
+        /// <summary>
+        /// Obtem os registros pendentes de envio de pli.
+        /// </summary>
+        /// <returns></returns>
         private async Task<List<EnvioPLIDTO>> ObterRegistrosPendentesAsync()
         {
-            HttpResponseMessage resultado;
-
+            Console.WriteLine("Obtendo registros pendentes de envio.");
+            
             string urlEnvioPli = _urlApiBase + $"imp/v1/enviopli/pendentes";
 
             using (var client = new HttpClient())

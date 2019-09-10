@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace P2E.Automacao.Processos.EnviarPLI.Lib.Entidades
 {
-    public class CredenciaisSuframa
+    public class CredenciaisSisComex
     {
         public int IdParceiro { get; set; }
         public string Usuario { get; set; }
