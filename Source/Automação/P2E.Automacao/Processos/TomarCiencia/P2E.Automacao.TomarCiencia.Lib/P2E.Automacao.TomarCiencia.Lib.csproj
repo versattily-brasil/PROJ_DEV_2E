@@ -60,6 +60,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Empresa.cs" />
+    <Compile Include="Model\DAI.cs" />
+    <Compile Include="Model\Enums\eChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Work.cs" />
   </ItemGroup>
