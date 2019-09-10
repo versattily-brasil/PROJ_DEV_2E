@@ -28,8 +28,10 @@ namespace P2E.Automacao.ExonerarIcms.Lib
 
         public Work()
         {
+            Console.WriteLine($"********************************************************************************************************************");
             Console.WriteLine("ROBÔ 04 – EXONERAÇÃO DO ICMS");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+            Console.WriteLine($"********************************************************************************************************************");
         }
 
         /// <summary>
@@ -45,19 +47,32 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             {
                 using (var service = PhantomJSDriverService.CreateDefaultService())
                 {
-                    ControleCertificados.CarregarCertificado(service);
-
-                    service.AddArgument("test-type");
-                    service.AddArgument("no-sandbox");
-                    service.HideCommandPromptWindow = true;
-
-                    using (var _driver = new PhantomJSDriver(service))
+                    try
                     {
-                        // percorre todos os registros para tentar a exoneração.
-                        foreach (var di in registros)
+                        ControleCertificados.CarregarCertificado(service);
+
+                        service.AddArgument("test-type");
+                        service.AddArgument("no-sandbox");
+                        service.HideCommandPromptWindow = true;
+
+                        using (var _driver = new PhantomJSDriver(service))
                         {
-                            await ExonerarDIAsync(_driver, di);
+                            try
+                            {
+                                // percorre todos os registros para tentar a exoneração.
+                                foreach (var di in registros)
+                                {
+                                    await ExonerarDIAsync(_driver, di);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                _driver.Close();
+                            }
                         }
+                    }
+                    catch (Exception)
+                    {
                     }
                 }
             }
@@ -75,33 +90,26 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// <returns></returns>
         private async Task ExonerarDIAsync(PhantomJSDriver _driver, ImportacaoDTO di)
         {
-            Console.WriteLine($".......................................................................................");
+            Console.WriteLine($"=================================================================================================================");
             Console.WriteLine($"Exonerando DI nº {di.TX_NUM_DEC}.");
-            Console.WriteLine($".......................................................................................");
             Console.WriteLine($"Acessando Endereço: {urlInicioPrivado}");
             _driver.Navigate().GoToUrl(urlInicioPrivado);
-            Console.WriteLine($".......................................................................................");
             Console.WriteLine($"Autenticação efeturada.");
-            Console.WriteLine($".......................................................................................");
             Console.WriteLine($"Acessando Endereço: {urlDeclararICMS}");
             _driver.Navigate().GoToUrl(urlDeclararICMS);
-            Console.WriteLine($".......................................................................................");
             Console.WriteLine($"Seleciona combo: Exoneração do ICMS");
             Select selectTipo = new Select(_driver, By.Id("tp"));
             selectTipo.SelectByText("Exoneração do ICMS");
-
             Console.WriteLine($"Preenchendo campo DI: {di.TX_NUM_DEC}");
             IWebElement element = _driver.FindElement(By.Id("numDI"));
             element.SendKeys(di.TX_NUM_DEC);
-
+            Console.WriteLine($"Selecionando UF: {di.UF_DI}");
             Select selectUf = new Select(_driver, By.Id("uf"));
-
             selectUf.SelectByText(di.UF_DI);
+            Console.WriteLine($"Registrando...");
 
             element = _driver.FindElement(By.Id("registrar"));
-
             element.Click();
-
             string txtInicioBlocoErro = "<!-- MENSAGENS DE ERRO =================================================================================================================================== -->";
 
             int posicaoInicioErro = _driver.PageSource.ToString().IndexOf(txtInicioBlocoErro);
@@ -119,8 +127,8 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                 textoAreaErro = Regex.Replace(textoAreaErro, @"[^ 0-9a-zA-Z]+", "");
                 textoAreaErro = Regex.Replace(textoAreaErro, "(\r\n|\r|\n|\t|\r\n\t)", "");
 
-                 Console.WriteLine(textoAreaErro);
-            }
+                Console.WriteLine($"Operação não permitida. {textoAreaErro}");
+                            }
             else
             {
                 Console.WriteLine("Operação finalizada sem erros.");
@@ -177,6 +185,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             }
             catch (Exception)
             {
+
                 Console.WriteLine($"Erro ao atualizar a DI nº {item.TX_NUM_DEC}.");
             }
         }
