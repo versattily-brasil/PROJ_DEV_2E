@@ -41,7 +41,7 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
             // Obter processos não registrados
             var registros = ObterRegistrosPendentesAsync().Result;
 
-            if (registros != null)
+            if (registros != null && registros.Any())
             {
                 foreach (var item in registros)
                 {
@@ -53,13 +53,17 @@ namespace P2E.Automacao.Processos.EnvioPLI.Lib
 
                     // atualizar registro
                     AtualizarRegistroAsync(item);
-                
                 }
+            }
+            else
+            {
+                Console.WriteLine("Nenhum registro encontrado.");
             }
         }
 
         private async Task AtualizarRegistroAsync(EnvioPLIDTO item)
         {
+            Console.WriteLine("Atualizando data da execução.");
             item.DT_DATA_EXEC = DateTime.Now;
 
             HttpResponseMessage resultado;
