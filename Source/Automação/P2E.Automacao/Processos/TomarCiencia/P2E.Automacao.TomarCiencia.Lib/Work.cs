@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Timers;
+using P2E.Automacao.TomarCiencia.Lib.Model;
 
 namespace P2E.Automacao.TomarCiencia.Lib
 {    
@@ -24,6 +25,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
         #endregion
 
         List<string> Inscricoes = new List<string>();
+        List<DAI> DAIList = new List<DAI>();
+        List<Empresa> ListaEmpresas = new List<Empresa>();
         PhantomJSDriver _driver = null;        
         PhantomJSDriverService service = null;
 
@@ -42,9 +45,9 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
             try
             {
-                Log("#####################################################################", nameof(Start));
-                Log("############ Inicialização de automação [Tomar Ciência ] ############", nameof(Start));
-                Log("#####################################################################", nameof(Start));
+                Log("#####################################################################");
+                Log("############ Inicialização de automação [Tomar Ciência ] ############");
+                Log("#####################################################################");
                 Log(null, null, true);
 
                 this.service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory());                
@@ -64,7 +67,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             }
 
             // Going through the steps
-            LoadCompanyRecords();
+            CarregaListaEmpresas();
             Main();
             Finish();            
         }
@@ -75,31 +78,97 @@ namespace P2E.Automacao.TomarCiencia.Lib
             this.service.Dispose();
         }
 
-        protected void LoadCompanyRecords()
+        /// <summary>
+        /// Carrega a lista de todas as empresas com suas respectivas Inscrições Estaduais
+        /// para agilizar a navegação e manipulação dos dados.
+        /// </summary>
+        protected void CarregaListaEmpresas()
         {
             this._driver.Navigate().GoToUrl(_urlPrincipal);
 
-            ReadOnlyCollection<IWebElement> elements = this._driver.FindElements(By.TagName("a"));
+            bool leEmpresas = true;
+            bool leInscricoes = true;
+            int contagemImpar = 1;
+            int contagemPar = 2;
+            int contagemInscricao = 1;
 
-            if(elements != null)
+            string razaoSocial;
+            string CNPJ;
+            string inscricaoEstadual;
+            while (leEmpresas)
             {
-                // Looks for the links with the "Inscrições Estaduais"
-                foreach (IWebElement tag in elements)
+                Empresa empresa = new Empresa();
+                try
                 {
-                    // Create the list 
-                    if (tag.GetAttribute("href").Contains("?inscricao="))
-                    {                        
-                        this.Inscricoes.Add(tag.Text.Replace(".", "").Replace("-", ""));
-                    }
-                }
+                    // Carrega os dados básicos da empresa à partir de busca via XPath.
+                    razaoSocial = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[1]/td[3]", contagemImpar))).Text;
+                    CNPJ = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[2]/td[3]", contagemImpar))).Text;
 
-                if(this.Inscricoes.Count > 0)
-                    Log(String.Format("Lista de Inscrições criada com {0} itens.", this.Inscricoes.Count), nameof(LoadCompanyRecords));
+                    empresa.Nome = razaoSocial;
+                    empresa.CNPJ = CNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
+                    empresa.IncricoesEstaduais = new List<string>();
+
+                    ListaEmpresas.Add(empresa);
+
+                    leInscricoes = true;
+                    contagemInscricao = 1;
+
+                    while (leInscricoes)
+                    {
+                        try
+                        {
+                            // Carrega todas as inscrições estaduais da empresa à partir de busca via XPath.
+                            inscricaoEstadual = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[{1}]/td[2]", contagemPar, contagemInscricao))).Text;
+                            empresa.IncricoesEstaduais.Add(inscricaoEstadual.Replace(".", "").Replace("-", ""));
+
+                            contagemInscricao += 1;
+                        }
+                        catch
+                        {
+                            // Não foi encontrado mais nenhuma inscrição estdual na estrutura, então sai do loop 
+                            // e segue para a próxima empresa.
+                            Log(String.Format("Carregada a empresa {0}, com {1} inscrição(ões) estadual(ais).", empresa.Nome, empresa.IncricoesEstaduais.Count), nameof(CarregaListaEmpresas));
+                            leInscricoes = false;
+                        }
+                    }
+
+                    contagemPar += 2;
+                    contagemImpar += 2;
+                }
+                catch
+                {
+                    // Não foi encontrado mais nenhuma empresa na estrutura, então sai do loop e encerra o método.
+                    leEmpresas = false;
+                }
             }
-            else
-            {
-                Log("Não foi possível obter a listagem de Inscrições Estaduais", nameof(LoadCompanyRecords));
-            }
+
+            //ReadOnlyCollection<IWebElement> elements = this._driver.FindElements(By.TagName("a"));
+
+            //if(elements != null)
+            //{
+            //    // Looks for the links with the "Inscrições Estaduais"
+            //    foreach (IWebElement tag in elements)
+            //    {
+
+
+            //        //IWebElement t1 = this._driver.FindElement(By.XPath("//*[@id='areaTrabalho']"));// tr[2]/td[@id='areaTrabalho']/table[2]/tbody/tr/td[3]"));
+            //        //IWebElement t2 = this._driver.FindElement(By.XPath("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[5]/tbody/tr[1]/td[3]"));///table[2]/tbody/tr/td[3]"));
+            //        //IWebElement razaoSocial = this._driver.FindElement(By.XPath("/html/body/table/tbody/tr[2]/td[@id='areaTrabalho']/table[2]/tbody/tr/td[3]"));
+
+            //        // Create the list 
+            //        if (tag.GetAttribute("href").Contains("?inscricao="))
+            //        {                        
+            //            this.Inscricoes.Add(tag.Text.Replace(".", "").Replace("-", ""));
+            //        }
+            //    }
+
+            //    if(this.Inscricoes.Count > 0)
+            //        Log(String.Format("Lista de Inscrições criada com {0} itens.", this.Inscricoes.Count), nameof(LoadCompanyRecords));
+            //}
+            //else
+            //{
+            //    Log("Não foi possível obter a listagem de Inscrições Estaduais", nameof(LoadCompanyRecords));
+            //}
         }
 
         protected IWebElement FindDILink()
@@ -155,7 +224,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
             if (selectChannel != null)
             {
-                //create select element object 
+                //create select (dropdown) element object 
                 var selectElement = new SelectElement(selectChannel);
                 //select by value
                 //selectElement.SelectByValue("1");
@@ -235,30 +304,34 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
         protected void Main()
         {
-            this._driver.Navigate().GoToUrl(_urlPrincipal);            
-
-            foreach (var inscricao in this.Inscricoes)
+            this._driver.Navigate().GoToUrl(_urlPrincipal);
+            
+            foreach (Empresa empresa in this.ListaEmpresas)
             {
-                this._driver.Navigate().GoToUrl(_urlIncricao + inscricao);
-                Log(null, null, true);
-                Log(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao), nameof(Main));
+                foreach (string inscricao in empresa.IncricoesEstaduais)
+                {
+                    this._driver.Navigate().GoToUrl(_urlIncricao + inscricao);
+                    Log(null, null, true);
+                    Log(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao), nameof(Main));
 
-                // "Declarações" menu item
-                IWebElement declaracoes = this._driver.FindElementById("base_areaGrupo6");
-                new Actions(this._driver).MoveToElement(declaracoes).Click().Perform();
+                    // "Declarações" menu item
+                    IWebElement declaracoes = this._driver.FindElementById("base_areaGrupo6");
+                    new Actions(this._driver).MoveToElement(declaracoes).Click().Perform();
 
-                // DAI - Declaração Amazonense de Importação
-                IWebElement DAI = this._driver.FindElementById("textoItem102");
-                new Actions(this._driver).MoveToElement(DAI).Click().Perform();
-                Thread.Sleep(3000);
+                    // DAI - Declaração Amazonense de Importação
+                    // Busca o link para a DAI na página de Declarações, dentro da Inscrição Estadual corrente.
+                    IWebElement DAI = this._driver.FindElementById("textoItem102");
+                    new Actions(this._driver).MoveToElement(DAI).Click().Perform();
+                    Thread.Sleep(3000);
 
-                // Consulta a Situação de DAIs enviadas
-                IWebElement DIOnline = FindDILink();
-                if (DIOnline != null)
-                    DIOnline.Click();
-                Thread.Sleep(2000);
+                    // Consulta a Situação de DAIs enviadas
+                    IWebElement DIOnline = FindDILink();
+                    if (DIOnline != null)
+                        DIOnline.Click();
+                    Thread.Sleep(2000);
 
-                this.SearchGrayChannelDAIs();
+                    this.SearchGrayChannelDAIs();
+                }                
 
                 var debugStop = false;
             }
