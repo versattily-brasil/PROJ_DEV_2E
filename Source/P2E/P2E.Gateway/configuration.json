@@ -1,92 +1,33 @@
 {
   "ReRoutes": [
-    // Main
-    {
-      "DownstreamPathTemplate": "/api/{version}/{everything}/",
+// IMP  
+  {
+	  "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7001
-        }
-      ],
-      "UpstreamPathTemplate": "/main/{version}/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
-    },
-    // Administrativo
-    {
-      "DownstreamPathTemplate": "/api/{everything}/",
+            {
+                "Host": "localhost",
+                "Port": "7009",
+            }
+        ],
+    "UpstreamPathTemplate": "/imp/{version}/{everything}",
+    "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+},
+// SSO  
+  {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7002
-        }
-      ],
-      "UpstreamPathTemplate": "/administrativo/",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
-    },
-    // Financeiro
-    {
-      "DownstreamPathTemplate": "/api/{everything}/",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7003
-        }
-      ],
-      "UpstreamPathTemplate": "/financeiro/",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
-    },
-    // Importação
-    {
-      "DownstreamPathTemplate": "/api/{version}/{everything}/",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7004
-        }
-      ],
-      "UpstreamPathTemplate": "/imp/{version}/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
-    },
-    // SSO
-    {
-      "DownstreamPathTemplate": "/api/{version}/{everything}/",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7010
-        }
-      ],
-      "UpstreamPathTemplate": "/sso/{version}/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options" ]
-    }
-
-  ],
-  "GlobalConfiguration": {}
+            {
+                "Host": "localhost",
+                "Port": "7010",
+            }
+        ],
+    "UpstreamPathTemplate": "/sso/{version}/{everything}",
+    "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
 }
-
-
-//{
-//  "ReRoutes": [
-//    // SSO  
-//  {
-//	  "DownstreamPathTemplate": "/api/{version}/{everything}",
-//      "DownstreamScheme": "http",
-//      "DownstreamHostAndPorts": [
-//            {
-//                "Host": "sso.2e.versattily.com",
-//                "Port": 80
-//            }
-//        ],
-//    "UpstreamPathTemplate": "/sso/{version}/{everything}",
-//    "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-//    "UpstreamHost": "localhost:7000"
-//}
-//  ],
-//  "GlobalConfiguration": {}
-//}
+  ],
+ "GlobalConfiguration": {
+    "BaseUrl" :  "localhost:7000"
+  }
+}
