@@ -35,7 +35,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
         public Work()
         {            
-            Log("############ Inicialização de automação [Tomar Ciência ] ############");            
+            Log("############ Inicialização de automação [Tomar Ciência] ############");            
             Log(null, null, true);
 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
@@ -85,6 +85,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         /// <summary>
         /// Carrega, do site, a lista de todas as empresas com suas respectivas Inscrições Estaduais
         /// para agilizar a navegação e manipulação dos dados.
+        /// O número da Inscrição Estadual será posteriormente usado para acesso à URL "_urlIncricao".
         /// </summary>
         protected void CarregaListaEmpresas()
         {
@@ -148,6 +149,11 @@ namespace P2E.Automacao.TomarCiencia.Lib
             }
         }
 
+        /// <summary>
+        /// Carrega a lista de DIs presentes no Banco de Dados para verificação
+        /// se estão processadas ou não.
+        /// </summary>
+        /// <returns></returns>
         private async Task CarregarListaDIAsync()
         {
             string urlTomarCiencia = _urlApiBase + $"imp/v1/importacao/todos";
@@ -207,74 +213,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         //    IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
         //    WebDriverWait wait = new WebDriverWait(driver, new TimeSpan(0, 0, timeoutSec));
         //    wait.Until(wd => js.ExecuteScript("return document.readyState").ToString() == "complete");
-        //}
-
-        protected void SearchGrayChannelDAIs()
-        {
-            IWebElement selectChannel = null;
-            bool noDAI = false;
-
-            try
-            {
-                selectChannel = this._driver.FindElementById("canal");
-            }
-            catch (NoSuchElementException ex)
-            {
-                Log(ex.Message[0].ToString(), nameof(SearchGrayChannelDAIs));
-            }
-
-            Log("Iniciando busca por DAIs...", nameof(SearchGrayChannelDAIs));
-
-            if (selectChannel != null)
-            {
-                //create select (dropdown) element object 
-                var selectElement = new SelectElement(selectChannel);
-                //select by value
-                //selectElement.SelectByValue("1");
-                // select by text (Canal CINZA)
-                selectElement.SelectByText("CINZA");
-            }
-
-            IWebElement searchButton = null;
-            try
-            {
-                searchButton = this._driver.FindElementById("btPesq");
-                searchButton.Click();
-
-                noDAI = CheckForNoDAI();
-                if (!noDAI)
-                    this.DownloadDAILacre();
-            }
-            catch (NoSuchElementException ex)
-            {                
-                Log(ex.Message, nameof(SearchGrayChannelDAIs));                
-            }
-
-            bool CheckForNoDAI()
-            {
-                ReadOnlyCollection<IWebElement> elements;
-
-                try
-                {
-                    elements = this._driver.FindElements(By.TagName("b"));
-
-                    foreach (IWebElement element in elements)
-                    {
-                        if (element.Text.Contains("Nenhuma DAI Encontrada"))
-                        {
-                            Log("Nenhuma DAI Encontrada", nameof(SearchGrayChannelDAIs) + " -> " + nameof(CheckForNoDAI));
-                            return true;
-                        }
-                    }
-                }
-                catch (NoSuchElementException ex)
-                {
-                    Log(ex.Message, nameof(SearchGrayChannelDAIs));
-                }
-
-                return false;
-            }
-        }
+        //}        
 
         protected void GenerateExcelFile()
         {
@@ -282,6 +221,9 @@ namespace P2E.Automacao.TomarCiencia.Lib
             // para os clientes Samsung e Ventisol
         }        
 
+        /// <summary>
+        /// Salva o arquivo de Lacre como PDF.
+        /// </summary>
         protected void DownloadDAILacre()
         {
             ReadOnlyCollection<IWebElement> elements;
@@ -311,12 +253,18 @@ namespace P2E.Automacao.TomarCiencia.Lib
             // Registrar o processo na base de dados
         }
 
+        /// <summary>
+        /// Principal método do Robô. Aqui a sessão para cada Inscrição Estadual é estabelecida
+        /// ao acessar a "_urlInscriçao"
+        /// </summary>
         protected void Main()
         {
+            // Talvez esse passo de acesso a esta URL nem seja mais necessário.
             this._driver.Navigate().GoToUrl(_urlPrincipal);
 
             int paginaInicial = 1;
             int numeroPaginas;
+            List<DAI> listaDAIProcessadas = new List<DAI>();
 
             foreach (Empresa empresa in this.ListaEmpresas)
             {
@@ -330,7 +278,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     // Segue diretamente à listagem das DAI's da Inscrição Estadual
                     // selecionada no passo anterior
                     this._driver.Navigate().GoToUrl(this._urlConsultaDI + paginaInicial);
-                    Thread.Sleep(10000);
+                    Thread.Sleep(5000);
 
                     // Captura o total de páginas da listagem de DAI's da Inscrição Estadual atual
                     string totalPaginas = this._driver.FindElement(By.XPath("/html/body/table[1]/tbody/tr/td/table/tbody/tr/td[3]")).Text;
@@ -343,15 +291,20 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     for (int pag = 1; pag < numeroPaginas; pag++)
                     {
                         ReadOnlyCollection<IWebElement> listaDAIs = this._driver.FindElements(By.CssSelector("a[onclick^='tomarCiencia']"));
-                        for (int i = 1; i < listaDAIs.Count; i++)
+                        for (int i = 1; i < listaDAIs.Count; i++) 
                         {
                             string numeroDAI = this._driver.FindElement(By.XPath("/html/body/table[2]/tbody/tr[i]/td[1]")).Text;
                             DAI processo = new DAI();
 
+                            // Dispara o evento "onclick" do link que, por sua vez, exibe um "alert" para 
+                            // confirmação da operação.
                             new Actions(this._driver).MoveToElement(listaDAIs[i]).Click().Perform();
+                            // Verifica se o Alert está sendo exibido (tenho minhas dúvidas sobre a eficácia disso)
                             if (isAlertPresent())
                             {
+                                // Captura o texto do Alert apenas para propósitos de debug.
                                 string alertText = this._driver.SwitchTo().Alert().Text;
+                                // Confirma a operação clicando no botão OK do Alert.
                                 this._driver.SwitchTo().Alert().Accept();
                             }                            
                         }
