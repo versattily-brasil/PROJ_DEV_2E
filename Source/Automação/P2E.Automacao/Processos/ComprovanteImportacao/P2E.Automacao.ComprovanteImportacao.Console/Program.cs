@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.ComprovanteImportacao.Console
+namespace P2E.Automacao.Processos.ComprovanteImportacao.Console
 {
     class Program
     {
@@ -12,7 +12,7 @@ namespace P2E.Automacao.ComprovanteImportacao.Console
         {
             try
             {
-                var lib = new P2E.Automacao.ComprovanteImportacao.Lib.Work();
+                var lib = new P2E.Automacao.Processos.ComprovanteImportacao.Lib.Work();
                 await lib.ExecutarAsync();
             }
             catch (Exception ex)

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
+using P2E.Automacao.ComprovanteImportacao.Lib;
 using P2E.Automacao.ComprovanteImportacao.Lib.Entities;
 using P2E.Automacao.Shared.Extensions;
 using System;
@@ -10,7 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.ComprovanteImportacao.Lib
+namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 {
     public class Work
     {

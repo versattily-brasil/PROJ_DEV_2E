@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.ComprovanteImportacao.Lib
+namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 {
     public class P2EWebClient : WebClient
     {

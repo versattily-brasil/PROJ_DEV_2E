@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P2E.Automacao.BaixarExtratos.Lib
@@ -21,7 +22,8 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         public string _urlSite = "https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
         public string _urlConsultaDI = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do";
         public string _urlDownloadPDF = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ExtratoDI.do";//?nrDeclaracao=19/0983204-0&consulta=true";
-        public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do";
+        //public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do";
+        public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?nrDeclaracao=19%2F0983204-0&consulta=true";
         private string _urlApiBase;
         private List<TBImportacao> registros;
 
@@ -29,8 +31,8 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         public Work()
         {
             Console.WriteLine("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
-            _urlApiBase = "http://localhost:7000/";
-            //_urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+            //_urlApiBase = "http://localhost:7000/";
+            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
 
         }
 
@@ -97,19 +99,29 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             //obtendo o campo de numero de declaração.
             IWebElement element = _driver.FindElementById("nrDeclaracao");
 
-            //inserindo o numero da declaração.
+            Console.WriteLine("inserindo o numero da declaração");
             element.SendKeys(numero);
 
-            element = _driver.FindElement(By.Name("enviar"));
+            Console.WriteLine("Acionando o Click no enviar.");
+            Thread.Sleep(2000);
 
+            element = _driver.FindElement(By.Name("enviar"));
+            Thread.Sleep(1000);
             element.Click();
+
+            Thread.Sleep(2000);
 
             //indo para a página de consulta de declaração de importação.
             _driver.FindElement(By.Id("btnRegistrarDI")).Click();
 
+            Thread.Sleep(2000);
+
             string numeroDec = numero.Substring(0, 2) + "%2F" +
                             numero.Substring(2, 7) + "-" +
                             numero.Substring(9, 1);
+
+            Console.WriteLine("Baixando o Extrato - PDF.");
+            Thread.Sleep(2000);
 
             DownloadExtrato(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
 
@@ -148,7 +160,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
                 {
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
-
+                    Thread.Sleep(2000);
                     myWebClient.DownloadFile(_url, arquivoPath);
                 }
 

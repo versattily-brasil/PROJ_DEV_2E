@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using static P2E.Automacao.AcompanharDespachos.Lib.Entities.Importacao;
 
-namespace P2E.Automacao.AcompanharDespachos.Lib
+namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 {
     public class Work
     {
@@ -27,7 +27,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
         {
             Console.WriteLine("#####################  INICIALIZANDO - ACOMPANHAMENTO DE DESPACHO  ##################### ");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
-            //_urlApiBase = "http://localhost:7000/";
         }
 
         public async Task ExecutarAsync()
@@ -104,10 +103,14 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             numDeclaracao.Substring(2, 7) + "-" +
                             numDeclaracao.Substring(9, 1);
 
-            // clica no link contendo o ...
-            element = _driver.FindElementByPartialLinkText(Numero);
-            element.Click();
+            try
+            {
+                // clica no link contendo o ...
+                element = _driver.FindElementByPartialLinkText(Numero);
+                element.Click();
 
+            }catch (Exception){}
+            
             //localiza o status do despacho
             element = _driver.FindElementByCssSelector("#tr_" + numDeclaracao + " > td:nth-child(2)");
             var status = element.Text;
@@ -221,26 +224,11 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
 
                     break;
 
-                case "EM DESEMBARACO":
+                case "DI AGUARDANDO PARAMETRIZACAO":
 
-                    switch (corStatus)
-                    {
-                        case "Verde":
+                    import.CD_IMP_CANAL = 0;
 
-                            import.CD_IMP_CANAL = 1;
-
-                            break;
-
-                        case "Vermelho":
-
-                            import.CD_IMP_CANAL = 3;
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    import.CD_IMP_STATUS = 4;
+                    import.CD_IMP_STATUS = 2;
                     Console.WriteLine("ATUALIZANDO HISTORICO...");
                     await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
@@ -393,7 +381,14 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                     element.Click();
 
                     //ESCOLHE A NOVA JANELA ABERTA COM O CLIQUE
-                    _driver.SwitchTo().Window(_driver.WindowHandles[1]);
+                    try
+                    {   
+                        _driver.SwitchTo().Window(_driver.WindowHandles[2]);
+                    }
+                    catch (Exception)
+                    {  
+                        _driver.SwitchTo().Window(_driver.WindowHandles[1]);
+                    }
 
                     element = _driver.FindElementByCssSelector("#box > div > div > textarea");
                     var motivo = element.Text;
@@ -459,11 +454,6 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                         var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/historico/{0}", historico);
 
                         resultadoHist.EnsureSuccessStatusCode();
-
-                        if (resultadoHist.IsSuccessStatusCode)
-                        {
-
-                        }
                     }
                 }
             }
@@ -503,10 +493,7 @@ namespace P2E.Automacao.AcompanharDespachos.Lib
                             var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/vistoria/{imp}", vistoriaImp);
 
                             resultadoHist.EnsureSuccessStatusCode();
-                            if (resultadoHist.IsSuccessStatusCode)
-                            {
-
-                            }
+                            
                         }
                     }
                 }
