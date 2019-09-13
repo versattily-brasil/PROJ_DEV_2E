@@ -21,12 +21,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
         public string fiscal = string.Empty;
         public string dossie, dataDossie = string.Empty;
         private string _urlApiBase;
-        public List<TBImportacao> registros;
-        Historico historicoImp = new Historico();
-        Vistoria vistoriaImp = new Vistoria();
-        public int i;
-        Thread threadConsulta;
-
+        private List<TBImportacao> registros;
         #endregion
 
         public Work()
@@ -38,46 +33,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
         public async Task ExecutarAsync()
         {
             Console.WriteLine("Obtendo DI's para exoneração.");
-            threadConsulta = new Thread(() => ThreadConsultaDI());
             await CarregarListaDIAsync();
-        }
-
-        public void ThreadConsultaDI()
-        {
-            using (var service = PhantomJSDriverService.CreateDefaultService())
-            {
-                Console.WriteLine("CARREGANDO O CERTIFICADO...");
-                ControleCertificados.CarregarCertificado(service);
-
-                service.AddArgument("test-type");
-                service.AddArgument("no-sandbox");
-                service.HideCommandPromptWindow = true;
-
-                using (var _driver = new PhantomJSDriver(service))
-                {
-                    try
-                    {
-                        //ACESSANDO PAGINA PRINCIPAL
-                        _driver.Navigate().GoToUrl(_urlSite);
-
-                        int count = registros.Count();
-
-                        for (i = 0; i < count; i++)
-                        {
-                            if (registros[i].TX_NUM_DEC.Trim().Length == 10 && registros[i].CD_IMP_CANAL != 1 && registros[i].CD_IMP_STATUS != 11)
-                            {
-                                Console.WriteLine("################## DI: " + registros[i].TX_NUM_DEC + " ##################");
-
-                                var aux = Acessar(registros[i], registros[i].TX_NUM_DEC, registros[i].CD_IMP.ToString(), _driver);
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        _driver.Close();
-                    }
-                }
-            }
         }
 
         private async Task CarregarListaDIAsync()
@@ -86,13 +42,54 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
             using (var client = new HttpClient())
             {
+                Historico historicoImp = new Historico();
+                Vistoria vistoriaImp = new Vistoria();
+
                 Console.WriteLine("ABRINDO CONEXAO...");
                 var result = await client.GetAsync(urlAcompanha);
                 registros = await result.Content.ReadAsAsync<List<TBImportacao>>();
 
                 if (registros != null && registros.Any())
-                {   
-                    threadConsulta.Start();                   
+                {
+                    using (var service = PhantomJSDriverService.CreateDefaultService())
+                    {
+                        Console.WriteLine("CARREGANDO O CERTIFICADO...");
+                        ControleCertificados.CarregarCertificado(service);
+
+                        service.AddArgument("test-type");
+                        service.AddArgument("no-sandbox");
+                        service.HideCommandPromptWindow = true;
+
+                        using (var _driver = new PhantomJSDriver(service))
+                        {
+                            //ACESSANDO PAGINA PRINCIPAL
+                            _driver.Navigate().GoToUrl(_urlSite);
+
+                            foreach (var di in registros)
+                            {
+                                //FILTRANDO O STATUS DA DI. TAMANHO 10/ CANAL VERDE == 1 / DESEMBARAÇADA == 11
+                                if (di.TX_NUM_DEC.Trim().Length == 10 && di.CD_IMP_CANAL != 1 && di.CD_IMP_STATUS != 11)
+                                {
+                                    Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
+
+                                    List<Thread> threads = new List<Thread>();
+
+                                    var thread = new Thread(() => Acessar(di, di.TX_NUM_DEC, di.CD_IMP.ToString(), historicoImp, vistoriaImp, _driver));
+                                    thread.Start();
+                                    threads.Add(thread);
+
+                                    // fica aguardnado todas as threads terminarem...
+                                    while (threads.Any(t => t.IsAlive))
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+
+                        }
+
+                        Console.ReadKey();
+                    }
                 }
                 else
                 {
@@ -101,7 +98,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
             }
         }
 
-        private async Task Acessar(TBImportacao import, string numero, string cd_imp, PhantomJSDriver _driver)
+        private async Task Acessar(TBImportacao import, string numero, string cd_imp, Historico historicoImp, Vistoria vistoriaImp, PhantomJSDriver _driver)
         {
             var numDeclaracao = numero;
 
@@ -126,7 +123,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                 element.Click();
 
             }
-            catch (Exception e) { }
+            catch (Exception) { }
 
             //localiza o status do despacho
             element = _driver.FindElementByCssSelector("#tr_" + numDeclaracao + " > td:nth-child(2)");
