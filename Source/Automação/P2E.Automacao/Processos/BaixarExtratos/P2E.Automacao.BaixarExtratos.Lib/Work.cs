@@ -66,6 +66,11 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                         using (var _driver = new PhantomJSDriver(service))
                         {
+                            //navega para primeira url.
+                            //onde é realizado o login através do certificado.
+                            _driver.Navigate().GoToUrl(_urlSite);
+                            Console.WriteLine(_driver.Url);
+
                             foreach (var di in registros)
                             {
                                 Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
@@ -86,10 +91,10 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             Console.WriteLine("Inciando processo de navegação...");
 
-            //navega para primeira url.
-            //onde é realizado o login através do certificado.
-            _driver.Navigate().GoToUrl(_urlSite);
-            Console.WriteLine(_driver.Url);
+            ////navega para primeira url.
+            ////onde é realizado o login através do certificado.
+            //_driver.Navigate().GoToUrl(_urlSite);
+            //Console.WriteLine(_driver.Url);
 
             //Navega para seguinda url.
             //página da consulta DI.
@@ -103,25 +108,25 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             element.SendKeys(numero);
 
             Console.WriteLine("Acionando o Click no enviar.");
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
             element = _driver.FindElement(By.Name("enviar"));
             Thread.Sleep(1000);
             element.Click();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
             //indo para a página de consulta de declaração de importação.
             _driver.FindElement(By.Id("btnRegistrarDI")).Click();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
             string numeroDec = numero.Substring(0, 2) + "%2F" +
                             numero.Substring(2, 7) + "-" +
                             numero.Substring(9, 1);
 
             Console.WriteLine("Baixando o Extrato - PDF.");
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
             DownloadExtrato(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
 
@@ -160,7 +165,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
                 {
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
                     myWebClient.DownloadFile(_url, arquivoPath);
                 }
 
