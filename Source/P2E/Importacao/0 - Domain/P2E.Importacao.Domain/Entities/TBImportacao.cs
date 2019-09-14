@@ -24,7 +24,9 @@ namespace P2E.Importacao.Domain.Entities
                             DateTime dt_data_canal,
                             DateTime dt_data_distr,
                             string tx_dossie,
-                            DateTime dt_data_doss)
+                            DateTime dt_data_doss,
+                            int op_extrato_pdf,
+                            int op_extrato_xml)
         {
 
             NUM_PI = num_pi;
@@ -38,6 +40,8 @@ namespace P2E.Importacao.Domain.Entities
             DT_DATA_DISTR = dt_data_distr;
             TX_DOSSIE = tx_dossie;
             DT_DATA_DOSS = dt_data_doss;
+            OP_EXTRATO_PDF = op_extrato_pdf;
+            OP_EXTRATO_XML = op_extrato_xml;
         }
 
         [Key]
@@ -56,5 +60,7 @@ namespace P2E.Importacao.Domain.Entities
         public DateTime DT_DATA_DOSS { get; set; }
         public DateTime? DT_DATA_EXO_ICMS { get; set; }
         public string UF_DI { get; set; }
+        public int OP_EXTRATO_PDF { get; set; }
+        public int OP_EXTRATO_XML { get; set; }
     }
 }

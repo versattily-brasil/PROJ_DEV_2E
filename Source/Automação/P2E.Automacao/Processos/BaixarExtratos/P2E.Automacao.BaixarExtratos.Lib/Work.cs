@@ -22,7 +22,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         public string _urlSite = "https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
         public string _urlConsultaDI = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do";
         public string _urlDownloadPDF = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ExtratoDI.do";//?nrDeclaracao=19/0983204-0&consulta=true";
-        //public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do";
+        //public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?";
         public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?nrDeclaracao=19%2F0983204-0&consulta=true";
         private string _urlApiBase;
         private List<TBImportacao> registros;
@@ -71,11 +71,24 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                             _driver.Navigate().GoToUrl(_urlSite);
                             Console.WriteLine(_driver.Url);
 
+                            //_driver.Navigate().GoToUrl(_urlConsultaDI);
+                            //Console.WriteLine(_driver.Url);
+
                             foreach (var di in registros)
                             {
                                 Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
 
-                                Acessar(di.TX_NUM_DEC, _driver);
+                                List<Thread> threads = new List<Thread>();
+
+                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
+                                thread.Start();
+                                threads.Add(thread);
+
+                                // fica aguardnado todas as threads terminarem...
+                                while (threads.Any(t => t.IsAlive))
+                                {
+                                    continue;
+                                }
                             }
                         }
                     }
@@ -87,58 +100,101 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
         }
 
-        private async Task Acessar(string numero, PhantomJSDriver _driver)
+        private async Task Acessar(string numero, PhantomJSDriver _driver, TBImportacao import, string cd_imp)
         {
-            Console.WriteLine("Inciando processo de navegação...");
+            try
+            {
+                Console.WriteLine("Inciando processo de navegação...");
 
-            ////navega para primeira url.
-            ////onde é realizado o login através do certificado.
-            //_driver.Navigate().GoToUrl(_urlSite);
-            //Console.WriteLine(_driver.Url);
+                ////navega para primeira url.
+                ////onde é realizado o login através do certificado.
+                //_driver.Navigate().GoToUrl(_urlSite);
+                //Console.WriteLine(_driver.Url);
 
-            //Navega para seguinda url.
-            //página da consulta DI.
-            _driver.Navigate().GoToUrl(_urlConsultaDI);
-            Console.WriteLine(_driver.Url);
+                //Navega para seguinda url.
+                //página da consulta DI.
+                _driver.Navigate().GoToUrl(_urlConsultaDI);
+                Console.WriteLine(_driver.Url);
 
-            //obtendo o campo de numero de declaração.
-            IWebElement element = _driver.FindElementById("nrDeclaracao");
+                //obtendo o campo de numero de declaração.
+                IWebElement element = _driver.FindElementById("nrDeclaracao");
 
-            Console.WriteLine("inserindo o numero da declaração");
-            element.SendKeys(numero);
+                Console.WriteLine("inserindo o numero da declaração");
+                element.SendKeys(numero);
 
-            Console.WriteLine("Acionando o Click no enviar.");
-            Thread.Sleep(1000);
+                Console.WriteLine("Acionando o Click no enviar.");
+                Thread.Sleep(1000);
 
-            element = _driver.FindElement(By.Name("enviar"));
-            Thread.Sleep(1000);
-            element.Click();
+                element = _driver.FindElement(By.Name("enviar"));
+                Thread.Sleep(1000);
+                element.Click();
 
-            Thread.Sleep(1000);
+                Thread.Sleep(1000);
 
-            //indo para a página de consulta de declaração de importação.
-            _driver.FindElement(By.Id("btnRegistrarDI")).Click();
+                //indo para a página de consulta de declaração de importação.
+                _driver.FindElement(By.Id("btnRegistrarDI")).Click();
 
-            Thread.Sleep(1000);
+                Thread.Sleep(1000);
 
-            string numeroDec = numero.Substring(0, 2) + "%2F" +
-                            numero.Substring(2, 7) + "-" +
-                            numero.Substring(9, 1);
+                string numeroDec = numero.Substring(0, 2) + "%2F" +
+                                numero.Substring(2, 7) + "-" +
+                                numero.Substring(9, 1);
 
-            Console.WriteLine("Baixando o Extrato - PDF.");
-            Thread.Sleep(1000);
+                Console.WriteLine("Baixando o Extrato - PDF.");
+                Thread.Sleep(1000);
 
-            DownloadExtrato(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
+                var returnoPDF = DownloadExtratoPDF(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
 
-            //Console.ReadKey();
+                import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;                
+
+                await AtualizaExtratoPDF(import, cd_imp);
+            }
+            catch (Exception e)
+            {
+                _driver.Close();
+            }
         }
 
-        /// <summary>
-        /// Verifica se o diretório existe.
-        /// </summary>
-        protected void AvaliarDiretorio()
+        private async Task AtualizaExtratoPDF(TBImportacao import, string cd_imp)
         {
+            try
+            {
+                HttpResponseMessage resultado;
 
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_urlApiBase);
+                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/extrato-pdf/{cd_imp}", import);
+                    resultado.EnsureSuccessStatusCode();
+
+                    Console.WriteLine("Registro salvo com sucesso.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
+            }
+        }
+
+        private async Task AtualizaExtratoXML(TBImportacao import, string cd_imp)
+        {
+            try
+            {
+                HttpResponseMessage resultado;
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_urlApiBase);
+                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/extrato-xml/{cd_imp}", import);
+                    resultado.EnsureSuccessStatusCode();
+
+                    Console.WriteLine("Registro salvo com sucesso.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
+            }
         }
 
         /// <summary>
@@ -146,7 +202,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         /// </summary>
         /// <param name="driver"></param>
         /// <returns></returns>
-        protected bool DownloadExtrato(PhantomJSDriver driver, string _url)
+        protected bool DownloadExtratoPDF(PhantomJSDriver driver, string _url)
         {
             try
             {

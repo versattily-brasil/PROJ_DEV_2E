@@ -18,10 +18,11 @@ namespace P2E.SSO.Domain.Entities
             //IsValid();
         }
         
-        public ParceiroNegocio(string tXT_RZSOC, string cNPJ)
+        public ParceiroNegocio(string tXT_RZSOC, string cNPJ, string tx_email)
         {
             TXT_RZSOC = tXT_RZSOC?.Trim();
             CNPJ = cNPJ?.Trim();
+            TX_EMAIL = tx_email;
 
             IsValid();
         }
@@ -33,6 +34,7 @@ namespace P2E.SSO.Domain.Entities
         public string TXT_RZSOC { get; set; }
         //public Document CNPJ { get; set; }
         public string CNPJ { get; set; }
+        public string TX_EMAIL { get; set; }
 
         public bool IsValid()
         {

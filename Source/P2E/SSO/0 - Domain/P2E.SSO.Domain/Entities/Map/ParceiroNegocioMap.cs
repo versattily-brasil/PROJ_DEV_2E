@@ -14,6 +14,7 @@ namespace P2E.SSO.Domain.Entities.Map
             Map(p => p.CD_PAR).Column("CD_PAR").Key(KeyType.Identity);
             Map(p => p.CNPJ).Column("CNPJ");
             Map(p => p.TXT_RZSOC).Column("TXT_RZSOC");
+            Map(p => p.TX_EMAIL).Column("TX_EMAIL");
         }
     }
 }
