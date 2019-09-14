@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using static P2E.Automacao.AcompanharDespachos.Lib.Entities.Importacao;
 
@@ -61,6 +62,9 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                         using (var _driver = new PhantomJSDriver(service))
                         {
+                            //ACESSANDO PAGINA PRINCIPAL
+                            _driver.Navigate().GoToUrl(_urlSite);
+
                             foreach (var di in registros)
                             {
                                 //FILTRANDO O STATUS DA DI. TAMANHO 10/ CANAL VERDE == 1 / DESEMBARAÇADA == 11
@@ -68,9 +72,20 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                                 {
                                     Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
 
-                                    Acessar(di, di.TX_NUM_DEC, di.CD_IMP.ToString(), historicoImp, vistoriaImp, _driver);
+                                    List<Thread> threads = new List<Thread>();
+
+                                    var thread = new Thread(() => Acessar(di, di.TX_NUM_DEC, di.CD_IMP.ToString(), historicoImp, vistoriaImp, _driver));
+                                    thread.Start();
+                                    threads.Add(thread);
+
+                                    // fica aguardnado todas as threads terminarem...
+                                    while (threads.Any(t => t.IsAlive))
+                                    {
+                                        continue;
+                                    }
                                 }
                             }
+
                         }
 
                         Console.ReadKey();
@@ -87,8 +102,6 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
         {
             var numDeclaracao = numero;
 
-            //ACESSANDO PAGINA PRINCIPAL
-            _driver.Navigate().GoToUrl(_urlSite);
             //PAGINA DE CONSULTA
             _driver.Navigate().GoToUrl(urlAcompanhaDespacho);
 
@@ -109,8 +122,9 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                 element = _driver.FindElementByPartialLinkText(Numero);
                 element.Click();
 
-            }catch (Exception){}
-            
+            }
+            catch (Exception) { }
+
             //localiza o status do despacho
             element = _driver.FindElementByCssSelector("#tr_" + numDeclaracao + " > td:nth-child(2)");
             var status = element.Text;
@@ -382,15 +396,16 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                     //ESCOLHE A NOVA JANELA ABERTA COM O CLIQUE
                     try
-                    {   
+                    {
                         _driver.SwitchTo().Window(_driver.WindowHandles[2]);
+                        element = _driver.FindElementByCssSelector("#box > div > div > textarea");
                     }
-                    catch (Exception)
-                    {  
+                    catch (Exception e)
+                    {
                         _driver.SwitchTo().Window(_driver.WindowHandles[1]);
+                        element = _driver.FindElementByXPath("//*[@id='box']/div/div/textarea");
                     }
 
-                    element = _driver.FindElementByCssSelector("#box > div > div > textarea");
                     var motivo = element.Text;
 
                     //salva vistoria
@@ -493,7 +508,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                             var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/vistoria/{imp}", vistoriaImp);
 
                             resultadoHist.EnsureSuccessStatusCode();
-                            
+
                         }
                     }
                 }
