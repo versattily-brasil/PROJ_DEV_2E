@@ -280,9 +280,20 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     this._driver.Navigate().GoToUrl(this._urlConsultaDI + paginaInicial);
                     Thread.Sleep(5000);
 
-                    // Captura o total de páginas da listagem de DAI's da Inscrição Estadual atual
-                    string totalPaginas = this._driver.FindElement(By.XPath("/html/body/table[1]/tbody/tr/td/table/tbody/tr/td[3]")).Text;
-                    numeroPaginas = Convert.ToInt32(totalPaginas.Substring(totalPaginas.LastIndexOf('/') + 1).Trim());
+                    string totalPaginas = "0";
+
+                    try
+                    {
+                        // Captura o total de páginas da listagem de DAI's da Inscrição Estadual atual
+                        totalPaginas = this._driver.FindElement(By.XPath("/html/body/table[1]/tbody/tr/td/table/tbody/tr/td[3]")).Text;
+                        numeroPaginas = Convert.ToInt32(totalPaginas.Substring(totalPaginas.LastIndexOf('/') + 1).Trim());
+                    }
+                    catch (Exception)
+                    {
+                        numeroPaginas = 0;
+                        string mensagem = this._driver.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/b")).Text;
+                        Log("######" + mensagem + "######");
+                    }
 
                     // Coluna onde o link "[Tomar Ciência] é exibido.
                     //ReadOnlyCollection<IWebElement> listaDAIs = this._driver.FindElements(By.XPath("/html/body/table[2]/tbody/tr/td[5]/a"));
