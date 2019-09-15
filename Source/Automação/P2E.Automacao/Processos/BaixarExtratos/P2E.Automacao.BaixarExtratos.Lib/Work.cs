@@ -55,7 +55,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 if (registros != null && registros.Any())
                 {
-                    using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+                    using (var service =   PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                     {
                         Console.WriteLine("CARREGANDO O CERTIFICADO...");
                         ControleCertificados.CarregarCertificado(service);
