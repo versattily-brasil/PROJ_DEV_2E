@@ -29,19 +29,10 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/Importacao/baixarextrato
         [HttpGet]
-        [Route("api/v1/importacao/extrato-pdf")]
+        [Route("api/v1/importacao/extrato-pdf-xml")]
         public IEnumerable<TBImportacao> ExtratoPdf()
         {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_PDF == 0);
-            return result;
-        }
-
-        // GET: api/Importacao/baixarextrato
-        [HttpGet]
-        [Route("api/v1/importacao/extrato-xml")]
-        public IEnumerable<TBImportacao> ExtratoXml()
-        {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_XML == 0);
+            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_PDF == 0 || p.OP_EXTRATO_XML == 0);
             return result;
         }
 

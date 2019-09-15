@@ -44,7 +44,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
         private async Task CarregarListaDIAsync()
         {
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/todos";
+            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/extrato-pdf-xml";
 
             using (var client = new HttpClient())
             {
@@ -65,14 +65,9 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                         service.HideCommandPromptWindow = true;
 
                         using (var _driver = new PhantomJSDriver(service))
-                        {
-                            //navega para primeira url.
-                            //onde é realizado o login através do certificado.
+                        {   
                             _driver.Navigate().GoToUrl(_urlSite);
                             Console.WriteLine(_driver.Url);
-
-                            //_driver.Navigate().GoToUrl(_urlConsultaDI);
-                            //Console.WriteLine(_driver.Url);
 
                             foreach (var di in registros)
                             {
@@ -147,7 +142,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;                
 
-                await AtualizaExtratoPDF(import, cd_imp);
+                await AtualizaExtratoPdfXml(import, cd_imp);
             }
             catch (Exception e)
             {
@@ -155,7 +150,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
         }
 
-        private async Task AtualizaExtratoPDF(TBImportacao import, string cd_imp)
+        private async Task AtualizaExtratoPdfXml(TBImportacao import, string cd_imp)
         {
             try
             {
@@ -164,28 +159,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(_urlApiBase);
-                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/extrato-pdf/{cd_imp}", import);
-                    resultado.EnsureSuccessStatusCode();
-
-                    Console.WriteLine("Registro salvo com sucesso.");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
-            }
-        }
-
-        private async Task AtualizaExtratoXML(TBImportacao import, string cd_imp)
-        {
-            try
-            {
-                HttpResponseMessage resultado;
-
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(_urlApiBase);
-                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/extrato-xml/{cd_imp}", import);
+                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
                     resultado.EnsureSuccessStatusCode();
 
                     Console.WriteLine("Registro salvo com sucesso.");
