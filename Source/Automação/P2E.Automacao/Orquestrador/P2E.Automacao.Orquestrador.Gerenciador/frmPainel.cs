@@ -108,17 +108,18 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 {
                     var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
 
-                    agendaBotBindingSource.DataSource = null;
-                    agendaBotBindingSource.DataSource = agendaSelecionada.Bots;
+                    bsAgendaBots.DataSource = null;
+                    bsAgendaBots.DataSource = agendaSelecionada.Bots.ToList();
+
                 }
                 else
                 {
-                    agendaBotBindingSource.DataSource = null;
+                    bsAgendaBots.DataSource = null;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -155,7 +156,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 }
                 else
                 {
-                    agendaBotBindingSource.DataSource = null;
+                    //bsAgendaBots.DataSource = null;
                 }
             }
             catch (Exception)
@@ -180,8 +181,8 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
                 this.Invoke((MethodInvoker)delegate ()
                 {
-                    botExecLogBindingSource.DataSource = null;
-                    botExecLogBindingSource.DataSource = registros.OrderBy(p => p.DT_DATAHORA_REG);
+                    //botExecLogBindingSource.DataSource = null;
+                    //botExecLogBindingSource.DataSource = registros.OrderBy(p => p.DT_DATAHORA_REG);
                 });
             }
         }

@@ -16,14 +16,14 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public int NR_ORDEM_EXEC { get; set; }
         public string TX_PARAM_EXEC { get; set; }
         public eStatusExec CD_ULTIMO_STATUS_EXEC_BOT { get; set; }
-        public int CD_ULTIMA_EXEC_BOT { get; set; }
+        public int? CD_ULTIMA_EXEC_BOT { get; set; }
 
         public Agenda Agenda { get; set; }
         public Bot Bot { get; set; }
 
-        [NotMapped]
-        public String NomeBot { get { return Bot?.TX_NOME; }}
-        [NotMapped]
+        ////[NotMapped]
+        public String NomeBot { get { return Bot?.TX_NOME; } }
+        ////[NotMapped]
         public String DescBot { get { return Bot?.TX_DESCRICAO; } }
 
         public eStatusExec Status { get; set; }
