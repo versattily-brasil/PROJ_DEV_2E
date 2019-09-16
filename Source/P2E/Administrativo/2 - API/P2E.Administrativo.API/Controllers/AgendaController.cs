@@ -67,26 +67,52 @@ namespace P2E.Administrativo.API.Controllers
             {
                 //var dataPlan = new DateTime();
 
-                var dataPlan = DateTime.ParseExact(data, "dd-MM-yyyy", null);
+                var dataProg = DateTime.ParseExact(data, "dd-MM-yyyy", null);
 
-                var Agendas = _AgendaRepository.FindAll(p => p.DT_DATA_EXEC_PLAN == dataPlan);
+                var Agendas = _AgendaRepository.FindAll(p => p.DT_DATA_EXEC_PROG == dataProg);
 
                 foreach (var agenda in Agendas)
                 {
                     agenda.Bots = _AgendaBotRepository.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA);
+
+                    var ultimaAgendaExec = _AgendaExecRepository.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA).OrderByDescending(p => p.CD_AGENDA_EXEC).FirstOrDefault();
+
+                    if (ultimaAgendaExec != null)
+                    {
+                        agenda.CD_ULTIMA_EXEC = ultimaAgendaExec?.CD_AGENDA_EXEC;
+                        agenda.OP_ULTIMO_STATUS_EXEC = ultimaAgendaExec.OP_STATUS_AGENDA_EXEC;
+                    }
+                    else {
+                        agenda.OP_ULTIMO_STATUS_EXEC = eStatusExec.Nao_Programado;
+                    }
 
                     if (agenda.Bots != null)
                     {
                         foreach (var bot in agenda.Bots)
                         {
                             bot.Bot = _BotRepository.Find(p => p.CD_BOT == bot.CD_BOT);
+
+                            var ultimoBotExec = _BotExecRepository.FindAll(p => p.CD_AGENDA_EXEC == agenda.CD_ULTIMA_EXEC && p.CD_BOT == bot.CD_BOT).FirstOrDefault();
+                            if (ultimoBotExec != null)
+                            {
+                                bot.CD_ULTIMA_EXEC_BOT = ultimoBotExec?.CD_BOT_EXEC;
+                                bot.CD_ULTIMO_STATUS_EXEC_BOT = (int)ultimoBotExec.OP_STATUS_BOT_EXEC;
+                            }
+                            else {
+                                bot.CD_ULTIMO_STATUS_EXEC_BOT = (int)eStatusExec.Nao_Programado;
+                            }
                         }
                     }
+
+                    // obtem a execução programada
+                    agenda.AgendaProgramada = _AgendaExecRepository.Find(
+                        p => p.CD_AGENDA == agenda.CD_AGENDA 
+                        && (p.OP_STATUS_AGENDA_EXEC == eStatusExec.Aguardando_Processamento || p.OP_STATUS_AGENDA_EXEC == eStatusExec.Programado));
                 }
 
                 return Agendas;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }
@@ -96,16 +122,16 @@ namespace P2E.Administrativo.API.Controllers
         // GET: api/Agenda/5
         [HttpGet]
         [Route("api/v1/Agenda/altera-status/{id}/{status}")]
-        public IActionResult AlteraStatus(int id, int status)
+        public IActionResult AlterarStatus(int id, int status)
         {
             try
             {
                 // recupera a agenda
                 var agenda = _AgendaRepository.Find(p => p.CD_AGENDA == id);
-                agenda.OP_ULTIMO_STATUS = (eStatusExec)status;
+                agenda.OP_ULTIMO_STATUS_EXEC = (eStatusExec)status;
 
                 //se o novo status == programado, agenda uma execução dos robos associados a agenda.
-                if (agenda.OP_ULTIMO_STATUS == eStatusExec.Programado)
+                if (agenda.OP_ULTIMO_STATUS_EXEC == eStatusExec.Programado)
                 {
                     // cria agendaExec
                     var agendaExec = new AgendaExec()
@@ -118,6 +144,8 @@ namespace P2E.Administrativo.API.Controllers
                     RegistrarLogAgenda(eTipoLog.MSG, $"Agenda '{agenda.TX_DESCRICAO}' programada.", agendaExec.CD_AGENDA_EXEC);
                     RegistrarLogAgenda(eTipoLog.MSG, $"Programando Bots.", agendaExec.CD_AGENDA_EXEC);
 
+                    agenda.CD_ULTIMA_EXEC = agendaExec.CD_AGENDA_EXEC;
+
                     var bots = _AgendaBotRepository.FindAll(p => p.CD_AGENDA == id);
                     if (bots != null)
                     {
@@ -127,11 +155,12 @@ namespace P2E.Administrativo.API.Controllers
                                 CD_AGENDA_EXEC = agendaExec.CD_AGENDA_EXEC,
                                 CD_BOT = bot.CD_BOT,
                                 NR_ORDEM_EXEC = bot.NR_ORDEM_EXEC,
-                                OP_STATUS_BOT_EXEC = eStatusExec.Aguardando_Processamento
+                                OP_STATUS_BOT_EXEC = eStatusExec.Aguardando_Processamento,
+                                Bot = _BotRepository.Find(p=> p.CD_BOT == bot.CD_BOT)
                             };
 
                             _BotExecRepository.Insert(botExec);
-                            RegistrarLogBot(eTipoLog.MSG, $"Bot '{bot.TX_PARAM_EXEC}' programado e aguardando execução.", botExec.CD_BOT_EXEC);
+                            RegistrarLogBot(eTipoLog.MSG, $"Bot '{bot.Bot.TX_DESCRICAO}' programado e aguardando execução.", botExec.CD_BOT_EXEC);
                         }
 
                         agendaExec.OP_STATUS_AGENDA_EXEC = eStatusExec.Aguardando_Processamento;
@@ -144,9 +173,9 @@ namespace P2E.Administrativo.API.Controllers
 
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

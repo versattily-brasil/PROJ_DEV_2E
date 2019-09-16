@@ -15,6 +15,8 @@ namespace P2E.Administrativo.Domain.Entities.Map
             Map(p => p.CD_AGENDA_EXEC).Column("CD_AGENDA_EXEC");
             Map(p => p.OP_TIPO_LOG).Column("OP_TIPO_LOG");
             Map(p => p.TX_MENSAGEM).Column("TX_MENSAGEM");
+            Map(p => p.DT_DATAHORA_REG).Column("DT_DATAHORA_REG");
+
         }
     }
 }

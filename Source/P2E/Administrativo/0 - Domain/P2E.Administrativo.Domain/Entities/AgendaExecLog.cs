@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace P2E.Administrativo.Domain.Entities
 {
-    [Table("TB_AGENDA_EXEC")]
+    [Table("TB_AGENDA_EXEC_LOG")]
     public class AgendaExecLog : CustomNotifiable
     {
         [Key]
@@ -20,5 +20,7 @@ namespace P2E.Administrativo.Domain.Entities
         public eTipoLog OP_TIPO_LOG { get; set; }
         public string TX_MENSAGEM { get; set; }
         public int CD_AGENDA_EXEC { get; set; }
+        public DateTime DT_DATAHORA_REG { get; set; }
+
     }
 }

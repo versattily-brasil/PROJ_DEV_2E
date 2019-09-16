@@ -25,9 +25,12 @@ namespace P2E.Automacao.Orquestrador.Lib
 
             foreach (var agenda in Agendas)
             {
-                if (agenda.OP_STATUS == Util.Enum.eStatusExec.Pendente)
+                if (agenda.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento)
                 {
+                    foreach (var item in agenda.Bots)
+                    {
 
+                    }
                 }
             }
         }

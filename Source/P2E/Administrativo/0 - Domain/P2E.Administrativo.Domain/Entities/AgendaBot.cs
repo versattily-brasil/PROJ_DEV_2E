@@ -21,6 +21,9 @@ namespace P2E.Administrativo.Domain.Entities
         public int NR_ORDEM_EXEC { get; set; }
         public string TX_PARAM_EXEC { get; set; }
 
+        public int CD_ULTIMO_STATUS_EXEC_BOT { get; set; }
+        public int? CD_ULTIMA_EXEC_BOT { get; set; }
+
         public Agenda Agenda { get; set; }
         public Bot Bot { get; set; }
     }
