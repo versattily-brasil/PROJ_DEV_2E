@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace P2E.Automacao.Gerenciador
+namespace P2E.Automacao.Orquestrador.Gerenciador
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace P2E.Automacao.Gerenciador
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmPrincipal());
+            Application.Run(new frmPainel());
         }
     }
 }

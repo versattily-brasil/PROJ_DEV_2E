@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace P2E.Automacao.Orquestrador.Lib.Util.Enum
 {
-    public enum eTipoExecucao
+    public enum eTipoRepete
     {
-        Automatico,
-        Manual
+        Horario,
+        Diario,
+        Semanal,
+        Mensal
     }
 }

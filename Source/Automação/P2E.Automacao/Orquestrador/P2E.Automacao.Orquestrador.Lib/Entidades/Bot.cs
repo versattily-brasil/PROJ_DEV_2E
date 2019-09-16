@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace P2E.Automacao.Orquestrador.Lib.Entidades
 {
-    public class Processo
+    public class Bot
     {
-        public int CD_PROCESSO { get; set; }
+        public int CD_BOT { get; set; }
         public string TX_NOME { get; set; }
+        public string TX_DESCRICAO { get; set; }
+        public int OP_ATIVO { get; set; }
     }
 }

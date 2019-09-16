@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gerenciador", "Gerenciador", "{DF8CD0B8-840E-490E-9A4B-D83F7727159D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Processos", "Processos", "{B65861C8-40F2-490B-B5B1-F5E382E4C4BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BaixarExtratos", "BaixarExtratos", "{3D22EFB5-605D-43FC-85B6-115CAC55EBB0}"
@@ -41,8 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Shared", "P2E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.TomarCiencia.Console", "Processos\TomarCiencia\P2E.Automacao.TomarCiencia.Console\P2E.Automacao.TomarCiencia.Console.csproj", "{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Gerenciador", "Gerenciador\P2E.Automacao.Gerenciador\P2E.Automacao.Gerenciador.csproj", "{EACB8289-1C49-4A6A-9394-F80623AC4006}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ComprovanteImportacao", "ComprovanteImportacao", "{D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExonerarICMS", "ExonerarICMS", "{D3D677D3-DE81-4D06-A04E-0DF8FE68710F}"
@@ -54,6 +50,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ComprovanteImportacao.Lib", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj", "{F268CFE9-9338-4739-A4CB-0F458585CC38}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ComprovanteImportacao.Console", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Console\P2E.Automacao.ComprovanteImportacao.Console.csproj", "{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Orquestrador.Lib", "Orquestrador\P2E.Automacao.Orquestrador.Lib\P2E.Automacao.Orquestrador.Lib.csproj", "{527117A2-F7BC-43AA-9178-5675028E8167}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orquestrador", "Orquestrador", "{D65F6265-FD32-45E0-B8FE-A222D32BE6AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Orquestrador.Gerenciador", "Orquestrador\P2E.Automacao.Orquestrador.Gerenciador\P2E.Automacao.Orquestrador.Gerenciador.csproj", "{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,10 +107,6 @@ Global
 		{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EACB8289-1C49-4A6A-9394-F80623AC4006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EACB8289-1C49-4A6A-9394-F80623AC4006}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EACB8289-1C49-4A6A-9394-F80623AC4006}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EACB8289-1C49-4A6A-9394-F80623AC4006}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58BBA388-7451-4CB2-92EB-75FB08830AFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58BBA388-7451-4CB2-92EB-75FB08830AFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58BBA388-7451-4CB2-92EB-75FB08830AFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -125,6 +123,14 @@ Global
 		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{527117A2-F7BC-43AA-9178-5675028E8167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527117A2-F7BC-43AA-9178-5675028E8167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527117A2-F7BC-43AA-9178-5675028E8167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527117A2-F7BC-43AA-9178-5675028E8167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,13 +152,14 @@ Global
 		{B636F0EE-9ADB-4A78-9562-40AB057CE927} = {DD342039-5134-4B8A-BC63-CE42392FE7BA}
 		{D05AD0B7-5353-49D3-9351-9079657B20CF} = {30FDDBAD-F129-4F9B-944D-2934DE2B1E58}
 		{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8} = {DD342039-5134-4B8A-BC63-CE42392FE7BA}
-		{EACB8289-1C49-4A6A-9394-F80623AC4006} = {DF8CD0B8-840E-490E-9A4B-D83F7727159D}
 		{D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E} = {B65861C8-40F2-490B-B5B1-F5E382E4C4BD}
 		{D3D677D3-DE81-4D06-A04E-0DF8FE68710F} = {B65861C8-40F2-490B-B5B1-F5E382E4C4BD}
 		{58BBA388-7451-4CB2-92EB-75FB08830AFD} = {D3D677D3-DE81-4D06-A04E-0DF8FE68710F}
 		{3E7F5C1A-259E-4A18-9D75-A07ECFB9902A} = {D3D677D3-DE81-4D06-A04E-0DF8FE68710F}
 		{F268CFE9-9338-4739-A4CB-0F458585CC38} = {D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}
 		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A} = {D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}
+		{527117A2-F7BC-43AA-9178-5675028E8167} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
+		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E02BF6DF-AE47-425E-A0E6-4B3FE6ACBCD3}

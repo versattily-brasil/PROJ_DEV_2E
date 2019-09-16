@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace P2E.Automacao.Gerenciador.Properties
+namespace P2E.Automacao.Orquestrador.Gerenciador.Properties
 {
 
 

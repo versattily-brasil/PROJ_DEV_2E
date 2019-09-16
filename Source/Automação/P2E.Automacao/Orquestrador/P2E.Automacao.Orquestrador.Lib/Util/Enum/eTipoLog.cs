@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace P2E.Automacao.Orquestrador.Lib.Util.Enum
 {
-    public enum eStatusAgendamento
+    public enum eTipoLog
     {
-        Pendente,
-        Executado_Com_Sucesso,
-        Executado_Com_Erro
+        MSG,
+        ERRO
     }
 }

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("P2E.Automacao.Gerenciador")]
+[assembly: AssemblyTitle("P2E.Automacao.Orquestrador.Gerenciador")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("P2E.Automacao.Gerenciador")]
+[assembly: AssemblyProduct("P2E.Automacao.Orquestrador.Gerenciador")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("eacb8289-1c49-4a6a-9394-f80623ac4006")]
+[assembly: Guid("0c419b24-95e3-4384-bd7a-4de3e9f4143e")]
 
 // Version information for an assembly consists of the following four values:
 //
