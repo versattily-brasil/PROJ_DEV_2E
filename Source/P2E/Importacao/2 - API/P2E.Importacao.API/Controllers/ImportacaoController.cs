@@ -27,6 +27,15 @@ namespace P2E.Importacao.API.Controllers
             return result;
         }
 
+        // GET: api/Importacao/baixarextrato
+        [HttpGet]
+        [Route("api/v1/importacao/extrato-pdf-xml")]
+        public IEnumerable<TBImportacao> ExtratoPdf()
+        {
+            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_PDF == 0 || p.OP_EXTRATO_XML == 0);
+            return result;
+        }
+
         /// <summary>
         /// Obtem uma lista de DI's que ainda não passaram pelo processo de exoneração de ICMS
         /// </summary>

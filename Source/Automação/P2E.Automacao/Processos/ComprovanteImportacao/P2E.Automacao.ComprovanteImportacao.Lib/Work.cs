@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
@@ -66,7 +67,17 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                             {
                                 Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
 
-                                Acessar( di.TX_NUM_DEC, _driver);
+                                List<Thread> threads = new List<Thread>();
+
+                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver));
+                                thread.Start();
+                                threads.Add(thread);
+
+                                // fica aguardnado todas as threads terminarem...
+                                while (threads.Any(t => t.IsAlive))
+                                {
+                                    continue;
+                                }
                             }
 
                             Console.ReadKey();

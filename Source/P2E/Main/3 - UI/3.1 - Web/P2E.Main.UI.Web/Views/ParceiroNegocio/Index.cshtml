@@ -50,7 +50,8 @@
 
                             <div class="col-md-6">
                                 <input type="text" asp-for="razaosocial" class="form-control" placeholder="Razão Social" />
-                            </div>
+                            </div>                            
+
                             <div class="col-md-2">
                                 <button class="btn btn-default" type="submit"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
                             </div>
@@ -85,6 +86,7 @@
                                         @*<th>Código</th>*@
                                         <th>Razão Social</th>
                                         <th>CNPJ</th>
+                                        <th>Email</th>
                                         <th width="20"></th>
                                     </tr>
                                 </thead>
@@ -95,6 +97,7 @@
                                             @*<td>@item.CD_PAR</td>*@
                                             <td>@item.TXT_RZSOC</td>
                                             <td>@item.CNPJ</td>
+                                            <td>@item.TX_EMAIL</td>
                                             @*<td class="text-center">
                                                     <i data-id="@item.CD_PAR"
                                                        data-controller="ParceiroNegocio"

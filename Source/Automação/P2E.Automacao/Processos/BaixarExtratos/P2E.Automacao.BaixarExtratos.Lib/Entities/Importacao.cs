@@ -20,5 +20,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib.Entities
         public DateTime DT_DATA_DISTR { get; set; }
         public string TX_DOSSIE { get; set; }
         public DateTime DT_DATA_DOSS { get; set; }
+        public int OP_EXTRATO_PDF { get; set; }
+        public int OP_EXTRATO_XML { get; set; }
     }
 }
