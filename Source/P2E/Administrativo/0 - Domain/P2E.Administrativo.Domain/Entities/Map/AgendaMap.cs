@@ -1,0 +1,26 @@
+﻿using DapperExtensions.Mapper;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace P2E.Administrativo.Domain.Entities.Map
+{
+    public class AgendaMap : ClassMapper<Agenda>
+    {
+        public AgendaMap()
+        {
+            Table("TB_AGENDA");
+
+            Map(p => p.CD_AGENDA).Column("CD_AGENDA").Key(KeyType.Identity);
+            Map(p => p.DT_DATA_EXEC_PLAN).Column("DT_DATA_EXEC_PLAN");
+            Map(p => p.DT_DATA_ULTIMA_EXEC).Column("DT_DATA_ULTIMA_EXEC");
+            Map(p => p.HR_HORA_EXEC_PLAN).Column("HR_HORA_EXEC_PLAN");
+            Map(p => p.OP_ATIVO).Column("OP_ATIVO");
+            Map(p => p.OP_FORMA_EXEC).Column("OP_FORMA_EXEC");
+            Map(p => p.OP_REPETE).Column("OP_REPETE");
+            Map(p => p.OP_TIPO_REP).Column("OP_TIPO_REP");
+            Map(p => p.OP_ULTIMO_STATUS).Column("OP_ULTIMO_STATUS");
+            Map(p => p.TX_DESCRICAO).Column("TX_DESCRICAO");
+        }
+    }
+}

@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace P2E.Administrativo.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class ValuesController : ControllerBase
     {
         // GET api/values

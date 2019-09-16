@@ -1,31 +1,45 @@
 {
   "ReRoutes": [
-// IMP  
-  {
-	  "DownstreamPathTemplate": "/api/{version}/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-            {
-                "Host": "localhost",
-                "Port": "7009",
-            }
-        ],
-    "UpstreamPathTemplate": "/imp/{version}/{everything}",
-    "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
-},
-// SSO  
-  {
+
+    // ADM  
+    {
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-            {
-                "Host": "localhost",
-                "Port": "7010",
-            }
-        ],
-    "UpstreamPathTemplate": "/sso/{version}/{everything}",
-    "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
-}
+        {
+          "Host": "localhost",
+          "Port": "7008"
+        }
+      ],
+      "UpstreamPathTemplate": "/adm/{version}/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    // IMP  
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7009"
+        }
+      ],
+      "UpstreamPathTemplate": "/imp/{version}/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    // SSO  
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "7010"
+        }
+      ],
+      "UpstreamPathTemplate": "/sso/{version}/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    }
   ],
  "GlobalConfiguration": {
     "BaseUrl" :  "localhost:7000"

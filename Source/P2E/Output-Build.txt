@@ -1,0 +1,9 @@
+﻿1>------ Rebuild All started: Project: P2E.Shared, Configuration: Debug Any CPU ------
+1>P2E.Shared -> C:\Projetos\Versattily\P2E\Source\P2E\Shared\P2E.Shared\bin\Debug\netcoreapp2.2\P2E.Shared.dll
+2>------ Skipped Rebuild All: Project: P2E.Administrativo.Domain, Configuration: Debug Any CPU ------
+2>Project not selected to build for this solution configuration 
+3>------ Rebuild All started: Project: P2E.Administrativo.Infra.Data, Configuration: Debug Any CPU ------
+3>C:\Projetos\Versattily\P2E\Source\P2E\Administrativo\1 - Infra\1.1 - Data\P2E.Administrativo.Infra.Data\P2E.Administrativo.Infra.Data.csproj : warning NU1701: Package 'DapperExtensions 1.6.3' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.
+3>P2E.Administrativo.Infra.Data -> C:\Projetos\Versattily\P2E\Source\P2E\Administrativo\1 - Infra\1.1 - Data\P2E.Administrativo.Infra.Data\bin\Debug\netcoreapp2.2\P2E.Administrativo.Infra.Data.dll
+3>Done building project "P2E.Administrativo.Infra.Data.csproj".
+========== Rebuild All: 2 succeeded, 0 failed, 1 skipped ==========

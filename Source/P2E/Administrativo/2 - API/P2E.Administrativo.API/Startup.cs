@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using P2E.Administrativo.Domain.Repositories;
+using P2E.Administrativo.Infra.Data.DataContext;
+using P2E.Administrativo.Infra.Data.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace P2E.Administrativo.API
@@ -26,16 +29,34 @@ namespace P2E.Administrativo.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddControllersAsServices();
+            services.AddMvc().ConfigureApiBehaviorOptions(o =>
+            {
+                o.InvalidModelStateResponseFactory = context =>
+                {
+                    var error = new
+                    {
+                        Detail = "Custom error"
+                    };
+
+                    return new BadRequestObjectResult(error);
+                };
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "P2E [Administrativo-API]", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "P2E [Administração-API]", Version = "v1" });
             });
 
-            //services.AddScoped<MainContext, MainContext>();
-            //services.AddTransient<IExemploRepository, ExemploRepository>();
+            services.AddScoped<AdmContext, AdmContext>();
+            services.AddTransient<IAgendaRepository, AgendaRepository>();
+            services.AddTransient<IAgendaExecRepository, AgendaExecRepository>();
+            services.AddTransient<IAgendaExecLogRepository, AgendaExecLogRepository>();
+            services.AddTransient<IAgendaBotRepository, AgendaBotRepository>();
+            services.AddTransient<IBotRepository, BotRepository>();
+            services.AddTransient<IBotExecRepository, BotExecRepository>();
+            services.AddTransient<IBotExecLogRepository, BotExecLogRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,29 +65,15 @@ namespace P2E.Administrativo.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-
-
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "P2E Administrativo - API V1");
-                c.RoutePrefix = "api/docs";
-                c.DocumentTitle = "P2E Administrativo - API";
-            });
-
             app.UseMvc();
-
         }
     }
 }
