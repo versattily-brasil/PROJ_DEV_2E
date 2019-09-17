@@ -35,6 +35,7 @@
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -78,6 +79,20 @@
     <Folder Include="bin\Debug\" />
     <Folder Include="bin\Release\" />
     <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Processos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib\P2E.Automacao.AcompanharDespachos.Lib.csproj">
+      <Project>{c98d07c3-081f-48a5-bdf5-e245406d6c73}</Project>
+      <Name>P2E.Automacao.AcompanharDespachos.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib\P2E.Automacao.BaixarExtratos.Lib.csproj">
+      <Project>{9341da1a-1311-4517-b6ff-967885e5f509}</Project>
+      <Name>P2E.Automacao.BaixarExtratos.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj">
+      <Project>{f268cfe9-9338-4739-a4cb-0f458585cc38}</Project>
+      <Name>P2E.Automacao.ComprovanteImportacao.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

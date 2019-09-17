@@ -1,4 +1,5 @@
 ﻿using P2E.Automacao.Orquestrador.Lib.Entidades;
+using P2E.Automacao.Orquestrador.Lib.Util.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,24 +23,26 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        private void BtnExecutarAgenda_Click(object sender, EventArgs e)
+        private async void BtnExecutarAgenda_Click(object sender, EventArgs e)
         {
             if (gvAgendamentos.SelectedRows.Count > 0)
             {
                 var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
-                   
+                agendaSelecionada.OP_ULTIMO_STATUS_EXEC = eStatusExec.Programado;
                 // programar agenda exec
+                await ExecutarAgendaAsync(agendaSelecionada);
 
-                // programar bot exe
-                
-            // alterar o campo ultimo status de exe para AGUARDANDO PROCESSAMENTO
+                if (!bgwConsultar.IsBusy)
+                {
+                    bgwConsultar.RunWorkerAsync();
+                    btnConsultar.Enabled = false;
+                }
             }
             else
             {
                 MessageBox.Show("Nenhum registro selecionado.");
             }
         }
-
 
         private void BtnConsultar_Click(object sender, EventArgs e)
         {
@@ -78,14 +81,24 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 this.Invoke((MethodInvoker)delegate ()
                 {
                     agendaBindingSource.DataSource = null;
-                    agendaBindingSource.DataSource = registros.OrderByDescending(p => p.DT_DATA_EXEC_PLAN);
+                    if(registros != null)
+                    agendaBindingSource.DataSource = registros.OrderByDescending(p => p.DT_DATA_EXEC_PROG);
                 });
             }
         }
 
-        private void BgwConsultar_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private async Task ExecutarAgendaAsync(Agenda agenda)
         {
+            barraProgresso.Style = ProgressBarStyle.Marquee;
+            // monta url para api de importação.
+            string url = _urlApiBase + $"adm/v1/agenda/altera-status/{agenda.CD_AGENDA}/{(int)agenda.OP_ULTIMO_STATUS_EXEC}";
 
+            // realiza a requisição para a api de importação
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(url);
+                barraProgresso.Style = ProgressBarStyle.Blocks;
+            }
         }
 
         private void BgwConsultar_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -96,62 +109,88 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
         private void GvAgendamentos_SelectionChanged(object sender, EventArgs e)
         {
-            if (gvAgendamentos.SelectedRows.Count > 0)
+            try
             {
-                var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
+                if (gvAgendamentos.SelectedRows.Count > 0)
+                {
+                    var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
 
-                agendaBotBindingSource.DataSource = null;
-                agendaBotBindingSource.DataSource = agendaSelecionada.Bots;
+                    bsAgendaBots.DataSource = null;
+                    bsAgendaBots.DataSource = agendaSelecionada.Bots.ToList();
+
+                }
+                else
+                {
+                    bsAgendaBots.DataSource = null;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                agendaBotBindingSource.DataSource = null;
+                MessageBox.Show(ex.Message);
             }
-        }
-
-        private void GvAgendaBots_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
-        {
-          
-        }
-
-        private void Panel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void GvAgendaBots_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
-        {
-            if (e.ColumnIndex == 2)
-            {
-                var bot = (AgendaBot)gvAgendaBots.SelectedRows[0].DataBoundItem;
-                e.Value = bot.Bot.TX_DESCRICAO;
-            }
-        }
-
-        private void GvAgendaBots_BindingContextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void GvAgendaBots_ColumnDefaultCellStyleChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            if (e.Column.Name.Contains("colBotDesc"))
-            {
-                var bot = (AgendaBot)gvAgendaBots.SelectedRows[0].DataBoundItem;
-               
-            }
-        }
-
-        private void GvAgendaBots_CellStyleChanged(object sender, DataGridViewCellEventArgs e)
-        {
         }
 
         private void GvAgendaBots_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex == 7 && e.RowIndex >= 0)
+            try
             {
-                var bot = (AgendaBot)gvAgendaBots.Rows[e.RowIndex]?.DataBoundItem;
-                gvAgendaBots.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = bot.Bot.TX_DESCRICAO;
+                if (e.ColumnIndex == 7 && e.RowIndex >= 0)
+                {
+                    var bot = (AgendaBot)gvAgendaBots.Rows[e.RowIndex]?.DataBoundItem;
+                    gvAgendaBots.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = bot.Bot.TX_DESCRICAO;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        
+
+        private void GvAgendaBots_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (gvAgendaBots.SelectedRows.Count > 0)
+                {
+                    var selecionado = (AgendaBot)gvAgendaBots.SelectedRows[0].DataBoundItem;
+                    if (selecionado != null && selecionado.CD_ULTIMA_EXEC_BOT > 0)
+                    {
+                        CarregarBotExecLog(selecionado);
+                    }
+                }
+                else
+                {
+                    bsBotExecLog.DataSource = null;
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private async void CarregarBotExecLog(AgendaBot selecionado)
+        {
+
+            // monta url para api.
+            string url = _urlApiBase + $"adm/v1/BotExecLog/{selecionado.CD_ULTIMA_EXEC_BOT}";
+
+            // realiza a requisição para a api
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(url);
+
+                // recupera os registros.
+                var registros = await result.Content.ReadAsAsync<List<BotExecLog>>();
+
+
+                this.Invoke((MethodInvoker)delegate ()
+                {
+                    bsBotExecLog.DataSource = null;
+                    bsBotExecLog.DataSource = registros.OrderBy(p => p.DT_DATAHORA_REG);
+                });
             }
         }
     }

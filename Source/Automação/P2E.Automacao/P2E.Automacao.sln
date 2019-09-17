@@ -57,6 +57,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orquestrador", "Orquestrado
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Orquestrador.Gerenciador", "Orquestrador\P2E.Automacao.Orquestrador.Gerenciador\P2E.Automacao.Orquestrador.Gerenciador.csproj", "{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Orquestrador.Console", "Orquestrador\P2E.Automacao.Orquestrador.Console\P2E.Automacao.Orquestrador.Console.csproj", "{EC7C339F-40FB-4893-8CA8-B997CF249129}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,10 @@ Global
 		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC7C339F-40FB-4893-8CA8-B997CF249129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC7C339F-40FB-4893-8CA8-B997CF249129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC7C339F-40FB-4893-8CA8-B997CF249129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC7C339F-40FB-4893-8CA8-B997CF249129}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,6 +166,7 @@ Global
 		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A} = {D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}
 		{527117A2-F7BC-43AA-9178-5675028E8167} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
 		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
+		{EC7C339F-40FB-4893-8CA8-B997CF249129} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E02BF6DF-AE47-425E-A0E6-4B3FE6ACBCD3}

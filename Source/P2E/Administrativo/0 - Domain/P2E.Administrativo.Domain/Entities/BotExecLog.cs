@@ -20,5 +20,6 @@ namespace P2E.Administrativo.Domain.Entities
         public eTipoLog OP_TIPO_LOG { get; set; }
         public string TX_MENSAGEM { get; set; }
         public int CD_BOT_EXEC { get; set; }
+        public DateTime DT_DATAHORA_REG { get; set; }
     }
 }

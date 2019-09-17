@@ -18,7 +18,7 @@ namespace P2E.Administrativo.Domain.Entities
         [Identity]
         public int CD_AGENDA_EXEC { get; set; }
         public int CD_AGENDA { get; set; }
-        public DateTime DT_INICIO_EXEC { get; set; }
+        public DateTime? DT_INICIO_EXEC { get; set; }
         public DateTime? DT_FIM_EXEC { get; set; }
         public eStatusExec OP_STATUS_AGENDA_EXEC { get; set; }
     }
