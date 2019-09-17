@@ -23,7 +23,44 @@ namespace P2E.Automacao.Orquestrador.Lib
         {
             Console.WriteLine("==================================ORQUESTRADOR====================================================");
             Console.WriteLine("Iniciando Monitoramento");
-            await Task.Factory.StartNew((p) => { return MonitorarBots(); }, TaskCreationOptions.LongRunning);
+
+
+            while (true)
+            {
+                try
+                {
+                    string data = DateTime.Today.ToString("dd-MM-yyyy", null);
+                    // monta url para api de importação.
+                    string url = _urlApiBase + $"adm/v1/agenda/por-data/{data}";
+
+                    // realiza a requisição para a api
+                    using (var client = new HttpClient())
+                    {
+                        var result = await client.GetAsync(url);
+
+                        // recupera os registros.
+                        Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
+
+                        if ((Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento).Any()))
+                        {
+                            Console.WriteLine($"Agendamento(s) Localizados, iniciando processamento.");
+                        }
+
+                        Parallel.ForEach(Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento), async reg =>
+                        {
+                            await ControlarAgenda(reg);
+
+                        });
+
+                        Thread.Sleep(10000);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            }
         }
 
         public async Task<object> MonitorarBots()
@@ -31,14 +68,7 @@ namespace P2E.Automacao.Orquestrador.Lib
 
             while (true)
             {
-                // obter agenda do dia ou com data não preenchida com status ativo != 0
-                await CarregarAgendasAsync();
-
-                //foreach (var agenda in Agendas.Where(p=> p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento))
-                //{
-                //    await ControlarAgenda(agenda);
-                //}
-
+            
                 if ((Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento).Any()))
                 {
                     Console.WriteLine($"Agendamento(s) Localizados, iniciando processamento.");
@@ -97,17 +127,25 @@ namespace P2E.Automacao.Orquestrador.Lib
 
         private async Task CarregarAgendasAsync()
         {
-            string data = DateTime.Today.ToString("dd-MM-yyyy", null);
-            // monta url para api de importação.
-            string url = _urlApiBase + $"adm/v1/agenda/por-data/{data}";
-
-            // realiza a requisição para a api
-            using (var client = new HttpClient())
+            try
             {
-                var result = await client.GetAsync(url);
+                string data = DateTime.Today.ToString("dd-MM-yyyy", null);
+                // monta url para api de importação.
+                string url = _urlApiBase + $"adm/v1/agenda/por-data/{data}";
 
-                // recupera os registros.
-                Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
+                // realiza a requisição para a api
+                using (var client = new HttpClient())
+                {
+                    var result = await client.GetAsync(url);
+
+                    // recupera os registros.
+                    Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
 

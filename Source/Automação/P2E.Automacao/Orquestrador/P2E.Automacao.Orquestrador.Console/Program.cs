@@ -10,8 +10,8 @@ namespace P2E.Automacao.Orquestrador.Console
     {
         static async Task Main(string[] args)
         {
-            var work = new P2E.Automacao.Orquestrador.Lib.Work();
-            await work.ExecutarAsync();
+            await new Lib.Work().ExecutarAsync();
+            
         }
     }
 }
