@@ -24,5 +24,8 @@ namespace P2E.Administrativo.Domain.Entities
 
         public AgendaExec AgendaExec { get; set; }
         public Bot Bot { get; set; }
+
+        public DateTime? DT_INICIO_EXEC { get; set; }
+        public DateTime? DT_FIM_EXEC { get; set; }
     }
 }

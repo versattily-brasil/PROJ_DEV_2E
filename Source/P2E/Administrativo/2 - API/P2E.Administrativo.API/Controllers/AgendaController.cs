@@ -151,12 +151,13 @@ namespace P2E.Administrativo.API.Controllers
                     {
                         foreach (var bot in bots)
                         {
-                            var botExec = new BotExec() {
+                            var botExec = new BotExec()
+                            {
                                 CD_AGENDA_EXEC = agendaExec.CD_AGENDA_EXEC,
                                 CD_BOT = bot.CD_BOT,
                                 NR_ORDEM_EXEC = bot.NR_ORDEM_EXEC,
                                 OP_STATUS_BOT_EXEC = eStatusExec.Aguardando_Processamento,
-                                Bot = _BotRepository.Find(p=> p.CD_BOT == bot.CD_BOT)
+                                Bot = _BotRepository.Find(p => p.CD_BOT == bot.CD_BOT)
                             };
 
                             _BotExecRepository.Insert(botExec);
@@ -168,9 +169,86 @@ namespace P2E.Administrativo.API.Controllers
                         RegistrarLogAgenda(eTipoLog.MSG, $"Agenda '{agenda.TX_DESCRICAO}' aguardando execução.", agendaExec.CD_AGENDA_EXEC);
                     }
                 }
+                else
+                {
+                    var agendaExec = _AgendaExecRepository.Find(p=> p.CD_AGENDA_EXEC == agenda.CD_ULTIMA_EXEC);
+                    agendaExec.OP_STATUS_AGENDA_EXEC = agenda.OP_ULTIMO_STATUS_EXEC;
+
+                    RegistrarLogAgenda(eTipoLog.MSG, $"Agenda '{agenda.TX_DESCRICAO}' alterada status para {agenda.OP_ULTIMO_STATUS_EXEC}.", agendaExec.CD_AGENDA_EXEC);
+
+                    if (agendaExec.OP_STATUS_AGENDA_EXEC == eStatusExec.Executando)
+                    {
+                        agendaExec.DT_INICIO_EXEC = DateTime.Now;
+                        RegistrarLogAgenda(eTipoLog.MSG, $"Processamento da agenda iniciado em {agendaExec.DT_FIM_EXEC}.", agendaExec.CD_AGENDA_EXEC);
+                    }
+
+                    if (agendaExec.OP_STATUS_AGENDA_EXEC == eStatusExec.Falha || agendaExec.OP_STATUS_AGENDA_EXEC == eStatusExec.Conclúído)
+                    {
+                        agendaExec.DT_FIM_EXEC = DateTime.Now;
+                        RegistrarLogAgenda(eTipoLog.MSG, $"Processamento da agenda finalizado em {agendaExec.DT_FIM_EXEC}.", agendaExec.CD_AGENDA_EXEC);
+                    }
+
+                    _AgendaExecRepository.Update(agendaExec);
+
+                    //var botsExec = _BotExecRepository.FindAll(p => p.CD_AGENDA_EXEC == agendaExec.CD_AGENDA_EXEC);
+                    //if (botsExec != null)
+                    //{
+                    //    foreach (var item in botsExec)
+                    //    {
+                    //        item.OP_STATUS_BOT_EXEC = agendaExec.OP_STATUS_AGENDA_EXEC;
+                    //        RegistrarLogAgenda(eTipoLog.MSG, $"alterado status para {item.OP_STATUS_BOT_EXEC}.", item.CD_BOT_EXEC);
+
+                    //        if (item.OP_STATUS_BOT_EXEC == eStatusExec.Executando)
+                    //        {
+                    //            item.DT_INICIO_EXEC = DateTime.Now;
+                    //            RegistrarLogAgenda(eTipoLog.MSG, $"Processamento do bot iniciado em {item.DT_INICIO_EXEC}.", item.CD_BOT_EXEC);
+                    //        }
+
+                    //        if(item.OP_STATUS_BOT_EXEC == eStatusExec.Falha || item.OP_STATUS_BOT_EXEC == eStatusExec.Conclúído)
+                    //        {
+                    //            item.DT_FIM_EXEC = DateTime.Now;
+                    //            RegistrarLogAgenda(eTipoLog.MSG, $"Processamento do bot finalizado em {item.DT_FIM_EXEC}.", item.CD_BOT_EXEC);
+                    //        }
+
+                    //        _BotExecRepository.Update(item);
+                    //    }
+                    //}
+                }
 
                 _AgendaRepository.Update(agenda);
 
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // GET: api/Agenda/5
+        [HttpGet]
+        [Route("api/v1/Agenda/altera-status-bot/{id}/{status}")]
+        public IActionResult AlterarStatusBot(int id, int status)
+        {
+            try
+            {
+                var botExec = _BotExecRepository.Find(p => p.CD_BOT_EXEC == id);
+                botExec.OP_STATUS_BOT_EXEC = (eStatusExec)status;
+                RegistrarLogAgenda(eTipoLog.MSG, $"alterado status para {botExec.OP_STATUS_BOT_EXEC}.", botExec.CD_BOT_EXEC);
+
+                if (botExec.OP_STATUS_BOT_EXEC == eStatusExec.Executando)
+                {
+                    botExec.DT_INICIO_EXEC = DateTime.Now;
+                    RegistrarLogAgenda(eTipoLog.MSG, $"Processamento do bot iniciado em {botExec.DT_INICIO_EXEC}.", botExec.CD_BOT_EXEC);
+                }
+
+                if (botExec.OP_STATUS_BOT_EXEC == eStatusExec.Falha || botExec.OP_STATUS_BOT_EXEC == eStatusExec.Conclúído)
+                {
+                    botExec.DT_FIM_EXEC = DateTime.Now;
+                    RegistrarLogAgenda(eTipoLog.MSG, $"Processamento do bot finalizado em {botExec.DT_FIM_EXEC}.", botExec.CD_BOT_EXEC);
+                }
+
+                _BotExecRepository.Update(botExec);
                 return Ok();
             }
             catch (Exception ex)

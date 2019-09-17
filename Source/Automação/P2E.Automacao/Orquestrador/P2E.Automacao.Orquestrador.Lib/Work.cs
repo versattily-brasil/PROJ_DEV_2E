@@ -44,13 +44,17 @@ namespace P2E.Automacao.Orquestrador.Lib
                         if ((Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento).Any()))
                         {
                             Console.WriteLine($"Agendamento(s) Localizados, iniciando processamento.");
+
+                            Parallel.ForEach(Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento), async reg =>
+                            {
+                                await ControlarAgenda(reg);
+
+                            });
                         }
-
-                        Parallel.ForEach(Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento), async reg =>
+                        else
                         {
-                            await ControlarAgenda(reg);
-
-                        });
+                            Console.WriteLine($"Nenhum Agendamento encontrado para ser processado.");
+                        }
 
                         Thread.Sleep(10000);
                     }
@@ -162,7 +166,7 @@ namespace P2E.Automacao.Orquestrador.Lib
 
         private async Task AlteraStatusBotAsync(AgendaBot bot)
         {
-            string url = _urlApiBase + $"adm/v1/agendabot/altera-status/{bot.CD_ULTIMA_EXEC_BOT}/{(int)bot.CD_ULTIMO_STATUS_EXEC_BOT}";
+            string url = _urlApiBase + $"adm/v1/agenda/altera-status-bot/{bot.CD_ULTIMA_EXEC_BOT}/{(int)bot.CD_ULTIMO_STATUS_EXEC_BOT}";
 
             // realiza a requisição para a api de importação
             using (var client = new HttpClient())

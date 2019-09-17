@@ -17,5 +17,8 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
 
         public AgendaExec AgendaExec { get; set; }
         public Bot Bot { get; set; }
+
+        public DateTime? DT_INICIO_EXEC { get; set; }
+        public DateTime? DT_FIM_EXEC { get; set; }
     }
 }
