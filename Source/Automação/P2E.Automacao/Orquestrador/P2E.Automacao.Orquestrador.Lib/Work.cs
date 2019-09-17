@@ -67,26 +67,6 @@ namespace P2E.Automacao.Orquestrador.Lib
             }
         }
 
-        public async Task<object> MonitorarBots()
-        {
-
-            while (true)
-            {
-            
-                if ((Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento).Any()))
-                {
-                    Console.WriteLine($"Agendamento(s) Localizados, iniciando processamento.");
-                }
-
-                Parallel.ForEach(Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento), async reg =>
-                {
-                    await ControlarAgenda(reg);
-
-                });
-
-                Thread.Sleep(10000);
-            }
-        }
 
         private async Task ControlarAgenda(Agenda agenda)
         {
@@ -96,6 +76,8 @@ namespace P2E.Automacao.Orquestrador.Lib
 
             foreach (var item in agenda.Bots)
             {
+                //var botExec = ObterBotExec(item);
+
                 item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Executando;
                 await AlteraStatusBotAsync(item);
 
@@ -127,7 +109,28 @@ namespace P2E.Automacao.Orquestrador.Lib
                         break;
                 }
             }
+
+            agenda.OP_ULTIMO_STATUS_EXEC = Util.Enum.eStatusExec.Conclúído;
+
+            await AlteraStatusAgendaAsync(agenda);
         }
+
+        //private object ObterBotExec(AgendaBot item)
+        //{
+        //    string data = DateTime.Today.ToString("dd-MM-yyyy", null);
+        //    // monta url para api de importação.
+        //    string url = _urlApiBase + $"api/v1/BotExec/ultmo-exec/{item.cd}/{item.CD_BOT}";
+
+        //    // realiza a requisição para a api
+        //    using (var client = new HttpClient())
+        //    {
+        //        var result = await client.GetAsync(url);
+
+        //        // recupera os registros.
+        //        Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
+        //    }
+
+        //}
 
         private async Task CarregarAgendasAsync()
         {

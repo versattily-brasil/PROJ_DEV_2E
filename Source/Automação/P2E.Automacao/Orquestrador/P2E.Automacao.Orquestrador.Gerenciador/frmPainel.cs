@@ -67,7 +67,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         private async Task ConsultarAsync()
         {
             // monta url para api de importação.
-            string url = _urlApiBase + $"adm/v1/agenda/por-data/{txtData.Value.ToString("dd-MM-yyyy")}";
+            string url = _urlApiBase + $"adm/v1/agenda/por-data/{DateTime.Today.ToString("dd-MM-yyyy")}";
 
             // realiza a requisição para a api de importação
             using (var client = new HttpClient())
