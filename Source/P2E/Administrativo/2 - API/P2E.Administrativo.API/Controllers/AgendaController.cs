@@ -162,7 +162,13 @@ namespace P2E.Administrativo.API.Controllers
 
                             _BotExecRepository.Insert(botExec);
                             RegistrarLogBot(eTipoLog.MSG, $"Bot '{botExec.Bot.TX_DESCRICAO}' programado e aguardando execução.", botExec.CD_BOT_EXEC);
+
+                            bot.CD_ULTIMA_EXEC_BOT = botExec.CD_BOT_EXEC;
+                            bot.CD_ULTIMO_STATUS_EXEC_BOT = (int)botExec.OP_STATUS_BOT_EXEC;
+
+                            _AgendaBotRepository.Update(bot);
                         }
+
 
                         agendaExec.OP_STATUS_AGENDA_EXEC = eStatusExec.Aguardando_Processamento;
                         _AgendaExecRepository.Update(agendaExec);
@@ -179,7 +185,7 @@ namespace P2E.Administrativo.API.Controllers
                     if (agendaExec.OP_STATUS_AGENDA_EXEC == eStatusExec.Executando)
                     {
                         agendaExec.DT_INICIO_EXEC = DateTime.Now;
-                        RegistrarLogAgenda(eTipoLog.MSG, $"Processamento da agenda iniciado em {agendaExec.DT_FIM_EXEC}.", agendaExec.CD_AGENDA_EXEC);
+                        RegistrarLogAgenda(eTipoLog.MSG, $"Processamento da agenda iniciado em {agendaExec.DT_INICIO_EXEC}.", agendaExec.CD_AGENDA_EXEC);
                     }
 
                     if (agendaExec.OP_STATUS_AGENDA_EXEC == eStatusExec.Falha || agendaExec.OP_STATUS_AGENDA_EXEC == eStatusExec.Conclúído)
