@@ -51,9 +51,9 @@ namespace P2E.Administrativo.API.Controllers
         // GET: api/BotExecLog/5
         [HttpGet]
         [Route("api/v1/BotExecLog/{cd_bot_exec_log}")]
-        public IEnumerable<BotExecLog> Get(int id)
+        public IEnumerable<BotExecLog> Get(int cd_bot_exec_log)
         {
-            var result = _BotExecLogRepository.FindAll(p => p.CD_BOT_EXEC == id);
+            var result = _BotExecLogRepository.FindAll(p => p.CD_BOT_EXEC == cd_bot_exec_log);
 
             return result;
         }

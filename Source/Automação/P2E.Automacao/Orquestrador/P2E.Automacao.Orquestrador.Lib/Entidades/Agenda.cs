@@ -19,7 +19,7 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public TimeSpan? HR_HORA_EXEC_PROG { get; set; }
         public DateTime? DT_DATA_ULTIMA_EXEC { get; set; }
         public eStatusExec OP_ULTIMO_STATUS_EXEC { get; set; }
-        public int CD_ULTIMA_EXEC { get; set; }
+        public int? CD_ULTIMA_EXEC { get; set; }
 
         public IEnumerable<AgendaBot> Bots { get; set; }
     }

@@ -69,7 +69,7 @@ namespace P2E.Administrativo.API.Controllers
 
                 var dataProg = DateTime.ParseExact(data, "dd-MM-yyyy", null);
 
-                var Agendas = _AgendaRepository.FindAll(p => p.DT_DATA_EXEC_PROG == dataProg);
+                var Agendas = _AgendaRepository.FindAll(p => p.DT_DATA_EXEC_PROG == null || p.DT_DATA_EXEC_PROG == dataProg);
 
                 foreach (var agenda in Agendas)
                 {
@@ -160,7 +160,7 @@ namespace P2E.Administrativo.API.Controllers
                             };
 
                             _BotExecRepository.Insert(botExec);
-                            RegistrarLogBot(eTipoLog.MSG, $"Bot '{bot.Bot.TX_DESCRICAO}' programado e aguardando execução.", botExec.CD_BOT_EXEC);
+                            RegistrarLogBot(eTipoLog.MSG, $"Bot '{botExec.Bot.TX_DESCRICAO}' programado e aguardando execução.", botExec.CD_BOT_EXEC);
                         }
 
                         agendaExec.OP_STATUS_AGENDA_EXEC = eStatusExec.Aguardando_Processamento;
@@ -253,7 +253,8 @@ namespace P2E.Administrativo.API.Controllers
             var log = new AgendaExecLog() {
                 CD_AGENDA_EXEC = cdAgendaExec,
                 OP_TIPO_LOG = eTipoLog.MSG,
-                TX_MENSAGEM = msg
+                TX_MENSAGEM = msg,
+                DT_DATAHORA_REG = DateTime.Now
             };
 
             _AgendaExecLogRepository.Insert(log);
@@ -266,7 +267,8 @@ namespace P2E.Administrativo.API.Controllers
             {
                 CD_BOT_EXEC = cdBotExec,
                 OP_TIPO_LOG = eTipoLog.MSG,
-                TX_MENSAGEM = msg
+                TX_MENSAGEM = msg,
+                DT_DATAHORA_REG = DateTime.Now
             };
 
             _BotExecLogRepository.Insert(log);

@@ -31,6 +31,12 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 agendaSelecionada.OP_ULTIMO_STATUS_EXEC = eStatusExec.Programado;
                 // programar agenda exec
                 await ExecutarAgendaAsync(agendaSelecionada);
+
+                if (!bgwConsultar.IsBusy)
+                {
+                    bgwConsultar.RunWorkerAsync();
+                    btnConsultar.Enabled = false;
+                }
             }
             else
             {
@@ -75,6 +81,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 this.Invoke((MethodInvoker)delegate ()
                 {
                     agendaBindingSource.DataSource = null;
+                    if(registros != null)
                     agendaBindingSource.DataSource = registros.OrderByDescending(p => p.DT_DATA_EXEC_PROG);
                 });
             }
@@ -156,7 +163,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 }
                 else
                 {
-                    //bsAgendaBots.DataSource = null;
+                    bsBotExecLog.DataSource = null;
                 }
             }
             catch (Exception)
@@ -181,8 +188,8 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
                 this.Invoke((MethodInvoker)delegate ()
                 {
-                    //botExecLogBindingSource.DataSource = null;
-                    //botExecLogBindingSource.DataSource = registros.OrderBy(p => p.DT_DATAHORA_REG);
+                    bsBotExecLog.DataSource = null;
+                    bsBotExecLog.DataSource = registros.OrderBy(p => p.DT_DATAHORA_REG);
                 });
             }
         }
