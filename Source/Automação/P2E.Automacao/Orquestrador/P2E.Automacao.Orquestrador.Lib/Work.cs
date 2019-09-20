@@ -24,7 +24,6 @@ namespace P2E.Automacao.Orquestrador.Lib
             Console.WriteLine("==================================ORQUESTRADOR====================================================");
             Console.WriteLine("Iniciando Monitoramento");
 
-
             while (true)
             {
                 try

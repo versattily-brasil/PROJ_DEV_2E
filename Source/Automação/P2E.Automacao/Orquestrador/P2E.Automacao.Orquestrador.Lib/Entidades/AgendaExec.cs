@@ -1,14 +1,20 @@
-﻿using P2E.Automacao.Orquestrador.Lib.Util.Enum;
+﻿using MicroOrm.Dapper.Repositories.Attributes;
+using P2E.Automacao.Orquestrador.Lib.Util.Enum;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace P2E.Automacao.Orquestrador.Lib.Entidades
 {
+    [Table("TB_AGENDA_EXEC")]
     public class AgendaExec
     {
+        [Key]
+        [Identity]
         public int CD_AGENDA_EXEC { get; set; }
         public int CD_AGENDA { get; set; }
         public DateTime? DT_INICIO_EXEC { get; set; }
