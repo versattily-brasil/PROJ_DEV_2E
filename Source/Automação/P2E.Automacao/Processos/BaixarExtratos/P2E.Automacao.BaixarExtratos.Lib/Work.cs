@@ -233,9 +233,9 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 {
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36");
 
-                    myWebClient.Headers.Add("input",nroDI+"nrDeclaracaoXml");
-                    myWebClient.Headers.Add("form", "ConsultarDiXmlForm");
-                    myWebClient.Headers.Add("submit", "ConsultarDiXmlForm");
+                    //myWebClient.Headers.Add("input",nroDI);
+                    //myWebClient.Headers.Add("form", "ConsultarDiXmlForm");
+                    //myWebClient.Headers.Add("submit", "ConsultarDiXmlForm");
 
                     Thread.Sleep(1000);                    
                     myWebClient.DownloadFile(_url, arquivoPath);
@@ -243,7 +243,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
