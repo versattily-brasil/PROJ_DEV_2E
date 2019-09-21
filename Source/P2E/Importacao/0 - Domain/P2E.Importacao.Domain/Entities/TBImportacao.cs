@@ -26,7 +26,8 @@ namespace P2E.Importacao.Domain.Entities
                             string tx_dossie,
                             DateTime dt_data_doss,
                             int op_extrato_pdf,
-                            int op_extrato_xml)
+                            int op_extrato_xml,
+                            int op_extrato_retif)
         {
 
             NUM_PI = num_pi;
@@ -42,6 +43,7 @@ namespace P2E.Importacao.Domain.Entities
             DT_DATA_DOSS = dt_data_doss;
             OP_EXTRATO_PDF = op_extrato_pdf;
             OP_EXTRATO_XML = op_extrato_xml;
+            OP_EXTRATO_RETIF = op_extrato_retif;
         }
 
         [Key]
@@ -62,5 +64,6 @@ namespace P2E.Importacao.Domain.Entities
         public string UF_DI { get; set; }
         public int OP_EXTRATO_PDF { get; set; }
         public int OP_EXTRATO_XML { get; set; }
+        public int OP_EXTRATO_RETIF { get; set; }
     }
 }

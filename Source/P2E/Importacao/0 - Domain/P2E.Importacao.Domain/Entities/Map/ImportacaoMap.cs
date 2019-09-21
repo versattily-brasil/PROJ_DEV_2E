@@ -24,7 +24,7 @@ namespace P2E.Importacao.Domain.Entities.Map
             Map(p => p.DT_DATA_EXO_ICMS).Column("DT_DATA_EXO_ICMS");
             Map(p => p.OP_EXTRATO_PDF).Column("OP_EXTRATO_PDF");
             Map(p => p.OP_EXTRATO_XML).Column("OP_EXTRATO_XML");
-
+            Map(p => p.OP_EXTRATO_RETIF).Column("OP_EXTRATO_RETIF");
 
         }
     }

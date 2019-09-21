@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DapperExtensions" Version="1.6.3" />
     <PackageReference Include="MicroOrm.Dapper.Repositories" Version="1.8.3" />
   </ItemGroup>
 

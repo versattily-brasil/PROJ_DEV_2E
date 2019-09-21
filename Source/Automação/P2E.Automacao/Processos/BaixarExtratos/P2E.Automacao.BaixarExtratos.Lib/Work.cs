@@ -134,6 +134,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 string numeroDec = numero.Substring(0, 2) + "%2F" +
                                 numero.Substring(2, 7) + "-" +
                                 numero.Substring(9, 1);
+                
+                var urlXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDI.do,perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numeroDec + 
+                    "&numeroRetificacao=&enviar=Consultar,application/x-www-form-urlencoded";
+
+                var returnoXML = DownloadExtratoXML(_driver, urlXML, numeroDec);
+
 
                 Console.WriteLine("Baixando o Extrato - PDF.");
                 Thread.Sleep(1000);
@@ -196,6 +202,42 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 {
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
                     Thread.Sleep(1000);
+                    myWebClient.DownloadFile(_url, arquivoPath);
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        protected bool DownloadExtratoXML(PhantomJSDriver driver, string _url, string nroDI)
+        {
+            try
+            {
+                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
+
+                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+
+                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                {
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                }
+
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.xml");
+
+                using (WebClient myWebClient = new P2EWebClient(certificado, driver))
+                {
+                    myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36");
+
+                    myWebClient.Headers.Add("input",nroDI+"nrDeclaracaoXml");
+                    myWebClient.Headers.Add("form", "ConsultarDiXmlForm");
+                    myWebClient.Headers.Add("submit", "ConsultarDiXmlForm");
+
+                    Thread.Sleep(1000);                    
                     myWebClient.DownloadFile(_url, arquivoPath);
                 }
 
