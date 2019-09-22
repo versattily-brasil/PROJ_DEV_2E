@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.ExtratoRetificacao.Lib.Entities
+namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib.Entities
 {
     public class TBImportacao
     {

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
-using P2E.Automacao.ComprovanteImportacao.Lib;
-using P2E.Automacao.ComprovanteImportacao.Lib.Entities;
+using P2E.Automacao.Processos.ComprovanteImportacao.Lib;
+using P2E.Automacao.Processos.ComprovanteImportacao.Lib.Entities;
 using P2E.Automacao.Shared.Extensions;
 using System;
 using System.Collections.Generic;

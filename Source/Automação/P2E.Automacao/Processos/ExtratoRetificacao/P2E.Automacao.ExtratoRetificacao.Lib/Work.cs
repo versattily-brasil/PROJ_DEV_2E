@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
-using P2E.Automacao.ExtratoRetificacao.Lib.Entities;
+using P2E.Automacao.Processos.ExtratoRetificacao.Lib.Entities;
 using P2E.Automacao.Shared.Extensions;
 using System;
 using System.Collections.Generic;

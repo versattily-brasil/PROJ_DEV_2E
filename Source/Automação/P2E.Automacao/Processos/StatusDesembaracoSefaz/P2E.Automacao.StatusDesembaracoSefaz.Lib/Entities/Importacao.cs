@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib.Entities
+namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Entities
 {
     public class TBImportacao
     {
@@ -20,5 +20,8 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib.Entities
         public DateTime DT_DATA_DISTR { get; set; }
         public string TX_DOSSIE { get; set; }
         public DateTime DT_DATA_DOSS { get; set; }
+        public int OP_EXTRATO_PDF { get; set; }
+        public int OP_EXTRATO_XML { get; set; }
+        public int OP_EXTRATO_RETIF { get; set; }
     }
 }
