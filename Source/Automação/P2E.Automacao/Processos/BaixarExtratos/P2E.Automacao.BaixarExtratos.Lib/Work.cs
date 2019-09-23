@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
-using P2E.Automacao.BaixarExtratos.Lib.Entities;
+using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         //public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?";
         public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?nrDeclaracao=19%2F0983204-0&consulta=true";
         private string _urlApiBase;
-        private List<TBImportacao> registros;
+        private List<Importacao> registros;
 
         #endregion
         public Work()
@@ -51,7 +51,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 Console.WriteLine("ABRINDO CONEXAO...");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
-                registros = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
 
                 if (registros != null && registros.Any())
                 {
@@ -95,7 +95,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
         }
 
-        private async Task Acessar(string numero, PhantomJSDriver _driver, TBImportacao import, string cd_imp)
+        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string cd_imp)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
         }
 
-        private async Task AtualizaExtratoPdfXml(TBImportacao import, string cd_imp)
+        private async Task AtualizaExtratoPdfXml(Importacao import, string cd_imp)
         {
             try
             {
@@ -383,7 +383,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //        public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do";
 //        //public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?nrDeclaracao=19%2F0983204-0&consulta=true";
 //        private string _urlApiBase;
-//        private List<TBImportacao> registros;
+//        private List<Importacao> registros;
 
 //        #endregion
 //        public Work()
@@ -409,7 +409,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                Console.WriteLine("ABRINDO CONEXAO...");
 //                var result = await client.GetAsync(urlAcompanha);
 //                var aux = await result.Content.ReadAsStringAsync();
-//                registros = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+//                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
 
 //                if (registros != null && registros.Any())
 //                {
@@ -462,7 +462,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //            }
 //        }
 
-//        private async Task Acessar(string numero, /*PhantomJSDriver*/ ChromeDriver _driver, TBImportacao import, string cd_imp)
+//        private async Task Acessar(string numero, /*PhantomJSDriver*/ ChromeDriver _driver, Importacao import, string cd_imp)
 //        {
 //            try
 //            {
@@ -547,7 +547,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //            }
 //        }
 
-//        private async Task AtualizaExtratoPdfXml(TBImportacao import, string cd_imp)
+//        private async Task AtualizaExtratoPdfXml(Importacao import, string cd_imp)
 //        {
 //            try
 //            {

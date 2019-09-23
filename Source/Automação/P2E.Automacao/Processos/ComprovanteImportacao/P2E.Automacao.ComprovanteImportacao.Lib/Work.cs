@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
+using P2E.Automacao.Entidades;
 using P2E.Automacao.Processos.ComprovanteImportacao.Lib;
-using P2E.Automacao.Processos.ComprovanteImportacao.Lib.Entities;
 using P2E.Automacao.Shared.Extensions;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
         public string _urlImprimir = @"https://www1c.siscomex.receita.fazenda.gov.br/impdespacho-web-7/ImprimirComprovante.do";
 
         private string _urlApiBase;
-        private List<TBImportacao> registros;
+        private List<Importacao> registros;
         #endregion
 
         public Work()
@@ -48,7 +48,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                 Console.WriteLine("ABRINDO CONEXAO...");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
-                registros = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
 
                 if (registros != null && registros.Any())
                 {

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace P2E.Automacao.TomarCiencia.Lib.Entities
+namespace P2E.Automacao.Entidades
 {
     public class Historico
     {

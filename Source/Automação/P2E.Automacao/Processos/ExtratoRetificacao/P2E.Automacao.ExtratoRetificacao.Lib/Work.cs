@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
-using P2E.Automacao.Processos.ExtratoRetificacao.Lib.Entities;
+using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
         public string _urlDownload = @"https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarExtratoRetificacao.do";
 
         private string _urlApiBase;
-        private List<TBImportacao> registros;
+        private List<Importacao> registros;
         #endregion
 
         public Work()
@@ -48,7 +48,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                 Console.WriteLine("ABRINDO CONEXAO...");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
-                registros = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
 
                 if (registros != null && registros.Any())
                 {
@@ -94,7 +94,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
             }
         }
 
-        private async Task Acessar(string numero, PhantomJSDriver _driver, TBImportacao import, string nroDI)
+        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string nroDI)
         {
             //using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
 
@@ -135,7 +135,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
             await AtualizaExtratoRetificacao(import, nroDI);
         }
 
-        private async Task AtualizaExtratoRetificacao(TBImportacao import, string cd_imp)
+        private async Task AtualizaExtratoRetificacao(Importacao import, string cd_imp)
         {
             try
             {

@@ -131,7 +131,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Importacao.cs" />
     <Compile Include="P2EWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -156,6 +155,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Entidades\P2E.Automacao.Entidades\P2E.Automacao.Entidades.csproj">
+      <Project>{4a7098c2-9724-4f8e-85f0-15e25f0113b4}</Project>
+      <Name>P2E.Automacao.Entidades</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\P2E.Automacao.Shared\P2E.Automacao.Shared.csproj">
       <Project>{d05ad0b7-5353-49d3-9351-9079657b20cf}</Project>
       <Name>P2E.Automacao.Shared</Name>

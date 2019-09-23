@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
-using P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Entities;
+using P2E.Automacao.Entidades;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +20,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
         public string _urlSite = @"http://online.sefaz.am.gov.br/diselada/consultadi.asp";
 
         private string _urlApiBase;
-        private List<TBImportacao> registros;
+        private List<Importacao> registros;
         #endregion
 
         public Work()
@@ -45,7 +45,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                 Console.WriteLine("ABRINDO CONEXAO...");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
-                registros = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
 
                 if (registros != null && registros.Any())
                 {
@@ -85,7 +85,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             }
         }
 
-        private async Task Acessar(string numero, PhantomJSDriver _driver, TBImportacao import, string nroDI)
+        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string nroDI)
         {
             var numAno = numero.Substring(0,2);
             var numDeclaracao = numero.Substring(2, 7);
@@ -94,14 +94,17 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             Console.WriteLine("ACESSANDO SITE...");
             _driver.Navigate().GoToUrl(_urlSite);
 
+            Console.WriteLine("Inserindo o Ano...");
             //COLOCANDO O ANO
             OpenQA.Selenium.IWebElement element = _driver.FindElementById("txtAno");
             element.SendKeys("20"+numAno);
 
+            Console.WriteLine("Inserindo o Numero...");
             //COLOCANDO O NUMERO
             element = _driver.FindElementById("txtNumeroDI");
             element.SendKeys(numDeclaracao);
 
+            Console.WriteLine("Inserindo o Digito Verificador...");
             //COLOCANDO O NUMERO DO DIGITO VERIFICADOR
             element = _driver.FindElementById("txtDigito");
             element.SendKeys(numDigito);
@@ -110,8 +113,10 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             element = _driver.FindElementById("pesquisar");
             element.Click();
 
+            Console.WriteLine("Gravando o Screenshot da Tela de Consulta...");
             capturaImagem(_driver);
 
+            Console.WriteLine("Concluído !!!");
         }
 
         public void Screenshot(IWebDriver driver, string screenshotsPasta)
@@ -131,7 +136,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                 System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
             }
 
-            string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "CapturaTela.jpg");
+            string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-CapturaTela.jpg");
 
             Screenshot(_driver, arquivoPath);
             Thread.Sleep(500);

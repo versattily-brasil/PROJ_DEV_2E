@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
-using P2E.Automacao.ExonerarIcms.Lib.DTO;
+using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using Selenium.Utils.Html;
 using System;
@@ -24,7 +24,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         public string urlDeclararICMS = @"https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/DeclararICMSMenu.do?i=0";
         private string _urlApiBase;
 
-        private List<ImportacaoDTO> registros;
+        private List<Importacao> registros;
 
         public Work()
         {
@@ -88,7 +88,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// <param name="_driver"></param>
         /// <param name="di"></param>
         /// <returns></returns>
-        private async Task ExonerarDIAsync(PhantomJSDriver _driver, ImportacaoDTO di)
+        private async Task ExonerarDIAsync(PhantomJSDriver _driver, Importacao di)
         {
             Console.WriteLine($"=================================================================================================================");
             Console.WriteLine($"Exonerando DI nº {di.TX_NUM_DEC}.");
@@ -153,7 +153,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                 var result = await client.GetAsync(urlExoneracao);
 
                 // recupera os registros.
-                registros = await result.Content.ReadAsAsync<List<ImportacaoDTO>>();
+                registros = await result.Content.ReadAsAsync<List<Importacao>>();
             }
         }
 
@@ -162,7 +162,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private async Task AtualizarRegistroAsync(ImportacaoDTO item)
+        private async Task AtualizarRegistroAsync(Importacao item)
         {
             Console.WriteLine($"Atualizando DI nº {item.TX_NUM_DEC}.");
 

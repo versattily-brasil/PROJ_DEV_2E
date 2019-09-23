@@ -1,5 +1,5 @@
 ﻿using OpenQA.Selenium.PhantomJS;
-using P2E.Automacao.AcompanharDespachos.Lib.Entities;
+using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using static P2E.Automacao.AcompanharDespachos.Lib.Entities.Importacao;
 
 namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 {
@@ -21,7 +20,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
         public string fiscal = string.Empty;
         public string dossie, dataDossie = string.Empty;
         private string _urlApiBase;
-        private List<TBImportacao> registros;
+        private List<Importacao> registros;
         #endregion
 
         public Work()
@@ -47,7 +46,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                 Console.WriteLine("ABRINDO CONEXAO...");
                 var result = await client.GetAsync(urlAcompanha);
-                registros = await result.Content.ReadAsAsync<List<TBImportacao>>();
+                registros = await result.Content.ReadAsAsync<List<Importacao>>();
 
                 if (registros != null && registros.Any())
                 {
@@ -98,7 +97,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
             }
         }
 
-        private async Task Acessar(TBImportacao import, string numero, string cd_imp, Historico historicoImp, Vistoria vistoriaImp, PhantomJSDriver _driver)
+        private async Task Acessar(Importacao import, string numero, string cd_imp, Historico historicoImp, Vistoria vistoriaImp, PhantomJSDriver _driver)
         {
             var numDeclaracao = numero;
 
@@ -445,7 +444,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
         }
 
-        private async Task AtualizaStatus(TBImportacao import, string cd_imp, Historico historico)
+        private async Task AtualizaStatus(Importacao import, string cd_imp, Historico historico)
         {
             try
             {

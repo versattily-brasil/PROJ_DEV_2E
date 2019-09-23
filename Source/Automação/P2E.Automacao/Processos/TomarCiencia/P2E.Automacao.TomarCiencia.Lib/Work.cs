@@ -1,19 +1,17 @@
-﻿using OpenQA.Selenium;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.PhantomJS;
-using OpenQA.Selenium.Support.UI;
+using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
-using Newtonsoft.Json;
+using P2E.Automacao.TomarCiencia.Lib.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Threading;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
-using P2E.Automacao.TomarCiencia.Lib.Model;
-using static P2E.Automacao.TomarCiencia.Lib.Entities.Importacao;
-using System.Linq;
 
 namespace P2E.Automacao.TomarCiencia.Lib
 {
@@ -24,7 +22,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         private string _urlIncricao = @"https://online.sefaz.am.gov.br/dte/sel_inscricao_pf.asp?inscricao=";
         private string _urlConsultaDI = @"https://online.sefaz.am.gov.br/sinf2004/DI/pagDIOnline.asp?numPagina="; //"https://online.sefaz.am.gov.br/sinf2004/DI/consultaDIOnline.asp";                
         private string _urlApiBase;
-        private List<TBImportacao> ListaProcessosBD;
+        private List<Importacao> ListaProcessosBD;
         #endregion
 
         List<string> Inscricoes = new List<string>();
@@ -162,7 +160,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             {
                 Log("Carregando lista de DAI's já registradas...");
                 var result = await client.GetAsync(urlTomarCiencia);
-                ListaProcessosBD = await result.Content.ReadAsAsync<List<TBImportacao>>();                
+                ListaProcessosBD = await result.Content.ReadAsAsync<List<Importacao>>();                
             }
         }
 

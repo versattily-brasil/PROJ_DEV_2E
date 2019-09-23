@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
-using P2E.Automacao.ExtratoRetificacao.Lib.Entities;
+using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
         public string _urlTelaConsulta = @"https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do";
 
         private string _urlApiBase;
-        private List<TBImportacao> registros;
+        private List<Importacao> registros;
         #endregion
 
         public Work()
@@ -46,7 +46,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                 Console.WriteLine("ABRINDO CONEXAO...");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
-                registros = JsonConvert.DeserializeObject<List<TBImportacao>>(aux);
+                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
 
                 if (registros != null && registros.Any())
                 {
@@ -92,7 +92,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
             }
         }
 
-        private async Task Acessar(string numero, PhantomJSDriver _driver, TBImportacao import, string nroDI)
+        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string nroDI)
         {
             var numDeclaracao = numero;
 
@@ -128,7 +128,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                     System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-TelaDebito.txt");
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-TelaDebito.doc");
 
                 StreamWriter writer = new StreamWriter(arquivoPath);
 
@@ -279,7 +279,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                 return true;
             }
         }
-            private async Task AtualizaExtratoRetificacao(TBImportacao import, string cd_imp)
+            private async Task AtualizaExtratoRetificacao(Importacao import, string cd_imp)
         {
             try
             {
