@@ -114,7 +114,13 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             element.Click();
 
             Console.WriteLine("Gravando o Screenshot da Tela de Consulta...");
-            capturaImagem(_driver);
+
+            var retorno = capturaImagem(_driver, numero);
+
+            Console.WriteLine("Gravando Status...");
+
+            import.OP_STATUS_DESEMB = retorno ? 1 : 0;
+            await AtualizaStatusDesembaraco(import, nroDI);
 
             Console.WriteLine("Concluído !!!");
         }
@@ -126,20 +132,48 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             foto.SaveAsFile(screenshotsPasta, ScreenshotImageFormat.Png);
         }
 
-        public void capturaImagem(PhantomJSDriver _driver)
+        public bool capturaImagem(PhantomJSDriver _driver, string numero)
         {
-            var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
-
-            //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-            if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+            try
             {
-                System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                {
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                }
+
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", numero + "-CapturaTela.jpg");
+
+                Screenshot(_driver, arquivoPath);
+                Thread.Sleep(500);
+
+                return true;
             }
+            catch (Exception)
+            {
+                return false;
+            }            
+        }
 
-            string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-CapturaTela.jpg");
+        private async Task AtualizaStatusDesembaraco(Importacao import, string cd_imp)
+        {
+            try
+            {
+                HttpResponseMessage resultado;
 
-            Screenshot(_driver, arquivoPath);
-            Thread.Sleep(500);
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_urlApiBase);
+                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
+                    resultado.EnsureSuccessStatusCode();
+
+                    Console.WriteLine("Registro salvo com sucesso.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
+            }
         }
     }
 }

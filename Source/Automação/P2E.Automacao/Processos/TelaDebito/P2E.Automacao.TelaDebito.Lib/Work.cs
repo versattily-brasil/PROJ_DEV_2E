@@ -107,28 +107,32 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
           
             element = _driver.FindElement(By.Name("enviar"));
             element.Click();
+            Thread.Sleep(2000);
 
             Console.WriteLine("Criando Arquivo.....");
-            var retornFile = CreateDocumentWord(element, _driver);
-            Console.WriteLine("Arquivo Criado...");
-            //import.OP_EXTRATO_RETIF = retornFile ? 1 : 0;
 
-            //await AtualizaExtratoRetificacao(import, nroDI);
+            var retornFile = CreateDocumentWord(element, _driver, numero);
+
+            Console.WriteLine("Gravando Status...");
+            
+            import.OP_TELA_DEBITO = retornFile ? 1 : 0;
+
+            await AtualizaTelaDebito(import, nroDI);
+
+            Console.WriteLine("Arquivo Criado...");
         }
 
-        public bool CreateDocumentWord(IWebElement element, PhantomJSDriver _driver)
+        public bool CreateDocumentWord(IWebElement element, PhantomJSDriver _driver,string numero)
         {
             try
             {
-                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
-
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
                 if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
                 {
                     System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-TelaDebito.doc");
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", numero + "-TelaDebito.doc");
 
                 StreamWriter writer = new StreamWriter(arquivoPath);
 
@@ -276,10 +280,11 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
             }
             catch (Exception e)
             {
-                return true;
+                return false;
             }
         }
-            private async Task AtualizaExtratoRetificacao(Importacao import, string cd_imp)
+
+        private async Task AtualizaTelaDebito(Importacao import, string cd_imp)
         {
             try
             {
