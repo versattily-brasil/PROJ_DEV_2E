@@ -25,6 +25,8 @@ namespace P2E.Importacao.Domain.Entities.Map
             Map(p => p.OP_EXTRATO_PDF).Column("OP_EXTRATO_PDF");
             Map(p => p.OP_EXTRATO_XML).Column("OP_EXTRATO_XML");
             Map(p => p.OP_EXTRATO_RETIF).Column("OP_EXTRATO_RETIF");
+            Map(p => p.OP_TELA_DEBITO).Column("OP_TELA_DEBITO");
+            Map(p => p.OP_STATUS_DESEMB).Column("OP_STATUS_DESEMB");
 
         }
     }

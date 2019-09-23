@@ -27,7 +27,9 @@ namespace P2E.Importacao.Domain.Entities
                             DateTime dt_data_doss,
                             int op_extrato_pdf,
                             int op_extrato_xml,
-                            int op_extrato_retif)
+                            int op_extrato_retif,
+                            int op_tela_debito,
+                            int op_status_desemb)
         {
 
             NUM_PI = num_pi;
@@ -44,6 +46,8 @@ namespace P2E.Importacao.Domain.Entities
             OP_EXTRATO_PDF = op_extrato_pdf;
             OP_EXTRATO_XML = op_extrato_xml;
             OP_EXTRATO_RETIF = op_extrato_retif;
+            OP_TELA_DEBITO = op_tela_debito;
+            OP_STATUS_DESEMB = OP_STATUS_DESEMB;
         }
 
         [Key]
@@ -65,5 +69,7 @@ namespace P2E.Importacao.Domain.Entities
         public int OP_EXTRATO_PDF { get; set; }
         public int OP_EXTRATO_XML { get; set; }
         public int OP_EXTRATO_RETIF { get; set; }
+        public int OP_TELA_DEBITO { get; set; }
+        public int OP_STATUS_DESEMB { get; set; }
     }
 }
