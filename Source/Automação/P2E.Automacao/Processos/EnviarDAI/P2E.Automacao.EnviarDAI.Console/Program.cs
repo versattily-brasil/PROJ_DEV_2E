@@ -4,14 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.EnviarDAI.Console
+namespace P2E.Automacao.Processos.EnviarDAI.Console
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var cc = new P2E.Automacao.EnviarDAI.Lib.Work();
-            cc.Executar();
+            try
+            {
+                var lib = new P2E.Automacao.Processos.EnviarDAI.Lib.Work();
+                await lib.ExecutarAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
