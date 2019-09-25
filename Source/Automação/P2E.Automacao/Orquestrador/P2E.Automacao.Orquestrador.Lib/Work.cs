@@ -85,9 +85,9 @@ namespace P2E.Automacao.Orquestrador.Lib
                     case "ROBÔ 01":
                         await Task.Factory.StartNew(async () =>
                         {
-                            await new BaixarExtratos.Lib.Work().ExecutarAsync();
-                            item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-                            await AlteraStatusBotAsync(item);
+                            //await new BaixarExtratos.Lib.Work().ExecutarAsync();
+                            //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
+                            //await AlteraStatusBotAsync(item);
                         });
                         break;
                     case "ROBÔ 02":
