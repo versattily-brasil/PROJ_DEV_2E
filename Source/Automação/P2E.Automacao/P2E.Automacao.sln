@@ -83,6 +83,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBrowser", "..\..\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.BaixarExtratos.Console", "Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Console\P2E.Automacao.BaixarExtratos.Console.csproj", "{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ExonerarIcms.Core", "Processos\ExonerarIcms\P2E.Automacao.ExonerarIcms.Core\P2E.Automacao.ExonerarIcms.Core.csproj", "{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -193,6 +195,10 @@ Global
 		{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -234,6 +240,7 @@ Global
 		{0E80998D-0449-40C0-A85B-4B33964BAB6E} = {3D22EFB5-605D-43FC-85B6-115CAC55EBB0}
 		{798BB728-D58B-41A4-B646-988FEE562A98} = {30FDDBAD-F129-4F9B-944D-2934DE2B1E58}
 		{20C631BB-902F-4D6D-AD6F-8E84FB7290FA} = {3D22EFB5-605D-43FC-85B6-115CAC55EBB0}
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00} = {D3D677D3-DE81-4D06-A04E-0DF8FE68710F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E02BF6DF-AE47-425E-A0E6-4B3FE6ACBCD3}

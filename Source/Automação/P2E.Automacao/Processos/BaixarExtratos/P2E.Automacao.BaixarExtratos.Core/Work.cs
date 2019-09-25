@@ -63,7 +63,7 @@ namespace P2E.Automacao.BaixarExtratos.Core
 
                     if (registros != null && registros.Any())
                     {
-                        var browser = CriarBrowser();
+                        var browser = Shared.Extensions.Geral.CriarBrowser();
 
                         Console.WriteLine(_urlSite);
                         browser.Navigate(_urlSite);
@@ -98,15 +98,15 @@ namespace P2E.Automacao.BaixarExtratos.Core
             }
         }
 
-        private Browser CriarBrowser()
-        {
-            Console.WriteLine("CARREGANDO O CERTIFICADO...");
-            var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
-            var browser = new Browser(certificado);
-            browser.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36";
+        //private static Browser CriarBrowser()
+        //{
+        //    Console.WriteLine("CARREGANDO O CERTIFICADO...");
+        //    var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
+        //    var browser = new Browser(certificado);
+        //    browser.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36";
 
-            return browser;
-        }
+        //    return browser;
+        //}
 
         private async Task Acessar(Browser browser, string numero, Importacao import, string cd_imp)
         {
