@@ -49,8 +49,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ExonerarIcms.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ComprovanteImportacao.Lib", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj", "{F268CFE9-9338-4739-A4CB-0F458585CC38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ComprovanteImportacao.Console", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Console\P2E.Automacao.ComprovanteImportacao.Console.csproj", "{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Orquestrador.Lib", "Orquestrador\P2E.Automacao.Orquestrador.Lib\P2E.Automacao.Orquestrador.Lib.csproj", "{527117A2-F7BC-43AA-9178-5675028E8167}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Orquestrador", "Orquestrador", "{D65F6265-FD32-45E0-B8FE-A222D32BE6AF}"
@@ -80,6 +78,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entidades", "Entidades", "{C94520A1-9BF3-4429-B500-C50B56390934}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Entidades", "Entidades\P2E.Automacao.Entidades\P2E.Automacao.Entidades.csproj", "{4A7098C2-9724-4F8E-85F0-15E25F0113B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBrowser", "..\..\Util\SimpleBrowser-master\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj", "{5AAF47B6-B988-4F98-9E5C-1424454E6E5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ComprovanteImportacao.Core", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Core\P2E.Automacao.ComprovanteImportacao.Core.csproj", "{1C4C7344-55BF-43E3-B6B9-AB4A12063AFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ComprovanteImportacao.Console", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Console\P2E.Automacao.ComprovanteImportacao.Console.csproj", "{97DFFC78-D18E-4BD4-8E4B-4B84FB757D67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,10 +147,6 @@ Global
 		{F268CFE9-9338-4739-A4CB-0F458585CC38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F268CFE9-9338-4739-A4CB-0F458585CC38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F268CFE9-9338-4739-A4CB-0F458585CC38}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{527117A2-F7BC-43AA-9178-5675028E8167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{527117A2-F7BC-43AA-9178-5675028E8167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{527117A2-F7BC-43AA-9178-5675028E8167}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -187,6 +187,18 @@ Global
 		{4A7098C2-9724-4F8E-85F0-15E25F0113B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A7098C2-9724-4F8E-85F0-15E25F0113B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A7098C2-9724-4F8E-85F0-15E25F0113B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AAF47B6-B988-4F98-9E5C-1424454E6E5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AAF47B6-B988-4F98-9E5C-1424454E6E5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AAF47B6-B988-4F98-9E5C-1424454E6E5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AAF47B6-B988-4F98-9E5C-1424454E6E5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C4C7344-55BF-43E3-B6B9-AB4A12063AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C4C7344-55BF-43E3-B6B9-AB4A12063AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C4C7344-55BF-43E3-B6B9-AB4A12063AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C4C7344-55BF-43E3-B6B9-AB4A12063AFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97DFFC78-D18E-4BD4-8E4B-4B84FB757D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97DFFC78-D18E-4BD4-8E4B-4B84FB757D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97DFFC78-D18E-4BD4-8E4B-4B84FB757D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97DFFC78-D18E-4BD4-8E4B-4B84FB757D67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,7 +225,6 @@ Global
 		{58BBA388-7451-4CB2-92EB-75FB08830AFD} = {D3D677D3-DE81-4D06-A04E-0DF8FE68710F}
 		{3E7F5C1A-259E-4A18-9D75-A07ECFB9902A} = {D3D677D3-DE81-4D06-A04E-0DF8FE68710F}
 		{F268CFE9-9338-4739-A4CB-0F458585CC38} = {D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}
-		{0E8FD3A6-628D-416C-9177-9FFA27A9D98A} = {D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}
 		{527117A2-F7BC-43AA-9178-5675028E8167} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
 		{0C419B24-95E3-4384-BD7A-4DE3E9F4143E} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
 		{EC7C339F-40FB-4893-8CA8-B997CF249129} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
@@ -227,6 +238,9 @@ Global
 		{1C01FF4F-D73E-4A6C-BD64-3E001F38A12C} = {6985B415-0E75-4D21-94EF-95095E1351B1}
 		{322C419F-E349-499D-975D-D00E68CA00DD} = {6985B415-0E75-4D21-94EF-95095E1351B1}
 		{4A7098C2-9724-4F8E-85F0-15E25F0113B4} = {C94520A1-9BF3-4429-B500-C50B56390934}
+		{5AAF47B6-B988-4F98-9E5C-1424454E6E5C} = {30FDDBAD-F129-4F9B-944D-2934DE2B1E58}
+		{1C4C7344-55BF-43E3-B6B9-AB4A12063AFC} = {D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}
+		{97DFFC78-D18E-4BD4-8E4B-4B84FB757D67} = {D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E02BF6DF-AE47-425E-A0E6-4B3FE6ACBCD3}
