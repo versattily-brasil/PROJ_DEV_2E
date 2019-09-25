@@ -13,7 +13,7 @@ namespace P2E.Automacao.Processos.EnviarDAI.Console
             try
             {
                 var lib = new P2E.Automacao.Processos.EnviarDAI.Lib.Work();
-                await lib.ExecutarAsync();
+                //await lib.ExecutarAsync();
             }
             catch (Exception ex)
             {
