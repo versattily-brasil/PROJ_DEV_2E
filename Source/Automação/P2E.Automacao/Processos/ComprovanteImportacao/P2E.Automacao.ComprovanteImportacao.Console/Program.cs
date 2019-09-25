@@ -12,8 +12,8 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Console
         {
             try
             {
-                var lib = new P2E.Automacao.Processos.ComprovanteImportacao.Lib.Work();
-                await lib.ExecutarAsync();
+                //var lib = new P2E.Automacao.Processos.ComprovanteImportacao.Core.Work();
+                //await lib.ExecutarAsync();
             }
             catch (Exception ex)
             {
