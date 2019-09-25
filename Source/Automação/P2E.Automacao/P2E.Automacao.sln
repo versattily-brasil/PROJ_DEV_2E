@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ExonerarIcms.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ComprovanteImportacao.Lib", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj", "{F268CFE9-9338-4739-A4CB-0F458585CC38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.Automacao.ComprovanteImportacao.Console", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Console\P2E.Automacao.ComprovanteImportacao.Console.csproj", "{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ComprovanteImportacao.Console", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Console\P2E.Automacao.ComprovanteImportacao.Console.csproj", "{0E8FD3A6-628D-416C-9177-9FFA27A9D98A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Orquestrador.Lib", "Orquestrador\P2E.Automacao.Orquestrador.Lib\P2E.Automacao.Orquestrador.Lib.csproj", "{527117A2-F7BC-43AA-9178-5675028E8167}"
 EndProject
@@ -77,13 +77,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entidades", "Entidades", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Entidades", "Entidades\P2E.Automacao.Entidades\P2E.Automacao.Entidades.csproj", "{4A7098C2-9724-4F8E-85F0-15E25F0113B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.Automacao.BaixarExtratos.Core", "Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Core\P2E.Automacao.BaixarExtratos.Core.csproj", "{0E80998D-0449-40C0-A85B-4B33964BAB6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.BaixarExtratos.Core", "Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Core\P2E.Automacao.BaixarExtratos.Core.csproj", "{0E80998D-0449-40C0-A85B-4B33964BAB6E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBrowser", "..\..\Util\SimpleBrowser-master\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj", "{798BB728-D58B-41A4-B646-988FEE562A98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.Automacao.BaixarExtratos.Console", "Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Console\P2E.Automacao.BaixarExtratos.Console.csproj", "{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.BaixarExtratos.Console", "Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Console\P2E.Automacao.BaixarExtratos.Console.csproj", "{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P2E.Automacao.ComprovanteImportacao.Core", "Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Core\P2E.Automacao.ComprovanteImportacao.Core.csproj", "{68DE8692-D4FD-42DB-ABE1-AAA2B6CB1703}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.ExonerarIcms.Core", "Processos\ExonerarIcms\P2E.Automacao.ExonerarIcms.Core\P2E.Automacao.ExonerarIcms.Core.csproj", "{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -195,10 +195,10 @@ Global
 		{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C631BB-902F-4D6D-AD6F-8E84FB7290FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68DE8692-D4FD-42DB-ABE1-AAA2B6CB1703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68DE8692-D4FD-42DB-ABE1-AAA2B6CB1703}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68DE8692-D4FD-42DB-ABE1-AAA2B6CB1703}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68DE8692-D4FD-42DB-ABE1-AAA2B6CB1703}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -240,7 +240,7 @@ Global
 		{0E80998D-0449-40C0-A85B-4B33964BAB6E} = {3D22EFB5-605D-43FC-85B6-115CAC55EBB0}
 		{798BB728-D58B-41A4-B646-988FEE562A98} = {30FDDBAD-F129-4F9B-944D-2934DE2B1E58}
 		{20C631BB-902F-4D6D-AD6F-8E84FB7290FA} = {3D22EFB5-605D-43FC-85B6-115CAC55EBB0}
-		{68DE8692-D4FD-42DB-ABE1-AAA2B6CB1703} = {D5AFA16D-1897-4B46-8D8D-2C136DA0BC3E}
+		{4F63B991-4BC3-4EDB-9F14-E42102D0ED00} = {D3D677D3-DE81-4D06-A04E-0DF8FE68710F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E02BF6DF-AE47-425E-A0E6-4B3FE6ACBCD3}
