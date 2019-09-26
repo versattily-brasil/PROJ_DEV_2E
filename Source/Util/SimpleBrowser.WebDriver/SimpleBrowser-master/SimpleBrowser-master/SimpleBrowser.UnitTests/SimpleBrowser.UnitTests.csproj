@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>SimpleBrowser unit tests</Description>
+    <Copyright>Copyright © 2010 - 2019, Nathan Ridley and the SimpleBrowser contributors.</Copyright>
+    <AssemblyTitle>SimpleBrowser.UnitTests</AssemblyTitle>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Authors>Nathan Ridley and the SimpleBrowser contributors.</Authors>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>portable</DebugType>
+    <AssemblyName>SimpleBrowser.UnitTests</AssemblyName>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SampleDocs\Axefrog_Basic2.htm" />
+    <None Remove="SampleDocs\CommentElements.htm" />
+    <None Remove="SampleDocs\DecodedValue-malformed.htm" />
+    <None Remove="SampleDocs\DecodedValue.htm" />
+    <None Remove="SampleDocs\Elements.htm" />
+    <None Remove="SampleDocs\FileUpload.htm" />
+    <None Remove="SampleDocs\framecontainer.htm" />
+    <None Remove="SampleDocs\framecontent.htm" />
+    <None Remove="SampleDocs\HTML5Elements.htm" />
+    <None Remove="SampleDocs\iframecontainer.htm" />
+    <None Remove="SampleDocs\movies1.htm" />
+    <None Remove="SampleDocs\movies2.htm" />
+    <None Remove="SampleDocs\SimpleForm.htm" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="SampleDocs\Axefrog_Basic2.htm" />
+    <EmbeddedResource Include="SampleDocs\CommentElements.htm" />
+    <EmbeddedResource Include="SampleDocs\DecodedValue-malformed.htm" />
+    <EmbeddedResource Include="SampleDocs\DecodedValue.htm" />
+    <EmbeddedResource Include="SampleDocs\Elements.htm" />
+    <EmbeddedResource Include="SampleDocs\FileUpload.htm" />
+    <EmbeddedResource Include="SampleDocs\framecontainer.htm" />
+    <EmbeddedResource Include="SampleDocs\framecontent.htm" />
+    <EmbeddedResource Include="SampleDocs\iframecontainer.htm" />
+    <EmbeddedResource Include="SampleDocs\HTML5Elements.htm" />
+    <EmbeddedResource Include="SampleDocs\movies1.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SampleDocs\movies2.htm" />
+    <EmbeddedResource Include="SampleDocs\SimpleForm.htm" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.15.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleBrowser\SimpleBrowser.csproj" AdditionalProperties="TargetFramework='netstandard2.0'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+</Project>
