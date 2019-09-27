@@ -6,8 +6,8 @@ namespace P2E.Automacao.BaixarExtratos.Console
     {
         static void Main(string[] args)
         {
-            //var core = new Core.Work();
-            //core.Executar();
+            var core = new Core.Work();
+            core.Executar();
         }
     }
 }

@@ -13,9 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Util\SimpleBrowser-master\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj" />
     <ProjectReference Include="..\..\..\Entidades\P2E.Automacao.Entidades\P2E.Automacao.Entidades.csproj" />
     <ProjectReference Include="..\..\..\P2E.Automacao.Shared\P2E.Automacao.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="P2EWebClient.cs" />
   </ItemGroup>
 
 </Project>

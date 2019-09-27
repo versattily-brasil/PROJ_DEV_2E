@@ -1,197 +1,190 @@
-﻿//using Newtonsoft.Json;
-//using P2E.Automacao.Entidades;
-//using P2E.Automacao.Processos.ComprovanteImportacao.Core;
-//using P2E.Automacao.Shared.Extensions;
-//using SimpleBrowser;
-//using System;
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using System.Net;
-//using System.Net.Http;
-//using System.Threading;
-//using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using OpenQA.Selenium;
+using P2E.Automacao.Entidades;
+using P2E.Automacao.Shared.Extensions;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Versattily.WebDriver;
 
-//namespace P2E.Automacao.Processos.ComprovanteImportacao.Core
-//{
-//    public class Work
-//    {
-//        #region Variaveis Estáticas
+namespace P2E.Automacao.Processos.ComprovanteImportacao.Core
+{
+    public class Work
+    {
+        #region Variaveis Estáticas
 
-//        public string _urlSite = @"https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
-//        public string _urlTelaConsulta = @"https://www1c.siscomex.receita.fazenda.gov.br/impdespacho-web-7/RecuperarComprovanteMenu.do";
-//        public string _urlImprimir = @"https://www1c.siscomex.receita.fazenda.gov.br/impdespacho-web-7/ImprimirComprovante.do";
+        public string _urlSite = @"https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
+        public string _urlTelaConsulta = @"https://www1c.siscomex.receita.fazenda.gov.br/impdespacho-web-7/RecuperarComprovante.do";
+        public string _urlImprimir = @"https://www1c.siscomex.receita.fazenda.gov.br/impdespacho-web-7/ImprimirComprovante.do";
 
-//        private string _urlApiBase;
-//        private List<Importacao> registros;
-//        #endregion
+        private string _urlApiBase;
+        private List<Importacao> registros;
+        #endregion
 
-//        public Work()
-//        {
-//            Console.WriteLine("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ");
-//            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
-//            //_urlApiBase = "http://localhost:7000/";
-//        }
+        public Work()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(System.AppContext.BaseDirectory).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
 
-//        public async Task ExecutarAsync()
-//        {
-//            Console.WriteLine("Obtendo DI's para Download de Comprovante.");
-//            await CarregarListaDIAsync();
-//        }
+            _urlApiBase = builder.GetSection("ApiBaseUrl").Value;
+            _urlApiBase = "http://gateway.2e.versattily.com/";
+        }
 
-//        private async Task CarregarListaDIAsync()
-//        {
-//            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/todos";
+        public void Executar()
+        {
+            Console.WriteLine("Obtendo DI's para Download de Comprovante.");
+            CarregarListaDI();
+        }
 
-//            using (var client = new HttpClient())
-//            {
-//                Console.WriteLine("ABRINDO CONEXAO...");
-//                var result = await client.GetAsync(urlAcompanha);
-//                var aux = await result.Content.ReadAsStringAsync();
-//                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
+        private void CarregarListaDI()
+        {
+            try
+            {
+                string urlAcompanha = _urlApiBase + $"imp/v1/importacao/todos";
 
-//                if (registros != null && registros.Any())
-//                {
-//                    using (var service = PhantomJSDriverService.CreateDefaultService())
-//                    {
-//                        Console.WriteLine("CARREGANDO O CERTIFICADO...");
-//                        ControleCertificados.CarregarCertificado(service);
+                using (var client = new HttpClient())
+                {
+                    Console.WriteLine("ABRINDO CONEXAO...");
+                    var result = client.GetStringAsync(urlAcompanha).Result;
+                    registros = JsonConvert.DeserializeObject<List<Importacao>>(result);
 
-//                        service.AddArgument("test-type");
-//                        service.AddArgument("no-sandbox");
-//                        service.HideCommandPromptWindow = true;
+                    if (registros != null && registros.Any())
+                    {
+                        using (var driver = new VersattilyDriver(ControleCertificados.FindClientCertificate("511d19041380bd8e")))
+                        {
+                            Console.WriteLine(_urlSite);
+                            driver.Navigate().GoToUrl(_urlSite);
 
-//                        using (var _driver = new PhantomJSDriver(service))
-//                        {
-//                            foreach (var di in registros)
-//                            {
-//                                Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
+                            foreach (var di in registros)
+                            {
+                                Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
 
-//                                List<Thread> threads = new List<Thread>();
+                                List<Thread> threads = new List<Thread>();
 
-//                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver));
-//                                thread.Start();
-//                                threads.Add(thread);
+                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, driver));
+                                thread.Start();
+                                threads.Add(thread);
 
-//                                // fica aguardnado todas as threads terminarem...
-//                                while (threads.Any(t => t.IsAlive))
-//                                {
-//                                    continue;
-//                                }
-//                            }
+                                // fica aguardnado todas as threads terminarem...
+                                while (threads.Any(t => t.IsAlive))
+                                {
+                                    continue;
+                                }
+                            }
 
-//                            Console.ReadKey();
-//                        }
-//                    }
-//                }
-//                else
-//                {
-//                    Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
-//                }
-//            }
-//        }
+                            Console.ReadKey();
 
-//        private async Task Acessar(string numero, PhantomJSDriver _driver)
-//        {
-//            //using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ERRO: " + e.Message);
+            }
+        }
 
-//            var numDeclaracao = numero;
+        private async Task Acessar(string numero, VersattilyDriver browser)
+        {
+            try
+            {
+                Console.WriteLine("Inciando processo de navegação...");
 
-//            Console.WriteLine("ACESSANDO SITE...");
-//            _driver.Navigate().GoToUrl(_urlSite);
+                var numDeclaracao = numero;
 
-//            Console.WriteLine("ACESSAO PAGINA DE CONSULTA...");
-//            _driver.Navigate().GoToUrl(_urlTelaConsulta);
+                string numeroDec = numDeclaracao.Substring(0, 2) + "%2F" +
+                                numDeclaracao.Substring(2, 7) + "-" +
+                                numDeclaracao.Substring(9, 1);
 
-//            //COLOCANDO O NUMERO DA DI NO CAMPO
-//            OpenQA.Selenium.IWebElement element = _driver.FindElementById("nrDeclaracao");
-//            element.SendKeys(numDeclaracao);
+                browser._my.Navigate(new Uri(_urlTelaConsulta), "fase=a&tipoComprovante=1&nrDeclaracao=%2F-&declaracoesArray=" + numeroDec,
+                    "application/x-www-form-urlencoded");
+                Console.WriteLine(_urlTelaConsulta);
 
-//            // clica no BOTAO 'Confirmar'
-//            element = _driver.FindElementById("confirmar");
-//            element.Click();
+                if (browser.PageSource.Contains("COMPROVANTE JA EMITIDO. UTILIZAR EMISSAO SEGUNDA VIA"))
+                {
+                    Console.WriteLine("COMPROVANTE JA EMITIDO. UTILIZAR EMISSAO SEGUNDA VIA");
 
-//            string Numero = numDeclaracao.Substring(0, 2) + "/" +
-//                            numDeclaracao.Substring(2, 7) + "-" +
-//                            numDeclaracao.Substring(9, 1);
+                    browser._my.Navigate(new Uri(_urlTelaConsulta), "fase=a&tipoComprovante=2&nrDeclaracao=%2F-&declaracoesArray=" + numeroDec,
+                    "application/x-www-form-urlencoded");
+                }
+                else if (browser.PageSource.Contains("DECLARACAO NAO ESTA DESEMBARACADA"))
+                {
+                    Console.WriteLine("DECLARACAO NAO ESTA DESEMBARACADA");
+                    return;
+                }
 
-//            string id_tr = "tr_" + Numero;
-//            element = _driver.FindElementById(id_tr);
+                string Numero = numDeclaracao.Substring(0, 2) + "/" +
+                            numDeclaracao.Substring(2, 7) + "-" +
+                            numDeclaracao.Substring(9, 1);
 
-//            //CAPTURA STATUS
-//            var status = element.Text;
+                string id_tr = "tr_" + Numero;
 
-//            if (status.Contains("COMPROVANTE JA EMITIDO. UTILIZAR EMISSAO SEGUNDA VIA"))
-//            {
-//                Console.WriteLine(status);
-//                // clica no botao OK
-//                element = _driver.FindElementByCssSelector(@"#botoes > input");
-//                element.Click();
+                if (browser.PageSource.Contains("COMPROVANTE RECUPERADO COM SUCESSO"))
+                {
+                    Console.WriteLine("COMPROVANTE RECUPERADO COM SUCESSO");
 
-//                // clica no radiobutton 2º via
-//                element = _driver.FindElementByCssSelector(@"#corpo > fieldset:nth-child(1) > div > input[type=radio]:nth-child(2)");
-//                element.Click();
+                    Console.WriteLine("DOWNLOAD DE COMPROVANTE PDF...");
+                    DownloadComprovante(browser, _urlImprimir + "?nrDeclaracao=" + numeroDec, Numero);
+                }
+            }
+            catch (Exception e)
+            {
+                browser.Close();
+            }
+        }
 
-//                element = _driver.FindElementById("nrDeclaracao");
-//                element.SendKeys(numDeclaracao);
+        protected bool DownloadComprovante(VersattilyDriver browser, string _url, string numeroDI)
+        {
+            try
+            {
+                string sNomeArquivo = numeroDI.Replace("/", "_");
 
-//                // clica no BOTAO 'Confirmar'
-//                element = _driver.FindElementById("confirmar");
-//                element.Click();
-//            }
-//            else if (status.Contains("DECLARACAO NAO ESTA DESEMBARACADA."))
-//            {
-//                Console.WriteLine(status);
-//                return;
-//            }
+                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
 
-//            id_tr = "tr_" + Numero;
+                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
-//            element = _driver.FindElementById(id_tr);
-//            status = element.Text;
+                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                {
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                }
 
-//            if (status.Contains("COMPROVANTE RECUPERADO COM SUCESSO"))
-//            {
-//                Console.WriteLine(status);
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-COMPROVANTE_DI.pdf");
 
-//                string numeroDec = numDeclaracao.Substring(0, 2) + "%2F" +
-//                            numDeclaracao.Substring(2, 7) + "-" +
-//                            numDeclaracao.Substring(9, 1);
+                //browser._my.Navigate(new Uri(_url), "consulta=true", "application/x-www-form-urlencoded");                
 
-//                Console.WriteLine("DOWNLOAD DE COMPROVANTE PDF...");
-//                DownloadComprovante(_driver, _urlImprimir + "?nrDeclaracao=" + numeroDec);
-//            }
-//        }
+                //File.WriteAllBytes(arquivoPath, ConvertToByteArray(browser.PageSource));
+                //File.WriteAllBytes(sNomeArquivo, ConvertToByteArray(browser.PageSource));
 
-//        protected bool DownloadComprovante(PhantomJSDriver driver, string _url)
-//        {
-//            try
-//            {
-//                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
+                using (WebClient myWebClient = new P2EWebClient(certificado, browser))
+                {
+                    myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36");
+                    myWebClient.Headers.Add("", "");
+                    myWebClient.DownloadFile(_url, arquivoPath);
+                }
 
-//                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
 
-//                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-//                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
-//                {
-//                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
-//                }
-
-//                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-COMPROVANTE_DI.pdf");
-
-//                using (WebClient myWebClient = new P2EWebClient(certificado, driver))
-//                {
-//                    myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
-
-//                    myWebClient.DownloadFile(_url, arquivoPath);
-//                }
-
-//                return true;
-//            }
-//            catch (Exception e)
-//            {
-//                return false;
-//            }
-//        }
-//    }
-//}
+        public static byte[] ConvertToByteArray(string str)
+        {
+            byte[] arr = System.Text.Encoding.ASCII.GetBytes(str);
+            return arr;
+        }
+    }
+}

@@ -1,16 +1,16 @@
-﻿using OpenQA.Selenium.PhantomJS;
-using System;
+﻿using System;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using Versattily.WebDriver;
 
-namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
+namespace P2E.Automacao.Processos.ComprovanteImportacao.Core
 {
     public class P2EWebClient : WebClient
     {
         private readonly X509Certificate certificate;
-        private readonly PhantomJSDriver driver;
+        private readonly VersattilyDriver driver;
 
-        public P2EWebClient(X509Certificate cert, PhantomJSDriver driver)
+        public P2EWebClient(X509Certificate cert, VersattilyDriver driver)
         {
             certificate = cert;
             this.driver = driver;

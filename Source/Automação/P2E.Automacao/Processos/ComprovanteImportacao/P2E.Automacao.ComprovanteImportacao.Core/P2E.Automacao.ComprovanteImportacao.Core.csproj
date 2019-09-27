@@ -10,12 +10,19 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Util\SimpleBrowser-master\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Util\SimpleBrowser.WebDriver\Versattily.Webdriver\Versattily.Webdriver.csproj" />
     <ProjectReference Include="..\..\..\Entidades\P2E.Automacao.Entidades\P2E.Automacao.Entidades.csproj" />
     <ProjectReference Include="..\..\..\P2E.Automacao.Shared\P2E.Automacao.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="P2EWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

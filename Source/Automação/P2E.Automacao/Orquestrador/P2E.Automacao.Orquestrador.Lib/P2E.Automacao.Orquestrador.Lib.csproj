@@ -110,10 +110,6 @@
       <Project>{c98d07c3-081f-48a5-bdf5-e245406d6c73}</Project>
       <Name>P2E.Automacao.AcompanharDespachos.Lib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj">
-      <Project>{f268cfe9-9338-4739-a4cb-0f458585cc38}</Project>
-      <Name>P2E.Automacao.ComprovanteImportacao.Lib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
