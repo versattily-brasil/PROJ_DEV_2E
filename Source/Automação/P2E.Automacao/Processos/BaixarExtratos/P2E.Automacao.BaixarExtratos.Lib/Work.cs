@@ -14,7 +14,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace P2E.Automacao.BaixarExtrato.Lib
+
+namespace P2E.Automacao.BaixarExtratos.Lib
 {
     public class Work
     {
@@ -56,7 +57,7 @@ namespace P2E.Automacao.BaixarExtrato.Lib
 
                 if (registros != null && registros.Any())
                 {
-                    using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+                    using (var service = PhantomJSDriverService.CreateDefaultService())
                     {
                         Console.WriteLine("CARREGANDO O CERTIFICADO...");
                         ControleCertificados.CarregarCertificado(service);
@@ -66,7 +67,7 @@ namespace P2E.Automacao.BaixarExtrato.Lib
                         service.HideCommandPromptWindow = true;
 
                         using (var _driver = new PhantomJSDriver(service))
-                        {   
+                        {
                             _driver.Navigate().GoToUrl(_urlSite);
                             Console.WriteLine(_driver.Url);
 
@@ -132,27 +133,28 @@ namespace P2E.Automacao.BaixarExtrato.Lib
 
                 Thread.Sleep(1000);
 
-                string numeroDec = numero.Substring(0, 2) + "/" +
-                                numero.Substring(2, 7) + "-" +
-                                numero.Substring(9, 1);
-                
-                var urlXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDI.do,perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numeroDec + 
-                    "&numeroRetificacao=&enviar=Consultar,application/x-www-form-urlencoded";
-
-                var returnoXML = DownloadExtratoXML(numero);
-
-                import.OP_EXTRATO_XML = returnoXML ? 1 : 0;
-
                 Console.WriteLine("Baixando o Extrato - PDF.");
                 Thread.Sleep(1000);
 
-                numeroDec = numero.Substring(0, 2) + "%2F" +
+                var numeroDec = numero.Substring(0, 2) + "%2F" +
                                 numero.Substring(2, 7) + "-" +
                                 numero.Substring(9, 1);
 
                 var returnoPDF = DownloadExtratoPDF(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
 
-                import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;                
+                import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;
+
+                Console.WriteLine("Baixando o Extrato - XML.");
+                numeroDec = numero.Substring(0, 2) + "/" +
+                                numero.Substring(2, 7) + "-" +
+                                numero.Substring(9, 1);
+
+                var urlXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDI.do,perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numeroDec +
+                    "&numeroRetificacao=&enviar=Consultar,application/x-www-form-urlencoded";
+
+                var returnoXML = DownloadExtratoXML(numero);
+
+                import.OP_EXTRATO_XML = returnoXML ? 1 : 0;                
 
                 await AtualizaExtratoPdfXml(import, cd_imp);
             }
@@ -218,7 +220,7 @@ namespace P2E.Automacao.BaixarExtrato.Lib
                 return false;
             }
         }
-       
+
         public static bool DownloadExtratoXML(string NrDi)
         {
             try

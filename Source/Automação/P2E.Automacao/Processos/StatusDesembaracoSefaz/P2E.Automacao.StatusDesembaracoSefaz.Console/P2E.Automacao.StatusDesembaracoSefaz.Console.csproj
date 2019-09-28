@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1C01FF4F-D73E-4A6C-BD64-3E001F38A12C}</ProjectGuid>
+    <ProjectGuid>{03BFDB15-243C-4692-A88D-0988D90E4261}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>P2E.Automacao.StatusDesembaracoSefaz.Console</RootNamespace>
     <AssemblyName>P2E.Automacao.StatusDesembaracoSefaz.Console</AssemblyName>

@@ -98,7 +98,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
             var numDeclaracao = numero;
 
             Console.WriteLine("ACESSANDO SITE...");
-            _driver.Navigate().GoToUrl(_urlSite);
+           // _driver.Navigate().GoToUrl(_urlSite);
 
             Console.WriteLine("ACESSAO PAGINA DE CONSULTA...");
             _driver.Navigate().GoToUrl(_urlTelaConsulta);

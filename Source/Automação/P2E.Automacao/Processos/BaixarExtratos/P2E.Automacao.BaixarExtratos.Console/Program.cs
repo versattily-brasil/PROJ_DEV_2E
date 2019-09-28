@@ -1,13 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace P2E.Automacao.BaixarExtratos.Console
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var core = new Core.Work();
-            core.Executar();
+            try
+            {
+                var lib = new P2E.Automacao.BaixarExtratos.Lib.Work();
+                await lib.ExecutarAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
