@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace P2E.Automacao.ExonerarIcms.Lib
@@ -18,9 +19,9 @@ namespace P2E.Automacao.ExonerarIcms.Lib
     /// </summary>
     public class Work
     {
-        private string uUrlInicio = @"https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/inicio.html";
+        private string uUrlInicio = @"https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
         public string uUrlbASE = @"https://www1c.siscomex.receita.fazenda.gov.br/";
-        public string urlInicioPrivado = @"https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
+       
         public string urlDeclararICMS = @"https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/DeclararICMSMenu.do?i=0";
         private string _urlApiBase;
 
@@ -59,11 +60,28 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                         {
                             try
                             {
+                                _driver.Navigate().GoToUrl(uUrlInicio);
+
                                 // percorre todos os registros para tentar a exoneração.
                                 foreach (var di in registros)
                                 {
-                                    await ExonerarDIAsync(_driver, di);
+                                    Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
+
+                                    List<Thread> threads = new List<Thread>();
+
+                                    var thread = new Thread(() => ExonerarDIAsync(_driver, di));
+                                    thread.Start();
+                                    threads.Add(thread);
+
+                                    // fica aguardnado todas as threads terminarem...
+                                    while (threads.Any(t => t.IsAlive))
+                                    {
+                                        continue;
+                                    }
                                 }
+
+                                Console.WriteLine("Robô Finalizado !");
+                                Console.ReadKey();
                             }
                             catch (Exception)
                             {
@@ -92,8 +110,8 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         {
             Console.WriteLine($"=================================================================================================================");
             Console.WriteLine($"Exonerando DI nº {di.TX_NUM_DEC}.");
-            Console.WriteLine($"Acessando Endereço: {urlInicioPrivado}");
-            _driver.Navigate().GoToUrl(urlInicioPrivado);
+            
+            
             Console.WriteLine($"Autenticação efeturada.");
             Console.WriteLine($"Acessando Endereço: {urlDeclararICMS}");
             _driver.Navigate().GoToUrl(urlDeclararICMS);

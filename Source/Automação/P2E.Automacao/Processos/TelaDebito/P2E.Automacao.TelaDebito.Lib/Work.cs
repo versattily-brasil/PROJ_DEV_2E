@@ -81,6 +81,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                                 }
                             }
 
+                            Console.WriteLine("Robô Finalizado !");
                             Console.ReadKey();
                         }
                     }
