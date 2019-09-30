@@ -38,7 +38,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
 
         private async Task CarregarListaDIAsync()
         {
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/todos";
+            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/status-desembaraco";
 
             using (var client = new HttpClient())
             {
