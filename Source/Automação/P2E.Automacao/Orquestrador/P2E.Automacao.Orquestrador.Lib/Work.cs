@@ -14,6 +14,7 @@ namespace P2E.Automacao.Orquestrador.Lib
         protected List<Agenda> Agendas;
         private string _urlApiBase;
 
+        [Obsolete]
         public Work()
         {
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
@@ -28,35 +29,28 @@ namespace P2E.Automacao.Orquestrador.Lib
             {
                 try
                 {
-                    string data = DateTime.Today.ToString("dd-MM-yyyy", null);
-                    // monta url para api de importação.
-                    string url = _urlApiBase + $"adm/v1/agenda/por-data/{data}";
+                    //string data = DateTime.Today.ToString("dd-MM-yyyy", null);
+                    
+                    //    // recupera os registros.
+                    //    Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
 
-                    // realiza a requisição para a api
-                    using (var client = new HttpClient())
-                    {
-                        var result = await client.GetAsync(url);
+                    //    if ((Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento).Any()))
+                    //    {
+                    //        Console.WriteLine($"Agendamento(s) Localizados, iniciando processamento.");
 
-                        // recupera os registros.
-                        Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
+                    //        Parallel.ForEach(Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento), async reg =>
+                    //        {
+                    //            await ControlarAgenda(reg);
 
-                        if ((Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento).Any()))
-                        {
-                            Console.WriteLine($"Agendamento(s) Localizados, iniciando processamento.");
+                    //        });
+                    //    }
+                    //    else
+                    //    {
+                    //        Console.WriteLine($"Nenhum Agendamento encontrado para ser processado.");
+                    //    }
 
-                            Parallel.ForEach(Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento), async reg =>
-                            {
-                                await ControlarAgenda(reg);
-
-                            });
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Nenhum Agendamento encontrado para ser processado.");
-                        }
-
-                        Thread.Sleep(10000);
-                    }
+                    //    Thread.Sleep(10000);
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -67,114 +61,114 @@ namespace P2E.Automacao.Orquestrador.Lib
         }
 
 
-        private async Task ControlarAgenda(Agenda agenda)
-        {
-            agenda.OP_ULTIMO_STATUS_EXEC = Util.Enum.eStatusExec.Executando;
-
-            await AlteraStatusAgendaAsync(agenda);
-
-            foreach (var item in agenda.Bots)
-            {
-                //var botExec = ObterBotExec(item);
-
-                item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Executando;
-                await AlteraStatusBotAsync(item);
-
-                switch (item.Bot.TX_NOME.ToUpper())
-                {
-                    case "ROBÔ 01":
-                        await Task.Factory.StartNew(async () =>
-                        {
-                            //await new BaixarExtratos.Lib.Work().ExecutarAsync();
-                            //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-                            //await AlteraStatusBotAsync(item);
-                        });
-                        break;
-                    case "ROBÔ 02":
-                        await Task.Factory.StartNew(async () =>
-                        {
-                            await new Processos.AcompanharDespachos.Lib.Work().ExecutarAsync();
-                            item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-                            await AlteraStatusBotAsync(item);
-                        });
-                        break;
-                    case "ROBÔ 03":
-                        await Task.Factory.StartNew(async () =>
-                        {
-                            await new Processos.ComprovanteImportacao.Lib.Work().ExecutarAsync();
-                            item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-                            await AlteraStatusBotAsync(item);
-                        });
-                        break;
-                }
-            }
-
-            agenda.OP_ULTIMO_STATUS_EXEC = Util.Enum.eStatusExec.Conclúído;
-
-            await AlteraStatusAgendaAsync(agenda);
-        }
-
-        //private object ObterBotExec(AgendaBot item)
+        //private async Task ControlarAgenda(Agenda agenda)
         //{
-        //    string data = DateTime.Today.ToString("dd-MM-yyyy", null);
-        //    // monta url para api de importação.
-        //    string url = _urlApiBase + $"api/v1/BotExec/ultmo-exec/{item.cd}/{item.CD_BOT}";
+        //    agenda.OP_ULTIMO_STATUS_EXEC = Util.Enum.eStatusExec.Executando;
 
-        //    // realiza a requisição para a api
+        //    await AlteraStatusAgendaAsync(agenda);
+
+        //    foreach (var item in agenda.Bots)
+        //    {
+        //        //var botExec = ObterBotExec(item);
+
+        //        item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Executando;
+        //        await AlteraStatusBotAsync(item);
+
+        //        switch (item.Bot.TX_NOME.ToUpper())
+        //        {
+        //            case "ROBÔ 01":
+        //                await Task.Factory.StartNew(async () =>
+        //                {
+        //                    //await new BaixarExtratos.Lib.Work().ExecutarAsync();
+        //                    //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
+        //                    //await AlteraStatusBotAsync(item);
+        //                });
+        //                break;
+        //            case "ROBÔ 02":
+        //                await Task.Factory.StartNew(async () =>
+        //                {
+        //                    await new Processos.AcompanharDespachos.Lib.Work().ExecutarAsync();
+        //                    item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
+        //                    await AlteraStatusBotAsync(item);
+        //                });
+        //                break;
+        //            case "ROBÔ 03":
+        //                await Task.Factory.StartNew(async () =>
+        //                {
+        //                    //await new Processos.ComprovanteImportacao.Lib.Work().ExecutarAsync();
+        //                    //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
+        //                    await AlteraStatusBotAsync(item);
+        //                });
+        //                break;
+        //        }
+        //    }
+
+        //    agenda.OP_ULTIMO_STATUS_EXEC = Util.Enum.eStatusExec.Conclúído;
+
+        //    await AlteraStatusAgendaAsync(agenda);
+        //}
+
+        ////private object ObterBotExec(AgendaBot item)
+        ////{
+        ////    string data = DateTime.Today.ToString("dd-MM-yyyy", null);
+        ////    // monta url para api de importação.
+        ////    string url = _urlApiBase + $"api/v1/BotExec/ultmo-exec/{item.cd}/{item.CD_BOT}";
+
+        ////    // realiza a requisição para a api
+        ////    using (var client = new HttpClient())
+        ////    {
+        ////        var result = await client.GetAsync(url);
+
+        ////        // recupera os registros.
+        ////        Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
+        ////    }
+
+        ////}
+
+        //private async Task CarregarAgendasAsync()
+        //{
+        //    try
+        //    {
+        //        string data = DateTime.Today.ToString("dd-MM-yyyy", null);
+        //        // monta url para api de importação.
+        //        string url = _urlApiBase + $"adm/v1/agenda/por-data/{data}";
+
+        //        // realiza a requisição para a api
+        //        using (var client = new HttpClient())
+        //        {
+        //            var result = await client.GetAsync(url);
+
+        //            // recupera os registros.
+        //            Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        //private async Task AlteraStatusAgendaAsync(Agenda agenda)
+        //{
+        //    string url = _urlApiBase + $"adm/v1/agenda/altera-status/{agenda.CD_AGENDA}/{(int)agenda.OP_ULTIMO_STATUS_EXEC}";
+
+        //    // realiza a requisição para a api de importação
         //    using (var client = new HttpClient())
         //    {
         //        var result = await client.GetAsync(url);
-
-        //        // recupera os registros.
-        //        Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
         //    }
-
         //}
 
-        private async Task CarregarAgendasAsync()
-        {
-            try
-            {
-                string data = DateTime.Today.ToString("dd-MM-yyyy", null);
-                // monta url para api de importação.
-                string url = _urlApiBase + $"adm/v1/agenda/por-data/{data}";
+        //private async Task AlteraStatusBotAsync(AgendaBot bot)
+        //{
+        //    string url = _urlApiBase + $"adm/v1/agenda/altera-status-bot/{bot.CD_ULTIMA_EXEC_BOT}/{(int)bot.CD_ULTIMO_STATUS_EXEC_BOT}";
 
-                // realiza a requisição para a api
-                using (var client = new HttpClient())
-                {
-                    var result = await client.GetAsync(url);
-
-                    // recupera os registros.
-                    Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-        private async Task AlteraStatusAgendaAsync(Agenda agenda)
-        {
-            string url = _urlApiBase + $"adm/v1/agenda/altera-status/{agenda.CD_AGENDA}/{(int)agenda.OP_ULTIMO_STATUS_EXEC}";
-
-            // realiza a requisição para a api de importação
-            using (var client = new HttpClient())
-            {
-                var result = await client.GetAsync(url);
-            }
-        }
-
-        private async Task AlteraStatusBotAsync(AgendaBot bot)
-        {
-            string url = _urlApiBase + $"adm/v1/agenda/altera-status-bot/{bot.CD_ULTIMA_EXEC_BOT}/{(int)bot.CD_ULTIMO_STATUS_EXEC_BOT}";
-
-            // realiza a requisição para a api de importação
-            using (var client = new HttpClient())
-            {
-                var result = await client.GetAsync(url);
-            }
-        }
+        //    // realiza a requisição para a api de importação
+        //    using (var client = new HttpClient())
+        //    {
+        //        var result = await client.GetAsync(url);
+        //    }
+        //}
     }
 }
