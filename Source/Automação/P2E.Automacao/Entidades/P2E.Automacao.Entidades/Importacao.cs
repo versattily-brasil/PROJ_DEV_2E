@@ -23,5 +23,6 @@ namespace P2E.Automacao.Entidades
         public int OP_EXTRATO_RETIF { get; set; }
         public int OP_TELA_DEBITO { get; set; }
         public int OP_STATUS_DESEMB { get; set; }
+        public int OP_COMPROVANTE_IMP { get; set; }
     }
 }
