@@ -39,7 +39,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
 
         private async Task CarregarListaDIAsync()
         {
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/extrato-retif";
+            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/tela-debito";
 
             using (var client = new HttpClient())
             {
@@ -81,6 +81,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                                 }
                             }
 
+                            Console.WriteLine("Robô Finalizado !");
                             Console.ReadKey();
                         }
                     }

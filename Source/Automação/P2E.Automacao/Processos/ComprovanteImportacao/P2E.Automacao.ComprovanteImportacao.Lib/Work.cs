@@ -41,7 +41,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
         private async Task CarregarListaDIAsync()
         {
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/todos";
+            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/comprovante-imp";
 
             using (var client = new HttpClient())
             {
@@ -69,7 +69,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
                                 List<Thread> threads = new List<Thread>();
 
-                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver));
+                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
                                 thread.Start();
                                 threads.Add(thread);
 
@@ -80,6 +80,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                                 }
                             }
 
+                            Console.WriteLine("Robô Finalizado !");
                             Console.ReadKey();
                         }
                     }
@@ -91,7 +92,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
             }
         }
 
-        private async Task Acessar(string numero, PhantomJSDriver _driver)
+        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string nroDI)
         {
             //using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
 
@@ -142,6 +143,11 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
             else if (status.Contains("DECLARACAO NAO ESTA DESEMBARACADA."))
             {
                 Console.WriteLine(status);
+
+                import.OP_COMPROVANTE_IMP = 0;
+
+                await AtualizaComprovante(import, nroDI);
+
                 return;
             }
 
@@ -159,7 +165,11 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                             numDeclaracao.Substring(9, 1);
 
                 Console.WriteLine("DOWNLOAD DE COMPROVANTE PDF...");
-                DownloadComprovante(_driver, _urlImprimir + "?nrDeclaracao=" + numeroDec);
+                var retornFile = DownloadComprovante(_driver, _urlImprimir + "?nrDeclaracao=" + numeroDec);
+
+                import.OP_COMPROVANTE_IMP = retornFile ? 1 : 0;
+
+                await AtualizaComprovante(import, nroDI);
             }
         }
 
@@ -191,6 +201,27 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
             catch (Exception e)
             {
                 return false;
+            }
+        }
+
+        private async Task AtualizaComprovante(Importacao import, string cd_imp)
+        {
+            try
+            {
+                HttpResponseMessage resultado;
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_urlApiBase);
+                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
+                    resultado.EnsureSuccessStatusCode();
+
+                    Console.WriteLine("Registro salvo com sucesso.");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
             }
         }
     }

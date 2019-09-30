@@ -24,8 +24,8 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         public string _urlSite = "https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
         public string _urlConsultaDI = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do";
         public string _urlDownloadPDF = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ExtratoDI.do";//?nrDeclaracao=19/0983204-0&consulta=true";
-        //public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?";
-        public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?nrDeclaracao=19%2F0983204-0&consulta=true";
+        public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?";
+        // public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?nrDeclaracao=19%2F0983204-0&consulta=true";
         private string _urlApiBase;
         private List<Importacao> registros;
 
@@ -103,12 +103,6 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             {
                 Console.WriteLine("Inciando processo de navegação...");
 
-                ////navega para primeira url.
-                ////onde é realizado o login através do certificado.
-                //_driver.Navigate().GoToUrl(_urlSite);
-                //Console.WriteLine(_driver.Url);
-
-                //Navega para seguinda url.
                 //página da consulta DI.
                 _driver.Navigate().GoToUrl(_urlConsultaDI);
                 Console.WriteLine(_driver.Url);
@@ -145,16 +139,10 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;
 
                 Console.WriteLine("Baixando o Extrato - XML.");
-                numeroDec = numero.Substring(0, 2) + "/" +
-                                numero.Substring(2, 7) + "-" +
-                                numero.Substring(9, 1);
 
-                var urlXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDI.do,perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numeroDec +
-                    "&numeroRetificacao=&enviar=Consultar,application/x-www-form-urlencoded";
+                var returnoXML = DownloadExtratoXML(numeroDec);
 
-                var returnoXML = DownloadExtratoXML(numero);
-
-                import.OP_EXTRATO_XML = returnoXML ? 1 : 0;                
+                import.OP_EXTRATO_XML = returnoXML ? 1 : 0;
 
                 await AtualizaExtratoPdfXml(import, cd_imp);
             }
@@ -221,55 +209,98 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
         }
 
-        public static bool DownloadExtratoXML(string NrDi)
+        protected bool DownloadExtratoXML(string numero)
         {
             try
             {
+                var browser = Shared.Extensions.Geral.CriarBrowser();
+
+                browser.Navigate(_urlSite);
+
+                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
                 if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
                 {
                     System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
                 }
 
-                var sNomeArquivo = Path.Combine("C:\\Versatilly\\", NrDi + "-Extrato.xml");
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.xml");
 
-                sNomeArquivo = sNomeArquivo.Replace("/", "_");
-                string sSite = "https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
-                Uri sUri = new Uri(sSite);
-                NrDi = NrDi.Replace("/", "");
-                NrDi = NrDi.Replace("-", "");
-                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
-                Browser browser = new Browser(certificado);
-                browser.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36";
-                //browser.KeepAlive = true;
-                browser.Navigate(new Uri("https://www1.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/login_cert.jsp"));
-                browser.Navigate(new Uri("https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do"));
-                // PEGA NOME DO CLIENTE
-                string sDiAlterada = string.Empty;
-                if (!File.Exists(sNomeArquivo))
+
+                if (!File.Exists(arquivoPath))
                 {
-                    browser.Navigate(new Uri("https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do"));
-                    // pdf extrato
-                    browser.Navigate(new Uri("https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDI.do"),
-                        "perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + NrDi + "&numeroRetificacao=&enviar=Consultar",
+                    //browser.Navigate(_urlConsultaDI);
+                    browser.Navigate(new Uri(_urlDownloadXML),
+                        "perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numero + "&numeroRetificacao=&enviar=Consultar",
                         "application/x-www-form-urlencoded");
-                    browser.Find("input", FindBy.Id, "nrDeclaracaoXml").Value = NrDi;
+
+                    browser.Find("input", FindBy.Id, "nrDeclaracaoXml").Value = numero;
                     browser.Find("form", FindBy.Name, "ConsultarDiXmlForm").SubmitForm();
-                    for (Int32 jj = 0; jj <= 8; jj++)
-                    {
-                        Thread.Sleep(200);
-                    }
-                    File.WriteAllBytes(sNomeArquivo, ConvertToByteArray(browser.CurrentHtml));
+
+                    Thread.Sleep(5000);
+
+                    File.WriteAllBytes(arquivoPath, ConvertToByteArray(browser.CurrentHtml));
                 }
-                browser.Close();
+
                 return true;
             }
-            catch (Exception exc)
+            catch (Exception e)
             {
-                Console.WriteLine(exc.Message);
-                throw;
+                return false;
             }
         }
+
+        //public static bool DownloadExtratoXML(string NrDi)
+        //{
+        //    try
+        //    {
+        //        //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+        //        if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+        //        {
+        //            System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+        //        }
+
+        //        var sNomeArquivo = Path.Combine("C:\\Versatilly\\", NrDi + "-Extrato.xml");
+
+        //        sNomeArquivo = sNomeArquivo.Replace("/", "_");
+        //        string sSite = "https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
+        //        Uri sUri = new Uri(sSite);
+        //        NrDi = NrDi.Replace("/", "");
+        //        NrDi = NrDi.Replace("-", "");
+        //        var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
+        //        Browser browser = new Browser(certificado);
+        //        browser.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36";
+        //        //browser.KeepAlive = true;
+        //        browser.Navigate(new Uri("https://www1.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/login_cert.jsp"));
+        //        browser.Navigate(new Uri("https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do"));
+        //        // PEGA NOME DO CLIENTE
+        //        string sDiAlterada = string.Empty;
+        //        if (!File.Exists(sNomeArquivo))
+        //        {
+        //            browser.Navigate(new Uri("https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do"));
+        //            // pdf extrato
+        //            browser.Navigate(new Uri("https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDI.do"),
+        //                "perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + NrDi + "&numeroRetificacao=&enviar=Consultar",
+        //                "application/x-www-form-urlencoded");
+        //            browser.Find("input", FindBy.Id, "nrDeclaracaoXml").Value = NrDi;
+        //            browser.Find("form", FindBy.Name, "ConsultarDiXmlForm").SubmitForm();
+        //            for (Int32 jj = 0; jj <= 8; jj++)
+        //            {
+        //                Thread.Sleep(200);
+        //            }
+        //            File.WriteAllBytes(sNomeArquivo, ConvertToByteArray(browser.CurrentHtml));
+        //        }
+        //        browser.Close();
+        //        return true;
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        Console.WriteLine(exc.Message);
+        //        throw;
+        //    }
+        //}
+
         public static byte[] ConvertToByteArray(string str)
         {
             byte[] arr = System.Text.Encoding.ASCII.GetBytes(str);

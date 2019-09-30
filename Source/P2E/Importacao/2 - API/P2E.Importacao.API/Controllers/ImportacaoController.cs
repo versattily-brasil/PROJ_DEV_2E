@@ -29,6 +29,33 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/Importacao/baixarextrato
         [HttpGet]
+        [Route("api/v1/importacao/tela-debito")]
+        public IEnumerable<TBImportacao> TelaDebito()
+        {
+            var result = _ImportacaoRepository.FindAll(p => p.OP_TELA_DEBITO == 0);
+            return result;
+        }
+
+        // GET: api/Importacao/status_desembaraco
+        [HttpGet]
+        [Route("api/v1/importacao/status-desembaraco")]
+        public IEnumerable<TBImportacao> StatusDesembaraco()
+        {
+            var result = _ImportacaoRepository.FindAll(p => p.OP_STATUS_DESEMB == 0);
+            return result;
+        }
+
+        // GET: api/Importacao/comprovante_imp
+        [HttpGet]
+        [Route("api/v1/importacao/comprovante-imp")]
+        public IEnumerable<TBImportacao> ComprovanteImp()
+        {
+            var result = _ImportacaoRepository.FindAll(p => p.OP_COMPROVANTE_IMP == 0);
+            return result;
+        }
+
+        // GET: api/Importacao/baixarextrato
+        [HttpGet]
         [Route("api/v1/importacao/extrato-pdf-xml")]
         public IEnumerable<TBImportacao> ExtratoPdf()
         {
