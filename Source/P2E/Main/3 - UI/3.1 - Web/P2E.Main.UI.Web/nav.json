@@ -120,18 +120,21 @@
           "href": "/ParceiroNegocio"
         },
         {
-                "title": "Serviços",
-                "href": "/servico"
-         }
+          "title": "Serviços",
+          "href": "/servico"
+        }
+      ]
+    },
+    {
+      "title": "Importação",
+      "icon": "fal fa-address-card",
+      "items": [
+        {
+          "title": "Detalhes NCM",
+          "href": "/detalhencm"
+        }
+
       ]
     }
-    //,
-    //{
-    //  "title": "Configurações",
-    //  "icon": "fal fa-address-card",
-    //  "items": [
-        
-    //  ]
-    //}
   ]
 }
