@@ -4,10 +4,12 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
+using P2E.Automacao.Shared.XLSExport;
 using P2E.Automacao.TomarCiencia.Lib.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
@@ -28,12 +30,12 @@ namespace P2E.Automacao.TomarCiencia.Lib
         List<string> Inscricoes = new List<string>();
         List<DAI> DAIList = new List<DAI>();
         List<Empresa> ListaEmpresas = new List<Empresa>();
-        PhantomJSDriver _driver = null;        
+        PhantomJSDriver _driver = null;
         PhantomJSDriverService service = null;
 
         public Work()
-        {            
-            Log("############ Inicialização de automação [Tomar Ciência] ############");            
+        {
+            Log("############ Inicialização de automação [Tomar Ciência] ############");
             Log(null, null, true);
 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
@@ -50,8 +52,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
         public void Start()
         {
             try
-            {                
-                this.service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory());                
+            {
+                this.service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory());
 
                 // Carrega o certificado
                 ControleCertificados.CarregarCertificado(this.service);
@@ -71,12 +73,12 @@ namespace P2E.Automacao.TomarCiencia.Lib
             //await CarregarListaDIAsync();
             CarregaListaEmpresas();
             Main();
-            Finish();            
+            Finish();
         }
 
         protected void Finish()
         {
-            this._driver.Quit();            
+            this._driver.Quit();
             this.service.Dispose();
         }
 
@@ -130,7 +132,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                         {
                             // Não foi encontrado mais nenhuma inscrição estdual na estrutura, então sai do loop 
                             // e segue para a próxima empresa.
-                            Log(String.Format("Empresa {0}: {1} inscrição(ões) estadual(ais).", empresa.Nome, empresa.IncricoesEstaduais.Count), nameof(CarregaListaEmpresas));                            
+                            Log(String.Format("Empresa {0}: {1} inscrição(ões) estadual(ais).", empresa.Nome, empresa.IncricoesEstaduais.Count), nameof(CarregaListaEmpresas));
                             leInscricoes = false;
                         }
                     }
@@ -160,7 +162,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             {
                 Log("Carregando lista de DAI's já registradas...");
                 var result = await client.GetAsync(urlTomarCiencia);
-                ListaProcessosBD = await result.Content.ReadAsAsync<List<Importacao>>();                
+                ListaProcessosBD = await result.Content.ReadAsAsync<List<Importacao>>();
             }
         }
 
@@ -199,7 +201,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             {
                 string errorMessage = JsonConvert.DeserializeObject(ex.Message).ToString();
                 Log(errorMessage, nameof(FindDILink));
-            }            
+            }
 
             return null;
         }
@@ -217,7 +219,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         {
             // Gerar o arquivo Excel com as DAIS Tomadas Ciência
             // para os clientes Samsung e Ventisol
-        }        
+        }
 
         /// <summary>
         /// Salva o arquivo de Lacre como PDF.
@@ -231,7 +233,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                 foreach (IWebElement element in elements)
                 {
-                    if(element.Text.Contains("[Imp. de Lacre]"))
+                    if (element.Text.Contains("[Imp. de Lacre]"))
                     {
                         new Actions(this._driver).MoveToElement(element).Click().Perform();
                         var contentLacre = this._driver.PageSource;
@@ -263,9 +265,24 @@ namespace P2E.Automacao.TomarCiencia.Lib
             int paginaInicial = 1;
             int numeroPaginas;
             List<DAI> listaDAIProcessadas = new List<DAI>();
+            int r = 0; // Índice das células do arquivo excel ( xls )
+            int j = -1; // Índice das colunas do arquivo excel ( xls )
+            ExcelDocument xlsDoc = null;
 
             foreach (Empresa empresa in this.ListaEmpresas)
             {
+                if (empresa.Nome.Contains("SAMSUNG"))
+                {
+                    xlsDoc = new ExcelDocument();
+
+                    xlsDoc.UserName = "2E";
+                    xlsDoc.CodePage = CultureInfo.CurrentCulture.TextInfo.ANSICodePage;
+
+                    // Cabeçalho
+                    xlsDoc[r, 0].Value = "2E - " + empresa.Nome.Trim();
+                    r++;
+                }
+
                 foreach (string inscricao in empresa.IncricoesEstaduais)
                 {
                     // Garante que a sessão corrente esteja no contexto da Inscrição Estadual atual
@@ -299,8 +316,70 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     // Página a página, busca pelas DAI's que estejam pendentes de "Tomar Ciência".
                     for (int pag = 1; pag < numeroPaginas; pag++)
                     {
+                        this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
+                        Thread.Sleep(5000);
+                        if (empresa.Nome.Contains("SAMSUNG"))
+                        {
+                            ReadOnlyCollection<IWebElement> elements;
+                            try
+                            {
+                                elements = _driver.FindElements(By.ClassName("dg_ln_impar"));
+                                
+                                foreach (IWebElement element in elements)
+                                {
+                                    var nroDI = element.Text.Substring(0, 9);
+                                    var data = element.Text.Substring(10, 10);
+                                    var status = "";
+                                    if (element.Text.Contains("Parametriza"))
+                                    {
+                                        status = "Pendente de parametrização";
+                                    }
+                                    else
+                                    {
+                                        status = "Verde";
+                                    }
+
+                                    xlsDoc[++r, j].Value = nroDI;
+                                    xlsDoc[++r, ++j].Value = data;
+                                    xlsDoc[++r, ++j].Value = status;
+                                    --j;
+                                    --j;
+                                }
+
+                                elements = _driver.FindElements(By.ClassName("dg_ln_par"));
+
+                                foreach (IWebElement elemento in elements)
+                                {
+                                    var nroDI = elemento.Text.Substring(0, 9);
+                                    var data = elemento.Text.Substring(10, 10);
+                                    var status = "";
+                                    if (elemento.Text.Contains("Parametriza"))
+                                    {
+                                        status = "Pendente de parametrização";
+                                    }
+                                    else
+                                    {
+                                        status = "Verde";
+                                    }
+
+                                    xlsDoc[++r, j].Value = nroDI;
+                                    xlsDoc[++r, ++j].Value = data;
+                                    xlsDoc[++r, ++j].Value = status;
+                                    --j;
+                                    --j;
+                                }
+                            }
+                            catch (NoSuchElementException ex)
+                            {
+
+                            }
+                        }
+
+                       
+
+
                         ReadOnlyCollection<IWebElement> listaDAIs = this._driver.FindElements(By.CssSelector("a[onclick^='tomarCiencia']"));
-                        for (int i = 1; i < listaDAIs.Count; i++) 
+                        for (int i = 1; i < listaDAIs.Count; i++)
                         {
                             string numeroDAI = this._driver.FindElement(By.XPath("/html/body/table[2]/tbody/tr[i]/td[1]")).Text;
                             DAI processo = new DAI();
@@ -315,7 +394,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                                 string alertText = this._driver.SwitchTo().Alert().Text;
                                 // Confirma a operação clicando no botão OK do Alert.
                                 this._driver.SwitchTo().Alert().Accept();
-                            }                            
+                            }
                         }
                     }
 
@@ -340,8 +419,22 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     */
                 }
 
+                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                {
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                }
+
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", empresa.CNPJ + "-TomarCiencia.xls");
+
+                var fs = new FileStream(arquivoPath, FileMode.Create);
+
+                xlsDoc.Save(fs);
+
+                fs.Close();
+
                 var debugStop = false;
             }
-        }        
+        }
     }
 }
