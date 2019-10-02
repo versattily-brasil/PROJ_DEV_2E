@@ -271,8 +271,11 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
             foreach (Empresa empresa in this.ListaEmpresas)
             {
-                if (empresa.Nome.Contains("SAMSUNG"))
+                Log("Empresa - " + empresa.Nome.Trim());
+                //CRIA PLANILHA PARA SAMSUNG E VENTISOL
+                if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
                 {
+                    Log("*****Criando Planilha*****");
                     xlsDoc = new ExcelDocument();
 
                     xlsDoc.UserName = "2E";
@@ -280,11 +283,28 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                     // Cabeçalho
                     xlsDoc[r, 0].Value = "2E - " + empresa.Nome.Trim();
-                    r++;
+                    r++;                    
                 }
 
                 foreach (string inscricao in empresa.IncricoesEstaduais)
                 {
+                    //CRIA PLANILHA PARA SAMSUNG E VENTISOL
+                    if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
+                    {
+                        //xlsDoc = new ExcelDocument();
+
+                        r++;
+                        xlsDoc[r, 0].Value = "Inscrição Nº " + inscricao.Trim();
+                        r++;
+                        xlsDoc.ColumnWidth(0, 80);
+                        xlsDoc[r, 0].Value = "Numero DI";
+                        xlsDoc.ColumnWidth(1, 80);
+                        xlsDoc[r, 1].Value = "Data";
+                        xlsDoc.ColumnWidth(2, 250);
+                        xlsDoc[r, 2].Value = "Sinal";
+                        r++;
+                    }
+
                     // Garante que a sessão corrente esteja no contexto da Inscrição Estadual atual
                     this._driver.Navigate().GoToUrl(this._urlIncricao + inscricao);
                     Log(null, null, true);
@@ -316,20 +336,31 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     // Página a página, busca pelas DAI's que estejam pendentes de "Tomar Ciência".
                     for (int pag = 1; pag < numeroPaginas; pag++)
                     {
+                        Log("Navegando para a página " + pag);
                         this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
-                        Thread.Sleep(5000);
-                        if (empresa.Nome.Contains("SAMSUNG"))
+                        Log("Loading de 1 seg.");
+                        Thread.Sleep(1000);
+
+                        r++;
+                        xlsDoc[r, 0].Value = "Pagina " + pag;
+                        r++;
+                        r++;
+
+                        if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
                         {
                             ReadOnlyCollection<IWebElement> elements;
                             try
                             {
                                 elements = _driver.FindElements(By.ClassName("dg_ln_impar"));
-                                
+
                                 foreach (IWebElement element in elements)
-                                {
+                                {   
                                     var nroDI = element.Text.Substring(0, 9);
+                                    Log("DI= " + nroDI);
+
                                     var data = element.Text.Substring(10, 10);
                                     var status = "";
+
                                     if (element.Text.Contains("Parametriza"))
                                     {
                                         status = "Pendente de parametrização";
@@ -339,11 +370,11 @@ namespace P2E.Automacao.TomarCiencia.Lib
                                         status = "Verde";
                                     }
 
-                                    xlsDoc[++r, j].Value = nroDI;
-                                    xlsDoc[++r, ++j].Value = data;
-                                    xlsDoc[++r, ++j].Value = status;
-                                    --j;
-                                    --j;
+                                    xlsDoc[r, 0].Value = nroDI;
+                                    xlsDoc[r, 1].Value = data;
+                                    xlsDoc[r, 2].Value = status;
+                                    r++;
+
                                 }
 
                                 elements = _driver.FindElements(By.ClassName("dg_ln_par"));
@@ -351,6 +382,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
                                 foreach (IWebElement elemento in elements)
                                 {
                                     var nroDI = elemento.Text.Substring(0, 9);
+                                    Log("DI= " + nroDI);
+
                                     var data = elemento.Text.Substring(10, 10);
                                     var status = "";
                                     if (elemento.Text.Contains("Parametriza"))
@@ -362,11 +395,11 @@ namespace P2E.Automacao.TomarCiencia.Lib
                                         status = "Verde";
                                     }
 
-                                    xlsDoc[++r, j].Value = nroDI;
-                                    xlsDoc[++r, ++j].Value = data;
-                                    xlsDoc[++r, ++j].Value = status;
-                                    --j;
-                                    --j;
+                                    xlsDoc[r, 0].Value = nroDI;
+                                    xlsDoc[r, 1].Value = data;
+                                    xlsDoc[r, 2].Value = status;
+                                    r++;
+
                                 }
                             }
                             catch (NoSuchElementException ex)
@@ -375,28 +408,36 @@ namespace P2E.Automacao.TomarCiencia.Lib
                             }
                         }
 
-                       
-
-
-                        ReadOnlyCollection<IWebElement> listaDAIs = this._driver.FindElements(By.CssSelector("a[onclick^='tomarCiencia']"));
-                        for (int i = 1; i < listaDAIs.Count; i++)
+                        try
                         {
-                            string numeroDAI = this._driver.FindElement(By.XPath("/html/body/table[2]/tbody/tr[i]/td[1]")).Text;
-                            DAI processo = new DAI();
-
-                            // Dispara o evento "onclick" do link que, por sua vez, exibe um "alert" para 
-                            // confirmação da operação.
-                            new Actions(this._driver).MoveToElement(listaDAIs[i]).Click().Perform();
-                            // Verifica se o Alert está sendo exibido (tenho minhas dúvidas sobre a eficácia disso)
-                            if (isAlertPresent())
+                            ReadOnlyCollection<IWebElement> listaDAIs = this._driver.FindElements(By.CssSelector("a[onclick^='tomarCiencia']"));
+                            for (int p = 1; p < listaDAIs.Count; p++)
                             {
-                                // Captura o texto do Alert apenas para propósitos de debug.
-                                string alertText = this._driver.SwitchTo().Alert().Text;
-                                // Confirma a operação clicando no botão OK do Alert.
-                                this._driver.SwitchTo().Alert().Accept();
+                                string numeroDAI = this._driver.FindElement(By.XPath("/html/body/table[2]/tbody/tr[i]/td[1]")).Text;
+                                DAI processo = new DAI();
+
+                                // Dispara o evento "onclick" do link que, por sua vez, exibe um "alert" para 
+                                // confirmação da operação.
+                                new Actions(this._driver).MoveToElement(listaDAIs[p]).Click().Perform();
+                                // Verifica se o Alert está sendo exibido (tenho minhas dúvidas sobre a eficácia disso)
+                                if (isAlertPresent())
+                                {
+                                    // Captura o texto do Alert apenas para propósitos de debug.
+                                    string alertText = this._driver.SwitchTo().Alert().Text;
+                                    // Confirma a operação clicando no botão OK do Alert.
+                                    this._driver.SwitchTo().Alert().Accept();
+                                }
                             }
                         }
+                        catch (Exception)
+                        {
+
+                        }
                     }
+
+                    
+
+
 
                     /*
                     // "Declarações" menu item
@@ -419,19 +460,40 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     */
                 }
 
-                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                    if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                    {
+                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    }
+
+                    var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+
+                    string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-TomarCiencia.xls");
+
+                    var fs = new FileStream(arquivoPath, FileMode.Create);
+
+                    xlsDoc.Save(fs);
+
+                    fs.Close();
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", empresa.CNPJ + "-TomarCiencia.xls");
+                ////FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                //if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                //{
+                //    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                //}
 
-                var fs = new FileStream(arquivoPath, FileMode.Create);
+                //var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
-                xlsDoc.Save(fs);
+                //string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-TomarCiencia.xls");
 
-                fs.Close();
+                //var fs = new FileStream(arquivoPath, FileMode.Create);
+
+                //xlsDoc.Save(fs);
+
+                //fs.Close();
 
                 var debugStop = false;
             }
