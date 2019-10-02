@@ -31,17 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="DapperExtensions, Version=1.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="MicroOrm.Dapper.Repositories, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MicroOrm.Dapper.Repositories.1.10.0-beta3\lib\net451\MicroOrm.Dapper.Repositories.dll</HintPath>
+    <Reference Include="MicroOrm.Dapper.Repositories, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MicroOrm.Dapper.Repositories.1.8.3\lib\net45\MicroOrm.Dapper.Repositories.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -104,20 +104,6 @@
     <Folder Include="bin\Debug\" />
     <Folder Include="bin\Release\" />
     <Folder Include="obj\Debug\TempPE\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Processos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib\P2E.Automacao.AcompanharDespachos.Lib.csproj">
-      <Project>{c98d07c3-081f-48a5-bdf5-e245406d6c73}</Project>
-      <Name>P2E.Automacao.AcompanharDespachos.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib\P2E.Automacao.BaixarExtratos.Lib.csproj">
-      <Project>{9ad75dea-943c-4705-9f91-34953f83fad4}</Project>
-      <Name>P2E.Automacao.BaixarExtratos.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj">
-      <Project>{f268cfe9-9338-4739-a4cb-0f458585cc38}</Project>
-      <Name>P2E.Automacao.ComprovanteImportacao.Lib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
