@@ -6,18 +6,18 @@ using System.Text;
 using Dapper;
 using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
+using P2E.Automacao.Orquestrador.DataContext;
 using P2E.Automacao.Orquestrador.Lib.Entidades;
-using P2E.Administrativo.Infra.Data.DataContext;
 
-namespace P2E.Administrativo.Infra.Data.Repositories
+namespace P2E.Automacao.Orquestrador.Repositories
 {
     public class AgendaExecLogRepository : DapperRepository<AgendaExecLog>
     {
-        private readonly OrquestradorContext _admContext;
+        private readonly OrquestradorContext _orquestradorContext;
 
-        public AgendaExecLogRepository(OrquestradorContext admContext) : base(admContext.Connection)
+        public AgendaExecLogRepository(OrquestradorContext orquestradorContext) : base(orquestradorContext.Connection)
         {
-            _admContext = admContext;
+            _orquestradorContext = orquestradorContext;
         }
     }
 }

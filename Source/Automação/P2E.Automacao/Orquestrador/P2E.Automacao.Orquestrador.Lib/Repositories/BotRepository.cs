@@ -6,10 +6,10 @@ using System.Text;
 using Dapper;
 using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
+using P2E.Automacao.Orquestrador.DataContext;
 using P2E.Automacao.Orquestrador.Lib.Entidades;
-using P2E.Administrativo.Infra.Data.DataContext;
 
-namespace P2E.Administrativo.Infra.Data.Repositories
+namespace P2E.Automacao.Orquestrador.Repositories
 {
     public class BotRepository : DapperRepository<Bot>
     {

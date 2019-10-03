@@ -21,10 +21,13 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public int NR_ORDEM_EXEC { get; set; }
         public string TX_PARAM_EXEC { get; set; }
 
-        public eStatusExec CD_ULTIMO_STATUS_EXEC_BOT { get; set; }
-        public int? CD_ULTIMA_EXEC_BOT { get; set; }
+        public eStatusExec? CD_ULTIMO_STATUS_EXEC_BOT { get; set; }
+        public int? CD_ULTIMA_EXEC_BOT { get { return UltimoBotExec?.CD_BOT_EXEC; } }
 
         public Agenda Agenda { get; set; }
         public Bot Bot { get; set; }
+
+        public BotExec UltimoBotExec { get; set; }
+        public BotExec BotProgramado { get; set; }
     }
 }

@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,26 +30,37 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="DapperExtensions, Version=1.6.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
+      <HintPath>..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
     </Reference>
     <Reference Include="MicroOrm.Dapper.Repositories, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MicroOrm.Dapper.Repositories.1.8.3\lib\net45\MicroOrm.Dapper.Repositories.dll</HintPath>
+      <HintPath>..\packages\MicroOrm.Dapper.Repositories.1.8.3\lib\net45\MicroOrm.Dapper.Repositories.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
@@ -91,9 +103,12 @@
     <Compile Include="Util\Enum\eTipoLog.cs" />
     <Compile Include="Util\Enum\eStatusGenerico.cs" />
     <Compile Include="Util\Enum\eTipoRepete.cs" />
+    <Compile Include="Util\Extensions\EnumExtensions.cs" />
+    <Compile Include="Util\Extensions\LogController.cs" />
     <Compile Include="Work.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="app.config" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="obj\Debug\P2E.Automacao.Orquestrador.Lib.csproj.CoreCompileInputs.cache" />

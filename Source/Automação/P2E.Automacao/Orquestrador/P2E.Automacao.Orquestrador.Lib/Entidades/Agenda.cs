@@ -21,15 +21,23 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public eFormaExec OP_FORMA_EXEC { get; set; }
         public int OP_REPETE { get; set; }
         public eTipoRepete OP_TIPO_REP { get; set; }
+        public eStatusExec OP_STATUS { get; set; }
+
         public DateTime? DT_DATA_EXEC_PROG { get; set; }
         public TimeSpan HR_HORA_EXEC_PROG { get; set; }
-        public DateTime? DT_DATA_ULTIMA_EXEC { get; set; }
-        public int? CD_ULTIMA_EXEC { get; set; }
+        
+        public int? CD_ULTIMA_EXEC { get { return UltimaAgendaExecutada?.CD_AGENDA_EXEC; } }
+        public DateTime? DT_DATA_ULTIMA_EXEC { get { return UltimaAgendaExecutada?.DT_INICIO_EXEC; } }
 
-        public eStatusExec OP_ULTIMO_STATUS_EXEC { get; set; }
+        [NotMapped]
+        public IEnumerable<AgendaBot> Bots { get; set; }
+
+        [NotMapped]
+        public AgendaExec AgendaProgramada { get; set; }
+
+        [NotMapped]
+        public AgendaExec UltimaAgendaExecutada { get; set; }
         public override string ToString() => $"{TX_DESCRICAO?.ToString()}";
 
-        public IEnumerable<AgendaBot> Bots { get; set; }
-        public AgendaExec AgendaProgramada { get; set; }
     }
 }
