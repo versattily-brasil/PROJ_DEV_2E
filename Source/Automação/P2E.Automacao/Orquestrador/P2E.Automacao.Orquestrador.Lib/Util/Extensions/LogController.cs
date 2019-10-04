@@ -17,7 +17,7 @@ namespace P2E.Automacao.Orquestrador.Lib.Util.Extensions
             EscreverLog(msg, tipo.GetDescription());
         }
 
-        public static void RegistrarLog(string msg, eTipoLog tipo, int parentId, string origem, string adicional)
+        public static void RegistrarLog(string msg, eTipoLog tipo, int parentId, string origem, string adicional = "")
         {
             EscreverLog(msg, tipo.GetDescription());
 

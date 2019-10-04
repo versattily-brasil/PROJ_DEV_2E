@@ -61,28 +61,35 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
 
                         using (var _driver = new PhantomJSDriver(service))
                         {
-                            Console.WriteLine("ACESSANDO SITE...");
-                            _driver.Navigate().GoToUrl(_urlSite);
-
-                            foreach (var di in registros)
+                            try
                             {
-                                Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
+                                Console.WriteLine("ACESSANDO SITE...");
+                                _driver.Navigate().GoToUrl(_urlSite);
 
-                                List<Thread> threads = new List<Thread>();
-
-                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
-                                thread.Start();
-                                threads.Add(thread);
-
-                                // fica aguardnado todas as threads terminarem...
-                                while (threads.Any(t => t.IsAlive))
+                                foreach (var di in registros)
                                 {
-                                    continue;
-                                }
-                            }
+                                    Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
 
-                            Console.WriteLine("Robô Finalizado !");
-                            Console.ReadKey();
+                                    List<Thread> threads = new List<Thread>();
+
+                                    var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
+                                    thread.Start();
+                                    threads.Add(thread);
+
+                                    // fica aguardnado todas as threads terminarem...
+                                    while (threads.Any(t => t.IsAlive))
+                                    {
+                                        continue;
+                                    }
+                                }
+
+                                Console.WriteLine("Robô Finalizado !");
+                                Console.ReadKey();
+                            }
+                            catch (Exception)
+                            {
+                                _driver.Close();
+                            }
                         }
                     }
                 }

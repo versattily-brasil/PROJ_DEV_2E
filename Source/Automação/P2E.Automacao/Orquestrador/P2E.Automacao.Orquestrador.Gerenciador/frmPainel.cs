@@ -28,7 +28,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             if (gvAgendamentos.SelectedRows.Count > 0)
             {
                 var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
-                agendaSelecionada.OP_ULTIMO_STATUS_EXEC = eStatusExec.Programado;
+                agendaSelecionada.OP_STATUS = eStatusExec.Programado;
                 // programar agenda exec
                 await ExecutarAgendaAsync(agendaSelecionada);
 
@@ -75,14 +75,14 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 var result = await client.GetAsync(url);
 
                 // recupera os registros.
-                var registros = await result.Content.ReadAsAsync<List<Agenda>>();
+                //var registros = await result.Content.ReadAsAsync<List<Agenda>>();
 
 
                 this.Invoke((MethodInvoker)delegate ()
                 {
                     agendaBindingSource.DataSource = null;
-                    if(registros != null)
-                    agendaBindingSource.DataSource = registros.OrderByDescending(p => p.DT_DATA_EXEC_PROG);
+                    //if(registros != null)
+                    //agendaBindingSource.DataSource = registros.OrderByDescending(p => p.DT_DATA_EXEC_PROG);
                 });
             }
         }
@@ -91,13 +91,13 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         {
             barraProgresso.Style = ProgressBarStyle.Marquee;
             // monta url para api de importação.
-            string url = _urlApiBase + $"adm/v1/agenda/altera-status/{agenda.CD_AGENDA}/{(int)agenda.OP_ULTIMO_STATUS_EXEC}";
+            //string url = _urlApiBase + $"adm/v1/agenda/altera-status/{agenda.CD_AGENDA}/{(int)agenda.OP_ULTIMO_STATUS_EXEC}";
 
             // realiza a requisição para a api de importação
             using (var client = new HttpClient())
             {
-                var result = await client.GetAsync(url);
-                barraProgresso.Style = ProgressBarStyle.Blocks;
+                //var result = await client.GetAsync(url);
+                //barraProgresso.Style = ProgressBarStyle.Blocks;
             }
         }
 
@@ -183,13 +183,13 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 var result = await client.GetAsync(url);
 
                 // recupera os registros.
-                var registros = await result.Content.ReadAsAsync<List<BotExecLog>>();
+                //var registros = await result.Content.ReadAsAsync<List<BotExecLog>>();
 
 
                 this.Invoke((MethodInvoker)delegate ()
                 {
                     bsBotExecLog.DataSource = null;
-                    bsBotExecLog.DataSource = registros.OrderBy(p => p.DT_DATAHORA_REG);
+                  //  bsBotExecLog.DataSource = registros.OrderBy(p => p.DT_DATAHORA_REG);
                 });
             }
         }

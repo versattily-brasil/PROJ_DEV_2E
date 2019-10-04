@@ -17,10 +17,7 @@ namespace P2E.Automacao.Orquestrador.Lib
     {
         protected IEnumerable<Agenda> _agendas;
         private string _urlApiBase;
-        public Work()
-        {
-            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
-        }
+        public Work() => _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
 
         public async Task ExecutarAsync()
         {
@@ -34,7 +31,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                 try
                 {
                     string data = DateTime.Today.ToString("dd-MM-yyyy", null);
-                    CarregarAgendas();
+                    await CarregarAgendasAsync();
 
                     if(_agendas.Any())
                     {
@@ -48,60 +45,77 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 if (agenda.OP_STATUS == eStatusExec.Aguardando_Processamento)
                                 {
                                     LogController.RegistrarLog($"Executando agenda '{agenda.TX_DESCRICAO}'");
-                                    
-                                    LogController.RegistrarLog($"Alterando status de '{agenda.OP_STATUS.GetDescription()}' para {eStatusExec.Executando.GetDescription()}", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda", "");
-                                    agenda.AgendaProgramada.OP_STATUS_AGENDA_EXEC = eStatusExec.Executando;
 
+                                    await AlterarStatusAgendaAsync(agenda, eStatusExec.Executando);
+                                    
                                     LogController.RegistrarLog($"Executando bots.", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda", "");
                                     foreach (var bot in agenda.Bots)
                                     {
                                         if (bot.BotProgramado != null)
                                         {
-                                            LogController.RegistrarLog($"alterando status de {bot.BotProgramado.OP_STATUS_BOT_EXEC.GetDescription()} para {bot.BotProgramado.OP_STATUS_BOT_EXEC.GetDescription()}", eTipoLog.INFO, bot.BotProgramado.CD_BOT_EXEC, "bot", "");
-                                            bot.BotProgramado.OP_STATUS_BOT_EXEC = eStatusExec.Executando;
-
-                                            using (var context = new OrquestradorContext())
-                                            {
-                                                var agendaBotRep = new AgendaBotRepository(context);
-                                                var botExecRep = new BotExecRepository(context);
-                                                botExecRep.Update(bot.BotProgramado);
-                                                bot.UltimoBotExec = bot.BotProgramado;
-                                                agendaBotRep.Update(bot);
-
-                                                ExecutarBotAsync(bot);
-                                            }
+                                            await AlterarStatusBotAsync(bot, eStatusExec.Executando);
+                                            await ExecutarBotAsync(bot);
                                         }
+                                    }
+
+                                    if (agenda.Bots.Any(p => p.CD_ULTIMO_STATUS_EXEC_BOT == eStatusExec.Falha))
+                                    {
+                                        await AlterarStatusAgendaAsync(agenda, eStatusExec.Falha);
+                                    }
+                                    else 
+                                    {
+                                        await AlterarStatusAgendaAsync(agenda, eStatusExec.Conclúído);
                                     }
                                 }
                             }
-                        }//);
+                        }
                     }
 
-                    //    // recupera os registros.
-                    //    Agendas = await result.Content.ReadAsAsync<List<Agenda>>();
-
-                    //    if ((Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento).Any()))
-                    //    {
-                    //        Console.WriteLine($"Agendamento(s) Localizados, iniciando processamento.");
-
-                    //        Parallel.ForEach(Agendas.Where(p => p.OP_ULTIMO_STATUS_EXEC == Util.Enum.eStatusExec.Aguardando_Processamento), async reg =>
-                    //        {
-                    //            await ControlarAgenda(reg);
-
-                    //        });
-                    //    }
-                    //    else
-                    //    {
-                    //        Console.WriteLine($"Nenhum Agendamento encontrado para ser processado.");
-                    //    }
-
                     Thread.Sleep(10000);
-                    //}
                 }
                 catch (Exception ex)
                 {
                     LogController.RegistrarLog(ex.Message, eTipoLog.ERRO);
                 }
+            }
+        }
+
+        private async Task AlterarStatusAgendaAsync(Agenda agenda, eStatusExec novoStatus)
+        {
+            LogController.RegistrarLog($"Alterando status de '{agenda.OP_STATUS.GetDescription()}' " +
+                $"para {eStatusExec.Executando.GetDescription()}", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda", "");
+
+            using (var context = new OrquestradorContext())
+            {
+                var agendaRep = new AgendaRepository(context);
+                var agendaExecRep = new AgendaExecRepository(context);
+
+                agenda.AgendaProgramada.OP_STATUS_AGENDA_EXEC = novoStatus;
+                agenda.OP_STATUS = novoStatus;
+
+                await agendaExecRep.UpdateAsync(agenda.AgendaProgramada);
+
+                await agendaRep.UpdateAsync(agenda);
+            }
+        }
+
+        private async Task AlterarStatusBotAsync(AgendaBot bot, eStatusExec novoStatus)
+        {
+            LogController.RegistrarLog($"alterando status de {bot.BotProgramado.OP_STATUS_BOT_EXEC.GetDescription()} " +
+                $"para {novoStatus.GetDescription()}", eTipoLog.INFO, bot.BotProgramado.CD_BOT_EXEC, "bot", "");
+
+            using (var context = new OrquestradorContext())
+            {
+                var agendaBotRep = new AgendaBotRepository(context);
+                var botExecRep = new BotExecRepository(context);
+
+                bot.BotProgramado.OP_STATUS_BOT_EXEC = novoStatus;
+
+                await botExecRep.UpdateAsync(bot.BotProgramado);
+                
+                bot.UltimoBotExec = bot.BotProgramado;
+
+                await agendaBotRep.UpdateAsync(bot);
             }
         }
 
@@ -112,80 +126,52 @@ namespace P2E.Automacao.Orquestrador.Lib
                 case "ROBÔ 01":
                     await Task.Factory.StartNew(async () =>
                     {
-                        //await new BaixarExtratos.Lib.Work().ExecutarAsync();
-                        //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-                        //await AlteraStatusBotAsync(item);
+                        try
+                        {
+                            await new BaixarExtratos.Lib.Work().ExecutarAsync();
+                            await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                        }
+                        catch (Exception ex)
+                        {
+                            await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                            LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                        }
                     });
                     break;
                 case "ROBÔ 02":
                     await Task.Factory.StartNew(async () =>
                     {
-                        //await new Processos.AcompanharDespachos.Lib.Work().ExecutarAsync();
-                        //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-                        //await AlteraStatusBotAsync(item);
+                        try
+                        {
+                            await new Processos.AcompanharDespachos.Lib.Work().ExecutarAsync();
+                            await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                        }
+                        catch (Exception ex)
+                        {
+                            await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                            LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                        }
                     });
                     break;
                 case "ROBÔ 03":
                     await Task.Factory.StartNew(async () =>
                     {
-                        //await new Processos.ComprovanteImportacao.Lib.Work().ExecutarAsync();
-                        //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-                        //await AlteraStatusBotAsync(item);
+                        try
+                        {
+                            await new Processos.AcompanharDespachos.Lib.Work().ExecutarAsync();
+                            await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                        }
+                        catch (Exception ex)
+                        {
+                            await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                            LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                        }
                     });
                     break;
             }
         }
 
-
-        //private async Task ControlarAgenda(Agenda agenda)
-        //{
-        //    agenda.OP_ULTIMO_STATUS_EXEC = Util.Enum.eStatusExec.Executando;
-
-        //    await AlteraStatusAgendaAsync(agenda);
-
-        //    foreach (var item in agenda.Bots)
-        //    {
-        //        //var botExec = ObterBotExec(item);
-
-        //        item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Executando;
-        //        await AlteraStatusBotAsync(item);
-
-        //        switch (item.Bot.TX_NOME.ToUpper())
-        //        {
-        //            case "ROBÔ 01":
-        //                await Task.Factory.StartNew(async () =>
-        //                {
-        //                    //await new BaixarExtratos.Lib.Work().ExecutarAsync();
-        //                    //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-        //                    //await AlteraStatusBotAsync(item);
-        //                });
-        //                break;
-        //            case "ROBÔ 02":
-        //                await Task.Factory.StartNew(async () =>
-        //                {
-        //                    await new Processos.AcompanharDespachos.Lib.Work().ExecutarAsync();
-        //                    item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-        //                    await AlteraStatusBotAsync(item);
-        //                });
-        //                break;
-        //            case "ROBÔ 03":
-        //                await Task.Factory.StartNew(async () =>
-        //                {
-        //                    //await new Processos.ComprovanteImportacao.Lib.Work().ExecutarAsync();
-        //                    //item.CD_ULTIMO_STATUS_EXEC_BOT = Util.Enum.eStatusExec.Conclúído;
-        //                    await AlteraStatusBotAsync(item);
-        //                });
-        //                break;
-        //        }
-        //    }
-
-        //    agenda.OP_ULTIMO_STATUS_EXEC = Util.Enum.eStatusExec.Conclúído;
-
-        //    await AlteraStatusAgendaAsync(agenda);
-        //}
-
-
-        private void CarregarAgendas()
+        private async Task CarregarAgendasAsync()
         {
             LogController.RegistrarLog("Carregando Agendas.");
             using (var context = new OrquestradorContext())
@@ -210,7 +196,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         {
                             LogController.RegistrarLog($"Carregando os bots associados a agenda '{agenda.TX_DESCRICAO}.'");
 
-                            CarregarBots(agenda);
+                            await CarregarBotsAsync(agenda);
 
                             if (agenda.Bots.Any())
                             {
@@ -221,6 +207,8 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 LogController.RegistrarLog($"Nenhum bot localizado para a agenda '{agenda.TX_DESCRICAO}.'");
                             }
                         }
+
+                        await AlterarStatusAgendaAsync(agenda, eStatusExec.Aguardando_Processamento);
                     }
                 }
                 else 
@@ -230,18 +218,21 @@ namespace P2E.Automacao.Orquestrador.Lib
             }
         }
 
-        private void CarregarBots(Agenda agenda)
+        private async Task CarregarBotsAsync(Agenda agenda)
         {
             using (var context = new OrquestradorContext())
             {
                 var agendaBotRep = new AgendaBotRepository(context);
                 var botExecRep = new BotExecRepository(context);
+                var botRep = new BotRepository(context);
 
                 agenda.Bots = agendaBotRep.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA);
 
                 foreach (var bot in agenda.Bots)
                 {
-                    bot.BotProgramado = botExecRep.Find(o => o.CD_BOT == bot.CD_BOT && o.CD_AGENDA_EXEC == agenda.AgendaProgramada.CD_AGENDA_EXEC);
+                    bot.Bot = await botRep.FindAsync(o=> o.CD_BOT == bot.CD_BOT);
+                    bot.BotProgramado = await botExecRep.FindAsync(o => o.CD_BOT == bot.CD_BOT && o.CD_AGENDA_EXEC == agenda.AgendaProgramada.CD_AGENDA_EXEC);
+                    await AlterarStatusBotAsync(bot, eStatusExec.Aguardando_Processamento);
                 }
             }
         }

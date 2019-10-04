@@ -120,5 +120,47 @@
     <Folder Include="bin\Release\" />
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Processos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib\P2E.Automacao.AcompanharDespachos.Lib.csproj">
+      <Project>{c98d07c3-081f-48a5-bdf5-e245406d6c73}</Project>
+      <Name>P2E.Automacao.AcompanharDespachos.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib\P2E.Automacao.BaixarExtratos.Lib.csproj">
+      <Project>{9ad75dea-943c-4705-9f91-34953f83fad4}</Project>
+      <Name>P2E.Automacao.BaixarExtratos.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj">
+      <Project>{f268cfe9-9338-4739-a4cb-0f458585cc38}</Project>
+      <Name>P2E.Automacao.ComprovanteImportacao.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\EnviarDAI\P2E.Automacao.EnviarDAI.Lib\P2E.Automacao.EnviarDAI.Lib.csproj">
+      <Project>{a2196d7e-f424-4999-9962-d5246e074ded}</Project>
+      <Name>P2E.Automacao.EnviarDAI.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\EnvioPLI\P2E.Automacao.Processos.EnvioPLI.Lib\P2E.Automacao.Processos.EnviarPLI.Lib.csproj">
+      <Project>{ede400c3-1a56-4ade-a22b-8438e3f4153d}</Project>
+      <Name>P2E.Automacao.Processos.EnviarPLI.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\ExonerarIcms\P2E.Automacao.ExonerarIcms.Lib\P2E.Automacao.ExonerarIcms.Lib.csproj">
+      <Project>{58bba388-7451-4cb2-92eb-75fb08830afd}</Project>
+      <Name>P2E.Automacao.ExonerarIcms.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\ExtratoRetificacao\P2E.Automacao.ExtratoRetificacao.Lib\P2E.Automacao.ExtratoRetificacao.Lib.csproj">
+      <Project>{d22a1a1f-f75a-4fb0-9339-82eef34e086d}</Project>
+      <Name>P2E.Automacao.ExtratoRetificacao.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\StatusDesembaracoSefaz\P2E.Automacao.StatusDesembaracoSefaz.Lib\P2E.Automacao.StatusDesembaracoSefaz.Lib.csproj">
+      <Project>{322c419f-e349-499d-975d-d00e68ca00dd}</Project>
+      <Name>P2E.Automacao.StatusDesembaracoSefaz.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\TelaDebito\P2E.Automacao.TelaDebito.Lib\P2E.Automacao.TelaDebito.Lib.csproj">
+      <Project>{34e6f9a1-bd25-463b-aba3-274f8b0d40e6}</Project>
+      <Name>P2E.Automacao.TelaDebito.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Processos\TomarCiencia\P2E.Automacao.TomarCiencia.Lib\P2E.Automacao.TomarCiencia.Lib.csproj">
+      <Project>{b636f0ee-9adb-4a78-9562-40ab057ce927}</Project>
+      <Name>P2E.Automacao.TomarCiencia.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

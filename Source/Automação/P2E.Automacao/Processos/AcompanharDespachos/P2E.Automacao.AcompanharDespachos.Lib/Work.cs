@@ -61,28 +61,35 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                         using (var _driver = new PhantomJSDriver(service))
                         {
-                            //ACESSANDO PAGINA PRINCIPAL
-                            _driver.Navigate().GoToUrl(_urlSite);
-
-                            foreach (var di in registros)
+                            try
                             {
-                                //FILTRANDO O STATUS DA DI. TAMANHO 10/ CANAL VERDE == 1 / DESEMBARAÇADA == 11
-                                if (di.TX_NUM_DEC.Trim().Length == 10 && di.CD_IMP_CANAL != 1 && di.CD_IMP_STATUS != 11)
+                                //ACESSANDO PAGINA PRINCIPAL
+                                _driver.Navigate().GoToUrl(_urlSite);
+
+                                foreach (var di in registros)
                                 {
-                                    Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
-
-                                    List<Thread> threads = new List<Thread>();
-
-                                    var thread = new Thread(() => Acessar(di, di.TX_NUM_DEC, di.CD_IMP.ToString(), historicoImp, vistoriaImp, _driver));
-                                    thread.Start();
-                                    threads.Add(thread);
-
-                                    // fica aguardnado todas as threads terminarem...
-                                    while (threads.Any(t => t.IsAlive))
+                                    //FILTRANDO O STATUS DA DI. TAMANHO 10/ CANAL VERDE == 1 / DESEMBARAÇADA == 11
+                                    if (di.TX_NUM_DEC.Trim().Length == 10 && di.CD_IMP_CANAL != 1 && di.CD_IMP_STATUS != 11)
                                     {
-                                        continue;
+                                        Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
+
+                                        List<Thread> threads = new List<Thread>();
+
+                                        var thread = new Thread(() => Acessar(di, di.TX_NUM_DEC, di.CD_IMP.ToString(), historicoImp, vistoriaImp, _driver));
+                                        thread.Start();
+                                        threads.Add(thread);
+
+                                        // fica aguardnado todas as threads terminarem...
+                                        while (threads.Any(t => t.IsAlive))
+                                        {
+                                            continue;
+                                        }
                                     }
                                 }
+                            }
+                            catch (Exception)
+                            {
+                                _driver.Close();
                             }
 
                         }
