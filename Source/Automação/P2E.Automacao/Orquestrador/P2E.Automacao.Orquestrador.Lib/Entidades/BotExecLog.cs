@@ -16,8 +16,9 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         [Key]
         [Identity]
         public int CD_BOT_EXEC_LOG { get; set; }
-        public eTipoLog OP_TIPO_LOG { get; set; }
+        public string OP_TIPO_LOG { get; set; }
         public string TX_MENSAGEM { get; set; }
+        public string TX_INF_ADICIONAL { get; set; }
         public int CD_BOT_EXEC { get; set; }
         public DateTime DT_DATAHORA_REG { get; set; }
     }

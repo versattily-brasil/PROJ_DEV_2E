@@ -19,7 +19,7 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades.Map
             Map(p => p.OP_FORMA_EXEC).Column("OP_FORMA_EXEC");
             Map(p => p.OP_REPETE).Column("OP_REPETE");
             Map(p => p.OP_TIPO_REP).Column("OP_TIPO_REP");
-            Map(p => p.OP_ULTIMO_STATUS_EXEC).Column("OP_ULTIMO_STATUS_EXEC");
+            Map(p => p.OP_STATUS).Column("OP_STATUS");
             Map(p => p.TX_DESCRICAO).Column("TX_DESCRICAO");
             Map(p => p.CD_ULTIMA_EXEC).Column("CD_ULTIMA_EXEC");
         }

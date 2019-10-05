@@ -65,27 +65,34 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                         service.AddArgument("test-type");
                         service.AddArgument("no-sandbox");
                         service.HideCommandPromptWindow = true;
-
+                        
                         using (var _driver = new PhantomJSDriver(service))
                         {
-                            _driver.Navigate().GoToUrl(_urlSite);
-                            Console.WriteLine(_driver.Url);
-
-                            foreach (var di in registros)
+                            try
                             {
-                                Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
+                                _driver.Navigate().GoToUrl(_urlSite);
+                                Console.WriteLine(_driver.Url);
 
-                                List<Thread> threads = new List<Thread>();
-
-                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
-                                thread.Start();
-                                threads.Add(thread);
-
-                                // fica aguardnado todas as threads terminarem...
-                                while (threads.Any(t => t.IsAlive))
+                                foreach (var di in registros)
                                 {
-                                    continue;
+                                    Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
+
+                                    List<Thread> threads = new List<Thread>();
+
+                                    var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
+                                    thread.Start();
+                                    threads.Add(thread);
+
+                                    // fica aguardnado todas as threads terminarem...
+                                    while (threads.Any(t => t.IsAlive))
+                                    {
+                                        continue;
+                                    }
                                 }
+                            }
+                            catch (Exception e)
+                            {
+                                _driver.Close();
                             }
                         }
                     }
@@ -182,7 +189,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
+                var certificado = ControleCertificados.FindClientCertificate("511d1904137f8ed4");
 
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 

@@ -9,7 +9,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleBrowser-master\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj" />
+    <ProjectReference Include="..\..\SimpleBrowser-master\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj" />
   </ItemGroup>
+
+  <!--<ItemGroup>
+    <ProjectReference Include="..\SimpleBrowser-master\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj" />
+  </ItemGroup>-->
 
 </Project>

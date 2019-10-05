@@ -6,18 +6,18 @@ using System.Text;
 using Dapper;
 using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
+using P2E.Automacao.Orquestrador.DataContext;
 using P2E.Automacao.Orquestrador.Lib.Entidades;
-using P2E.Administrativo.Infra.Data.DataContext;
 
-namespace P2E.Administrativo.Infra.Data.Repositories
+namespace P2E.Automacao.Orquestrador.Repositories
 {
     public class BotExecLogRepository : DapperRepository<BotExecLog>
     {
-        private readonly OrquestradorContext _admContext;
+        private readonly OrquestradorContext _orquestradorContext;
 
-        public BotExecLogRepository(OrquestradorContext admContext) : base(admContext.Connection)
+        public BotExecLogRepository(OrquestradorContext orquestradorContext) : base(orquestradorContext.Connection)
         {
-            _admContext = admContext;
+            _orquestradorContext = orquestradorContext;
         }
     }
 }

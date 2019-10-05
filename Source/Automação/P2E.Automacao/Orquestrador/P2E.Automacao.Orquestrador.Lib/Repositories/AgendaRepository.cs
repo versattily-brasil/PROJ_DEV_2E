@@ -6,24 +6,24 @@ using System.Text;
 using Dapper;
 using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
+using P2E.Automacao.Orquestrador.DataContext;
 using P2E.Automacao.Orquestrador.Lib.Entidades;
-using P2E.Administrativo.Infra.Data.DataContext;
 
-namespace P2E.Administrativo.Infra.Data.Repositories
+namespace P2E.Automacao.Orquestrador.Repositories
 {
     public class AgendaRepository : DapperRepository<Agenda>
     {
-        private readonly OrquestradorContext _admContext;
+        private readonly OrquestradorContext _orquestradorContext;
 
-        public AgendaRepository(OrquestradorContext admContext) : base(admContext.Connection)
+        public AgendaRepository(OrquestradorContext orquestradorContext) : base(orquestradorContext.Connection)
         {
-            _admContext = admContext;
+            _orquestradorContext = orquestradorContext;
         }
 
 
         public int GetTotalRows(PredicateGroup predicateGroup)
         {
-            return _admContext.Connection.GetList<Agenda>(predicateGroup).Count();
+            return _orquestradorContext.Connection.GetList<Agenda>(predicateGroup).Count();
         }
 
         //public bool ValidarDuplicidades(Agenda agenda)

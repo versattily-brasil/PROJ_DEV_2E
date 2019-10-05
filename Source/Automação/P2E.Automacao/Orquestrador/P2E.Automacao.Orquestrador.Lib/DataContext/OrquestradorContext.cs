@@ -4,10 +4,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using P2E.Automacao.Orquestrador.Lib.Entidades.Map;
-using DapperExtensions;
 using Dapper;
+using System.Configuration;
+using DapperExtensions;
 
-namespace P2E.Administrativo.Infra.Data.DataContext
+namespace P2E.Automacao.Orquestrador.DataContext
 {
     public class OrquestradorContext : IDisposable
     {
@@ -15,7 +16,8 @@ namespace P2E.Administrativo.Infra.Data.DataContext
 
         public OrquestradorContext()
         {
-            Connection = new SqlConnection("");
+            string conStr = ConfigurationManager.ConnectionStrings["conexao"].ToString();
+            Connection = new SqlConnection(conStr);
 
             InicializaMapperDapper();
             var dialect = new DapperExtensions.Sql.SqlServerDialect();
