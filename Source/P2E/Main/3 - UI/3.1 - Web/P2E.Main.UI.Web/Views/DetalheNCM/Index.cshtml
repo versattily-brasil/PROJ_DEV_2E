@@ -2,14 +2,14 @@
 @{
     ViewData["Title"] = "Listagem de NCM";
     ViewData["PageName"] = "ncm_lista";
-    ViewData["Category1"] = "DetalheNCM";
+    ViewData["Category1"] = "Detalhes NCM";
 
     //Alert info
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
 
-    var nome_rotina = "DetalheNCM";
+    var nome_rotina = "Detalhes NCM";
 
 }
 
@@ -41,7 +41,7 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="text" asp-for="TX_SFNCM_DESCRICAO" class="form-control" placeholder="descrição" />
+                                <input type="text" asp-for="descricao" class="form-control" placeholder="descrição" />
                             </div>
 
                             <div class="col-md-2">

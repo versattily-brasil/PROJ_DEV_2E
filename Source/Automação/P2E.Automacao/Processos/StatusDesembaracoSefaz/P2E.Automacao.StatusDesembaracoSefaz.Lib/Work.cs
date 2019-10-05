@@ -81,6 +81,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                 else
                 {
                     Console.WriteLine("Não existe DI's para Acompanhar Status.");
+                    Console.ReadKey();
                 }
             }
         }

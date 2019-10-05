@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ED39CBFB-F30C-4A05-AD8B-3A509966CDC8}</ProjectGuid>
+    <ProjectGuid>{2DAC299B-9531-40E2-8EB0-31E8415B574C}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>P2E.Automacao.TomarCiencia.Console</RootNamespace>
-    <AssemblyName>P2E.Automacao.TomarCiencia.Console</AssemblyName>
+    <RootNamespace>P2E.Automacao.AtualizaListaSuframa.Console</RootNamespace>
+    <AssemblyName>P2E.Automacao.AtualizaListaSuframa.Console</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,7 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,12 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\P2E.Automacao.TomarCiencia.Lib\P2E.Automacao.TomarCiencia.Lib.csproj">
-      <Project>{b636f0ee-9adb-4a78-9562-40ab057ce927}</Project>
-      <Name>P2E.Automacao.TomarCiencia.Lib</Name>
+    <ProjectReference Include="..\P2E.Automacao.AtualizaListaSuframa.Lib\P2E.Automacao.AtualizaListaSuframa.Lib.csproj">
+      <Project>{24abbebc-d4b9-421f-91cc-3e65c047a93d}</Project>
+      <Name>P2E.Automacao.AtualizaListaSuframa.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

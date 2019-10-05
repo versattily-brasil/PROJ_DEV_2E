@@ -44,7 +44,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="descricao"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilter("DetalheNCM", "Consultar")]
+        [PermissaoFilter("Detalhes NCM", "Consultar")]
         public async Task<IActionResult> Index(DetalheNCMListViewModel vm)
         {
             try
@@ -58,7 +58,7 @@ namespace P2E.Main.UI.Web.Controllers
                                                            $"&pagesize={vm.DataPage.PageSize}" +
                                                            $"&orderby={vm.DataPage.OrderBy}" +
                                                            $"&Descending={vm.DataPage.Descending}" +
-                                                           $"&TXT_DEC={vm.TX_SFNCM_DESCRICAO}");
+                                                           $"&TX_SFNCM_DESCRICAO={vm.descricao}");
                         result.EnsureSuccessStatusCode();
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<DetalheNCM>>();
                         vm.DataPage.UrlSearch = $"detalhencm?";
@@ -87,7 +87,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilter("DetalheNCM", "Editar")]
+        [PermissaoFilter("Detalhes NCM", "Editar")]
         public async Task<IActionResult> Edit(long id)
         {
             try
@@ -108,7 +108,7 @@ namespace P2E.Main.UI.Web.Controllers
         }
 
         [HttpGet]
-        [PermissaoFilter("DetalheNCM", "Visualizar")]
+        [PermissaoFilter("Detalhes NCM", "Visualizar")]
         public async Task<IActionResult> View(long id)
         {
             try
@@ -133,7 +133,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [PermissaoFilter("DetalheNCM", "Criar")]
+        [PermissaoFilter("Detalhes NCM", "Criar")]
         public IActionResult Create()
         {
             return View("Form");
@@ -184,7 +184,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         /// 
-        [PermissaoFilter("DetalheNCM", "Deletar")]
+        [PermissaoFilter("Detalhes NCM", "Deletar")]
         public async Task<IActionResult> Delete(long Id)
         {
             string responseBody = string.Empty;
