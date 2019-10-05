@@ -26,16 +26,13 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public DateTime? DT_DATA_EXEC_PROG { get; set; }
         public TimeSpan HR_HORA_EXEC_PROG { get; set; }
         
-        public int? CD_ULTIMA_EXEC { get { return UltimaAgendaExecutada?.CD_AGENDA_EXEC; } }
-        public DateTime? DT_DATA_ULTIMA_EXEC { get { return UltimaAgendaExecutada?.DT_INICIO_EXEC; } }
+        public int? CD_ULTIMA_EXEC { get; set; }// { get { return AgendaProgramada?.CD_AGENDA_EXEC; } }
+        public DateTime? DT_DATA_ULTIMA_EXEC { get; set; }//{ get { return AgendaProgramada?.DT_FIM_EXEC; } }
 
-        [NotMapped]
         public IEnumerable<AgendaBot> Bots { get; set; }
 
-        [NotMapped]
         public AgendaExec AgendaProgramada { get; set; }
 
-        [NotMapped]
         public AgendaExec UltimaAgendaExecutada { get; set; }
         public override string ToString() => $"{TX_DESCRICAO?.ToString()}";
 

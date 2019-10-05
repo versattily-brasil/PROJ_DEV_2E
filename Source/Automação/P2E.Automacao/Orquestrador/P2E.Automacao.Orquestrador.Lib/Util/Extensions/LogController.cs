@@ -58,7 +58,7 @@ namespace P2E.Automacao.Orquestrador.Lib.Util.Extensions
 
         private static void EscreverLog(string msg, string tipo)
         { 
-            Console.WriteLine($"{tipo}: {msg}");
+            Console.WriteLine($"{tipo} [ {DateTime.Now} ]: {msg}");
         }
     }
 }
