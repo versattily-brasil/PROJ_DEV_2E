@@ -31,7 +31,7 @@ namespace P2E.Main.UI.Web.Controllers
         {
             this.appSettings = appSettings;
             _mapper = mapper;
-            _urlDetalheNCM = this.appSettings.ApiBaseURL + $"imp/v1/detalhencm";
+            _urlDetalheNCM = this.appSettings.ApiBaseURL + $"imp/v1/ncm";
         }
         #endregion
 
