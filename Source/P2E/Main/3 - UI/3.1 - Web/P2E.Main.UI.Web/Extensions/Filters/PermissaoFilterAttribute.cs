@@ -16,7 +16,7 @@ namespace P2E.Main.UI.Web.Extensions.Filters
 
         public PermissaoFilterAttribute(string rotina, string operacao) : base(typeof(ClaimRequirementFilter))
         {
-            Arguments = new object[] { rotina, operacao };
+           Arguments = new object[] { rotina, operacao };
         }
 
         public class ClaimRequirementFilter : IAuthorizationFilter

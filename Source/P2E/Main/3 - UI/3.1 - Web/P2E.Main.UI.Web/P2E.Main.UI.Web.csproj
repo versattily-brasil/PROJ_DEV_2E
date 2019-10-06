@@ -47,6 +47,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Administrativo\0 - Domain\P2E.Administrativo.Domain\P2E.Administrativo.Domain.csproj" />
     <ProjectReference Include="..\..\..\..\Importacao\2 - API\P2E.Importacao.API\P2E.Importacao.API.csproj" />
     <ProjectReference Include="..\..\..\..\Shared\P2E.Shared\P2E.Shared.csproj" />
     <ProjectReference Include="..\..\..\..\SSO\2 - API\P2E.SSO.API\P2E.SSO.API.csproj" />

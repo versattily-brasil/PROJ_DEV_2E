@@ -8,9 +8,9 @@ namespace P2E.Shared.Enum
 {
     public enum eTipoRepete
     {
-        HORARIO,
-        DIARIO,
-        SEMANAL,
-        MENSAL
+        Horario,
+        Diario,
+        Semanal,
+        Mensal
     }
 }

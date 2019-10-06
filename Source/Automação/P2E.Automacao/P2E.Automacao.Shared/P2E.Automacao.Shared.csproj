@@ -95,8 +95,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Util\SimpleBrowser-master\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj">
-      <Project>{a0359ece-a496-48e3-860a-93b4beab62ac}</Project>
+    <ProjectReference Include="..\..\..\Util\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj">
+      <Project>{28d05309-0423-48a6-95ca-9fce942c1e46}</Project>
       <Name>SimpleBrowser</Name>
     </ProjectReference>
   </ItemGroup>
