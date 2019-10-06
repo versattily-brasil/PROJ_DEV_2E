@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\AzCaptcha.cs" />
     <Compile Include="Extensions\ControleCertificados.cs" />
     <Compile Include="Extensions\Geral.cs" />
     <Compile Include="Extensions\Utils.cs" />
@@ -94,6 +95,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Util\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj">
+      <Project>{28d05309-0423-48a6-95ca-9fce942c1e46}</Project>
+      <Name>SimpleBrowser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.77.0.3865.4000\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.77.0.3865.4000\build\Selenium.WebDriver.ChromeDriver.targets')" />
