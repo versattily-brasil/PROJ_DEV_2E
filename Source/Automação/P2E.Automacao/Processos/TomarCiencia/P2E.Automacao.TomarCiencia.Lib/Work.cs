@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using OpenQA.Selenium;
@@ -11,6 +13,8 @@ using Selenium.Utils.Html;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
@@ -25,6 +29,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         private string _urlIncricao = @"https://online.sefaz.am.gov.br/dte/sel_inscricao_pf.asp?inscricao=";
         private string _urlConsultaDI = @"https://online.sefaz.am.gov.br/sinf2004/DI/pagDIOnline.asp?numPagina="; //"https://online.sefaz.am.gov.br/sinf2004/DI/consultaDIOnline.asp";                
         private string _urlApiBase;
+        private string _urlDocLacre = @"https://online.sefaz.am.gov.br/sinf2004/DI/rel_lacre.asp?idDi=";
         private List<Importacao> ListaProcessosBD;
         #endregion
 
@@ -32,6 +37,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         List<DAI> DAIList = new List<DAI>();
         List<Empresa> ListaEmpresas = new List<Empresa>();
         PhantomJSDriver _driver = null;
+        PhantomJSDriver _driverTemp;
         PhantomJSDriverService service = null;
         OpenQA.Selenium.IWebElement element = null;
 
@@ -65,6 +71,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 this.service.HideCommandPromptWindow = true;
 
                 this._driver = new PhantomJSDriver(service);
+                this._driverTemp = new PhantomJSDriver(service);
             }
             catch
             {
@@ -219,53 +226,72 @@ namespace P2E.Automacao.TomarCiencia.Lib
         /// <summary>
         /// Salva o arquivo de Lacre como PDF.
         /// </summary>
-        protected void DownloadDAILacre()
+        protected bool DownloadDAILacre()
         {
-            ReadOnlyCollection<IWebElement> elements;
+            var retorno = false;
+
+            ReadOnlyCollection<IWebElement> elements = null;
             try
             {
-                elements = this._driver.FindElements(By.ClassName("link"));
-
-                //var list = _driver.FindElements.
-
-
-
-                
+                elements = this._driver.FindElementsByClassName("link"); 
 
                 foreach (IWebElement element in elements)
                 {
                     if (element.Text.Contains("[Imp. de Lacre]"))
                     {
-                        
-                        
+                        var aux = _driver.PageSource;
 
+                        var position = aux.IndexOf("[Imp. de Lacre]");
 
+                        var nroLacre = aux.Substring((position-13), 7);                                                
 
+                        _driverTemp.Navigate().GoToUrl(_urlDocLacre + nroLacre);
+                        Thread.Sleep(3000);
 
+                        var print = capturaImagem(_driverTemp, nroLacre);
 
-
-
-                        
-                        new Actions(this._driver).MoveToElement(element).Click().Perform();
-                        var contentLacre = this._driver.PageSource;
-                        // Salvar como PDF
-                        // PDFSharp talvez?!?!
-
-                        var retorno = capturaImagem(_driver, "123");
+                        retorno = true;
                     }
                 }
+
+                return retorno;
             }
             catch (NoSuchElementException ex)
             {
                 Log(ex.Message, nameof(DownloadDAILacre));
+                return false;
             }
         }
 
-        public void Screenshot(IWebDriver driver, string screenshotsPasta)
+        public bool Screenshot(IWebDriver driver, string screenshotsPasta)
         {
-            ITakesScreenshot camera = driver as ITakesScreenshot;
-            Screenshot foto = camera.GetScreenshot();
-            foto.SaveAsFile(screenshotsPasta, ScreenshotImageFormat.Png);
+            try
+            {
+                ITakesScreenshot camera = driver as ITakesScreenshot;
+                Screenshot foto = camera.GetScreenshot();
+                foto.SaveAsFile(screenshotsPasta+".png", ScreenshotImageFormat.Png);
+
+                System.Drawing.Image png = System.Drawing.Image.FromFile(screenshotsPasta + ".png");
+                using (var bitmap = new Bitmap(png.Width, png.Height))
+                {
+                    bitmap.SetResolution(, png.HorizontalResolution, png.VerticalResolution);
+
+                    using (var g = Graphics.FromImage(bitmap))
+                    {
+                        g.Clear(Color.White);
+                        g.DrawImageUnscaled(png, 0, 0);
+                    }
+
+                    bitmap.Save(screenshotsPasta + ".jpg", ImageFormat.Jpeg);
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
 
         public bool capturaImagem(PhantomJSDriver _driver, string numero)
@@ -278,10 +304,50 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", numero + "-CapturaTela.jpg");
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", numero + "-CapturaTela");
 
-                Screenshot(_driver, arquivoPath);
-                Thread.Sleep(500);
+                var retornoPrint = Screenshot(_driver, arquivoPath);
+
+                if (retornoPrint)
+                {
+                    ConvertImagePDF(numero + "-CapturaTela.jpg",numero);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool ConvertImagePDF( string nomePrint, string lacre)
+        {
+            try
+            {
+                iTextSharp.text.Document Doc = new iTextSharp.text.Document(PageSize.LETTER, 20, 20, 20, 20);
+
+                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                {
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                }
+
+                string arquivoPath = Path.Combine("C:\\Versatilly\\");
+
+                string PDFOutput = Path.Combine(arquivoPath, "Lacre-"+lacre+".pdf");
+                PdfWriter writer = PdfWriter.GetInstance(Doc, new FileStream(PDFOutput, FileMode.Create, FileAccess.Write, FileShare.Read));
+
+                Doc.Open();
+
+
+                foreach (string F in System.IO.Directory.GetFiles(arquivoPath, nomePrint))
+                {
+                    Doc.NewPage();                   
+                    Doc.Add(new iTextSharp.text.Jpeg(new Uri(new FileInfo(F).FullName)));
+                }
+
+                Doc.Close();
 
                 return true;
             }
@@ -390,7 +456,13 @@ namespace P2E.Automacao.TomarCiencia.Lib
                         Log("Loading de 5 seg.");
                         Thread.Sleep(5000);
 
-                        DownloadDAILacre();
+                        var retornoPrint = DownloadDAILacre();
+
+                        if (retornoPrint)
+                        {
+                            //this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
+                            //Thread.Sleep(5000);
+                        }
 
                         r++;
                         sheet.Cells[r, colDI].Value = "Pagina " + pag;
