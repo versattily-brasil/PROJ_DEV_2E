@@ -4,7 +4,6 @@ using P2E.Importacao.Domain.Entities;
 using P2E.Importacao.Domain.Repositories;
 using P2E.Importacao.Infra.Data.DataContext;
 using P2E.Shared.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +12,11 @@ namespace P2E.Importacao.Infra.Data.Repository
 {
     public class DetalheNCMRepository : DapperRepository<DetalheNCM>, IDetalheNCMRepository
     {
-        private readonly ImportacaoContext _DetalheNCMContext;
+        private readonly ImportacaoContext _importacaoContext;
 
-        public DetalheNCMRepository(ImportacaoContext histContext) : base(histContext.Connection)
+        public DetalheNCMRepository(ImportacaoContext impContext) : base(impContext.Connection)
         {
-            _DetalheNCMContext = histContext;
+            _importacaoContext = impContext;
         }
 
         /// <summary>
@@ -30,7 +29,7 @@ namespace P2E.Importacao.Infra.Data.Repository
         {
 
             var sSQL = new StringBuilder();
-            dataPage.OrderBy = dataPage.OrderBy ?? "cd_det_ncm";
+            dataPage.OrderBy = dataPage.OrderBy ?? "tx_sfncm_descricao";
             var sort = new Sort() { PropertyName = dataPage.OrderBy, Ascending = !dataPage.Descending };
 
             #region Ordenação
@@ -52,9 +51,16 @@ namespace P2E.Importacao.Infra.Data.Repository
 
             predicateGroup.Operator = (predicateGroup.Predicates.Count > 1 ? GroupOperator.And : GroupOperator.Or);
 
-            dataPage.Items = _DetalheNCMContext.Connection.GetPage<DetalheNCM>(predicateGroup, listSort, dataPage.CurrentPage - 1, dataPage.PageSize).ToList();
+            dataPage.Items = _importacaoContext.Connection.GetPage<DetalheNCM>(predicateGroup, listSort, dataPage.CurrentPage - 1, dataPage.PageSize).ToList();
+
+            dataPage.TotalItems = GetTotalRows(predicateGroup);
 
             return dataPage;
+        }
+
+        public int GetTotalRows(PredicateGroup predicateGroup)
+        {
+            return _importacaoContext.Connection.GetList<DetalheNCM>(predicateGroup).Count();
         }
     }
 }

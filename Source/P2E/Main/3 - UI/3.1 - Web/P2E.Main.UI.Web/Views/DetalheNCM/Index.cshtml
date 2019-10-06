@@ -2,14 +2,14 @@
 @{
     ViewData["Title"] = "Listagem de NCM";
     ViewData["PageName"] = "ncm_lista";
-    ViewData["Category1"] = "DetalheNCM";
+    ViewData["Category1"] = "Detalhes NCM";
 
     //Alert info
     var type = (string)TempData["_alert.type"];
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
 
-    var nome_rotina = "DetalheNCM";
+    var nome_rotina = "Detalhes NCM";
 
 }
 
@@ -41,7 +41,7 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="text" asp-for="TX_SFNCM_DESCRICAO" class="form-control" placeholder="descrição" />
+                                <input type="text" asp-for="descricao" class="form-control" placeholder="descrição" />
                             </div>
 
                             <div class="col-md-2">
@@ -80,7 +80,7 @@
                                         <th>NCM</th>
                                         <th>Detalhe</th>
                                         <th>Descrição</th>
-                                        <th width="20"></th>
+                                        @*<th width="20"></th>*@
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -91,12 +91,12 @@
                                             <td>@item.TX_SFNCM_DETALHE</td>
                                             <td>@item.TX_SFNCM_DESCRICAO</td>
 
-                                            <td class="text-center">
+                                            @*<td class="text-center">
                                                 @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
                                                 {
                                                     <a asp-action="View" asp-route-id="@item.CD_DET_NCM"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a>
                                                 }
-                                            </td>
+                                            </td>*@
                                         </tr>
                                     }
                                 </tbody>

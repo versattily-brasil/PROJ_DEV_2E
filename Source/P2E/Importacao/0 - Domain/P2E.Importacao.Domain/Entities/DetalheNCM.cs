@@ -1,10 +1,7 @@
 ﻿using MicroOrm.Dapper.Repositories.Attributes;
 using P2E.Shared.Message;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace P2E.Importacao.Domain.Entities
 {
@@ -16,15 +13,15 @@ namespace P2E.Importacao.Domain.Entities
 
         }
 
-        public DetalheNCM(int cd_det_ncm,
-                         string tx_sfncm_codigo,
+        public DetalheNCM(string tx_sfncm_codigo,
                          string tx_sfncm_detalhe,
                          string tx_sfncm_descricao)
         {
-            CD_DET_NCM = cd_det_ncm;
-            TX_SFNCM_CODIGO = tx_sfncm_codigo;
-            TX_SFNCM_DETALHE = tx_sfncm_detalhe;
-            TX_SFNCM_DESCRICAO = tx_sfncm_descricao;
+            TX_SFNCM_CODIGO = tx_sfncm_codigo?.Trim();
+            TX_SFNCM_DETALHE = tx_sfncm_detalhe?.Trim();
+            TX_SFNCM_DESCRICAO = tx_sfncm_descricao?.Trim();
+
+            IsValid();
         }
 
         [Key]

@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Extensions\ControleCertificados.cs" />
     <Compile Include="Extensions\Geral.cs" />
+    <Compile Include="Extensions\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XLSExport\Alignment.cs" />
     <Compile Include="XLSExport\BIFF.cs" />

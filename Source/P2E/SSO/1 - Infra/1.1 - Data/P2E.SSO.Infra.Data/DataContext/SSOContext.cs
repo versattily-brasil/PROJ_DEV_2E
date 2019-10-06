@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dapper;
+using DapperExtensions;
+using P2E.Shared.TypeHandler;
+using P2E.SSO.Domain.Entities.Map;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
-using P2E.SSO.Domain.Entities.Map;
-using DapperExtensions;
-using Dapper;
-using P2E.Shared.TypeHandler;
 
 namespace P2E.SSO.Infra.Data.DataContext
 {
