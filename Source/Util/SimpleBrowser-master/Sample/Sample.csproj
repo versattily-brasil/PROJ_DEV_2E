@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Sample for SimpleBrowser</Description>
+    <Copyright>Copyright © 2010 - 2019, Nathan Ridley and the SimpleBrowser contributors.</Copyright>
+    <Authors>Nathan Ridley and the SimpleBrowser contributors.</Authors>
+    <AssemblyTitle>Sample</AssemblyTitle>
+    <!-- <TargetFrameworks>net452;netcoreapp2.0</TargetFrameworks> -->
+    <TargetFramework>net452</TargetFramework>
+    <!-- <TargetFramework>netcoreapp2.0</TargetFramework> -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DebugType>portable</DebugType>
+    <AssemblyName>Sample</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <StartupObject>Sample.Program</StartupObject>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <WarningsAsErrors />
+	<PreserveCompilationContext>true</PreserveCompilationContext>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleBrowser\SimpleBrowser.csproj" />
+  </ItemGroup>
+
+</Project>

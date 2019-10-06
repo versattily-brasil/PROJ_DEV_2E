@@ -40,67 +40,83 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
         public async Task ExecutarAsync()
         {
-            Console.WriteLine("Obtendo DI's para Baixar Extrato.");
-            await CarregarListaDIAsync();
+            try
+            {
+                Console.WriteLine("Obtendo DI's para Baixar Extrato.");
+                await CarregarListaDIAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         private async Task CarregarListaDIAsync()
         {
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/extrato-pdf-xml";
-
-            using (var client = new HttpClient())
+            try
             {
-                Console.WriteLine("ABRINDO CONEXAO...");
-                var result = await client.GetAsync(urlAcompanha);
-                var aux = await result.Content.ReadAsStringAsync();
-                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
+                string urlAcompanha = _urlApiBase + $"imp/v1/importacao/extrato-pdf-xml";
 
-                if (registros != null && registros.Any())
+                using (var client = new HttpClient())
                 {
-                    using (var service = PhantomJSDriverService.CreateDefaultService())
+                    Console.WriteLine("ABRINDO CONEXAO...");
+                    var result = await client.GetAsync(urlAcompanha);
+                    var aux = await result.Content.ReadAsStringAsync();
+                    registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
+
+                    if (registros != null && registros.Any())
                     {
-                        Console.WriteLine("CARREGANDO O CERTIFICADO...");
-                        ControleCertificados.CarregarCertificado(service);
-
-                        service.AddArgument("test-type");
-                        service.AddArgument("no-sandbox");
-                        service.HideCommandPromptWindow = true;
-                        
-                        using (var _driver = new PhantomJSDriver(service))
+                        using (var service = PhantomJSDriverService.CreateDefaultService())
                         {
-                            try
+                            Console.WriteLine("CARREGANDO O CERTIFICADO...");
+                            ControleCertificados.CarregarCertificado(service);
+
+                            service.AddArgument("test-type");
+                            service.AddArgument("no-sandbox");
+                            service.HideCommandPromptWindow = true;
+
+                            using (var _driver = new PhantomJSDriver(service))
                             {
-                                _driver.Navigate().GoToUrl(_urlSite);
-                                Console.WriteLine(_driver.Url);
-
-                                foreach (var di in registros)
+                                try
                                 {
-                                    Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
+                                    _driver.Navigate().GoToUrl(_urlSite);
+                                    Console.WriteLine(_driver.Url);
 
-                                    List<Thread> threads = new List<Thread>();
-
-                                    var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
-                                    thread.Start();
-                                    threads.Add(thread);
-
-                                    // fica aguardnado todas as threads terminarem...
-                                    while (threads.Any(t => t.IsAlive))
+                                    foreach (var di in registros)
                                     {
-                                        continue;
+                                        Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
+
+                                        List<Thread> threads = new List<Thread>();
+
+                                        var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
+                                        thread.Start();
+                                        threads.Add(thread);
+
+                                        // fica aguardnado todas as threads terminarem...
+                                        while (threads.Any(t => t.IsAlive))
+                                        {
+                                            continue;
+                                        }
                                     }
                                 }
-                            }
-                            catch (Exception e)
-                            {
-                                _driver.Close();
+                                catch (Exception e)
+                                {
+                                    _driver.Close();
+                                }
                             }
                         }
                     }
+                    else
+                    {
+                        Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
-                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
 
@@ -220,37 +236,38 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                var browser = Shared.Extensions.Geral.CriarBrowser();
-
-                browser.Navigate(_urlSite);
-
-                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
-
-                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                var certificado = ControleCertificados.FindClientCertificate("511d1904137f8ed4");
+                using (var driver = new SimpleBrowser.WebDriver.SimpleBrowserDriver(certificado))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+
+                    //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                    if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                    {
+                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    }
+
+                    string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.xml");
+
+
+                    if (!File.Exists(arquivoPath))
+                    {
+                        driver._my.Navigate(_urlSite);
+                        driver._my.Navigate(_urlConsultaDI);
+                        driver._my.Navigate(new Uri(_urlDownloadXML),
+                            "perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numero + "&numeroRetificacao=&enviar=Consultar",
+                            "application/x-www-form-urlencoded");
+
+                        driver.FindElement(By.Id("nrDeclaracaoXml")).SendKeys(numero);
+                        driver.FindElement(By.Name("ConsultarDiXmlForm")).Submit();
+
+                        Thread.Sleep(5000);
+
+                        File.WriteAllBytes(arquivoPath, ConvertToByteArray(driver.PageSource));
+                    }
+
+                    return true;
                 }
-
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.xml");
-
-
-                if (!File.Exists(arquivoPath))
-                {
-                    //browser.Navigate(_urlConsultaDI);
-                    browser.Navigate(new Uri(_urlDownloadXML),
-                        "perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numero + "&numeroRetificacao=&enviar=Consultar",
-                        "application/x-www-form-urlencoded");
-
-                    browser.Find("input", FindBy.Id, "nrDeclaracaoXml").Value = numero;
-                    browser.Find("form", FindBy.Name, "ConsultarDiXmlForm").SubmitForm();
-
-                    Thread.Sleep(5000);
-
-                    File.WriteAllBytes(arquivoPath, ConvertToByteArray(browser.CurrentHtml));
-                }
-
-                return true;
             }
             catch (Exception e)
             {

@@ -48,6 +48,16 @@ namespace P2E.Administrativo.API.Controllers
             return result;
         }
 
+
+        // GET: api/rotina
+        [HttpGet]
+        [Route("api/v1/agenda/")]
+        public DataPage<Agenda> Get([FromQuery] string descricao, [FromQuery] DataPage<Agenda> page)
+        {
+            page = _AgendaRepository.GetByPage(page, descricao);
+            return page;
+        }
+
         // GET: api/Agenda/5
         [HttpGet]
         [Route("api/v1/Agenda/{id}")]
