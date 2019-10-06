@@ -93,6 +93,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AtualizaListaSuframa", "Atu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.AtualizaListaSuframa.Console", "Processos\AtualizaListaSuframa\P2E.Automacao.AtualizaListaSuframa.Console\P2E.Automacao.AtualizaListaSuframa.Console.csproj", "{2DAC299B-9531-40E2-8EB0-31E8415B574C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TaxaConversaoCambio", "TaxaConversaoCambio", "{8ADD8ED4-CB60-40DC-ACBE-B0073DAA788D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.TaxaConversaoCambio.Lib", "Processos\TaxaConversaoCambio\P2E.Automacao.TaxaConversaoCambio.Lib\P2E.Automacao.TaxaConversaoCambio.Lib.csproj", "{2C148298-AFE0-4DAF-A819-A64D51773218}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.TaxaConversaoCambio.Console", "Processos\TaxaConversaoCambio\P2E.Automacao.TaxaConversaoCambio.Console\P2E.Automacao.TaxaConversaoCambio.Console.csproj", "{B4D15DEC-07BF-42C4-9DAB-15682909C2E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +225,14 @@ Global
 		{2DAC299B-9531-40E2-8EB0-31E8415B574C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DAC299B-9531-40E2-8EB0-31E8415B574C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DAC299B-9531-40E2-8EB0-31E8415B574C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C148298-AFE0-4DAF-A819-A64D51773218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C148298-AFE0-4DAF-A819-A64D51773218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C148298-AFE0-4DAF-A819-A64D51773218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C148298-AFE0-4DAF-A819-A64D51773218}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4D15DEC-07BF-42C4-9DAB-15682909C2E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D15DEC-07BF-42C4-9DAB-15682909C2E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D15DEC-07BF-42C4-9DAB-15682909C2E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D15DEC-07BF-42C4-9DAB-15682909C2E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -265,6 +279,9 @@ Global
 		{24ABBEBC-D4B9-421F-91CC-3E65C047A93D} = {84A1FCB7-78AB-49E5-8730-3D6511E14ED3}
 		{84A1FCB7-78AB-49E5-8730-3D6511E14ED3} = {B65861C8-40F2-490B-B5B1-F5E382E4C4BD}
 		{2DAC299B-9531-40E2-8EB0-31E8415B574C} = {84A1FCB7-78AB-49E5-8730-3D6511E14ED3}
+		{8ADD8ED4-CB60-40DC-ACBE-B0073DAA788D} = {B65861C8-40F2-490B-B5B1-F5E382E4C4BD}
+		{2C148298-AFE0-4DAF-A819-A64D51773218} = {8ADD8ED4-CB60-40DC-ACBE-B0073DAA788D}
+		{B4D15DEC-07BF-42C4-9DAB-15682909C2E6} = {8ADD8ED4-CB60-40DC-ACBE-B0073DAA788D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E02BF6DF-AE47-425E-A0E6-4B3FE6ACBCD3}
