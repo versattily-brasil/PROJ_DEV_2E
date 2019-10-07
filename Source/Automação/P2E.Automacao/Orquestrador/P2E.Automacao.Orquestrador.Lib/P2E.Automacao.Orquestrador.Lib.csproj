@@ -129,6 +129,10 @@
       <Project>{c98d07c3-081f-48a5-bdf5-e245406d6c73}</Project>
       <Name>P2E.Automacao.AcompanharDespachos.Lib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Processos\AtualizaListaSuframa\P2E.Automacao.AtualizaListaSuframa.Lib\P2E.Automacao.AtualizaListaSuframa.Lib.csproj">
+      <Project>{24abbebc-d4b9-421f-91cc-3e65c047a93d}</Project>
+      <Name>P2E.Automacao.AtualizaListaSuframa.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib\P2E.Automacao.BaixarExtratos.Lib.csproj">
       <Project>{9ad75dea-943c-4705-9f91-34953f83fad4}</Project>
       <Name>P2E.Automacao.BaixarExtratos.Lib</Name>

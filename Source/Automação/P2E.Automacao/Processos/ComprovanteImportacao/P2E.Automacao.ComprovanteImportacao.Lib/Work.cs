@@ -184,7 +184,8 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
         {
             try
             {
-                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
+                //var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
+                var certificado = ControleCertificados.GetClientCertificate();
 
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
