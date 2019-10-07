@@ -146,7 +146,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             }
         }
 
-        private async void CarregarBotExecLog(AgendaBot selecionado)
+        private void CarregarBotExecLog(AgendaBot selecionado)
         {
             if (selecionado.CD_ULTIMA_EXEC_BOT.HasValue)
             {
@@ -156,6 +156,11 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                     bsBotExecLog.DataSource = _work.ObterLogsExecLogs(selecionado.CD_ULTIMA_EXEC_BOT.Value);
                 });
             }
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }
