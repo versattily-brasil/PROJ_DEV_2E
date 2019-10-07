@@ -86,7 +86,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 var image64 = aux.Substring(auxInicial + 17, lenghtImage);   //AzCaptcha.ConverteImageParaBase64Url(_urlSite);
 
                 Console.WriteLine("OBTENDO O VALOR DO CAPTCHA...");
-                valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "hnwrvh9xdjyp2kcyqfnd7bmwmf3qkt8v");
+                valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "p7rdbvpqjk6lxbgthvyghfwxrtkd48mc");
                 Console.WriteLine("CAPTCHA: " + valorCaptcha);
 
                 Console.WriteLine("INSERINDO VALOR DO CAPTCHA NO BROWSER...");
@@ -277,7 +277,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(_urlApiBase);
-                    resultado = await client.PutAsJsonAsync($"imp/v1/taxacamb/{0}", taxaConversaoCambio);
+                    resultado = await client.PutAsJsonAsync($"imp/v1/taxa/{0}", taxaConversaoCambio);
                     resultado.EnsureSuccessStatusCode();
 
                     Console.WriteLine("Registro salvo com sucesso.");
@@ -293,7 +293,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         {
             try
             {
-                string url = _urlApiBase + $"imp/v1/taxacamb";
+                string url = _urlApiBase + $"imp/v1/taxa";
 
                 using (var client = new HttpClient())
                 {

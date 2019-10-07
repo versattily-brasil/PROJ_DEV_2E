@@ -22,8 +22,8 @@ namespace P2E.Importacao.Domain.Entities
                                    DateTime dt_fim_vigencia, 
                                    decimal vl_taxa_conversao)
         {
-            TX_MOEDA = tx_moeda;
-            TX_DESCRICAO = tx_descricao;
+            TX_MOEDA = tx_moeda?.Trim();
+            TX_DESCRICAO = tx_descricao?.Trim();
             DT_INICIO_VIGENCIA = dt_inicio_vigencia;
             DT_FIM_VIGENCIA = dt_fim_vigencia;
             VL_TAXA_CONVERSAO = vl_taxa_conversao;

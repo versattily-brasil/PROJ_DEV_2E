@@ -20,7 +20,7 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/TaxaConversaoCambio
         [HttpGet]
-        [Route("api/v1/taxacamb/todos")]
+        [Route("api/v1/taxa/todos")]
         public IEnumerable<TaxaConversaoCambio> Get()
         {
             var result = _taxaConversaoCambioRepository.FindAll();
@@ -29,7 +29,7 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/TaxaConversaoCambio
         [HttpGet]
-        [Route("api/v1/taxacamb/")]
+        [Route("api/v1/taxa/")]
         public DataPage<TaxaConversaoCambio> Get([FromQuery] string tx_dsc, [FromQuery] DataPage<TaxaConversaoCambio> page)
         {
             page = _taxaConversaoCambioRepository.GetByPage(page, tx_dsc);
@@ -39,7 +39,7 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/TaxaConversaoCambio/5
         [HttpGet]
-        [Route("api/v1/taxacamb/{id}")]
+        [Route("api/v1/taxa/{id}")]
         public TaxaConversaoCambio Get(long id)
         {
             TaxaConversaoCambio TaxaConversaoCambio = _taxaConversaoCambioRepository.Find(p => p.CD_TAXA_CAMBIO == id);
@@ -49,7 +49,7 @@ namespace P2E.Importacao.API.Controllers
 
         // POST: api/TaxaConversaoCambio
         [HttpPost]
-        [Route("api/v1/taxacamb")]
+        [Route("api/v1/taxa")]
         public object Post([FromBody] TaxaConversaoCambio item)
         {
             try
@@ -65,8 +65,7 @@ namespace P2E.Importacao.API.Controllers
 
         // PUT: api/TaxaConversaoCambio/5
         [HttpPut]
-        [Route("api/v1/taxacamb/{id}")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Route("api/v1/taxa/{id}")]        
         public IActionResult Put(int id, [FromBody] TaxaConversaoCambio item)
         {
             try
@@ -87,7 +86,7 @@ namespace P2E.Importacao.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete]
-        [Route("api/v1/taxacamb/{id}")]
+        [Route("api/v1/taxa/{id}")]
         public IActionResult Delete(int id)
         {
             try
