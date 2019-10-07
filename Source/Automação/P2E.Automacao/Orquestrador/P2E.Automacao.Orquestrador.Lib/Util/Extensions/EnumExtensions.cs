@@ -12,6 +12,9 @@ namespace P2E.Automacao.Orquestrador.Lib.Util.Extensions
     {
         public static string GetDescription(this System.Enum enumerationValue)
         {
+            if (enumerationValue == null)
+                return null;
+
             Type type = enumerationValue.GetType();
             MemberInfo member = type.GetMembers().Where(w => w.Name == System.Enum.GetName(type, enumerationValue)).FirstOrDefault();
             var attribute = member?.GetCustomAttributes(typeof(DescriptionAttribute), false).FirstOrDefault() as DescriptionAttribute;

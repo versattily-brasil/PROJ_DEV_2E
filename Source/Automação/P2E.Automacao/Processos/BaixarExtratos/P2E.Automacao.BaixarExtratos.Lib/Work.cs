@@ -332,9 +332,6 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             byte[] arr = System.Text.Encoding.ASCII.GetBytes(str);
             return arr;
         }
-
-
-
     }
 }
 

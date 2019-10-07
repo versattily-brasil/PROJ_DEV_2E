@@ -38,7 +38,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 if (!bgwConsultar.IsBusy)
                 {
                     bgwConsultar.RunWorkerAsync();
-                    btnConsultar.Enabled = false;
+                    btnExecutarAgenda.Enabled = false;
                 }
             }
             else
@@ -80,6 +80,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         {
             barraProgresso.Style = ProgressBarStyle.Blocks;
             btnConsultar.Enabled = true;
+            btnExecutarAgenda.Enabled = true;
         }
 
         private void GvAgendamentos_SelectionChanged(object sender, EventArgs e)
@@ -159,6 +160,11 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gvAgendaBots_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
