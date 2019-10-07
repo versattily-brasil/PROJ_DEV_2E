@@ -57,7 +57,7 @@ namespace P2E.Automacao.Shared.Extensions
         /// <param name="base64string">String de uma imagem Base64</param>
         /// <param name="key">Chave do cadastro no AzCaptcha</param>
         /// <returns></returns>
-        public string ResultadoCaptcha(string base64string, string key)
+        public static string ResultadoCaptcha(string base64string, string key)
         {
             //POST
             try
