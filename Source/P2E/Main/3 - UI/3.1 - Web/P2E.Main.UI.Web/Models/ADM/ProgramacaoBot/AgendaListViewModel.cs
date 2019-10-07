@@ -4,11 +4,11 @@ using P2E.SSO.Domain.Entities;
 using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.Shared.Model;
 
-namespace P2E.Main.UI.Web.Models.SSO.Rotina
+namespace P2E.Main.UI.Web.Models.ADM.ProgramacaoBot
 {
-    public class ProgramacaoBotListViewModel
+    public class AgendaListViewModel
     {
-        public ProgramacaoBotListViewModel()
+        public AgendaListViewModel()
         {
             DataPage = new DataPage<P2E.Administrativo.Domain.Entities.Agenda>();
         }

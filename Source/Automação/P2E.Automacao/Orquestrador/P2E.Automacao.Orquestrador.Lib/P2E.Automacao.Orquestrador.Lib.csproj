@@ -121,6 +121,10 @@
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\P2E.Automacao.Shared\P2E.Automacao.Shared.csproj">
+      <Project>{d05ad0b7-5353-49d3-9351-9079657b20cf}</Project>
+      <Name>P2E.Automacao.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Processos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib\P2E.Automacao.AcompanharDespachos.Lib.csproj">
       <Project>{c98d07c3-081f-48a5-bdf5-e245406d6c73}</Project>
       <Name>P2E.Automacao.AcompanharDespachos.Lib</Name>

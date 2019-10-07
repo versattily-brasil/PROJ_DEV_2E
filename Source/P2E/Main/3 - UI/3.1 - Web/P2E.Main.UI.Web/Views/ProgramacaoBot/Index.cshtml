@@ -1,4 +1,4 @@
-﻿@model P2E.Main.UI.Web.Models.SSO.Rotina.ProgramacaoBotListViewModel
+﻿@model P2E.Main.UI.Web.Models.ADM.ProgramacaoBot.AgendaListViewModel
 @using P2E.Shared.Extensions
 @{
     ViewData["Title"] = "Programação de Execução de Bots";
@@ -105,7 +105,7 @@
                                         <td class="text-center">
                                             @*@if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))*@
                                             {
-                                                <a asp-action="View" asp-route-id="@item.CD_AGENDA">
+                                                <a asp-action="Edit" asp-route-id="@item.CD_AGENDA">
                                                     <i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i>
                                                 </a>
                                             }

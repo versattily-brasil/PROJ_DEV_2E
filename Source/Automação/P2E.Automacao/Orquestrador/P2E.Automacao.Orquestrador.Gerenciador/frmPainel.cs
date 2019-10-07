@@ -1,4 +1,5 @@
-﻿using P2E.Automacao.Orquestrador.Lib.Entidades;
+﻿using P2E.Automacao.Orquestrador.Lib;
+using P2E.Automacao.Orquestrador.Lib.Entidades;
 using P2E.Automacao.Orquestrador.Lib.Util.Enum;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,13 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
     public partial class frmPainel : Form
     {
         private string _urlApiBase;
+        private readonly Work _work;
         public frmPainel()
         {
             InitializeComponent();
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+
+            _work = new Orquestrador.Lib.Work();
         }
 
         private async void BtnExecutarAgenda_Click(object sender, EventArgs e)
@@ -28,9 +32,8 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             if (gvAgendamentos.SelectedRows.Count > 0)
             {
                 var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
-                agendaSelecionada.OP_STATUS = eStatusExec.Programado;
-                // programar agenda exec
-                await ExecutarAgendaAsync(agendaSelecionada);
+
+                await _work.ProgramarAgendaAsync(agendaSelecionada);
 
                 if (!bgwConsultar.IsBusy)
                 {
@@ -66,39 +69,11 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
         private async Task ConsultarAsync()
         {
-            // monta url para api de importação.
-            string url = _urlApiBase + $"adm/v1/agenda/por-data/{DateTime.Today.ToString("dd-MM-yyyy")}";
-
-            // realiza a requisição para a api de importação
-            using (var client = new HttpClient())
+            this.Invoke((MethodInvoker)delegate ()
             {
-                var result = await client.GetAsync(url);
-
-                // recupera os registros.
-                //var registros = await result.Content.ReadAsAsync<List<Agenda>>();
-
-
-                this.Invoke((MethodInvoker)delegate ()
-                {
-                    agendaBindingSource.DataSource = null;
-                    //if(registros != null)
-                    //agendaBindingSource.DataSource = registros.OrderByDescending(p => p.DT_DATA_EXEC_PROG);
-                });
-            }
-        }
-
-        private async Task ExecutarAgendaAsync(Agenda agenda)
-        {
-            barraProgresso.Style = ProgressBarStyle.Marquee;
-            // monta url para api de importação.
-            //string url = _urlApiBase + $"adm/v1/agenda/altera-status/{agenda.CD_AGENDA}/{(int)agenda.OP_ULTIMO_STATUS_EXEC}";
-
-            // realiza a requisição para a api de importação
-            using (var client = new HttpClient())
-            {
-                //var result = await client.GetAsync(url);
-                //barraProgresso.Style = ProgressBarStyle.Blocks;
-            }
+                agendaBindingSource.DataSource = null;
+                agendaBindingSource.DataSource = _work.CarregarProgramacaoAsync();
+            });
         }
 
         private void BgwConsultar_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -173,23 +148,12 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
         private async void CarregarBotExecLog(AgendaBot selecionado)
         {
-
-            // monta url para api.
-            string url = _urlApiBase + $"adm/v1/BotExecLog/{selecionado.CD_ULTIMA_EXEC_BOT}";
-
-            // realiza a requisição para a api
-            using (var client = new HttpClient())
+            if (selecionado.CD_ULTIMA_EXEC_BOT.HasValue)
             {
-                var result = await client.GetAsync(url);
-
-                // recupera os registros.
-                //var registros = await result.Content.ReadAsAsync<List<BotExecLog>>();
-
-
                 this.Invoke((MethodInvoker)delegate ()
                 {
                     bsBotExecLog.DataSource = null;
-                  //  bsBotExecLog.DataSource = registros.OrderBy(p => p.DT_DATAHORA_REG);
+                    bsBotExecLog.DataSource = _work.ObterLogsExecLogs(selecionado.CD_ULTIMA_EXEC_BOT.Value);
                 });
             }
         }

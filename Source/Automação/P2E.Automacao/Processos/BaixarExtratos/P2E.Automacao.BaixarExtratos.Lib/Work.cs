@@ -268,6 +268,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                     return true;
                 }
+                return false;
             }
             catch (Exception e)
             {

@@ -14,6 +14,7 @@ using P2E.SSO.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using P2E.Main.UI.Web.Extensions.Filters;
 using P2E.Administrativo.Domain.Entities;
+using P2E.Main.UI.Web.Models.ADM.ProgramacaoBot;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -48,7 +49,7 @@ namespace P2E.Main.UI.Web.Controllers
         /// <returns></returns>
         [HttpGet]
         //[PermissaoFilter("programacaobot", "Consultar")]
-        public async Task<IActionResult> Index(ProgramacaoBotListViewModel vm)
+        public async Task<IActionResult> Index(AgendaListViewModel vm)
         {
             try
             {
@@ -111,11 +112,11 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     var result = await client.GetAsync($"{_urlAgenda}/{id}");
                     result.EnsureSuccessStatusCode();
-                    var rotina = await result.Content.ReadAsAsync<Rotina>();
-                    var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
-                    rotinaViewModel.Servicos = CarregarServico().Result;                    
+                    var agenda = await result.Content.ReadAsAsync<Agenda>();
+                    var programacaoBotViewModel = _mapper.Map<AgendaViewModel>(agenda);
+                    //rotinaViewModel.Servicos = CarregarServico().Result;                    
 
-                    return View("Form", rotinaViewModel);
+                    return View("Form", programacaoBotViewModel);
                 }
             }
             catch (Exception)

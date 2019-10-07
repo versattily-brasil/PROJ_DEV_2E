@@ -1,28 +1,21 @@
-﻿using MicroOrm.Dapper.Repositories.Attributes;
+﻿using P2E.Administrativo.Domain.Entities;
+using P2E.Main.UI.Web.Models.SSO.Modulo;
+using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.Shared.Enum;
-using P2E.Shared.Message;
+using P2E.SSO.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace P2E.Administrativo.Domain.Entities
+namespace P2E.Main.UI.Web.Models.ADM.ProgramacaoBot
 {
-    [Table("TB_AGENDA")]
-    public class Agenda : CustomNotifiable
+    public class AgendaViewModel
     {
-        [Key]
-        [Identity]
         public int CD_AGENDA { get; set; }
         public string TX_DESCRICAO { get; set; }
         public int OP_ATIVO { get; set; }
         public eFormaExec OP_FORMA_EXEC { get; set; }
         public int OP_REPETE { get; set; }
 
-        [NotMapped]
         public string repete { get { return OP_REPETE == 1 ? "Sim" : "Não"; } }
         public eTipoRepete OP_TIPO_REP { get; set; }
         public eStatusExec OP_STATUS { get; set; }
@@ -41,15 +34,6 @@ namespace P2E.Administrativo.Domain.Entities
         public override string ToString() => $"{TX_DESCRICAO?.ToString()}";
 
 
-        [NotMapped]
         public eStatusExec OP_ULTIMO_STATUS_EXEC { get; set; }
-
-        public bool IsValid()
-        {
-            if (string.IsNullOrEmpty(TX_DESCRICAO))
-                AddNotification("TX_DESCRICAO", $"Descrição é um campo obrigatório.");
-
-            return Valid;
-        }
     }
 }
