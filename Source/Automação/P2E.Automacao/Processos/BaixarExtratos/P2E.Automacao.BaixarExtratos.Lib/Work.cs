@@ -232,10 +232,15 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
         }
 
+
         protected bool DownloadExtratoXML(string numero)
         {
             try
             {
+                numero = numero.Replace("/", "");
+                numero = numero.Replace("-", "");
+                numero = numero.Replace("%2F", "");
+                
                 //var certificado = ControleCertificados.FindClientCertificate("511d1904137f8ed4");
                 var certificado = ControleCertificados.GetClientCertificate();
                 using (var driver = new SimpleBrowser.WebDriver.SimpleBrowserDriver(certificado))
