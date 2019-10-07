@@ -283,6 +283,38 @@ namespace P2E.Automacao.Orquestrador.Lib
                         break;
                     case "ROBÔ 11":
                         break;
+                    case "ROBÔ 12":
+                        await Task.Factory.StartNew(async () =>
+                        {
+                            try
+                            {
+
+                                await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work().ExecutarAsync();
+                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                            }
+                            catch (Exception ex)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                                LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                            }
+                        });
+                        break;
+                    case "ROBÔ 15":
+                        await Task.Factory.StartNew(async () =>
+                        {
+                            try
+                            {
+
+                                await new P2E.Automacao.Processos.AtualizaListaSuframa.Lib.Work().ExecutarAsync();
+                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                            }
+                            catch (Exception ex)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                                LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                            }
+                        });
+                        break;
                 }
             }
             catch (Exception ex)
@@ -595,7 +627,7 @@ namespace P2E.Automacao.Orquestrador.Lib
             using (var context = new OrquestradorContext())
             {
                 var logRep = new BotExecLogRepository(context);
-                return logRep.FindAll(p => p.CD_BOT_EXEC_LOG == cd_bot_exec).ToList();
+                return logRep.FindAll(p => p.CD_BOT_EXEC == cd_bot_exec).ToList();
             }
         }
     }

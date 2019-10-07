@@ -274,7 +274,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 System.Drawing.Image png = System.Drawing.Image.FromFile(screenshotsPasta + ".png");
                 using (var bitmap = new Bitmap(png.Width, png.Height))
                 {
-                   // bitmap.SetResolution(0, png.HorizontalResolution, png.VerticalResolution);
+                   // bitmap.SetResolution(, png.HorizontalResolution, png.VerticalResolution);
 
                     using (var g = Graphics.FromImage(bitmap))
                     {
