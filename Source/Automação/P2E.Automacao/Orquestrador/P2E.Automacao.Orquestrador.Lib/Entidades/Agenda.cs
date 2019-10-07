@@ -18,8 +18,14 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public int CD_AGENDA { get; set; }
         public string TX_DESCRICAO { get; set; }
         public int OP_ATIVO { get; set; }
+        [NotMapped]
+
+        public string sAtivo { get { return OP_ATIVO == 1 ? "Sim" : "Não"; } }
+
         public eFormaExec OP_FORMA_EXEC { get; set; }
         public int OP_REPETE { get; set; }
+        [NotMapped]
+        public string sREPETE { get { return OP_REPETE == 1? "Sim" : "Não"; } }
         public eTipoRepete OP_TIPO_REP { get; set; }
         public eStatusExec OP_STATUS { get; set; }
 
@@ -35,6 +41,5 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
 
         public AgendaExec UltimaAgendaExecutada { get; set; }
         public override string ToString() => $"{TX_DESCRICAO?.ToString()}";
-
     }
 }

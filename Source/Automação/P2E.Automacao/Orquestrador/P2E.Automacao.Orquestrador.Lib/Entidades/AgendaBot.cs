@@ -7,6 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using P2E.Automacao.Orquestrador.Lib.Util.Extensions;
+
 
 namespace P2E.Automacao.Orquestrador.Lib.Entidades
 {
@@ -29,5 +31,14 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
 
         public BotExec UltimoBotExec { get; set; }
         public BotExec BotProgramado { get; set; }
+        public BotExec BotExecutado { get; set; }
+
+        [NotMapped]
+        public string DescBot { get { return Bot?.TX_DESCRICAO; } }
+        [NotMapped]
+        public string NomeBot { get { return Bot?.TX_NOME; } }
+
+        [NotMapped]
+        public string Status { get { return CD_ULTIMO_STATUS_EXEC_BOT.GetDescription(); } }
     }
 }

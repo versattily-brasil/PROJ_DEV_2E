@@ -31,7 +31,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                 try
                 {
                     string data = DateTime.Today.ToString("dd-MM-yyyy", null);
-                    await CarregarAgendasAsync();
+                    _agendas = CarregarAgendasAsync().Result;
 
                     if(_agendas.Any())
                     {
@@ -65,7 +65,7 @@ namespace P2E.Automacao.Orquestrador.Lib
             }
         }
 
-        private async Task ExecutarAgendaAsync(Agenda agenda)
+        public async Task ExecutarAgendaAsync(Agenda agenda)
         {
             LogController.RegistrarLog($"Executando agenda '{agenda.TX_DESCRICAO}'");
 
@@ -94,7 +94,7 @@ namespace P2E.Automacao.Orquestrador.Lib
             }
         }
 
-        private async Task AlterarStatusAgendaAsync(Agenda agenda, eStatusExec novoStatus)
+        public async Task AlterarStatusAgendaAsync(Agenda agenda, eStatusExec novoStatus)
         {
             if (agenda.AgendaProgramada != null)
             {
@@ -127,7 +127,7 @@ namespace P2E.Automacao.Orquestrador.Lib
             }
         }
 
-        private async Task AlterarStatusBotAsync(AgendaBot bot, eStatusExec novoStatus)
+        public async Task AlterarStatusBotAsync(AgendaBot bot, eStatusExec novoStatus)
         {
             if (bot.BotProgramado != null)
             {
@@ -291,10 +291,12 @@ namespace P2E.Automacao.Orquestrador.Lib
             }
         }
 
-        private async Task CarregarAgendasAsync()
+        private async Task<List<Agenda>> CarregarAgendasAsync()
         {
             try
             {
+                var agendas = new List<Agenda>();
+
                 LogController.RegistrarLog($"-------------------------------------------------------------------------------------------------------");
                 LogController.RegistrarLog("Carregando Agendas.");
                 using (var context = new OrquestradorContext())
@@ -307,18 +309,18 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                     LogController.RegistrarLog($"Obtendo agendas ativas.");
 
-                    _agendas = agendaRep.FindAll(o => o.OP_ATIVO == 1);
+                    agendas = agendaRep.FindAll(o => o.OP_ATIVO == 1).ToList();
 
-                    if (_agendas.Any())
+                    if (agendas.Any())
                     {
-                        LogController.RegistrarLog($"{_agendas.Count()} agendas programadas foram localizadas.");
+                        LogController.RegistrarLog($"{agendas.Count()} agendas programadas foram localizadas.");
 
-                        foreach (var agenda in _agendas.Where(p=> p.OP_STATUS == eStatusExec.Programado))
+                        foreach (var agenda in agendas.Where(p=> p.OP_STATUS == eStatusExec.Programado))
                         {
+                            LogController.RegistrarLog($"Carregando os bots associados a agenda '{agenda.TX_DESCRICAO}.'");
+                            
                             if (VerificaProgramacaoAgenda(agenda))
                             {
-                                LogController.RegistrarLog($"Carregando os bots associados a agenda '{agenda.TX_DESCRICAO}.'");
-
                                 await CarregarBotsAsync(agenda);
 
                                 if (agenda.Bots.Any())
@@ -342,11 +344,60 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                 LogController.RegistrarLog($"-------------------------------------------------------------------------------------------------------");
 
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                //await Task.Delay(TimeSpan.FromSeconds(5));
+                Thread.Sleep(5000);
+                return agendas;
             }
             catch (Exception ex)
             {
                 LogController.RegistrarLog($"Erro em CarregarAgendasAsync. {ex.Message}");
+                return null;
+            }
+        }
+
+        public List<Agenda> CarregarProgramacaoAsync()
+        {
+            try
+            {
+                var agendas = new List<Agenda>();
+                using (var context = new OrquestradorContext())
+                {
+                    var agendaRep = new AgendaRepository(context);
+                    var agendaBotRep = new AgendaBotRepository(context);
+                    var agendaExecRep = new AgendaExecRepository(context);
+                    var botRep = new BotRepository(context);
+                    var botExecRep = new BotExecRepository(context);
+
+                    agendas = agendaRep.FindAll().ToList();
+
+                    if (agendas.Any())
+                    {
+                        foreach (var agenda in agendas)
+                        {
+                            if (agenda.OP_STATUS == eStatusExec.Programado || agenda.OP_STATUS == eStatusExec.Aguardando_Processamento)
+                            {
+                                agenda.AgendaProgramada = agendaExecRep.Find(p => p.CD_AGENDA == agenda.CD_AGENDA && (p.OP_STATUS_AGENDA_EXEC == eStatusExec.Programado));
+                            }
+
+                            agenda.Bots = agendaBotRep.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA);
+
+                            foreach (var bot in agenda.Bots)
+                            {
+                                bot.Bot = botRep.Find(o => o.CD_BOT == bot.CD_BOT);
+                                if (agenda.OP_STATUS == eStatusExec.Programado)
+                                {
+                                    bot.BotProgramado = botExecRep.Find(o => o.CD_BOT == bot.CD_BOT && o.CD_AGENDA_EXEC == agenda.AgendaProgramada.CD_AGENDA_EXEC);
+                                }
+                            }
+                        }
+                    }
+                }
+                return agendas;
+            }
+            catch (Exception ex)
+            {
+                LogController.RegistrarLog($"Erro em CarregarAgendasAsync. {ex.Message}");
+                return null;
             }
         }
 
@@ -365,8 +416,11 @@ namespace P2E.Automacao.Orquestrador.Lib
                     foreach (var bot in agenda.Bots)
                     {
                         bot.Bot = await botRep.FindAsync(o => o.CD_BOT == bot.CD_BOT);
-                        bot.BotProgramado = await botExecRep.FindAsync(o => o.CD_BOT == bot.CD_BOT && o.CD_AGENDA_EXEC == agenda.AgendaProgramada.CD_AGENDA_EXEC);
-                        await AlterarStatusBotAsync(bot, eStatusExec.Aguardando_Processamento);
+                        if (agenda.OP_STATUS == eStatusExec.Programado)
+                        {
+                            bot.BotProgramado = await botExecRep.FindAsync(o => o.CD_BOT == bot.CD_BOT && o.CD_AGENDA_EXEC == agenda.AgendaProgramada.CD_AGENDA_EXEC);
+                            await AlterarStatusBotAsync(bot, eStatusExec.Aguardando_Processamento);
+                        }
                     }
                 }
             }
@@ -468,23 +522,80 @@ namespace P2E.Automacao.Orquestrador.Lib
             return false;
         }
 
-        private void ProgramarAgenda(Agenda agenda, AgendaExecRepository agendaExecRep, AgendaRepository agendaRep)
+        public async Task ProgramarAgendaAsync(Agenda agenda)
         {
             try
             {
-                agenda.AgendaProgramada = new AgendaExec()
+                using (var context = new OrquestradorContext())
                 {
-                    CD_AGENDA = agenda.CD_AGENDA,
-                    OP_STATUS_AGENDA_EXEC = eStatusExec.Programado
-                };
+                    var agendaBotRep = new AgendaBotRepository(context);
+                    var agendaRep = new AgendaRepository(context);
+                    var agendaExecRep = new AgendaExecRepository(context);
+                    var botExecRep = new BotExecRepository(context);
+                    {
+                        if (agenda.OP_STATUS == eStatusExec.Falha || agenda.OP_STATUS == eStatusExec.Conclúído || agenda.OP_STATUS == eStatusExec.Nao_Programado)
+                        {
+                            agenda.AgendaProgramada = new AgendaExec()
+                            {
+                                CD_AGENDA = agenda.CD_AGENDA,
+                                OP_STATUS_AGENDA_EXEC = eStatusExec.Programado
+                            };
 
-                agendaExecRep.Insert(agenda.AgendaProgramada);
-                agenda.OP_STATUS = eStatusExec.Programado;
-                agendaRep.Update(agenda);
+                            agendaExecRep.Insert(agenda.AgendaProgramada);
+
+                            agenda.CD_ULTIMA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC;
+                            agenda.OP_STATUS = agenda.AgendaProgramada.OP_STATUS_AGENDA_EXEC;
+                            agendaRep.Update(agenda);
+
+                            var bots = agendaBotRep.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA);
+                            if (bots != null)
+                            {
+                                foreach (var bot in bots)
+                                {
+                                    bot.BotProgramado = new BotExec()
+                                    {
+                                        CD_AGENDA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC,
+                                        NR_ORDEM_EXEC = bot.NR_ORDEM_EXEC,
+                                        OP_STATUS_BOT_EXEC = eStatusExec.Programado,
+                                        CD_BOT= bot.CD_BOT,
+                                    };
+
+                                    botExecRep.Insert(bot.BotProgramado);
+                                    bot.CD_ULTIMA_EXEC_BOT = bot.BotProgramado.CD_BOT_EXEC;
+                                    bot.CD_ULTIMO_STATUS_EXEC_BOT = bot.BotProgramado.OP_STATUS_BOT_EXEC;
+                                    agendaBotRep.Update(bot);
+                                }
+                            }
+                        }
+                        else
+                        if (agenda.OP_STATUS == eStatusExec.Programado)
+                        {
+                            await AlterarStatusAgendaAsync(agenda, eStatusExec.Aguardando_Processamento);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 LogController.RegistrarLog($"Erro ao programar agenda. {ex.Message}");
+            }
+        }
+
+        public List<AgendaExecLog> ObterAgendaExecLogs(int cd_agenda_exec)
+        {
+            using (var context = new OrquestradorContext())
+            {
+                var agendaExecLogRep = new AgendaExecLogRepository(context);
+                return agendaExecLogRep.FindAll(p => p.CD_AGENDA_EXEC == cd_agenda_exec).ToList();
+            }
+        }
+
+        public List<BotExecLog> ObterLogsExecLogs(int cd_bot_exec)
+        {
+            using (var context = new OrquestradorContext())
+            {
+                var logRep = new BotExecLogRepository(context);
+                return logRep.FindAll(p => p.CD_BOT_EXEC_LOG == cd_bot_exec).ToList();
             }
         }
     }
