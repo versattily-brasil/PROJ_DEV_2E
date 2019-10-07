@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\AzCaptcha.cs" />
     <Compile Include="Extensions\ControleCertificados.cs" />
     <Compile Include="Extensions\Geral.cs" />
     <Compile Include="Extensions\Utils.cs" />
