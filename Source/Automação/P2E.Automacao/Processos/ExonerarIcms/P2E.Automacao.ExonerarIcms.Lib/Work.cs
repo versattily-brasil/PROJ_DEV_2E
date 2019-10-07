@@ -5,6 +5,7 @@ using P2E.Automacao.Shared.Extensions;
 using Selenium.Utils.Html;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -46,7 +47,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
 
             if (registros != null && registros.Any())
             {
-                using (var service = PhantomJSDriverService.CreateDefaultService())
+                using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                 {
                     try
                     {

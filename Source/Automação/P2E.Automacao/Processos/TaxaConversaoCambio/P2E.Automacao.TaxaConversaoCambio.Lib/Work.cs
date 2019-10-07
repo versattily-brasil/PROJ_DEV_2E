@@ -138,7 +138,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         {
             try
             {
-                var certificado = ControleCertificados.FindClientCertificate("511d19041380bd8e");
+                var certificado = ControleCertificados.GetClientCertificate();
                 using (var driver = new SimpleBrowser.WebDriver.SimpleBrowserDriver(certificado))
                 {
                     var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
