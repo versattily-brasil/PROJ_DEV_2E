@@ -52,7 +52,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
                 if (registros != null && registros.Any())
                 {
-                    using (var service = PhantomJSDriverService.CreateDefaultService())
+                    using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                     {
                         Console.WriteLine("CARREGANDO O CERTIFICADO...");
                         ControleCertificados.CarregarCertificado(service);

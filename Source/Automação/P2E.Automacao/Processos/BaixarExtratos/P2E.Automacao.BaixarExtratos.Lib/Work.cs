@@ -48,7 +48,6 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             catch (Exception ex)
             {
 
-                throw;
             }
         }
 
@@ -110,13 +109,13 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     else
                     {
                         Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
+                        Console.ReadKey();
                     }
                 }
             }
             catch (Exception ex)
             {
-
-                throw;
+               
             }
         }
 
@@ -205,7 +204,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                var certificado = ControleCertificados.GetClientCertificate();
+                var certificado = ControleCertificados.GetClientCertificate(); ;
 
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
