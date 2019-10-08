@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace P2E.Automacao.Entidades
 {
-    public class TaxaConversaoCambio
+    public class TaxaCambio
     {
         public int CD_TAXA_CAMBIO { get; set; }
         public string TX_MOEDA { get; set; }

@@ -27,6 +27,8 @@ namespace P2E.Importacao.Domain.Entities
             DT_INICIO_VIGENCIA = dt_inicio_vigencia;
             DT_FIM_VIGENCIA = dt_fim_vigencia;
             VL_TAXA_CONVERSAO = vl_taxa_conversao;
+
+            IsValid();
         }
 
         [Key]

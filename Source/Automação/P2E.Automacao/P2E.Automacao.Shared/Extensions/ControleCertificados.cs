@@ -10,7 +10,8 @@ namespace P2E.Automacao.Shared.Extensions
 {
     public static class ControleCertificados
     {
-        private static string subName = @"CN=ENDERSON RUIZ DE CASTRO:67635466291, OU=Certificado PF A1, OU=16994652000129, OU=AC SOLUTI Multipla, OU=AC SOLUTI, OU=Autoridade Certificadora Raiz Brasileira v2, O=ICP-Brasil, C=BR";
+        private static string subName = @"CN=EROSMILDESON RUIZ DE CASTRO:91701040263, OU=Certificado PF A1, OU=16994652000129, OU=AC SOLUTI Multipla, OU=AC SOLUTI, OU=Autoridade Certificadora Raiz Brasileira v2, O=ICP-Brasil, C=BR";
+                                       //"CN=ENDERSON RUIZ DE CASTRO:67635466291, OU=Certificado PF A1, OU=16994652000129, OU=AC SOLUTI Multipla, OU=AC SOLUTI, OU=Autoridade Certificadora Raiz Brasileira v2, O=ICP-Brasil, C=BR";
         
         
         public static void CarregarCertificado(PhantomJSDriverService service)

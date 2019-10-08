@@ -7,11 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 {
@@ -86,7 +87,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 var image64 = aux.Substring(auxInicial + 17, lenghtImage);   //AzCaptcha.ConverteImageParaBase64Url(_urlSite);
 
                 Console.WriteLine("OBTENDO O VALOR DO CAPTCHA...");
-                valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "p7rdbvpqjk6lxbgthvyghfwxrtkd48mc");
+                valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "yxzwck7b3wmmtx65djusgohidsfefvel");
                 Console.WriteLine("CAPTCHA: " + valorCaptcha);
 
                 Console.WriteLine("INSERINDO VALOR DO CAPTCHA NO BROWSER...");
@@ -98,7 +99,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 element = _driver.FindElementByCssSelector(@"#j_id11 > div:nth-child(4) > center > input");
                 element.Click();
 
-                Thread.Sleep(5000);
+                //Thread.Sleep(5000);
 
                 if (_driver.PageSource.Contains("Texto digitado não corresponde a imagem"))
                 {
@@ -120,17 +121,38 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                     Thread.Sleep(5000);
 
+
+
+                    //// Construct HTTP request to get the file
+                    //HttpWebRequest httpRequest = (HttpWebRequest)
+                    //    WebRequest.Create("https://www35.receita.fazenda.gov.br/tabaduaneiras-web/private/pages/taxaConversaoCambio_listar.jsf");
+                    //httpRequest.Method = WebRequestMethods.Http.Post;
+
+                    //// Include post data in the HTTP request
+                    //string postData = "j_id111 % 3AtaxaConversaoCambioMB_tipoConsulta = 0 & j_id111 % 3AvalorConsulta_codigo = &j_id111 % 3ApanelDownloadArquivoOpenedState = &j_id111 = j_id111 & autoScroll = &javax.faces.ViewState = j_id4 & j_id111 % 3Aj_id218 = j_id111 % 3Aj_id218";
+                    //httpRequest.ContentLength = postData.Length;
+                    //httpRequest.ContentType = "application/x-www-form-urlencoded";
+                    //// Write the post data to the HTTP request
+                    //StreamWriter requestWriter = new StreamWriter(
+                    //    httpRequest.GetRequestStream(),
+                    //    System.Text.Encoding.ASCII);
+                    //requestWriter.Write(postData);
+                    //requestWriter.Close();
+
+
+
+
                     //CLICA NO EXTRAIR TABELA
                     //element = _driver.FindElement(By.Id(@"j_id111:j_id207"));
                     //element.Click();
 
-                    Thread.Sleep(5000);
+                    //Thread.Sleep(5000);
 
-                    var baixaXml = DownloadXML();
+                    var baixaXml = DownloadXML(_driver);
 
                     if (baixaXml)
                     {
-                        Entidades.TaxaConversaoCambio taxaCambio = new Entidades.TaxaConversaoCambio();
+                        TaxaCambio taxaCambio = new TaxaCambio();
 
                         //XElement xml = XElement.Load(arquivoPath);
                         XmlDocument xmlDoc = new XmlDocument();
@@ -150,6 +172,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                             Console.WriteLine("Moeda: " + sNome + " Descricao: " + descricao + "DataI: " + DataInicial + "DataF: " + DataFinal + "Taxa: " + Taxa );
 
+                            
                             taxaCambio.TX_MOEDA = sNome;
                             taxaCambio.TX_DESCRICAO = descricao;
                             taxaCambio.DT_INICIO_VIGENCIA = DateTime.Parse( DataInicial);
@@ -159,26 +182,6 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                             await AtualizaTaxaCambio(taxaCambio);
 
                         }
-
-
-
-
-
-
-
-
-                        //foreach (XElement x in doc.Elements())
-                        //{
-                        //    var auxxs = x.Value;
-
-                        //    taxaCambio.TX_MOEDA = x.Attribute("codigo").Value;
-                        //    taxaCambio.TX_DESCRICAO = x.Attribute("descricao").Value;
-                        //    taxaCambio.DT_INICIO_VIGENCIA = DateTime.Parse(x.Attribute("inicioVigencia").Value);
-                        //    try { taxaCambio.DT_FIM_VIGENCIA = DateTime.Parse(x.Attribute("fimVigencia").Value); } catch { taxaCambio.DT_FIM_VIGENCIA = taxaCambio.DT_FIM_VIGENCIA; }
-                        //    taxaCambio.VL_TAXA_CONVERSAO = decimal.Parse(x.Attribute("taxaConversao").Value);
-
-                        //    await AtualizaTaxaCambio(taxaCambio);
-                        //}
                     }
                 }
 
@@ -191,11 +194,12 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             }
         }
 
-        protected bool DownloadXML()
+        protected bool DownloadXML(PhantomJSDriver _driver)
         {
             try
             {
                 var certificado = ControleCertificados.GetClientCertificate();
+
                 using (var driver = new SimpleBrowser.WebDriver.SimpleBrowserDriver(certificado))
                 {
                     var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
@@ -207,7 +211,6 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                     }
 
                     arquivoPath = Path.Combine("C:\\Versatilly\\TaxaConversaoCambio.xml");
-
 
                     if (!File.Exists(arquivoPath))
                     {
@@ -222,7 +225,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                         var image64 = aux.Substring(auxInicial + 17, lenghtImage);   //AzCaptcha.ConverteImageParaBase64Url(_urlSite);
 
                         Console.WriteLine("OBTENDO O VALOR DO CAPTCHA...");
-                        valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "hnwrvh9xdjyp2kcyqfnd7bmwmf3qkt8v");
+                        valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "yxzwck7b3wmmtx65djusgohidsfefvel");
 
                         IWebElement element = driver.FindElement(By.Id("txtTexto_captcha_serpro_gov_br"));
 
@@ -268,16 +271,20 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             return arr;
         }
 
-        private async Task AtualizaTaxaCambio(Entidades.TaxaConversaoCambio taxaConversaoCambio)
+        private async Task AtualizaTaxaCambio( TaxaCambio taxaConversaoCambio)
         {
             try
             {
-                HttpResponseMessage resultado;
+                HttpResponseMessage resultado;                
 
                 using (var client = new HttpClient())
                 {
+                    var auxA = JsonConvert.SerializeObject(taxaConversaoCambio);
+                    HttpContent httpContent = new StringContent(auxA, Encoding.UTF8, "application/json");
+
                     client.BaseAddress = new Uri(_urlApiBase);
-                    resultado = await client.PutAsJsonAsync($"imp/v1/taxa/{0}", taxaConversaoCambio);
+                    //resultado = await client.PutAsJsonAsync($"imp/v1/taxa/{0}", taxaConversaoCambio);
+                    resultado = await client.PostAsync($"imp/v1/taxa", httpContent);
                     resultado.EnsureSuccessStatusCode();
 
                     Console.WriteLine("Registro salvo com sucesso.");
@@ -289,7 +296,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             }
         }
 
-        private async Task DeleteTaxa(Entidades.TaxaConversaoCambio taxaConversaoCambio)
+        private async Task DeleteTaxa(TaxaCambio taxaConversaoCambio)
         {
             try
             {
@@ -299,7 +306,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 {
                     var result = await client.GetAsync(url + "/todos");
                     var aux = await result.Content.ReadAsStringAsync();
-                    var registros = JsonConvert.DeserializeObject<List<Entidades.TaxaConversaoCambio>>(aux);
+                    var registros = JsonConvert.DeserializeObject<List<TaxaCambio>>(aux);
 
                     if (registros != null && registros.Any())
                     {

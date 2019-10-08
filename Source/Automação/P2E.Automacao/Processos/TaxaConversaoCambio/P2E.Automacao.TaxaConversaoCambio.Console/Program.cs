@@ -9,7 +9,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Console
         {
             try
             {
-                var lib = new P2E.Automacao.Processos.TaxaConversaoCambio.Lib.Work();
+                var lib = new Lib.Work();
                 await lib.ExecutarAsync();
             }
             catch (Exception ex)
