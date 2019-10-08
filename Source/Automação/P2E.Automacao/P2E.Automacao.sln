@@ -97,6 +97,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.TaxaConversao
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBrowser", "..\..\Util\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj", "{AD7F4BA0-A36D-45C1-AB82-CA08FF279D2F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2E.Automacao.Orquestrador.LibTests", "Orquestrador\P2E.Automacao.Orquestrador.LibTests\P2E.Automacao.Orquestrador.LibTests.csproj", "{7C171487-AA53-4825-A014-9F1585B380E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -227,6 +229,10 @@ Global
 		{AD7F4BA0-A36D-45C1-AB82-CA08FF279D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD7F4BA0-A36D-45C1-AB82-CA08FF279D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD7F4BA0-A36D-45C1-AB82-CA08FF279D2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C171487-AA53-4825-A014-9F1585B380E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C171487-AA53-4825-A014-9F1585B380E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C171487-AA53-4825-A014-9F1585B380E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C171487-AA53-4825-A014-9F1585B380E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -275,6 +281,7 @@ Global
 		{2C148298-AFE0-4DAF-A819-A64D51773218} = {8ADD8ED4-CB60-40DC-ACBE-B0073DAA788D}
 		{B4D15DEC-07BF-42C4-9DAB-15682909C2E6} = {8ADD8ED4-CB60-40DC-ACBE-B0073DAA788D}
 		{AD7F4BA0-A36D-45C1-AB82-CA08FF279D2F} = {30FDDBAD-F129-4F9B-944D-2934DE2B1E58}
+		{7C171487-AA53-4825-A014-9F1585B380E8} = {D65F6265-FD32-45E0-B8FE-A222D32BE6AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E02BF6DF-AE47-425E-A0E6-4B3FE6ACBCD3}
