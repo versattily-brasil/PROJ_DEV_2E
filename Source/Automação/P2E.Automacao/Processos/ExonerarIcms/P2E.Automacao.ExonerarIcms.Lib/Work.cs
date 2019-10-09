@@ -82,7 +82,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                                 }
 
                                 Console.WriteLine("Robô Finalizado !");
-                                Console.ReadKey();
+                                //Console.ReadKey();
                             }
                             catch (Exception)
                             {

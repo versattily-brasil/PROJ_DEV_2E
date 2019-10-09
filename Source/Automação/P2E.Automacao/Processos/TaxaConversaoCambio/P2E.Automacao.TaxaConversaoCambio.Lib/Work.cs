@@ -69,7 +69,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                         {
                             Acessar(_driver);
 
-                            Console.ReadKey();
+                            ////Console.ReadKey();
                         }
                         catch (Exception)
                         {
@@ -122,7 +122,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 {
                     Console.WriteLine("Texto digitado não corresponde a imagem");
                     _driver.Close();
-                    Console.ReadKey();
+                   // //Console.ReadKey();
                 }
                 else
                 {
@@ -207,7 +207,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             {
                 Console.WriteLine("Erro-" + e.Message.Trim());
                 _driver.Close();
-                Console.ReadKey();
+                ////Console.ReadKey();
             }
         }
 

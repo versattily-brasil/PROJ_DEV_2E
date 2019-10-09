@@ -85,7 +85,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                                     }
                                 }
 
-                                Console.ReadKey();
+                                //Console.ReadKey();
                             }
                             catch (Exception)
                             {

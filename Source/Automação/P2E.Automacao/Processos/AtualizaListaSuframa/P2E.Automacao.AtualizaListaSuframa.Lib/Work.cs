@@ -48,7 +48,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
             ConnectionDBAcess(@"C:\Rotinas_Automaticas\Listagem_Insumos\pli_suframa.mdb");
 
             Console.WriteLine("Robô Concluído !");
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         private static bool ExecutaExe(string path)

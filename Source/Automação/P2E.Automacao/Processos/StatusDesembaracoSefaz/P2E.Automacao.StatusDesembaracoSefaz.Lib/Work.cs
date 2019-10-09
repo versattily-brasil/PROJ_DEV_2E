@@ -76,7 +76,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                                     }
                                 }
 
-                                Console.ReadKey();
+                                //Console.ReadKey();
                             }
                             catch (Exception)
                             {
@@ -88,7 +88,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                 else
                 {
                     Console.WriteLine("Não existe DI's para Acompanhar Status.");
-                    Console.ReadKey();
+                    //Console.ReadKey();
                 }
             }
         }

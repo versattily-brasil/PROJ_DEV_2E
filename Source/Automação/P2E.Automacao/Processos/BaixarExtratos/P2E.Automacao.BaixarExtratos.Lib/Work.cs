@@ -123,7 +123,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     else
                     {
                         LogController.RegistrarLog("Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
-                        //Console.ReadKey();
+                        ////Console.ReadKey();
                     }
                 }
             }
