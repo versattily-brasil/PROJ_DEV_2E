@@ -264,6 +264,19 @@ namespace P2E.Automacao.Orquestrador.Lib
                     case "ROBÔ 07":
                         break;
                     case "ROBÔ 08":
+                        await Task.Factory.StartNew(async () =>
+                        {
+                            try
+                            {
+                                await new Processos.TaxaConversaoCambio.Lib.Work().ExecutarAsync();
+                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                            }
+                            catch (Exception ex)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                                LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                            }
+                        });
                         break;
                     case "ROBÔ 09":
                         await Task.Factory.StartNew(async () =>

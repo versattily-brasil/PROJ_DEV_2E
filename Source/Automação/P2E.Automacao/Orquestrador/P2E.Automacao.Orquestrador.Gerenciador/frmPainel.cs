@@ -31,6 +31,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         {
             if (gvAgendamentos.SelectedRows.Count > 0)
             {
+
                 var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
                 if (agendaSelecionada.OP_STATUS == eStatusExec.Aguardando_Processamento)
                 {
@@ -43,7 +44,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 }
                 else
                 {
-                    await _work.ProgramarAgendaAsync(agendaSelecionada,  eFormaExec.Manual );
+                    await _work.ProgramarAgendaAsync(agendaSelecionada, eFormaExec.Manual);
 
                     if (!bgwConsultar.IsBusy)
                     {
@@ -76,7 +77,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
             Thread.Sleep(3000);
             await ConsultarAsync();
-            
+
         }
 
         private async Task ConsultarAsync()
@@ -136,7 +137,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             }
         }
 
-        
+
 
         private void GvAgendaBots_SelectionChanged(object sender, EventArgs e)
         {

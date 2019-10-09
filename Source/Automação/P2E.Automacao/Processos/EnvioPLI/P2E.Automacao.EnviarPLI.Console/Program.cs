@@ -13,7 +13,7 @@ namespace P2E.Automacao.EnviarPLI.Console
             var cc = new P2E.Automacao.Processos.EnvioPLI.Lib.Work();
             cc.Executar("");
             System.Console.WriteLine("Processo Finalizado. Tecle qualquer tecla para sair.");
-            System.//Console.ReadKey();
+            //System.Console.ReadKey();
         }
     }
 }
