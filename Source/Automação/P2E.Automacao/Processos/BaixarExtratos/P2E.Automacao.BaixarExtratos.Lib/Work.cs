@@ -3,6 +3,8 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
+using P2E.Automacao.Shared.Log;
+using P2E.Automacao.Shared.Log.Enum;
 using SimpleBrowser;
 using System;
 using System.Collections.Generic;
@@ -28,11 +30,22 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         // public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?nrDeclaracao=19%2F0983204-0&consulta=true";
         private string _urlApiBase;
         private List<Importacao> registros;
+        int _cd_bot_exec;
 
         #endregion
         public Work()
         {
-            Console.WriteLine("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
+            Console.WriteLine();
+
+            LogController.RegistrarLog("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
+            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+
+        }
+
+        public Work(int cd_bot_exec)
+        {
+            _cd_bot_exec = cd_bot_exec;
+            LogController.RegistrarLog("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ", eTipoLog.INFO, _cd_bot_exec, "bot");
             //_urlApiBase = "http://localhost:7000/";
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
 
@@ -42,7 +55,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                Console.WriteLine("Obtendo DI's para Baixar Extrato.");
+                LogController.RegistrarLog("Obtendo DI's para Baixar Extrato.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 await CarregarListaDIAsync();
             }
             catch (Exception ex)
@@ -59,7 +72,8 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 using (var client = new HttpClient())
                 {
-                    Console.WriteLine("ABRINDO CONEXAO...");
+                    Console.WriteLine("");
+                    LogController.RegistrarLog("ABRINDO CONEXãO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                     var result = await client.GetAsync(urlAcompanha);
                     var aux = await result.Content.ReadAsStringAsync();
                     registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
@@ -68,7 +82,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     {
                         using (var service = PhantomJSDriverService.CreateDefaultService())
                         {
-                            Console.WriteLine("CARREGANDO O CERTIFICADO...");
+                            LogController.RegistrarLog("CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                             ControleCertificados.CarregarCertificado(service);
 
                             service.AddArgument("test-type");
@@ -84,7 +98,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                                     foreach (var di in registros)
                                     {
-                                        Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
+                                        LogController.RegistrarLog("################## DI: " + di.TX_NUM_DEC + " ##################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                         List<Thread> threads = new List<Thread>();
 
@@ -108,8 +122,8 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     }
                     else
                     {
-                        Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
-                        Console.ReadKey();
+                        LogController.RegistrarLog("Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        //Console.ReadKey();
                     }
                 }
             }
@@ -123,7 +137,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                Console.WriteLine("Inciando processo de navegação...");
+                LogController.RegistrarLog("Inciando processo de navegação...", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                 //página da consulta DI.
                 _driver.Navigate().GoToUrl(_urlConsultaDI);
@@ -149,7 +163,8 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 Thread.Sleep(1000);
 
-                Console.WriteLine("Baixando o Extrato - PDF.");
+                LogController.RegistrarLog("Baixando o Extrato - PDF.", eTipoLog.INFO, _cd_bot_exec, "bot");
+
                 Thread.Sleep(1000);
 
                 var numeroDec = numero.Substring(0, 2) + "%2F" +
@@ -160,7 +175,8 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;
 
-                Console.WriteLine("Baixando o Extrato - XML.");
+                LogController.RegistrarLog("Baixando o Extrato - XML.", eTipoLog.INFO, _cd_bot_exec, "bot");
+
 
                 var returnoXML = DownloadExtratoXML(numeroDec);
 
@@ -186,12 +202,14 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
                     resultado.EnsureSuccessStatusCode();
 
-                    Console.WriteLine("Registro salvo com sucesso.");
+                    LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
+                LogController.RegistrarLog($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
+
             }
         }
 

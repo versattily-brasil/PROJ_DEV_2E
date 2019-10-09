@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPainel));
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -43,10 +44,11 @@
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dTDATAEXECPROGDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.hRHORAEXECPROGDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cDULTIMAEXECDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.botsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OP_STATUS = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DT_DATA_INICIO_ULTIMA_EXEC = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DT_DATA_FIM_ULTIMA_EXEC = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.agendaBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -146,10 +148,11 @@
             this.dataGridViewTextBoxColumn6,
             this.dTDATAEXECPROGDataGridViewTextBoxColumn,
             this.hRHORAEXECPROGDataGridViewTextBoxColumn,
-            this.dataGridViewTextBoxColumn7,
             this.cDULTIMAEXECDataGridViewTextBoxColumn,
             this.botsDataGridViewTextBoxColumn,
-            this.OP_STATUS});
+            this.OP_STATUS,
+            this.DT_DATA_INICIO_ULTIMA_EXEC,
+            this.DT_DATA_FIM_ULTIMA_EXEC});
             this.gvAgendamentos.DataSource = this.agendaBindingSource;
             this.gvAgendamentos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvAgendamentos.Location = new System.Drawing.Point(4, 4);
@@ -183,11 +186,12 @@
             this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 400;
+            this.dataGridViewTextBoxColumn2.Width = 300;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.DataPropertyName = "OP_ATIVO";
+            this.dataGridViewTextBoxColumn3.Frozen = true;
             this.dataGridViewTextBoxColumn3.HeaderText = "Ativo";
             this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
@@ -199,6 +203,7 @@
             // 
             this.sAtivo.DataPropertyName = "sAtivo";
             this.sAtivo.FillWeight = 93.2858F;
+            this.sAtivo.Frozen = true;
             this.sAtivo.HeaderText = "Ativo";
             this.sAtivo.MinimumWidth = 6;
             this.sAtivo.Name = "sAtivo";
@@ -209,15 +214,18 @@
             // 
             this.dataGridViewTextBoxColumn4.DataPropertyName = "OP_FORMA_EXEC";
             this.dataGridViewTextBoxColumn4.FillWeight = 93.2858F;
+            this.dataGridViewTextBoxColumn4.Frozen = true;
             this.dataGridViewTextBoxColumn4.HeaderText = "Forma Exec.";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Visible = false;
             this.dataGridViewTextBoxColumn4.Width = 150;
             // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.DataPropertyName = "OP_REPETE";
+            this.dataGridViewTextBoxColumn5.Frozen = true;
             this.dataGridViewTextBoxColumn5.HeaderText = "Repete?";
             this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
@@ -229,6 +237,7 @@
             // 
             this.sREPETE.DataPropertyName = "sREPETE";
             this.sREPETE.FillWeight = 93.2858F;
+            this.sREPETE.Frozen = true;
             this.sREPETE.HeaderText = "Repete?";
             this.sREPETE.MinimumWidth = 6;
             this.sREPETE.Name = "sREPETE";
@@ -239,6 +248,7 @@
             // 
             this.dataGridViewTextBoxColumn6.DataPropertyName = "OP_TIPO_REP";
             this.dataGridViewTextBoxColumn6.FillWeight = 93.2858F;
+            this.dataGridViewTextBoxColumn6.Frozen = true;
             this.dataGridViewTextBoxColumn6.HeaderText = "Tipo Repetição";
             this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
@@ -249,6 +259,7 @@
             // 
             this.dTDATAEXECPROGDataGridViewTextBoxColumn.DataPropertyName = "DT_DATA_EXEC_PROG";
             this.dTDATAEXECPROGDataGridViewTextBoxColumn.FillWeight = 93.2858F;
+            this.dTDATAEXECPROGDataGridViewTextBoxColumn.Frozen = true;
             this.dTDATAEXECPROGDataGridViewTextBoxColumn.HeaderText = "Data Programada";
             this.dTDATAEXECPROGDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.dTDATAEXECPROGDataGridViewTextBoxColumn.Name = "dTDATAEXECPROGDataGridViewTextBoxColumn";
@@ -259,25 +270,17 @@
             // 
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.DataPropertyName = "HR_HORA_EXEC_PROG";
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.FillWeight = 93.2858F;
+            this.hRHORAEXECPROGDataGridViewTextBoxColumn.Frozen = true;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.HeaderText = "Hora Programada";
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.Name = "hRHORAEXECPROGDataGridViewTextBoxColumn";
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.ReadOnly = true;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.Width = 150;
             // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "DT_DATA_ULTIMA_EXEC";
-            this.dataGridViewTextBoxColumn7.FillWeight = 93.2858F;
-            this.dataGridViewTextBoxColumn7.HeaderText = "Data/Hora Última Exec.";
-            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            this.dataGridViewTextBoxColumn7.Width = 150;
-            // 
             // cDULTIMAEXECDataGridViewTextBoxColumn
             // 
             this.cDULTIMAEXECDataGridViewTextBoxColumn.DataPropertyName = "CD_ULTIMA_EXEC";
+            this.cDULTIMAEXECDataGridViewTextBoxColumn.Frozen = true;
             this.cDULTIMAEXECDataGridViewTextBoxColumn.HeaderText = "CD_ULTIMA_EXEC";
             this.cDULTIMAEXECDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.cDULTIMAEXECDataGridViewTextBoxColumn.Name = "cDULTIMAEXECDataGridViewTextBoxColumn";
@@ -288,6 +291,7 @@
             // botsDataGridViewTextBoxColumn
             // 
             this.botsDataGridViewTextBoxColumn.DataPropertyName = "Bots";
+            this.botsDataGridViewTextBoxColumn.Frozen = true;
             this.botsDataGridViewTextBoxColumn.HeaderText = "Bots";
             this.botsDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.botsDataGridViewTextBoxColumn.Name = "botsDataGridViewTextBoxColumn";
@@ -299,11 +303,32 @@
             // 
             this.OP_STATUS.DataPropertyName = "OP_STATUS";
             this.OP_STATUS.FillWeight = 93.2858F;
+            this.OP_STATUS.Frozen = true;
             this.OP_STATUS.HeaderText = "Status";
             this.OP_STATUS.MinimumWidth = 6;
             this.OP_STATUS.Name = "OP_STATUS";
             this.OP_STATUS.ReadOnly = true;
             this.OP_STATUS.Width = 115;
+            // 
+            // DT_DATA_INICIO_ULTIMA_EXEC
+            // 
+            this.DT_DATA_INICIO_ULTIMA_EXEC.DataPropertyName = "DT_DATA_INICIO_ULTIMA_EXEC";
+            this.DT_DATA_INICIO_ULTIMA_EXEC.Frozen = true;
+            this.DT_DATA_INICIO_ULTIMA_EXEC.HeaderText = "Início Última Execução";
+            this.DT_DATA_INICIO_ULTIMA_EXEC.MinimumWidth = 6;
+            this.DT_DATA_INICIO_ULTIMA_EXEC.Name = "DT_DATA_INICIO_ULTIMA_EXEC";
+            this.DT_DATA_INICIO_ULTIMA_EXEC.ReadOnly = true;
+            this.DT_DATA_INICIO_ULTIMA_EXEC.Width = 125;
+            // 
+            // DT_DATA_FIM_ULTIMA_EXEC
+            // 
+            this.DT_DATA_FIM_ULTIMA_EXEC.DataPropertyName = "DT_DATA_FIM_ULTIMA_EXEC";
+            this.DT_DATA_FIM_ULTIMA_EXEC.Frozen = true;
+            this.DT_DATA_FIM_ULTIMA_EXEC.HeaderText = "Fim Última Execução";
+            this.DT_DATA_FIM_ULTIMA_EXEC.MinimumWidth = 6;
+            this.DT_DATA_FIM_ULTIMA_EXEC.Name = "DT_DATA_FIM_ULTIMA_EXEC";
+            this.DT_DATA_FIM_ULTIMA_EXEC.ReadOnly = true;
+            this.DT_DATA_FIM_ULTIMA_EXEC.Width = 125;
             // 
             // agendaBindingSource
             // 
@@ -412,6 +437,7 @@
             this.DescBot.MinimumWidth = 6;
             this.DescBot.Name = "DescBot";
             this.DescBot.ReadOnly = true;
+            this.DescBot.Visible = false;
             this.DescBot.Width = 125;
             // 
             // dataGridViewTextBoxColumn8
@@ -518,13 +544,13 @@
             this.groupBox1.Size = new System.Drawing.Size(451, 194);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Log de Execução";
+            this.groupBox1.Text = "Log de Execução do Bot";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // listBox1
             // 
             this.listBox1.DataSource = this.bsBotExecLog;
-            this.listBox1.DisplayMember = "TX_MENSAGEM";
+            this.listBox1.DisplayMember = "Log";
             this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.HorizontalScrollbar = true;
@@ -548,6 +574,7 @@
             this.barraStatus.Location = new System.Drawing.Point(0, 640);
             this.barraStatus.Name = "barraStatus";
             this.barraStatus.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
+            this.barraStatus.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.barraStatus.Size = new System.Drawing.Size(1303, 25);
             this.barraStatus.TabIndex = 4;
             this.barraStatus.Text = "statusStrip1";
@@ -555,7 +582,7 @@
             // barraProgresso
             // 
             this.barraProgresso.Name = "barraProgresso";
-            this.barraProgresso.Size = new System.Drawing.Size(133, 17);
+            this.barraProgresso.Size = new System.Drawing.Size(500, 17);
             // 
             // panel3
             // 
@@ -571,10 +598,12 @@
             // btnConsultar
             // 
             this.btnConsultar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.btnConsultar.Image = ((System.Drawing.Image)(resources.GetObject("btnConsultar.Image")));
+            this.btnConsultar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnConsultar.Location = new System.Drawing.Point(0, 0);
             this.btnConsultar.Margin = new System.Windows.Forms.Padding(0);
             this.btnConsultar.Name = "btnConsultar";
-            this.btnConsultar.Size = new System.Drawing.Size(131, 49);
+            this.btnConsultar.Size = new System.Drawing.Size(246, 49);
             this.btnConsultar.TabIndex = 2;
             this.btnConsultar.Text = "Consultar";
             this.btnConsultar.UseVisualStyleBackColor = true;
@@ -582,10 +611,12 @@
             // 
             // btnExecutarAgenda
             // 
-            this.btnExecutarAgenda.Location = new System.Drawing.Point(131, 0);
+            this.btnExecutarAgenda.Image = ((System.Drawing.Image)(resources.GetObject("btnExecutarAgenda.Image")));
+            this.btnExecutarAgenda.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnExecutarAgenda.Location = new System.Drawing.Point(247, 0);
             this.btnExecutarAgenda.Margin = new System.Windows.Forms.Padding(4);
             this.btnExecutarAgenda.Name = "btnExecutarAgenda";
-            this.btnExecutarAgenda.Size = new System.Drawing.Size(116, 49);
+            this.btnExecutarAgenda.Size = new System.Drawing.Size(256, 49);
             this.btnExecutarAgenda.TabIndex = 0;
             this.btnExecutarAgenda.Text = "Enviar para Execução";
             this.btnExecutarAgenda.UseVisualStyleBackColor = true;
@@ -688,6 +719,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn nRORDEMEXECDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDescBot;
         private System.Windows.Forms.DataGridViewTextBoxColumn statusDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
@@ -698,9 +730,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dTDATAEXECPROGDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn hRHORAEXECPROGDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.DataGridViewTextBoxColumn cDULTIMAEXECDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn botsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn OP_STATUS;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DT_DATA_INICIO_ULTIMA_EXEC;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DT_DATA_FIM_ULTIMA_EXEC;
     }
 }

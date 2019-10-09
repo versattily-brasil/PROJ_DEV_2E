@@ -10,7 +10,7 @@ namespace P2E.Automacao.Orquestrador.Lib.Util.Enum
     public enum eStatusExec
     {
         [Description("Não Programado")]
-        Nao_Programado,
+        Não_Programado,
         [Description("Programado")]
         Programado,
         [Description("Aguardando Processamento")]
@@ -20,6 +20,8 @@ namespace P2E.Automacao.Orquestrador.Lib.Util.Enum
         [Description("Falha")]
         Falha,
         [Description("Concluído")]
-        Conclúído
+        Conclúído,
+        [Description("Interrompido")]
+        Interrompido
     }
 }

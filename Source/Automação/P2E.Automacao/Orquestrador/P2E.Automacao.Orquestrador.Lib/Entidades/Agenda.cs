@@ -33,7 +33,9 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public TimeSpan HR_HORA_EXEC_PROG { get; set; }
         
         public int? CD_ULTIMA_EXEC { get; set; }// { get { return AgendaProgramada?.CD_AGENDA_EXEC; } }
-        public DateTime? DT_DATA_ULTIMA_EXEC { get; set; }//{ get { return AgendaProgramada?.DT_FIM_EXEC; } }
+        
+        public DateTime? DT_DATA_INICIO_ULTIMA_EXEC { get; set; }//{ get { return AgendaProgramada?.DT_FIM_EXEC; } }
+        public DateTime? DT_DATA_FIM_ULTIMA_EXEC { get; set; }//{ get { return AgendaProgramada?.DT_FIM_EXEC; } }
 
         public IEnumerable<AgendaBot> Bots { get; set; }
 
