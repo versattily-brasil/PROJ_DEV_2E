@@ -143,6 +143,8 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                     }
                 }
 
+                File.Delete("C:\\Versatilly\\TaxaConversaoCambio.xml");
+
                 //CLICA EM TAXA DE CONVERSAO DE CAMBIO
                 element = _driver.FindElement(By.CssSelector("#j_id110\\:agrupamento\\:13\\:grupo\\:0\\:j_id121 > center > a"));
                 element.Click();
@@ -183,7 +185,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                     }
 
                     arquivoPath = Path.Combine("C:\\Versatilly\\TaxaConversaoCambio.xml");
-
+                    
                     try
                     {
                         await DeleteTaxa();
