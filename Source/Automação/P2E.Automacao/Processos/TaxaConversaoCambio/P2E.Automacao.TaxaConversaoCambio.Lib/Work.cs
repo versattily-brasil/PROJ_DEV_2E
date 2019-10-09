@@ -176,7 +176,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                             taxaCambio.TX_MOEDA = sNome;
                             taxaCambio.TX_DESCRICAO = descricao;
                             taxaCambio.DT_INICIO_VIGENCIA = DateTime.Parse( DataInicial);
-                            try { taxaCambio.DT_FIM_VIGENCIA = DateTime.Parse(DataFinal); } catch { taxaCambio.DT_FIM_VIGENCIA = taxaCambio.DT_FIM_VIGENCIA; }
+                            try { taxaCambio.DT_FIM_VIGENCIA = DateTime.Parse(DataFinal); } catch { taxaCambio.DT_FIM_VIGENCIA = null; }
                             taxaCambio.VL_TAXA_CONVERSAO = decimal.Parse(Taxa);
 
                             await AtualizaTaxaCambio(taxaCambio);
