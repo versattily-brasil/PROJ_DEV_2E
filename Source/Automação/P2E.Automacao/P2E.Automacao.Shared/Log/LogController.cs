@@ -17,24 +17,27 @@ namespace P2E.Automacao.Shared.Log
         {
             EscreverLog(msg, tipo.GetDescription());
 
-            using (var context = new LogContext())
+            if (parentId > 0)
             {
-                if (origem == "agenda")
+                using (var context = new LogContext())
                 {
-                    RegistrarLogAgenda(tipo, parentId, msg, adicional, context);
-                }
-
-                if (origem == "bot")
-                {
-                    var agendaExecRep = new BotExecLogRepository(context);
-                    agendaExecRep.Insert(new Entidades.BotExecLog()
+                    if (origem == "agenda")
                     {
-                        CD_BOT_EXEC = parentId,
-                        DT_DATAHORA_REG = DateTime.Now,
-                        OP_TIPO_LOG = tipo.GetDescription(),
-                        TX_MENSAGEM = msg,
-                        TX_INF_ADICIONAL = adicional
-                    });
+                        RegistrarLogAgenda(tipo, parentId, msg, adicional, context);
+                    }
+
+                    if (origem == "bot")
+                    {
+                        var agendaExecRep = new BotExecLogRepository(context);
+                        agendaExecRep.Insert(new Entidades.BotExecLog()
+                        {
+                            CD_BOT_EXEC = parentId,
+                            DT_DATAHORA_REG = DateTime.Now,
+                            OP_TIPO_LOG = tipo.GetDescription(),
+                            TX_MENSAGEM = msg,
+                            TX_INF_ADICIONAL = adicional
+                        });
+                    }
                 }
             }
         }

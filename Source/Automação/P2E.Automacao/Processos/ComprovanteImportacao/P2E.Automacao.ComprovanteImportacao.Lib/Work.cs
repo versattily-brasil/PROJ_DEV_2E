@@ -3,6 +3,8 @@ using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Processos.ComprovanteImportacao.Lib;
 using P2E.Automacao.Shared.Extensions;
+using P2E.Automacao.Shared.Log;
+using P2E.Automacao.Shared.Log.Enum;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,18 +26,25 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
         private string _urlApiBase;
         private List<Importacao> registros;
+        int _cd_bot_exec;
         #endregion
 
         public Work()
         {
-            Console.WriteLine("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ");
+            LogController.RegistrarLog("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
-            //_urlApiBase = "http://localhost:7000/";
+        }
+
+        public Work(int cd_bot_exec)
+        {
+            _cd_bot_exec = cd_bot_exec;
+            LogController.RegistrarLog("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot"); ;
+            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
         public async Task ExecutarAsync()
         {
-            Console.WriteLine("Obtendo DI's para Download de Comprovante.");
+            LogController.RegistrarLog("Obtendo DI's para Download de Comprovante.", eTipoLog.INFO, _cd_bot_exec, "bot");
             await CarregarListaDIAsync();
         }
 
@@ -45,16 +54,16 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
             using (var client = new HttpClient())
             {
-                Console.WriteLine("ABRINDO CONEXAO...");
+                LogController.RegistrarLog("Abrindo conexão...", eTipoLog.INFO, _cd_bot_exec, "bot"); 
                 var result = await client.GetAsync(urlAcompanha);
-                var aux = await result.Content.ReadAsStringAsync();
+                string aux = await result.Content.ReadAsStringAsync();
                 registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
 
                 if (registros != null && registros.Any())
                 {
                     using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                     {
-                        Console.WriteLine("CARREGANDO O CERTIFICADO...");
+                        LogController.RegistrarLog("Carregando certificado...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         ControleCertificados.CarregarCertificado(service);
 
                         service.AddArgument("test-type");
@@ -67,7 +76,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                             {
                                 foreach (var di in registros)
                                 {
-                                    Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
+                                   LogController.RegistrarLog($"Processando DI: {di.TX_NUM_DEC}", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                     List<Thread> threads = new List<Thread>();
 
@@ -82,7 +91,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                                     }
                                 }
 
-                                Console.WriteLine("Robô Finalizado !");
+                               LogController.RegistrarLog($"Execução concluída.", eTipoLog.INFO, _cd_bot_exec, "bot");
                                 Console.ReadKey();
                             }
                             catch (Exception)
@@ -94,89 +103,95 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                 }
                 else
                 {
-                    Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
+                   LogController.RegistrarLog("Não existe DI's para Acompanhar Despacho.", eTipoLog.ERRO, _cd_bot_exec, "bot");
                 }
             }
         }
 
         private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string nroDI)
         {
-            //using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
-
-            var numDeclaracao = numero;
-
-            Console.WriteLine("ACESSANDO SITE...");
-           // _driver.Navigate().GoToUrl(_urlSite);
-
-            Console.WriteLine("ACESSAO PAGINA DE CONSULTA...");
-            _driver.Navigate().GoToUrl(_urlTelaConsulta);
-
-            //COLOCANDO O NUMERO DA DI NO CAMPO
-            OpenQA.Selenium.IWebElement element = _driver.FindElementById("nrDeclaracao");
-            element.SendKeys(numDeclaracao);
-
-            // clica no BOTAO 'Confirmar'
-            element = _driver.FindElementById("confirmar");
-            element.Click();
-
-            string Numero = numDeclaracao.Substring(0, 2) + "/" +
-                            numDeclaracao.Substring(2, 7) + "-" +
-                            numDeclaracao.Substring(9, 1);
-
-            string id_tr = "tr_" + Numero;
-            element = _driver.FindElementById(id_tr);
-
-            //CAPTURA STATUS
-            var status = element.Text;
-
-            if (status.Contains("COMPROVANTE JA EMITIDO. UTILIZAR EMISSAO SEGUNDA VIA"))
+            try
             {
-                Console.WriteLine(status);
-                // clica no botao OK
-                element = _driver.FindElementByCssSelector(@"#botoes > input");
-                element.Click();
+                //using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
 
-                // clica no radiobutton 2º via
-                element = _driver.FindElementByCssSelector(@"#corpo > fieldset:nth-child(1) > div > input[type=radio]:nth-child(2)");
-                element.Click();
+                var numDeclaracao = numero;
 
-                element = _driver.FindElementById("nrDeclaracao");
+                LogController.RegistrarLog("Acessando URL...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                // _driver.Navigate().GoToUrl(_urlSite);
+
+                _driver.Navigate().GoToUrl(_urlTelaConsulta);
+
+                //COLOCANDO O NUMERO DA DI NO CAMPO
+                OpenQA.Selenium.IWebElement element = _driver.FindElementById("nrDeclaracao");
                 element.SendKeys(numDeclaracao);
 
                 // clica no BOTAO 'Confirmar'
                 element = _driver.FindElementById("confirmar");
                 element.Click();
+
+                string Numero = numDeclaracao.Substring(0, 2) + "/" +
+                                numDeclaracao.Substring(2, 7) + "-" +
+                                numDeclaracao.Substring(9, 1);
+
+                string id_tr = "tr_" + Numero;
+                element = _driver.FindElementById(id_tr);
+
+                //CAPTURA STATUS
+                var status = element.Text;
+
+                if (status.Contains("COMPROVANTE JA EMITIDO. UTILIZAR EMISSAO SEGUNDA VIA"))
+                {
+                    LogController.RegistrarLog(status, eTipoLog.INFO, _cd_bot_exec, "bot");
+                    // clica no botao OK
+                    element = _driver.FindElementByCssSelector(@"#botoes > input");
+                    element.Click();
+
+                    // clica no radiobutton 2º via
+                    element = _driver.FindElementByCssSelector(@"#corpo > fieldset:nth-child(1) > div > input[type=radio]:nth-child(2)");
+                    element.Click();
+
+                    element = _driver.FindElementById("nrDeclaracao");
+                    element.SendKeys(numDeclaracao);
+
+                    // clica no BOTAO 'Confirmar'
+                    element = _driver.FindElementById("confirmar");
+                    element.Click();
+                }
+                else if (status.Contains("DECLARACAO NAO ESTA DESEMBARACADA."))
+                {
+                    LogController.RegistrarLog(status, eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                    import.OP_COMPROVANTE_IMP = 0;
+
+                    await AtualizaComprovante(import, nroDI);
+
+                    return;
+                }
+
+                id_tr = "tr_" + Numero;
+
+                element = _driver.FindElementById(id_tr);
+                status = element.Text;
+
+                if (status.Contains("COMPROVANTE RECUPERADO COM SUCESSO"))
+                {
+                    LogController.RegistrarLog(status, eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                    string numeroDec = numDeclaracao.Substring(0, 2) + "%2F" +
+                                numDeclaracao.Substring(2, 7) + "-" +
+                                numDeclaracao.Substring(9, 1);
+
+                    LogController.RegistrarLog("DOWNLOAD DE COMPROVANTE PDF...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    var retornFile = DownloadComprovante(_driver, _urlImprimir + "?nrDeclaracao=" + numeroDec);
+
+                    import.OP_COMPROVANTE_IMP = retornFile ? 1 : 0;
+
+                    await AtualizaComprovante(import, nroDI);
+                }
             }
-            else if (status.Contains("DECLARACAO NAO ESTA DESEMBARACADA."))
+            catch (Exception ex)
             {
-                Console.WriteLine(status);
-
-                import.OP_COMPROVANTE_IMP = 0;
-
-                await AtualizaComprovante(import, nroDI);
-
-                return;
-            }
-
-            id_tr = "tr_" + Numero;
-
-            element = _driver.FindElementById(id_tr);
-            status = element.Text;
-
-            if (status.Contains("COMPROVANTE RECUPERADO COM SUCESSO"))
-            {
-                Console.WriteLine(status);
-
-                string numeroDec = numDeclaracao.Substring(0, 2) + "%2F" +
-                            numDeclaracao.Substring(2, 7) + "-" +
-                            numDeclaracao.Substring(9, 1);
-
-                Console.WriteLine("DOWNLOAD DE COMPROVANTE PDF...");
-                var retornFile = DownloadComprovante(_driver, _urlImprimir + "?nrDeclaracao=" + numeroDec);
-
-                import.OP_COMPROVANTE_IMP = retornFile ? 1 : 0;
-
-                await AtualizaComprovante(import, nroDI);
+                LogController.RegistrarLog($"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 
@@ -208,6 +223,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
             }
             catch (Exception e)
             {
+                LogController.RegistrarLog($"Erro em DownloadComprovante. {e.Message}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
                 return false;
             }
         }
@@ -224,12 +240,12 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                     resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
                     resultado.EnsureSuccessStatusCode();
 
-                    Console.WriteLine("Registro salvo com sucesso.");
+                   LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
+               LogController.RegistrarLog($"Erro em AtualizaComprovante ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
     }
