@@ -191,7 +191,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         {
                             try
                             {
-                                await new Processos.AcompanharDespachos.Lib.Work().ExecutarAsync();
+                                await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
                             }
                             catch (Exception ex)
