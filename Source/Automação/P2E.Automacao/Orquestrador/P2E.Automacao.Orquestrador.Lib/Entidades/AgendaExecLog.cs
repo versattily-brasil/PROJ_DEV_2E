@@ -21,5 +21,9 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public int CD_AGENDA_EXEC { get; set; }
         public DateTime DT_DATAHORA_REG { get; set; }
         public string TX_INF_ADICIONAL { get; set; }
+
+
+        [NotMapped]
+        public string Log { get { return $"[{OP_TIPO_LOG}] - [{DT_DATAHORA_REG}] - {TX_MENSAGEM}"; } }
     }
 }

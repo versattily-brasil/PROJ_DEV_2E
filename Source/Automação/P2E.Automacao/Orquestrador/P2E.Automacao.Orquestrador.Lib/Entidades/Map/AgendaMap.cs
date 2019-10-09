@@ -13,7 +13,8 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades.Map
 
             Map(p => p.CD_AGENDA).Column("CD_AGENDA").Key(KeyType.Identity);
             Map(p => p.DT_DATA_EXEC_PROG).Column("DT_DATA_EXEC_PROG");
-            Map(p => p.DT_DATA_ULTIMA_EXEC).Column("DT_DATA_ULTIMA_EXEC");
+            Map(p => p.DT_DATA_FIM_ULTIMA_EXEC).Column("DT_DATA_FIM_ULTIMA_EXEC");
+            Map(p => p.DT_DATA_INICIO_ULTIMA_EXEC).Column("DT_DATA_INICIO_ULTIMA_EXEC");
             Map(p => p.HR_HORA_EXEC_PROG).Column("HR_HORA_EXEC_PROG");
             Map(p => p.OP_ATIVO).Column("OP_ATIVO");
             Map(p => p.OP_FORMA_EXEC).Column("OP_FORMA_EXEC");

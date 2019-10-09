@@ -1,14 +1,9 @@
 ﻿using MicroOrm.Dapper.Repositories.Attributes;
-using P2E.Automacao.Orquestrador.Lib.Util.Enum;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace P2E.Automacao.Orquestrador.Lib.Entidades
+namespace P2E.Automacao.Shared.Log.Entidades
 {
     [Table("TB_BOT_EXEC_LOG")]
     public class BotExecLog 

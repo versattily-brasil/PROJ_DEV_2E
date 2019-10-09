@@ -56,7 +56,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         }
                     }
 
-                    Thread.Sleep(10000);
+                    Thread.Sleep(30000);
                 }
                 catch (Exception ex)
                 {
@@ -112,13 +112,15 @@ namespace P2E.Automacao.Orquestrador.Lib
                     if (novoStatus == eStatusExec.Executando)
                     {
                         agenda.AgendaProgramada.DT_INICIO_EXEC = DateTime.Now;
+                        agenda.DT_DATA_INICIO_ULTIMA_EXEC = agenda.AgendaProgramada.DT_INICIO_EXEC;
+                        agenda.DT_DATA_FIM_ULTIMA_EXEC = null;
                     }
 
                     if (novoStatus == eStatusExec.Falha || novoStatus == eStatusExec.Conclúído)
                     {
                         agenda.AgendaProgramada.DT_FIM_EXEC = DateTime.Now;
                         agenda.CD_ULTIMA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC;
-                        agenda.DT_DATA_ULTIMA_EXEC = agenda.AgendaProgramada.DT_FIM_EXEC;
+                        agenda.DT_DATA_FIM_ULTIMA_EXEC = agenda.AgendaProgramada.DT_FIM_EXEC;
                     }
 
                     await agendaExecRep.UpdateAsync(agenda.AgendaProgramada);
@@ -172,7 +174,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         {
                             try
                             {
-                                Task task = new BaixarExtratos.Lib.Work().ExecutarAsync();
+                                Task task = new BaixarExtratos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
                                 task.Wait();
 
                                 await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
@@ -345,7 +347,7 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                     if (agendas.Any())
                     {
-                        LogController.RegistrarLog($"{agendas.Count()} agendas localizadas.");
+                        LogController.RegistrarLog($"{agendas.Count()} agenda(s) localizada(s).");
 
                         foreach (var agenda in agendas.Where(p=> p.OP_STATUS == eStatusExec.Programado))
                         {
@@ -358,6 +360,9 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 if ( agenda.Bots != null && agenda.Bots.Any())
                                 {
                                     LogController.RegistrarLog($"{agenda.Bots.Count()} bots encontrados.", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda");
+
+
+                                    await AlterarStatusAgendaAsync(agenda, eStatusExec.Aguardando_Processamento);
                                 }
                                 else
                                 {
@@ -365,7 +370,6 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 }
                             }
 
-                            await AlterarStatusAgendaAsync(agenda, eStatusExec.Aguardando_Processamento);
                         }
                     }
                     else
@@ -489,12 +493,17 @@ namespace P2E.Automacao.Orquestrador.Lib
                         agenda.AgendaProgramada = agendaExecRep.Find(p => p.CD_AGENDA == agenda.CD_AGENDA && (p.OP_STATUS_AGENDA_EXEC == eStatusExec.Programado));
                     }
 
+                    if (agenda.OP_FORMA_EXEC == eFormaExec.Manual)
+                    {
+                        return true;
+                    }
+                    else
                     if (agenda.OP_REPETE == 1)
                     {
                         switch (agenda.OP_TIPO_REP)
                         {
                             case eTipoRepete.Horario:
-                                if (!agenda.DT_DATA_ULTIMA_EXEC.HasValue)
+                                if (!agenda.DT_DATA_FIM_ULTIMA_EXEC.HasValue)
                                 {
                                     if (agenda.HR_HORA_EXEC_PROG <= new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second))
                                     {
@@ -502,13 +511,13 @@ namespace P2E.Automacao.Orquestrador.Lib
                                     }
                                 }
                                 else
-                                if (DateTime.Now.Subtract(agenda.DT_DATA_ULTIMA_EXEC.Value).TotalMinutes > agenda.HR_HORA_EXEC_PROG.TotalMinutes)
+                                if (DateTime.Now.Subtract(agenda.DT_DATA_FIM_ULTIMA_EXEC.Value).TotalMinutes > agenda.HR_HORA_EXEC_PROG.TotalMinutes)
                                 {
                                     return true;
                                 }
                                 break;
                             case eTipoRepete.Diario:
-                                if (!agenda.DT_DATA_ULTIMA_EXEC.HasValue)
+                                if (!agenda.DT_DATA_FIM_ULTIMA_EXEC.HasValue)
                                 {
                                     if (agenda.HR_HORA_EXEC_PROG <= new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second))
                                     {
@@ -516,29 +525,29 @@ namespace P2E.Automacao.Orquestrador.Lib
                                     }
                                 }
                                 else
-                                if (DateTime.Now.Subtract(agenda.DT_DATA_ULTIMA_EXEC.Value).TotalDays > 1)
+                                if (DateTime.Now.Subtract(agenda.DT_DATA_FIM_ULTIMA_EXEC.Value).TotalDays > 1)
                                 {
                                     return true;
                                 }
                                 break;
                             case eTipoRepete.Semanal:
-                                if (!agenda.DT_DATA_ULTIMA_EXEC.HasValue)
+                                if (!agenda.DT_DATA_FIM_ULTIMA_EXEC.HasValue)
                                 {
                                     return true;
                                 }
                                 else
-                                if (DateTime.Now.Subtract(agenda.DT_DATA_ULTIMA_EXEC.Value).TotalDays > 7)
+                                if (DateTime.Now.Subtract(agenda.DT_DATA_FIM_ULTIMA_EXEC.Value).TotalDays > 7)
                                 {
                                     return true;
                                 }
                                 break;
                             case eTipoRepete.Mensal:
-                                if (!agenda.DT_DATA_ULTIMA_EXEC.HasValue)
+                                if (!agenda.DT_DATA_FIM_ULTIMA_EXEC.HasValue)
                                 {
                                     return true;
                                 }
                                 else
-                                 if (DateTime.Now.Subtract(agenda.DT_DATA_ULTIMA_EXEC.Value).TotalDays > 30)
+                                 if (DateTime.Now.Subtract(agenda.DT_DATA_FIM_ULTIMA_EXEC.Value).TotalDays > 30)
                                 {
                                     return true;
                                 }
@@ -561,10 +570,12 @@ namespace P2E.Automacao.Orquestrador.Lib
             {
                 LogController.RegistrarLog($"Erro em VerificaProgramacaoAgenda. {ex.Message}", eTipoLog.ERRO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda");
             }
+
+            LogController.RegistrarLog($"Agenda {agenda.TX_DESCRICAO} fora da hora de execução.", eTipoLog.ALERTA, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda");
             return false;
         }
 
-        public async Task ProgramarAgendaAsync(Agenda agenda)
+        public async Task ProgramarAgendaAsync(Agenda agenda, eFormaExec formaExec)
         {
             try
             {
@@ -575,44 +586,51 @@ namespace P2E.Automacao.Orquestrador.Lib
                     var agendaExecRep = new AgendaExecRepository(context);
                     var botExecRep = new BotExecRepository(context);
                     {
-                        if (agenda.OP_STATUS == eStatusExec.Falha || agenda.OP_STATUS == eStatusExec.Conclúído || agenda.OP_STATUS == eStatusExec.Nao_Programado)
+                        switch (agenda.OP_STATUS)
                         {
-                            agenda.AgendaProgramada = new AgendaExec()
-                            {
-                                CD_AGENDA = agenda.CD_AGENDA,
-                                OP_STATUS_AGENDA_EXEC = eStatusExec.Programado
-                            };
-
-                            agendaExecRep.Insert(agenda.AgendaProgramada);
-
-                            agenda.CD_ULTIMA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC;
-                            agenda.OP_STATUS = agenda.AgendaProgramada.OP_STATUS_AGENDA_EXEC;
-                            agendaRep.Update(agenda);
-
-                            IEnumerable<AgendaBot> bots = agendaBotRep.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA);
-                            if (bots != null)
-                            {
-                                foreach (var bot in bots)
+                            case eStatusExec.Falha:
+                            case eStatusExec.Conclúído:
+                            case eStatusExec.Não_Programado:
                                 {
-                                    bot.BotProgramado = new BotExec()
+                                    agenda.AgendaProgramada = new AgendaExec()
                                     {
-                                        CD_AGENDA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC,
-                                        NR_ORDEM_EXEC = bot.NR_ORDEM_EXEC,
-                                        OP_STATUS_BOT_EXEC = eStatusExec.Programado,
-                                        CD_BOT= bot.CD_BOT,
+                                        CD_AGENDA = agenda.CD_AGENDA,
+                                        OP_STATUS_AGENDA_EXEC = eStatusExec.Programado
                                     };
 
-                                    botExecRep.Insert(bot.BotProgramado);
-                                    bot.CD_ULTIMA_EXEC_BOT = bot.BotProgramado.CD_BOT_EXEC;
-                                    bot.CD_ULTIMO_STATUS_EXEC_BOT = bot.BotProgramado.OP_STATUS_BOT_EXEC;
-                                    agendaBotRep.Update(bot);
+                                    agendaExecRep.Insert(agenda.AgendaProgramada);
+
+                                    agenda.CD_ULTIMA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC;
+                                    agenda.OP_STATUS = agenda.AgendaProgramada.OP_STATUS_AGENDA_EXEC;
+                                    agenda.OP_FORMA_EXEC = formaExec;
+                                    agendaRep.Update(agenda);
+
+                                    IEnumerable<AgendaBot> bots = agendaBotRep.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA);
+                                    if (bots != null)
+                                    {
+                                        foreach (var bot in bots)
+                                        {
+                                            bot.BotProgramado = new BotExec()
+                                            {
+                                                CD_AGENDA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC,
+                                                NR_ORDEM_EXEC = bot.NR_ORDEM_EXEC,
+                                                OP_STATUS_BOT_EXEC = eStatusExec.Programado,
+                                                CD_BOT = bot.CD_BOT,
+                                            };
+
+                                            botExecRep.Insert(bot.BotProgramado);
+                                            bot.CD_ULTIMA_EXEC_BOT = bot.BotProgramado.CD_BOT_EXEC;
+                                            bot.CD_ULTIMO_STATUS_EXEC_BOT = bot.BotProgramado.OP_STATUS_BOT_EXEC;
+                                            agendaBotRep.Update(bot);
+                                        }
+                                    }
+
+                                    break;
                                 }
-                            }
-                        }
-                        else
-                        if (agenda.OP_STATUS == eStatusExec.Programado)
-                        {
-                            await AlterarStatusAgendaAsync(agenda, eStatusExec.Aguardando_Processamento);
+
+                            case eStatusExec.Programado:
+                                await AlterarStatusAgendaAsync(agenda, eStatusExec.Aguardando_Processamento).ConfigureAwait(false);
+                                break;
                         }
                     }
                 }
@@ -623,12 +641,12 @@ namespace P2E.Automacao.Orquestrador.Lib
             }
         }
 
-        public List<AgendaExecLog> ObterAgendaExecLogs(int cd_agenda_exec)
+        public List<AgendaExecLog> ObterAgendaExecLogs(int cdAgendaExec)
         {
             using (var context = new OrquestradorContext())
             {
                 var agendaExecLogRep = new AgendaExecLogRepository(context);
-                return agendaExecLogRep.FindAll(p => p.CD_AGENDA_EXEC == cd_agenda_exec).ToList();
+                return agendaExecLogRep.FindAll(p => p.CD_AGENDA_EXEC == cdAgendaExec).ToList();
             }
         }
 

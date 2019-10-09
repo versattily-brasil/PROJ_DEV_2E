@@ -33,17 +33,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DapperExtensions, Version=1.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="EPPlus, Version=4.5.3.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.3.2\lib\net40\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <HintPath>..\packages\Selenium.WebDriver.PhantomJS.Xplatform.2.45.0.1\lib\net40\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="MicroOrm.Dapper.Repositories, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MicroOrm.Dapper.Repositories.1.8.3\lib\net45\MicroOrm.Dapper.Repositories.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Selenium.WebDriver.PhantomJS.Xplatform.2.45.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -61,8 +71,18 @@
   <ItemGroup>
     <Compile Include="Extensions\AzCaptcha.cs" />
     <Compile Include="Extensions\ControleCertificados.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\Geral.cs" />
     <Compile Include="Extensions\Utils.cs" />
+    <Compile Include="Log\DataContext\LogContext.cs" />
+    <Compile Include="Log\Entidades\AgendaExecLog.cs" />
+    <Compile Include="Log\Entidades\BotExecLog.cs" />
+    <Compile Include="Log\Entidades\eTipoLog.cs" />
+    <Compile Include="Log\Entidades\Map\AgendaExecLogMap.cs" />
+    <Compile Include="Log\Entidades\Map\BotExecLogMap.cs" />
+    <Compile Include="Log\LogController.cs" />
+    <Compile Include="Log\Repositories\AgendaExecLogRepository.cs" />
+    <Compile Include="Log\Repositories\BotExecLogRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XLSExport\Alignment.cs" />
     <Compile Include="XLSExport\BIFF.cs" />
