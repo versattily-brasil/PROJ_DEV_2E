@@ -79,8 +79,6 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                         try
                         {
                             Acessar(_driver);
-
-                            ////Console.ReadKey();
                         }
                         catch (Exception)
                         {
@@ -99,120 +97,133 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         {
             try
             {
-                LogController.RegistrarLog("ACESSAO PAGINA DE CONSULTA...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                _driver.Navigate().GoToUrl(_urlSite);
-                Thread.Sleep(5000);
+                var validaCaptcha = false;
+                IWebElement element = null;
 
-                LogController.RegistrarLog("PREPARANDO SITE...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                LogController.RegistrarLog("CAPTURANDO STRING BASE64 DA IMAGEM...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                while (!validaCaptcha)
+                {
+                    LogController.RegistrarLog("ACESSAO PAGINA DE CONSULTA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    _driver.Navigate().GoToUrl(_urlSite);
+                    Thread.Sleep(5000);
 
-                var aux = _driver.PageSource;
-                var auxInicial = aux.IndexOf("image/png;base64,");
-                var auxFinal = aux.IndexOf("divButtons_captcha_serpro_gov_br");
+                    LogController.RegistrarLog("PREPARANDO SITE...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog("CAPTURANDO STRING BASE64 DA IMAGEM...", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                var lenghtImage = ((auxFinal - 11) - (auxInicial + 17));
+                    var aux = _driver.PageSource;
+                    var auxInicial = aux.IndexOf("image/png;base64,");
+                    var auxFinal = aux.IndexOf("divButtons_captcha_serpro_gov_br");
 
-                var image64 = aux.Substring(auxInicial + 17, lenghtImage);   //AzCaptcha.ConverteImageParaBase64Url(_urlSite);
+                    var lenghtImage = ((auxFinal - 11) - (auxInicial + 17));
 
-                LogController.RegistrarLog("OBTENDO O VALOR DO CAPTCHA...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "yxzwck7b3wmmtx65djusgohidsfefvel");
-                LogController.RegistrarLog("CAPTCHA: " + valorCaptcha);
+                    var image64 = aux.Substring(auxInicial + 17, lenghtImage);   //AzCaptcha.ConverteImageParaBase64Url(_urlSite);
 
-                LogController.RegistrarLog("INSERINDO VALOR DO CAPTCHA NO BROWSER...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                IWebElement element = _driver.FindElementById("txtTexto_captcha_serpro_gov_br");
+                    LogController.RegistrarLog("OBTENDO O VALOR DO CAPTCHA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "yxzwck7b3wmmtx65djusgohidsfefvel");
+                    LogController.RegistrarLog("CAPTCHA: " + valorCaptcha);
 
-                LogController.RegistrarLog("inserindo o numero da declaração", eTipoLog.INFO, _cd_bot_exec, "bot");
-                element.SendKeys(valorCaptcha);
+                    LogController.RegistrarLog("INSERINDO VALOR DO CAPTCHA NO BROWSER...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    element = _driver.FindElementById("txtTexto_captcha_serpro_gov_br");
 
-                element = _driver.FindElementByCssSelector(@"#j_id11 > div:nth-child(4) > center > input");
+                    LogController.RegistrarLog("inserindo o numero da declaração", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    element.SendKeys(valorCaptcha);
+
+                    element = _driver.FindElementByCssSelector(@"#j_id11 > div:nth-child(4) > center > input");
+                    element.Click();
+
+                    Thread.Sleep(5000);
+
+                    if (_driver.PageSource.Contains("Texto digitado não corresponde a imagem"))
+                    {
+                        LogController.RegistrarLog("Texto digitado não corresponde a imagem", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        validaCaptcha = false;
+                    }
+                    else
+                    {
+                        validaCaptcha = true;
+                    }
+                }
+
+                //CLICA EM TAXA DE CONVERSAO DE CAMBIO
+                element = _driver.FindElement(By.CssSelector("#j_id110\\:agrupamento\\:13\\:grupo\\:0\\:j_id121 > center > a"));
                 element.Click();
 
                 Thread.Sleep(5000);
 
-                if (_driver.PageSource.Contains("Texto digitado não corresponde a imagem"))
+                //CLICA EM TODOS
+                element = _driver.FindElement(By.Id(@"j_id111:j_id163"));
+                element.Click();
+
+                Thread.Sleep(5000);
+
+                //CLICA NO EXTRAIR TABELA
+                element = _driver.FindElement(By.Id(@"j_id111:j_id207"));
+                element.Click();
+
+                Thread.Sleep(5000);
+
+                element = _driver.FindElement(By.CssSelector("#j_id111\\:arquivoxml"));
+                element.Click();
+                Thread.Sleep(5000);
+
+                SendKeys.SendWait("{TAB}");
+                Thread.Sleep(2000);
+                SendKeys.SendWait("{TAB}");
+                Thread.Sleep(2000);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(2000);
+
+                var baixaXml = true;// DownloadXML(_driver);
+
+                if (baixaXml)
                 {
-                    LogController.RegistrarLog("Texto digitado não corresponde a imagem", eTipoLog.INFO, _cd_bot_exec, "bot");
-                    _driver.Close();
-                   // //Console.ReadKey();
-                }
-                else
-                {
-                    //CLICA EM TAXA DE CONVERSAO DE CAMBIO
-                    element = _driver.FindElement(By.CssSelector("#j_id110\\:agrupamento\\:13\\:grupo\\:0\\:j_id121 > center > a"));
-                    element.Click();
-
-                    Thread.Sleep(5000);
-
-                    //CLICA EM TODOS
-                    element = _driver.FindElement(By.Id(@"j_id111:j_id163"));
-                    element.Click();
-
-                    Thread.Sleep(5000);
-
-                    //CLICA NO EXTRAIR TABELA
-                    element = _driver.FindElement(By.Id(@"j_id111:j_id207"));
-                    element.Click();
-
-                    Thread.Sleep(5000);
-
-                    element = _driver.FindElement(By.CssSelector("#j_id111\\:arquivoxml"));
-                    element.Click();
-                    Thread.Sleep(5000);
-
-                    SendKeys.SendWait("{TAB}");
-                    Thread.Sleep(2000);
-                    SendKeys.SendWait("{TAB}");
-                    Thread.Sleep(2000);
-                    SendKeys.SendWait("{ENTER}");
-                    Thread.Sleep(2000);
-
-                    var baixaXml = true;// DownloadXML(_driver);
-
-                    if (baixaXml)
+                    //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                    if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
                     {
-                        //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                        if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
-                        {
-                            System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
-                        }
+                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    }
 
-                        arquivoPath = Path.Combine("C:\\Versatilly\\TaxaConversaoCambio.xml");
+                    arquivoPath = Path.Combine("C:\\Versatilly\\TaxaConversaoCambio.xml");
 
+                    try
+                    {
                         await DeleteTaxa();
+                    }
+                    catch (Exception e)
+                    {
 
-                        TaxaCambio taxaCambio = new TaxaCambio();
+                    }                    
 
-                        //XElement xml = XElement.Load(arquivoPath);
-                        XmlDocument xmlDoc = new XmlDocument();
-                        xmlDoc.Load(arquivoPath);
+                    TaxaCambio taxaCambio = new TaxaCambio();
 
-                        //Pegando elemento pelo nome da TAG
-                        XmlNodeList xnList = xmlDoc.GetElementsByTagName("TaxaConversaoCambio");
+                    //XElement xml = XElement.Load(arquivoPath);
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.Load(arquivoPath);
 
-                        //Usando for para imprimir na tela
-                        for (int i = 0; i < xnList.Count; i++)
-                        {
-                            string sNome = xnList[i]["codigo"].InnerText;
-                            string descricao = xnList[i]["descricao"].InnerText;
-                            string DataInicial = xnList[i]["inicioVigencia"].InnerText;
-                            string DataFinal = xnList[i]["fimVigencia"].InnerText;
-                            string Taxa = xnList[i]["taxaConversao"].InnerText;
+                    //Pegando elemento pelo nome da TAG
+                    XmlNodeList xnList = xmlDoc.GetElementsByTagName("TaxaConversaoCambio");
 
-                            LogController.RegistrarLog("Moeda: " + sNome + " Descricao: " + descricao + "DataI: " + DataInicial + "DataF: " + DataFinal + "Taxa: " + Taxa, eTipoLog.INFO, _cd_bot_exec, "bot");
+                    //Usando for para imprimir na tela
+                    for (int i = 0; i < xnList.Count; i++)
+                    {
+                        string sNome = xnList[i]["codigo"].InnerText;
+                        string descricao = xnList[i]["descricao"].InnerText;
+                        string DataInicial = xnList[i]["inicioVigencia"].InnerText;
+                        string DataFinal = xnList[i]["fimVigencia"].InnerText;
+                        string Taxa = xnList[i]["taxaConversao"].InnerText;
+
+                        LogController.RegistrarLog("Moeda: " + sNome + " Descricao: " + descricao + "DataI: " + DataInicial + "DataF: " + DataFinal + "Taxa: " + Taxa, eTipoLog.INFO, _cd_bot_exec, "bot");
 
 
-                            taxaCambio.TX_MOEDA = sNome;
-                            taxaCambio.TX_DESCRICAO = descricao;
-                            taxaCambio.DT_INICIO_VIGENCIA = DateTime.Parse(DataInicial);
-                            try { taxaCambio.DT_FIM_VIGENCIA = DateTime.Parse(DataFinal); } catch { taxaCambio.DT_FIM_VIGENCIA = null; }
-                            taxaCambio.VL_TAXA_CONVERSAO = decimal.Parse(Taxa);
+                        taxaCambio.TX_MOEDA = sNome;
+                        taxaCambio.TX_DESCRICAO = descricao;
+                        taxaCambio.DT_INICIO_VIGENCIA = DateTime.Parse(DataInicial);
+                        try { taxaCambio.DT_FIM_VIGENCIA = DateTime.Parse(DataFinal); } catch { taxaCambio.DT_FIM_VIGENCIA = null; }
+                        taxaCambio.VL_TAXA_CONVERSAO = decimal.Parse(Taxa);
 
-                            await AtualizaTaxaCambio(taxaCambio);
+                        await AtualizaTaxaCambio(taxaCambio);
 
-                        }
                     }
                 }
-
             }
             catch (Exception e)
             {

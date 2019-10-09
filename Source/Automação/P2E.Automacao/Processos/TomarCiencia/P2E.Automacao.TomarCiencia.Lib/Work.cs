@@ -27,7 +27,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
     public class Work
     {
         #region Variaveis Estáticas
-        private string _urlPrincipal = @"https://online.sefaz.am.gov.br/inicioDte.asp"; //"https://online.sefaz.am.gov.br/dte/LogController.RegistrarLoginSSL.asp"; 
+        private string _urlPrincipal = @"https://online.sefaz.am.gov.br/inicioDte.asp"; //"https://online.sefaz.am.gov.br/dte/LoginSSL.asp"; 
         private string _urlIncricao = @"https://online.sefaz.am.gov.br/dte/sel_inscricao_pf.asp?inscricao=";
         private string _urlConsultaDI = @"https://online.sefaz.am.gov.br/sinf2004/DI/pagDIOnline.asp?numPagina="; //"https://online.sefaz.am.gov.br/sinf2004/DI/consultaDIOnline.asp";                
         private string _urlApiBase;
@@ -46,8 +46,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
         public Work()
         {
-            LogController.RegistrarLog("############ Inicialização de automação [Tomar Ciência] ############", eTipoLog.INFO, _cd_bot_exec, "bot");
-           // LogController.RegistrarLog(null, null, true, eTipoLog.INFO, _cd_bot_exec, "bot");
+            Log("############ Inicialização de automação [Tomar Ciência] ############");
+            Log(null, null, true);
 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
@@ -55,8 +55,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
         public Work(int cd_bot_exec)
         {
             _cd_bot_exec = cd_bot_exec;
-            LogController.RegistrarLog("############ Inicialização de automação [Tomar Ciência] ############", eTipoLog.INFO, _cd_bot_exec, "bot");
-           // LogController.RegistrarLog(null, null, true, eTipoLog.INFO, _cd_bot_exec, "bot");
+            Log("############ Inicialização de automação [Tomar Ciência] ############");
+            Log(null, null, true);
 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
@@ -155,7 +155,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                         {
                             // Não foi encontrado mais nenhuma inscrição estdual na estrutura, então sai do loop 
                             // e segue para a próxima empresa.
-                            LogController.RegistrarLog(String.Format("Empresa {0}: {1} inscrição(ões) estadual(ais)." +" "+ empresa.Nome+" "+ empresa.IncricoesEstaduais.Count) +" "+ nameof(CarregaListaEmpresas), eTipoLog.INFO, _cd_bot_exec, "bot");
+                            Log(String.Format("Empresa {0}: {1} inscrição(ões) estadual(ais).", empresa.Nome, empresa.IncricoesEstaduais.Count), nameof(CarregaListaEmpresas));
                             leInscricoes = false;
                         }
                     }
@@ -166,7 +166,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 catch
                 {
                     // Não foi encontrado mais nenhuma empresa na estrutura, então sai do loop e encerra o método.
-                    LogController.RegistrarLog(String.Format("{0} empresas carregadas.", this.ListaEmpresas.Count));
+                    Log(String.Format("{0} empresas carregadas.", this.ListaEmpresas.Count));
                     leEmpresas = false;
                 }
             }
@@ -198,7 +198,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 {
                     if (tag.GetAttribute("href").Contains("consultaDIOnline.asp"))
                     {
-                        LogController.RegistrarLog("Link para a DI encontrado." +" "+ nameof(FindDILink), eTipoLog.INFO, _cd_bot_exec, "bot");
+                        Log("Link para a DI encontrado." + " " + nameof(FindDILink));
                         return tag;
                     }
                 }
@@ -206,7 +206,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             catch (NoSuchElementException ex)
             {
                 string errorMessage = JsonConvert.DeserializeObject(ex.Message).ToString();
-                LogController.RegistrarLog(errorMessage +" "+ nameof(FindDILink), eTipoLog.INFO, _cd_bot_exec, "bot");
+                Log(errorMessage + " " + nameof(FindDILink));
             }
 
             return null;
@@ -228,12 +228,12 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 {
                     if (element.Text.Contains("[Imp. de Lacre]"))
                     {
-                        LogController.RegistrarLog("LOCALIZA O LINK PARA DOWNLOAD....", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        Log("LOCALIZA O LINK PARA DOWNLOAD....");
                         var aux = _driver.PageSource;
 
                         var position = aux.IndexOf("[Imp. de Lacre]");
 
-                        var nroDI = aux.Substring((position - 781), 9);
+                        var nroDI = aux.Substring((position - 693), 9);
 
                         if (numeroDI == nroDI)
                         {
@@ -253,7 +253,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             }
             catch (NoSuchElementException ex)
             {
-                LogController.RegistrarLog(ex.Message +" "+ nameof(DownloadDAILacre), eTipoLog.INFO, _cd_bot_exec, "bot");
+                Log(ex.Message + " " + nameof(DownloadDAILacre));
                 return false;
             }
         }
@@ -293,7 +293,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         {
             try
             {
-                LogController.RegistrarLog("CAPTURA O PRINT DA TELA DO DOCUMENTO....", eTipoLog.INFO, _cd_bot_exec, "bot");
+                Log("CAPTURA O PRINT DA TELA DO DOCUMENTO....");
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
                 if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
                 {
@@ -306,7 +306,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                 if (retornoPrint)
                 {
-                    LogController.RegistrarLog("CONVERTE A IMAGEM .JPG EM PDF...");
+                    Log("CONVERTE A IMAGEM .JPG EM PDF...");
                     ConvertImagePDF(numero + "-CapturaTela.jpg", numero);
                 }
 
@@ -376,12 +376,12 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
             foreach (Empresa empresa in this.ListaEmpresas)
             {
-                LogController.RegistrarLog("Empresa - " + empresa.Nome.Trim(), eTipoLog.INFO, _cd_bot_exec, "bot");
+                Log("Empresa - " + empresa.Nome.Trim());
 
                 //CRIA PLANILHA PARA SAMSUNG E VENTISOL
                 if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
                 {
-                    LogController.RegistrarLog("*****Criando Planilha*****", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    Log("*****Criando Planilha*****");
                     xlsDoc = new ExcelPackage();
 
                     xlsDoc.Workbook.Properties.Title = "2E";
@@ -414,8 +414,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                     // Garante que a sessão corrente esteja no contexto da Inscrição Estadual atual
                     this._driver.Navigate().GoToUrl(this._urlIncricao + inscricao);
-                    //LogController.RegistrarLog(null, null, true);
-                    LogController.RegistrarLog(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao) +" "+ nameof(Main), eTipoLog.INFO, _cd_bot_exec, "bot");
+                    Log(null, null, true);
+                    Log(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao), nameof(Main));
 
                     // Segue diretamente à listagem das DAI's da Inscrição Estadual
                     // selecionada no passo anterior
@@ -434,15 +434,15 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     {
                         numeroPaginas = 0;
                         string mensagem = this._driver.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/b")).Text;
-                        LogController.RegistrarLog("######" + mensagem + "######", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        Log("######" + mensagem + "######");
                     }
 
                     // Página a página, busca pelas DAI's que estejam pendentes de "Tomar Ciência".
                     for (int pag = 1; pag < numeroPaginas; pag++)
                     {
-                        LogController.RegistrarLog("Navegando para a página " + pag, eTipoLog.INFO, _cd_bot_exec, "bot");
+                        Log("Navegando para a página " + pag);
                         this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
-                        LogController.RegistrarLog("Loading de 5 seg.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        Log("Loading de 5 seg.");
                         Thread.Sleep(5000);
 
                         r++;
@@ -463,14 +463,14 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                                     if (retornoPrint)
                                     {
-                                        LogController.RegistrarLog("PDF DOC. LACRE SALVO !");
+                                        Log("PDF DOC. LACRE SALVO !");
                                     }
                                 }
 
                                 if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
                                 {
                                     var nroDI = element.Text.Substring(0, 9);
-                                    LogController.RegistrarLog("GRAVANDO DI= " + nroDI);
+                                    Log("GRAVANDO DI= " + nroDI);
 
                                     var data = element.Text.Substring(10, 10);
                                     var status = "";
@@ -498,52 +498,52 @@ namespace P2E.Automacao.TomarCiencia.Lib
                                     r++;
                                 }
 
-                                elements = _driver.FindElements(By.ClassName("dg_ln_par"));
+                            }
 
-                                foreach (IWebElement elemento in elements)
+                            elements = _driver.FindElements(By.ClassName("dg_ln_par"));
+
+                            foreach (IWebElement elemento in elements)
+                            {
+                                if (elemento.Text.Contains("[Imp. de Lacre]"))
                                 {
-                                    if (element.Text.Contains("[Imp. de Lacre]"))
+                                    var retornoPrint = DownloadDAILacre(elemento.Text.Substring(0, 9));
+
+                                    if (retornoPrint)
                                     {
-                                        var retornoPrint = DownloadDAILacre(element.Text.Substring(0, 9));
-
-                                        if (retornoPrint)
-                                        {
-                                            LogController.RegistrarLog("PDF DOC. LACRE SALVO !");
-                                        }
-                                    }
-
-                                    if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
-                                    {
-                                        var nroDI = elemento.Text.Substring(0, 9);
-                                        LogController.RegistrarLog("GRAVANDO DI= " + nroDI);
-
-                                        var data = elemento.Text.Substring(10, 10);
-                                        var status = "";
-
-                                        sheet.Cells[r, colDI].Value = nroDI;
-                                        sheet.Cells[r, colData].Value = data;
-
-                                        if (elemento.Text.Contains("Parametriza"))
-                                        {
-                                            status = "Pendente de parametrização";
-                                            sheet.Cells[r, colSinal].Value = status;
-                                        }
-                                        else
-                                        {
-                                            status = "Verde";
-                                            sheet.Cells[r, colSinal].Value = status;
-
-                                            using (var range = sheet.Cells[r, colSinal])
-                                            {
-                                                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
-                                            }
-                                        }
-
-                                        r++;
+                                        Log("PDF DOC. LACRE SALVO !");
                                     }
                                 }
 
+                                if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
+                                {
+                                    var nroDI = elemento.Text.Substring(0, 9);
+                                    Log("GRAVANDO DI= " + nroDI);
+
+                                    var data = elemento.Text.Substring(10, 10);
+                                    var status = "";
+
+                                    sheet.Cells[r, colDI].Value = nroDI;
+                                    sheet.Cells[r, colData].Value = data;
+
+                                    if (elemento.Text.Contains("Parametriza"))
+                                    {
+                                        status = "Pendente de parametrização";
+                                        sheet.Cells[r, colSinal].Value = status;
+                                    }
+                                    else
+                                    {
+                                        status = "Verde";
+                                        sheet.Cells[r, colSinal].Value = status;
+
+                                        using (var range = sheet.Cells[r, colSinal])
+                                        {
+                                            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                            range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
+                                        }
+                                    }
+
+                                    r++;
+                                }
                             }
                         }
                         catch (NoSuchElementException ex)
