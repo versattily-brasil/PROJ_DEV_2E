@@ -92,7 +92,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                                 }
 
                                LogController.RegistrarLog($"Execução concluída.", eTipoLog.INFO, _cd_bot_exec, "bot");
-                                Console.ReadKey();
+                                //Console.ReadKey();
                             }
                             catch (Exception)
                             {

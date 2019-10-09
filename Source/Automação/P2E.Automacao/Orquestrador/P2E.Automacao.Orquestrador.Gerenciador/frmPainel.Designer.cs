@@ -101,9 +101,8 @@
             // 
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1303, 12);
+            this.panel1.Size = new System.Drawing.Size(977, 10);
             this.panel1.TabIndex = 0;
             // 
             // tabControl1
@@ -111,20 +110,18 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1303, 422);
+            this.tabControl1.Size = new System.Drawing.Size(977, 343);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.gvAgendamentos);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(1295, 393);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(969, 317);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Agendamentos";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -155,14 +152,13 @@
             this.DT_DATA_FIM_ULTIMA_EXEC});
             this.gvAgendamentos.DataSource = this.agendaBindingSource;
             this.gvAgendamentos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvAgendamentos.Location = new System.Drawing.Point(4, 4);
-            this.gvAgendamentos.Margin = new System.Windows.Forms.Padding(4);
+            this.gvAgendamentos.Location = new System.Drawing.Point(3, 3);
             this.gvAgendamentos.MultiSelect = false;
             this.gvAgendamentos.Name = "gvAgendamentos";
             this.gvAgendamentos.ReadOnly = true;
             this.gvAgendamentos.RowHeadersWidth = 51;
             this.gvAgendamentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvAgendamentos.Size = new System.Drawing.Size(1287, 385);
+            this.gvAgendamentos.Size = new System.Drawing.Size(963, 311);
             this.gvAgendamentos.TabIndex = 0;
             this.gvAgendamentos.SelectionChanged += new System.EventHandler(this.GvAgendamentos_SelectionChanged);
             // 
@@ -338,31 +334,28 @@
             // 
             this.panel2.Controls.Add(this.tabControl1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 12);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4);
+            this.panel2.Location = new System.Drawing.Point(0, 10);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1303, 422);
+            this.panel2.Size = new System.Drawing.Size(977, 343);
             this.panel2.TabIndex = 2;
             // 
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage2);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(0, 434);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(4);
+            this.tabControl2.Location = new System.Drawing.Point(0, 353);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1303, 231);
+            this.tabControl2.Size = new System.Drawing.Size(977, 187);
             this.tabControl2.TabIndex = 3;
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.splitContainer1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1295, 202);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(969, 161);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Bots do Agendamento";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -371,8 +364,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(4, 4);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -383,9 +375,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(1287, 194);
+            this.splitContainer1.Size = new System.Drawing.Size(963, 155);
             this.splitContainer1.SplitterDistance = 826;
-            this.splitContainer1.SplitterWidth = 10;
+            this.splitContainer1.SplitterWidth = 8;
             this.splitContainer1.TabIndex = 2;
             // 
             // gvAgendaBots
@@ -409,12 +401,11 @@
             this.gvAgendaBots.DataSource = this.bsAgendaBots;
             this.gvAgendaBots.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvAgendaBots.Location = new System.Drawing.Point(0, 0);
-            this.gvAgendaBots.Margin = new System.Windows.Forms.Padding(4);
             this.gvAgendaBots.Name = "gvAgendaBots";
             this.gvAgendaBots.ReadOnly = true;
             this.gvAgendaBots.RowHeadersWidth = 51;
             this.gvAgendaBots.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvAgendaBots.Size = new System.Drawing.Size(826, 194);
+            this.gvAgendaBots.Size = new System.Drawing.Size(826, 155);
             this.gvAgendaBots.StandardTab = true;
             this.gvAgendaBots.TabIndex = 0;
             this.gvAgendaBots.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAgendaBots_CellContentClick);
@@ -538,10 +529,8 @@
             this.groupBox1.Controls.Add(this.listBox1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(451, 194);
+            this.groupBox1.Size = new System.Drawing.Size(129, 155);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Log de Execução do Bot";
@@ -554,11 +543,9 @@
             this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.HorizontalScrollbar = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(4, 19);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.listBox1.Location = new System.Drawing.Point(3, 16);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(443, 171);
+            this.listBox1.Size = new System.Drawing.Size(123, 136);
             this.listBox1.TabIndex = 0;
             this.listBox1.ValueMember = "CD_BOT_EXEC_LOG";
             // 
@@ -571,28 +558,26 @@
             this.barraStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.barraStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.barraProgresso});
-            this.barraStatus.Location = new System.Drawing.Point(0, 640);
+            this.barraStatus.Location = new System.Drawing.Point(0, 518);
             this.barraStatus.Name = "barraStatus";
-            this.barraStatus.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
             this.barraStatus.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.barraStatus.Size = new System.Drawing.Size(1303, 25);
+            this.barraStatus.Size = new System.Drawing.Size(977, 22);
             this.barraStatus.TabIndex = 4;
             this.barraStatus.Text = "statusStrip1";
             // 
             // barraProgresso
             // 
             this.barraProgresso.Name = "barraProgresso";
-            this.barraProgresso.Size = new System.Drawing.Size(500, 17);
+            this.barraProgresso.Size = new System.Drawing.Size(375, 16);
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.btnConsultar);
             this.panel3.Controls.Add(this.btnExecutarAgenda);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 591);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4);
+            this.panel3.Location = new System.Drawing.Point(0, 478);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1303, 49);
+            this.panel3.Size = new System.Drawing.Size(977, 40);
             this.panel3.TabIndex = 5;
             // 
             // btnConsultar
@@ -603,7 +588,7 @@
             this.btnConsultar.Location = new System.Drawing.Point(0, 0);
             this.btnConsultar.Margin = new System.Windows.Forms.Padding(0);
             this.btnConsultar.Name = "btnConsultar";
-            this.btnConsultar.Size = new System.Drawing.Size(246, 49);
+            this.btnConsultar.Size = new System.Drawing.Size(184, 40);
             this.btnConsultar.TabIndex = 2;
             this.btnConsultar.Text = "Consultar";
             this.btnConsultar.UseVisualStyleBackColor = true;
@@ -613,10 +598,9 @@
             // 
             this.btnExecutarAgenda.Image = ((System.Drawing.Image)(resources.GetObject("btnExecutarAgenda.Image")));
             this.btnExecutarAgenda.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnExecutarAgenda.Location = new System.Drawing.Point(247, 0);
-            this.btnExecutarAgenda.Margin = new System.Windows.Forms.Padding(4);
+            this.btnExecutarAgenda.Location = new System.Drawing.Point(185, 0);
             this.btnExecutarAgenda.Name = "btnExecutarAgenda";
-            this.btnExecutarAgenda.Size = new System.Drawing.Size(256, 49);
+            this.btnExecutarAgenda.Size = new System.Drawing.Size(192, 40);
             this.btnExecutarAgenda.TabIndex = 0;
             this.btnExecutarAgenda.Text = "Enviar para Execução";
             this.btnExecutarAgenda.UseVisualStyleBackColor = true;
@@ -634,15 +618,14 @@
             // 
             // frmPainel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1303, 665);
+            this.ClientSize = new System.Drawing.Size(977, 540);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.barraStatus);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmPainel";
             this.Text = "Painel de Agendamentos";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -706,8 +689,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn oPULTIMOSTATUSEXECDataGridViewTextBoxColumn;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.BindingSource bsBotExecLog;
         private System.Windows.Forms.DataGridViewTextBoxColumn cDAGENDABOTDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescBot;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
@@ -735,5 +716,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn OP_STATUS;
         private System.Windows.Forms.DataGridViewTextBoxColumn DT_DATA_INICIO_ULTIMA_EXEC;
         private System.Windows.Forms.DataGridViewTextBoxColumn DT_DATA_FIM_ULTIMA_EXEC;
+        public System.Windows.Forms.BindingSource bsBotExecLog;
+        public System.Windows.Forms.ListBox listBox1;
     }
 }

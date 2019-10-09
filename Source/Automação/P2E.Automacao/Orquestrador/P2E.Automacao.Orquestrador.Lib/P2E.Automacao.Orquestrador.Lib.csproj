@@ -172,6 +172,10 @@
       <Project>{322c419f-e349-499d-975d-d00e68ca00dd}</Project>
       <Name>P2E.Automacao.StatusDesembaracoSefaz.Lib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Processos\TaxaConversaoCambio\P2E.Automacao.TaxaConversaoCambio.Lib\P2E.Automacao.TaxaConversaoCambio.Lib.csproj">
+      <Project>{2c148298-afe0-4daf-a819-a64d51773218}</Project>
+      <Name>P2E.Automacao.TaxaConversaoCambio.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Processos\TelaDebito\P2E.Automacao.TelaDebito.Lib\P2E.Automacao.TelaDebito.Lib.csproj">
       <Project>{34e6f9a1-bd25-463b-aba3-274f8b0d40e6}</Project>
       <Name>P2E.Automacao.TelaDebito.Lib</Name>
