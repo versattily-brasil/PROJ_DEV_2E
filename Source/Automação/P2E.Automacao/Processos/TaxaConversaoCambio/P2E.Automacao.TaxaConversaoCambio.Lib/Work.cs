@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
-using OpenQA.Selenium.PhantomJS;
+using OpenQA.Selenium.Chrome;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using System;
@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
@@ -43,13 +44,26 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             Console.WriteLine("CONFIGURANDO AMBIENTE...");
             using (var client = new HttpClient())
             {
-                using (var service = PhantomJSDriverService.CreateDefaultService())
+                try
                 {
-                    service.AddArgument("test-type");
-                    service.AddArgument("no-sandbox");
-                    service.HideCommandPromptWindow = true;
+                    ChromeOptions options = new ChromeOptions();
 
-                    using (var _driver = new PhantomJSDriver(service))
+                    var downloadDirectory = "C:\\Versatilly";
+
+                    options.AddUserProfilePreference("download.default_directory", downloadDirectory);
+                    options.AddUserProfilePreference("download.prompt_for_download", false);
+                    options.AddUserProfilePreference("disable-popup-blocking", true);
+                    options.AddArguments("--disable-web-security");
+                    options.AddArguments("--allow-running-insecure-content");
+                    options.AddArgument("--disable-privacy");
+                    //options.AddArguments("headless");
+
+                    options.AddArgument("test-type");
+                    options.AddArgument("no-sandbox");
+                    //service.HideCommandPromptWindow = true;
+
+                    // Initialize the Chrome Driver
+                    using (var _driver = new ChromeDriver(options))
                     {
                         try
                         {
@@ -63,11 +77,14 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                         }
                     }
                 }
+                catch (Exception e)
+                {
 
+                }
             }
         }
 
-        private async Task Acessar(PhantomJSDriver _driver)
+        private async Task Acessar(ChromeDriver _driver)
         {
             try
             {
@@ -99,7 +116,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 element = _driver.FindElementByCssSelector(@"#j_id11 > div:nth-child(4) > center > input");
                 element.Click();
 
-                //Thread.Sleep(5000);
+                Thread.Sleep(5000);
 
                 if (_driver.PageSource.Contains("Texto digitado não corresponde a imagem"))
                 {
@@ -121,37 +138,37 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                     Thread.Sleep(5000);
 
-
-
-                    //// Construct HTTP request to get the file
-                    //HttpWebRequest httpRequest = (HttpWebRequest)
-                    //    WebRequest.Create("https://www35.receita.fazenda.gov.br/tabaduaneiras-web/private/pages/taxaConversaoCambio_listar.jsf");
-                    //httpRequest.Method = WebRequestMethods.Http.Post;
-
-                    //// Include post data in the HTTP request
-                    //string postData = "j_id111 % 3AtaxaConversaoCambioMB_tipoConsulta = 0 & j_id111 % 3AvalorConsulta_codigo = &j_id111 % 3ApanelDownloadArquivoOpenedState = &j_id111 = j_id111 & autoScroll = &javax.faces.ViewState = j_id4 & j_id111 % 3Aj_id218 = j_id111 % 3Aj_id218";
-                    //httpRequest.ContentLength = postData.Length;
-                    //httpRequest.ContentType = "application/x-www-form-urlencoded";
-                    //// Write the post data to the HTTP request
-                    //StreamWriter requestWriter = new StreamWriter(
-                    //    httpRequest.GetRequestStream(),
-                    //    System.Text.Encoding.ASCII);
-                    //requestWriter.Write(postData);
-                    //requestWriter.Close();
-
-
-
-
                     //CLICA NO EXTRAIR TABELA
-                    //element = _driver.FindElement(By.Id(@"j_id111:j_id207"));
-                    //element.Click();
+                    element = _driver.FindElement(By.Id(@"j_id111:j_id207"));
+                    element.Click();
 
-                    //Thread.Sleep(5000);
+                    Thread.Sleep(5000);
 
-                    var baixaXml = DownloadXML(_driver);
+                    element = _driver.FindElement(By.CssSelector("#j_id111\\:arquivoxml"));
+                    element.Click();
+                    Thread.Sleep(5000);
+
+                    SendKeys.SendWait("{TAB}");
+                    Thread.Sleep(2000);
+                    SendKeys.SendWait("{TAB}");
+                    Thread.Sleep(2000);
+                    SendKeys.SendWait("{ENTER}");
+                    Thread.Sleep(2000);
+
+                    var baixaXml = true;// DownloadXML(_driver);
 
                     if (baixaXml)
                     {
+                        //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                        if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                        {
+                            System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                        }
+
+                        arquivoPath = Path.Combine("C:\\Versatilly\\TaxaConversaoCambio.xml");
+
+                        await DeleteTaxa();
+
                         TaxaCambio taxaCambio = new TaxaCambio();
 
                         //XElement xml = XElement.Load(arquivoPath);
@@ -170,12 +187,12 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                             string DataFinal = xnList[i]["fimVigencia"].InnerText;
                             string Taxa = xnList[i]["taxaConversao"].InnerText;
 
-                            Console.WriteLine("Moeda: " + sNome + " Descricao: " + descricao + "DataI: " + DataInicial + "DataF: " + DataFinal + "Taxa: " + Taxa );
+                            Console.WriteLine("Moeda: " + sNome + " Descricao: " + descricao + "DataI: " + DataInicial + "DataF: " + DataFinal + "Taxa: " + Taxa);
 
-                            
+
                             taxaCambio.TX_MOEDA = sNome;
                             taxaCambio.TX_DESCRICAO = descricao;
-                            taxaCambio.DT_INICIO_VIGENCIA = DateTime.Parse( DataInicial);
+                            taxaCambio.DT_INICIO_VIGENCIA = DateTime.Parse(DataInicial);
                             try { taxaCambio.DT_FIM_VIGENCIA = DateTime.Parse(DataFinal); } catch { taxaCambio.DT_FIM_VIGENCIA = null; }
                             taxaCambio.VL_TAXA_CONVERSAO = decimal.Parse(Taxa);
 
@@ -194,76 +211,76 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             }
         }
 
-        protected bool DownloadXML(PhantomJSDriver _driver)
-        {
-            try
-            {
-                var certificado = ControleCertificados.GetClientCertificate();
+        //protected bool DownloadXML(PhantomJSDriver _driver)
+        //{
+        //    try
+        //    {
+        //        var certificado = ControleCertificados.GetClientCertificate();
 
-                using (var driver = new SimpleBrowser.WebDriver.SimpleBrowserDriver(certificado))
-                {
-                    var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+        //        using (var driver = new SimpleBrowser.WebDriver.SimpleBrowserDriver(certificado))
+        //        {
+        //            var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
-                    //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                    if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
-                    {
-                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
-                    }
+        //            //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+        //            if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+        //            {
+        //                System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+        //            }
 
-                    arquivoPath = Path.Combine("C:\\Versatilly\\TaxaConversaoCambio.xml");
+        //            arquivoPath = Path.Combine("C:\\Versatilly\\TaxaConversaoCambio.xml");
 
-                    if (!File.Exists(arquivoPath))
-                    {
-                        driver._my.Navigate(_urlSite);
+        //            if (!File.Exists(arquivoPath))
+        //            {
+        //                driver.Navigate().GoToUrl(_urlSite);
 
-                        var aux = driver.PageSource;
-                        var auxInicial = aux.IndexOf("image/png;base64,");
-                        var auxFinal = aux.IndexOf("divButtons_captcha_serpro_gov_br");
+        //                var aux = driver.PageSource;
+        //                var auxInicial = aux.IndexOf("image/png;base64,");
+        //                var auxFinal = aux.IndexOf("divButtons_captcha_serpro_gov_br");
 
-                        var lenghtImage = ((auxFinal - 11) - (auxInicial + 17));
+        //                var lenghtImage = ((auxFinal - 11) - (auxInicial + 17));
 
-                        var image64 = aux.Substring(auxInicial + 17, lenghtImage);   //AzCaptcha.ConverteImageParaBase64Url(_urlSite);
+        //                var image64 = aux.Substring(auxInicial + 17, lenghtImage);   //AzCaptcha.ConverteImageParaBase64Url(_urlSite);
 
-                        Console.WriteLine("OBTENDO O VALOR DO CAPTCHA...");
-                        valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "yxzwck7b3wmmtx65djusgohidsfefvel");
+        //                Console.WriteLine("OBTENDO O VALOR DO CAPTCHA...");
+        //                valorCaptcha = AzCaptcha.ResultadoCaptcha(image64, "yxzwck7b3wmmtx65djusgohidsfefvel");
 
-                        IWebElement element = driver.FindElement(By.Id("txtTexto_captcha_serpro_gov_br"));
+        //                IWebElement element = driver.FindElement(By.Id("txtTexto_captcha_serpro_gov_br"));
 
-                        Console.WriteLine("inserindo o numero da declaração");
-                        element.SendKeys(valorCaptcha);
+        //                Console.WriteLine("inserindo o numero da declaração");
+        //                element.SendKeys(valorCaptcha);
 
-                        element = driver.FindElement(By.CssSelector(@"#j_id11 > div:nth-child(4) > center > input"));
-                        element.Click();
+        //                element = driver.FindElement(By.CssSelector(@"#j_id11 > div:nth-child(4) > center > input"));
+        //                element.Click();
 
-                        //CLICA EM TAXA DE CONVERSAO DE CAMBIO
-                        element = driver.FindElement(By.CssSelector("#j_id110\\:agrupamento\\:13\\:grupo\\:0\\:j_id121 > center > a"));
-                        element.Click();
+        //                //CLICA EM TAXA DE CONVERSAO DE CAMBIO
+        //                element = driver.FindElement(By.CssSelector("#j_id110\\:agrupamento\\:13\\:grupo\\:0\\:j_id121 > center > a"));
+        //                element.Click();
 
-                        Thread.Sleep(5000);
+        //                Thread.Sleep(5000);
 
-                        //CLICA EM TODOS
-                        element = driver.FindElement(By.Id(@"j_id111:j_id163"));
-                        element.Click();
+        //                //CLICA EM TODOS
+        //                element = driver.FindElement(By.Id(@"j_id111:j_id163"));
+        //                element.Click();
 
 
 
-                        driver._my.Navigate(new Uri("https://www35.receita.fazenda.gov.br/tabaduaneiras-web/private/pages/taxaConversaoCambio_listar.jsf"),
-                            "j_id111%3AtaxaConversaoCambioMB_tipoConsulta=0&j_id111%3AvalorConsulta_codigo=&j_id111%3ApanelDownloadArquivoOpenedState=&j_id111=j_id111&autoScroll=&javax.faces.ViewState=j_id4&j_id111%3Aj_id218=j_id111%3Aj_id218",
-                            "application/x-www-form-urlencoded");
+        //                driver._my.Navigate(new Uri("https://www35.receita.fazenda.gov.br/tabaduaneiras-web/private/pages/taxaConversaoCambio_listar.jsf"),
+        //                    "j_id111%3AtaxaConversaoCambioMB_tipoConsulta=0&j_id111%3AvalorConsulta_codigo=&j_id111%3ApanelDownloadArquivoOpenedState=&j_id111=j_id111&autoScroll=&javax.faces.ViewState=j_id4&j_id111%3Aj_id218=j_id111%3Aj_id218",
+        //                    "application/x-www-form-urlencoded");
 
-                        Thread.Sleep(5000);
+        //                Thread.Sleep(5000);
 
-                        File.WriteAllBytes(arquivoPath, ConvertToByteArray(driver.PageSource));
-                    }
+        //                File.WriteAllBytes(arquivoPath, ConvertToByteArray(driver.PageSource));
+        //            }
 
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
+        //            return true;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public static byte[] ConvertToByteArray(string str)
         {
@@ -271,11 +288,11 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             return arr;
         }
 
-        private async Task AtualizaTaxaCambio( TaxaCambio taxaConversaoCambio)
+        private async Task AtualizaTaxaCambio(TaxaCambio taxaConversaoCambio)
         {
             try
             {
-                HttpResponseMessage resultado;                
+                HttpResponseMessage resultado;
 
                 using (var client = new HttpClient())
                 {
@@ -296,7 +313,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             }
         }
 
-        private async Task DeleteTaxa(TaxaCambio taxaConversaoCambio)
+        private async Task DeleteTaxa()
         {
             try
             {
