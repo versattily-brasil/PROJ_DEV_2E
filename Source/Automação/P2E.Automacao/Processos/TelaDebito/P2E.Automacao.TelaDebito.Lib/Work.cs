@@ -3,6 +3,8 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
+using P2E.Automacao.Shared.Log;
+using P2E.Automacao.Shared.Log.Enum;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,18 +24,27 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
 
         private string _urlApiBase;
         private List<Importacao> registros;
+        int _cd_bot_exec;
         #endregion
 
         public Work()
         {
-            Console.WriteLine("#################  INICIALIZANDO - TELA DE DÉBITO  ################# ");
+            LogController.RegistrarLog("#################  INICIALIZANDO - TELA DE DÉBITO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
+            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+            //_urlApiBase = "http://localhost:7000/";
+        }
+
+        public Work(int cd_bot_exec)
+        {
+            _cd_bot_exec = cd_bot_exec;
+            LogController.RegistrarLog("#################  INICIALIZANDO - TELA DE DÉBITO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
             //_urlApiBase = "http://localhost:7000/";
         }
 
         public async Task ExecutarAsync()
         {
-            Console.WriteLine("Obtendo DI's para Consultar Tela de Débito.");
+            LogController.RegistrarLog("Obtendo DI's para Consultar Tela de Débito.", eTipoLog.INFO, _cd_bot_exec, "bot");
             await CarregarListaDIAsync();
         }
 
@@ -43,7 +54,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
 
             using (var client = new HttpClient())
             {
-                Console.WriteLine("ABRINDO CONEXAO...");
+                LogController.RegistrarLog("ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
                 registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
@@ -52,7 +63,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                 {
                     using (var service = PhantomJSDriverService.CreateDefaultService())
                     {
-                        Console.WriteLine("CARREGANDO O CERTIFICADO...");
+                        LogController.RegistrarLog("CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         ControleCertificados.CarregarCertificado(service);
 
                         service.AddArgument("test-type");
@@ -63,12 +74,12 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                         {
                             try
                             {
-                                Console.WriteLine("ACESSANDO SITE...");
+                                LogController.RegistrarLog("ACESSANDO SITE...", eTipoLog.INFO, _cd_bot_exec, "bot");
                                 _driver.Navigate().GoToUrl(_urlSite);
 
                                 foreach (var di in registros)
                                 {
-                                    Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
+                                    LogController.RegistrarLog("################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                     List<Thread> threads = new List<Thread>();
 
@@ -83,7 +94,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                                     }
                                 }
 
-                                Console.WriteLine("Robô Finalizado !");
+                                LogController.RegistrarLog("Robô Finalizado !", eTipoLog.INFO, _cd_bot_exec, "bot");
                                 //Console.ReadKey();
                             }
                             catch (Exception)
@@ -95,7 +106,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                 }
                 else
                 {
-                    Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
+                    LogController.RegistrarLog("Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
         }
@@ -104,30 +115,30 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
         {
             var numDeclaracao = numero;
 
-            Console.WriteLine("ACESSAO PAGINA DE CONSULTA...");
+            LogController.RegistrarLog("ACESSAO PAGINA DE CONSULTA...", eTipoLog.INFO, _cd_bot_exec, "bot");
             _driver.Navigate().GoToUrl(_urlTelaConsulta);
 
             //obtendo o campo de numero de declaração.
             IWebElement element = _driver.FindElementById("nrDeclaracao");
 
-            Console.WriteLine("inserindo o numero da declaração");
+            LogController.RegistrarLog("inserindo o numero da declaração", eTipoLog.INFO, _cd_bot_exec, "bot");
             element.SendKeys(numero);
           
             element = _driver.FindElement(By.Name("enviar"));
             element.Click();
             Thread.Sleep(2000);
 
-            Console.WriteLine("Criando Arquivo.....");
+            LogController.RegistrarLog("Criando Arquivo.....", eTipoLog.INFO, _cd_bot_exec, "bot");
 
             var retornFile = CreateDocumentWord(element, _driver, numero);
 
-            Console.WriteLine("Gravando Status...");
-            
+            LogController.RegistrarLog("Gravando Status...", eTipoLog.INFO, _cd_bot_exec, "bot");
+
             import.OP_TELA_DEBITO = retornFile ? 1 : 0;
 
             await AtualizaTelaDebito(import, nroDI);
 
-            Console.WriteLine("Arquivo Criado...");
+            LogController.RegistrarLog("Arquivo Criado...", eTipoLog.INFO, _cd_bot_exec, "bot");
         }
 
         public bool CreateDocumentWord(IWebElement element, PhantomJSDriver _driver,string numero)
@@ -304,12 +315,12 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                     resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
                     resultado.EnsureSuccessStatusCode();
 
-                    Console.WriteLine("Registro salvo com sucesso.");
+                    LogController.RegistrarLog("Registro salvo com sucesso.");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
+                LogController.RegistrarLog($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
             }
         }
     }

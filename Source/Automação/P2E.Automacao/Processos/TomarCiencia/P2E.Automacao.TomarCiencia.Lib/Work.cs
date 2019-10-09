@@ -8,6 +8,8 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
+using P2E.Automacao.Shared.Log;
+using P2E.Automacao.Shared.Log.Enum;
 using P2E.Automacao.TomarCiencia.Lib.Model;
 using Selenium.Utils.Html;
 using System;
@@ -25,12 +27,13 @@ namespace P2E.Automacao.TomarCiencia.Lib
     public class Work
     {
         #region Variaveis Estáticas
-        private string _urlPrincipal = @"https://online.sefaz.am.gov.br/inicioDte.asp"; //"https://online.sefaz.am.gov.br/dte/loginSSL.asp"; 
+        private string _urlPrincipal = @"https://online.sefaz.am.gov.br/inicioDte.asp"; //"https://online.sefaz.am.gov.br/dte/LogController.RegistrarLoginSSL.asp"; 
         private string _urlIncricao = @"https://online.sefaz.am.gov.br/dte/sel_inscricao_pf.asp?inscricao=";
         private string _urlConsultaDI = @"https://online.sefaz.am.gov.br/sinf2004/DI/pagDIOnline.asp?numPagina="; //"https://online.sefaz.am.gov.br/sinf2004/DI/consultaDIOnline.asp";                
         private string _urlApiBase;
         private string _urlDocLacre = @"https://online.sefaz.am.gov.br/sinf2004/DI/rel_lacre.asp?idDi=";
         private List<Importacao> ListaProcessosBD;
+        int _cd_bot_exec;
         #endregion
 
         List<string> Inscricoes = new List<string>();
@@ -43,8 +46,17 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
         public Work()
         {
-            Log("############ Inicialização de automação [Tomar Ciência] ############");
-            Log(null, null, true);
+            LogController.RegistrarLog("############ Inicialização de automação [Tomar Ciência] ############", eTipoLog.INFO, _cd_bot_exec, "bot");
+           // LogController.RegistrarLog(null, null, true, eTipoLog.INFO, _cd_bot_exec, "bot");
+
+            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+        }
+
+        public Work(int cd_bot_exec)
+        {
+            _cd_bot_exec = cd_bot_exec;
+            LogController.RegistrarLog("############ Inicialização de automação [Tomar Ciência] ############", eTipoLog.INFO, _cd_bot_exec, "bot");
+           // LogController.RegistrarLog(null, null, true, eTipoLog.INFO, _cd_bot_exec, "bot");
 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
@@ -52,9 +64,9 @@ namespace P2E.Automacao.TomarCiencia.Lib
         protected void Log(string text, string caller = "", bool newLine = false)
         {
             if (!newLine)
-                Console.WriteLine(String.Format("[{0}]", DateTime.Now.ToString()) + " -> " + caller + " - " + text);
+                LogController.RegistrarLog(String.Format("[{0}]", DateTime.Now.ToString()) + " -> " + caller + " - " + text, eTipoLog.INFO, _cd_bot_exec, "bot");
             else
-                Console.WriteLine(string.Empty);
+                LogController.RegistrarLog(string.Empty, eTipoLog.INFO, _cd_bot_exec, "bot");
         }
 
         public void Start()
@@ -143,7 +155,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                         {
                             // Não foi encontrado mais nenhuma inscrição estdual na estrutura, então sai do loop 
                             // e segue para a próxima empresa.
-                            Log(String.Format("Empresa {0}: {1} inscrição(ões) estadual(ais).", empresa.Nome, empresa.IncricoesEstaduais.Count), nameof(CarregaListaEmpresas));
+                            LogController.RegistrarLog(String.Format("Empresa {0}: {1} inscrição(ões) estadual(ais)." +" "+ empresa.Nome+" "+ empresa.IncricoesEstaduais.Count) +" "+ nameof(CarregaListaEmpresas), eTipoLog.INFO, _cd_bot_exec, "bot");
                             leInscricoes = false;
                         }
                     }
@@ -154,7 +166,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 catch
                 {
                     // Não foi encontrado mais nenhuma empresa na estrutura, então sai do loop e encerra o método.
-                    Log(String.Format("{0} empresas carregadas.", this.ListaEmpresas.Count));
+                    LogController.RegistrarLog(String.Format("{0} empresas carregadas.", this.ListaEmpresas.Count));
                     leEmpresas = false;
                 }
             }
@@ -186,7 +198,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 {
                     if (tag.GetAttribute("href").Contains("consultaDIOnline.asp"))
                     {
-                        Log("Link para a DI encontrado.", nameof(FindDILink));
+                        LogController.RegistrarLog("Link para a DI encontrado." +" "+ nameof(FindDILink), eTipoLog.INFO, _cd_bot_exec, "bot");
                         return tag;
                     }
                 }
@@ -194,7 +206,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             catch (NoSuchElementException ex)
             {
                 string errorMessage = JsonConvert.DeserializeObject(ex.Message).ToString();
-                Log(errorMessage, nameof(FindDILink));
+                LogController.RegistrarLog(errorMessage +" "+ nameof(FindDILink), eTipoLog.INFO, _cd_bot_exec, "bot");
             }
 
             return null;
@@ -216,7 +228,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 {
                     if (element.Text.Contains("[Imp. de Lacre]"))
                     {
-                        Log("LOCALIZA O LINK PARA DOWNLOAD....");
+                        LogController.RegistrarLog("LOCALIZA O LINK PARA DOWNLOAD....", eTipoLog.INFO, _cd_bot_exec, "bot");
                         var aux = _driver.PageSource;
 
                         var position = aux.IndexOf("[Imp. de Lacre]");
@@ -241,7 +253,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             }
             catch (NoSuchElementException ex)
             {
-                Log(ex.Message, nameof(DownloadDAILacre));
+                LogController.RegistrarLog(ex.Message +" "+ nameof(DownloadDAILacre), eTipoLog.INFO, _cd_bot_exec, "bot");
                 return false;
             }
         }
@@ -281,7 +293,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         {
             try
             {
-                Log("CAPTURA O PRINT DA TELA DO DOCUMENTO....");
+                LogController.RegistrarLog("CAPTURA O PRINT DA TELA DO DOCUMENTO....", eTipoLog.INFO, _cd_bot_exec, "bot");
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
                 if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
                 {
@@ -294,7 +306,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                 if (retornoPrint)
                 {
-                    Log("CONVERTE A IMAGEM .JPG EM PDF...");
+                    LogController.RegistrarLog("CONVERTE A IMAGEM .JPG EM PDF...");
                     ConvertImagePDF(numero + "-CapturaTela.jpg", numero);
                 }
 
@@ -364,12 +376,12 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
             foreach (Empresa empresa in this.ListaEmpresas)
             {
-                Log("Empresa - " + empresa.Nome.Trim());
+                LogController.RegistrarLog("Empresa - " + empresa.Nome.Trim(), eTipoLog.INFO, _cd_bot_exec, "bot");
 
                 //CRIA PLANILHA PARA SAMSUNG E VENTISOL
                 if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
                 {
-                    Log("*****Criando Planilha*****");
+                    LogController.RegistrarLog("*****Criando Planilha*****", eTipoLog.INFO, _cd_bot_exec, "bot");
                     xlsDoc = new ExcelPackage();
 
                     xlsDoc.Workbook.Properties.Title = "2E";
@@ -402,8 +414,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                     // Garante que a sessão corrente esteja no contexto da Inscrição Estadual atual
                     this._driver.Navigate().GoToUrl(this._urlIncricao + inscricao);
-                    Log(null, null, true);
-                    Log(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao), nameof(Main));
+                    //LogController.RegistrarLog(null, null, true);
+                    LogController.RegistrarLog(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao) +" "+ nameof(Main), eTipoLog.INFO, _cd_bot_exec, "bot");
 
                     // Segue diretamente à listagem das DAI's da Inscrição Estadual
                     // selecionada no passo anterior
@@ -422,15 +434,15 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     {
                         numeroPaginas = 0;
                         string mensagem = this._driver.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/b")).Text;
-                        Log("######" + mensagem + "######");
+                        LogController.RegistrarLog("######" + mensagem + "######", eTipoLog.INFO, _cd_bot_exec, "bot");
                     }
 
                     // Página a página, busca pelas DAI's que estejam pendentes de "Tomar Ciência".
                     for (int pag = 1; pag < numeroPaginas; pag++)
                     {
-                        Log("Navegando para a página " + pag);
+                        LogController.RegistrarLog("Navegando para a página " + pag, eTipoLog.INFO, _cd_bot_exec, "bot");
                         this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
-                        Log("Loading de 5 seg.");
+                        LogController.RegistrarLog("Loading de 5 seg.", eTipoLog.INFO, _cd_bot_exec, "bot");
                         Thread.Sleep(5000);
 
                         r++;
@@ -451,14 +463,14 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                                     if (retornoPrint)
                                     {
-                                        Log("PDF DOC. LACRE SALVO !");
+                                        LogController.RegistrarLog("PDF DOC. LACRE SALVO !");
                                     }
                                 }
 
                                 if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
                                 {
                                     var nroDI = element.Text.Substring(0, 9);
-                                    Log("GRAVANDO DI= " + nroDI);
+                                    LogController.RegistrarLog("GRAVANDO DI= " + nroDI);
 
                                     var data = element.Text.Substring(10, 10);
                                     var status = "";
@@ -496,14 +508,14 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                                         if (retornoPrint)
                                         {
-                                            Log("PDF DOC. LACRE SALVO !");
+                                            LogController.RegistrarLog("PDF DOC. LACRE SALVO !");
                                         }
                                     }
 
                                     if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
                                     {
                                         var nroDI = elemento.Text.Substring(0, 9);
-                                        Log("GRAVANDO DI= " + nroDI);
+                                        LogController.RegistrarLog("GRAVANDO DI= " + nroDI);
 
                                         var data = elemento.Text.Substring(10, 10);
                                         var status = "";

@@ -2,6 +2,8 @@
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
+using P2E.Automacao.Shared.Log;
+using P2E.Automacao.Shared.Log.Enum;
 using Selenium.Utils.Html;
 using System;
 using System.Collections.Generic;
@@ -25,15 +27,24 @@ namespace P2E.Automacao.ExonerarIcms.Lib
        
         public string urlDeclararICMS = @"https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/DeclararICMSMenu.do?i=0";
         private string _urlApiBase;
-
+        int _cd_bot_exec;
         private List<Importacao> registros;
 
         public Work()
         {
-            Console.WriteLine($"********************************************************************************************************************");
-            Console.WriteLine("ROBÔ 04 – EXONERAÇÃO DO ICMS");
+            LogController.RegistrarLog($"********************************************************************************************************************", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog("ROBÔ 04 – EXONERAÇÃO DO ICMS", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
-            Console.WriteLine($"********************************************************************************************************************");
+            LogController.RegistrarLog($"********************************************************************************************************************", eTipoLog.INFO, _cd_bot_exec, "bot");
+        }
+
+        public Work(int cd_bot_exec)
+        {
+            _cd_bot_exec = cd_bot_exec;
+            LogController.RegistrarLog($"********************************************************************************************************************", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog("ROBÔ 04 – EXONERAÇÃO DO ICMS", eTipoLog.INFO, _cd_bot_exec, "bot");
+            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+            LogController.RegistrarLog($"********************************************************************************************************************", eTipoLog.INFO, _cd_bot_exec, "bot");
         }
 
         /// <summary>
@@ -66,7 +77,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                                 // percorre todos os registros para tentar a exoneração.
                                 foreach (var di in registros)
                                 {
-                                    Console.WriteLine("################# DI: " + di.TX_NUM_DEC + " #################");
+                                    LogController.RegistrarLog("################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                     List<Thread> threads = new List<Thread>();
 
@@ -81,7 +92,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                                     }
                                 }
 
-                                Console.WriteLine("Robô Finalizado !");
+                                LogController.RegistrarLog("Robô Finalizado !", eTipoLog.INFO, _cd_bot_exec, "bot");
                                 //Console.ReadKey();
                             }
                             catch (Exception)
@@ -97,7 +108,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             }
             else
             {
-                Console.WriteLine("Não existe DI's pendente de exoneração.");
+                LogController.RegistrarLog("Não existe DI's pendente de exoneração.", eTipoLog.INFO, _cd_bot_exec, "bot");
             }
         }
 
@@ -109,23 +120,23 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// <returns></returns>
         private async Task ExonerarDIAsync(PhantomJSDriver _driver, Importacao di)
         {
-            Console.WriteLine($"=================================================================================================================");
-            Console.WriteLine($"Exonerando DI nº {di.TX_NUM_DEC}.");
-            
-            
-            Console.WriteLine($"Autenticação efeturada.");
-            Console.WriteLine($"Acessando Endereço: {urlDeclararICMS}");
+            LogController.RegistrarLog($"=================================================================================================================", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog($"Exonerando DI nº {di.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
+
+
+            LogController.RegistrarLog($"Autenticação efeturada.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog($"Acessando Endereço: {urlDeclararICMS}", eTipoLog.INFO, _cd_bot_exec, "bot");
             _driver.Navigate().GoToUrl(urlDeclararICMS);
-            Console.WriteLine($"Seleciona combo: Exoneração do ICMS");
+            LogController.RegistrarLog($"Seleciona combo: Exoneração do ICMS", eTipoLog.INFO, _cd_bot_exec, "bot");
             Select selectTipo = new Select(_driver, By.Id("tp"));
             selectTipo.SelectByText("Exoneração do ICMS");
-            Console.WriteLine($"Preenchendo campo DI: {di.TX_NUM_DEC}");
+            LogController.RegistrarLog($"Preenchendo campo DI: {di.TX_NUM_DEC}", eTipoLog.INFO, _cd_bot_exec, "bot");
             IWebElement element = _driver.FindElement(By.Id("numDI"));
             element.SendKeys(di.TX_NUM_DEC);
-            Console.WriteLine($"Selecionando UF: {di.UF_DI}");
+            LogController.RegistrarLog($"Selecionando UF: {di.UF_DI}", eTipoLog.INFO, _cd_bot_exec, "bot");
             Select selectUf = new Select(_driver, By.Id("uf"));
             selectUf.SelectByText(di.UF_DI);
-            Console.WriteLine($"Registrando...");
+            LogController.RegistrarLog($"Registrando...", eTipoLog.INFO, _cd_bot_exec, "bot");
 
             element = _driver.FindElement(By.Id("registrar"));
             element.Click();
@@ -146,11 +157,11 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                 textoAreaErro = Regex.Replace(textoAreaErro, @"[^ 0-9a-zA-Z]+", "");
                 textoAreaErro = Regex.Replace(textoAreaErro, "(\r\n|\r|\n|\t|\r\n\t)", "");
 
-                Console.WriteLine($"Operação não permitida. {textoAreaErro}");
-                            }
+                LogController.RegistrarLog($"Operação não permitida. {textoAreaErro}", eTipoLog.INFO, _cd_bot_exec, "bot");
+            }
             else
             {
-                Console.WriteLine("Operação finalizada sem erros.");
+                LogController.RegistrarLog("Operação finalizada sem erros.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 await AtualizarRegistroAsync(di);
             }
         }
@@ -161,7 +172,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// <returns></returns>
         private async Task CarregarListaDIAsync()
         {
-            Console.WriteLine("Obtendo DI's para exoneração.");
+            LogController.RegistrarLog("Obtendo DI's para exoneração.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
             // monta url para api de importação.
             string urlExoneracao = _urlApiBase + $"imp/v1/importacao/obter-exoneracao-icms";
@@ -183,7 +194,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// <returns></returns>
         private async Task AtualizarRegistroAsync(Importacao item)
         {
-            Console.WriteLine($"Atualizando DI nº {item.TX_NUM_DEC}.");
+            LogController.RegistrarLog($"Atualizando DI nº {item.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
             try
             {
@@ -199,13 +210,13 @@ namespace P2E.Automacao.ExonerarIcms.Lib
 
                     resultado.EnsureSuccessStatusCode();
 
-                    Console.WriteLine("Registro salvo com sucesso.");
+                    LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
             catch (Exception)
             {
 
-                Console.WriteLine($"Erro ao atualizar a DI nº {item.TX_NUM_DEC}.");
+                LogController.RegistrarLog($"Erro ao atualizar a DI nº {item.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
             }
         }
     }
