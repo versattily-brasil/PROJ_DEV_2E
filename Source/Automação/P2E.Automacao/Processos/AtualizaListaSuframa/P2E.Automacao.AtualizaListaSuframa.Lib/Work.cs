@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;

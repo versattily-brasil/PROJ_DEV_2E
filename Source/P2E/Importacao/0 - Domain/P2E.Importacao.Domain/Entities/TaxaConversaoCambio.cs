@@ -27,6 +27,8 @@ namespace P2E.Importacao.Domain.Entities
             DT_INICIO_VIGENCIA = dt_inicio_vigencia;
             DT_FIM_VIGENCIA = dt_fim_vigencia;
             VL_TAXA_CONVERSAO = vl_taxa_conversao;
+
+            IsValid();
         }
 
         [Key]
@@ -34,8 +36,8 @@ namespace P2E.Importacao.Domain.Entities
         public int CD_TAXA_CAMBIO { get; set; }
         public string TX_MOEDA { get; set; }
         public string TX_DESCRICAO { get; set; }
-        public DateTime DT_INICIO_VIGENCIA { get; set; }
-        public DateTime DT_FIM_VIGENCIA { get; set; }
+        public DateTime? DT_INICIO_VIGENCIA { get; set; }
+        public DateTime? DT_FIM_VIGENCIA { get; set; }
         public decimal VL_TAXA_CONVERSAO { get; set; }
 
         public bool IsValid()
