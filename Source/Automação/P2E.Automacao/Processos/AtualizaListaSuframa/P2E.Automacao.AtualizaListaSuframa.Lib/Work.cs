@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using P2E.Automacao.Entidades;
+using P2E.Automacao.Shared.Log;
+using P2E.Automacao.Shared.Log.Enum;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
@@ -23,11 +25,19 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
         private string _urlApiBase;
         private List<DetalheNCM> registros;
         private string arquivoPath = "";
+        int _cd_bot_exec;
         #endregion
 
         public Work()
         {
-            Console.WriteLine("#################  INICIALIZANDO - ATUALIZAÇÃO DA LISTAGEM PADRÃO DA SUFRAMA  ################# ");
+            LogController.RegistrarLog("#################  INICIALIZANDO - ATUALIZAÇÃO DA LISTAGEM PADRÃO DA SUFRAMA  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
+            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
+        }
+
+        public Work(int cd_bot_exec)
+        {
+            _cd_bot_exec = cd_bot_exec;
+            LogController.RegistrarLog("#################  INICIALIZANDO - ATUALIZAÇÃO DA LISTAGEM PADRÃO DA SUFRAMA  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
@@ -38,20 +48,26 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
 
         private async Task ExtraiBancoAcessAsync()
         {
-            Console.WriteLine("Fazendo Download do Banco Acess");
-            var aux = BaixarArquivoFTP(_urlSite);
+            try
+            {
+                LogController.RegistrarLog("Fazendo Download do Banco Acess", eTipoLog.INFO, _cd_bot_exec, "bot");
+                var aux = BaixarArquivoFTP(_urlSite);
 
-            Console.WriteLine("Executando arquivo .exe");
-            aux = ExecutaExe(arquivoPath);
+                LogController.RegistrarLog("Executando arquivo .exe", eTipoLog.INFO, _cd_bot_exec, "bot");
+                aux = ExecutaExe(arquivoPath);
 
-            Console.WriteLine("Conectando ao Banco Acess");
-            ConnectionDBAcess(@"C:\Rotinas_Automaticas\Listagem_Insumos\pli_suframa.mdb");
+                LogController.RegistrarLog("Conectando ao Banco Acess", eTipoLog.INFO, _cd_bot_exec, "bot");
+                ConnectionDBAcess(@"C:\Rotinas_Automaticas\Listagem_Insumos\pli_suframa.mdb");
 
-            Console.WriteLine("Robô Concluído !");
-            //Console.ReadKey();
+                LogController.RegistrarLog("Robô Concluído !", eTipoLog.INFO, _cd_bot_exec, "bot");
+            }
+            catch (Exception e)
+            {
+                LogController.RegistrarLog($"Erro em ExtraiBancoAcessAsync. {e.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+            }
         }
 
-        private static bool ExecutaExe(string path)
+        private bool ExecutaExe(string path)
         {
             Process myProcess = new Process();
 
@@ -74,7 +90,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                LogController.RegistrarLog($"Erro em ExecutaExe. {e.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
                 return false;
             }
         }
@@ -113,16 +129,14 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                     }
                 }
 
-                Console.WriteLine("Download Concluido");
+                LogController.RegistrarLog("Download Concluido", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                Console.WriteLine("Erro no Download");
-
+                LogController.RegistrarLog($"Erro em BaixarArquivoFTP. {e.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
                 return false;
-
             }
         }
 
@@ -141,14 +155,14 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 //cria o objeto datareader para fazer a conexao com a tabela
                 OleDbDataReader aReader = aCommand.ExecuteReader();
 
-                Console.WriteLine("Limpando tabela NCM...");
+                LogController.RegistrarLog("Limpando tabela NCM...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 await DeleteDetalheNCM(detalheNCM);
 
-                Console.WriteLine("Inserindo Dados....");
+                LogController.RegistrarLog("Inserindo Dados....", eTipoLog.INFO, _cd_bot_exec, "bot");
                 //Faz a interação com o banco de dados lendo os dados da tabela
                 while (aReader.Read())
                 {
-                    Console.WriteLine("Codigo: " + aReader.GetString(0) + " Detalhe: " + aReader.GetString(1) + " Descrição: " + aReader.GetString(2));
+                    LogController.RegistrarLog("Codigo: " + aReader.GetString(0) + " Detalhe: " + aReader.GetString(1) + " Descrição: " + aReader.GetString(2), eTipoLog.INFO, _cd_bot_exec, "bot");
 
                     detalheNCM.TX_SFNCM_CODIGO = aReader.GetString(0);
                     detalheNCM.TX_SFNCM_DETALHE = aReader.GetString(1);
@@ -157,7 +171,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                     await InsertDetalheNCM(detalheNCM, aReader.GetString(0));
                 }
 
-                Console.WriteLine("Insert Concluído...");
+                LogController.RegistrarLog("Insert Concluído...", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                 //fecha o reader
                 aReader.Close();
@@ -169,7 +183,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
             //Trata a exceção
             catch (OleDbException e)
             {
-                Console.WriteLine("Error: {0}", e.Errors[0].Message);
+                LogController.RegistrarLog($"Error: { e.Errors[0].Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
                 //return false;
             }
         }
@@ -186,12 +200,12 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                     resultado = await client.PutAsJsonAsync($"imp/v1/ncm/{0}", detalheNcm);
                     resultado.EnsureSuccessStatusCode();
 
-                    Console.WriteLine("Registro salvo com sucesso.");
+                    LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Erro ao atualizar o NCM nº {detalheNcm.TX_SFNCM_CODIGO}.");
+                LogController.RegistrarLog($"Erro ao atualizar o NCM nº {detalheNcm.TX_SFNCM_CODIGO}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 
@@ -222,7 +236,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Erro ao deletar tabela NCM");
+                LogController.RegistrarLog($"Erro em DeleteDetalheNCM ao deletar tabela NCM. {e.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
     }

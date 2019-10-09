@@ -206,7 +206,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         {
                             try
                             {
-                                await new Processos.ComprovanteImportacao.Lib.Work().ExecutarAsync();
+                                await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
                             }
                             catch (Exception ex)
@@ -307,7 +307,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             try
                             {
 
-                                await new P2E.Automacao.Processos.AtualizaListaSuframa.Lib.Work().ExecutarAsync();
+                                await new P2E.Automacao.Processos.AtualizaListaSuframa.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
                             }
                             catch (Exception ex)

@@ -38,7 +38,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
         public Work(int cd_bot_exec)
         {
             _cd_bot_exec = cd_bot_exec;
-            LogController.RegistrarLog("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot"); ;
+            LogController.RegistrarLog("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot"); 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
