@@ -116,6 +116,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Util\SimpleBrowser-master\SimpleBrowser\SimpleBrowser.csproj">
+      <Project>{ad7f4ba0-a36d-45c1-ab82-ca08ff279d2f}</Project>
+      <Name>SimpleBrowser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Util\SimpleBrowser.WebDriver-master\SimpleBrowser.WebDriver\SimpleBrowser.WebDriver.csproj">
+      <Project>{f456d22e-4d9b-46fb-92d2-a7efd4540e06}</Project>
+      <Name>SimpleBrowser.WebDriver</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Entidades\P2E.Automacao.Entidades\P2E.Automacao.Entidades.csproj">
       <Project>{4a7098c2-9724-4f8e-85f0-15e25f0113b4}</Project>
       <Name>P2E.Automacao.Entidades</Name>
