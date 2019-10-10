@@ -47,7 +47,14 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
         public async Task ExecutarAsync()
         {
-            await CarregarListaDIAsync();
+            try
+            {
+                await CarregarListaDIAsync();
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         private async Task CarregarListaDIAsync()
@@ -165,14 +172,14 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                 element = _driver.FindElement(By.CssSelector("#j_id111\\:arquivoxml"));
                 element.Click();
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
 
                 SendKeys.SendWait("{TAB}");
-                Thread.Sleep(2000);
+                Thread.Sleep(500);
                 SendKeys.SendWait("{TAB}");
-                Thread.Sleep(2000);
+                Thread.Sleep(500);
                 SendKeys.SendWait("{ENTER}");
-                Thread.Sleep(2000);
+                Thread.Sleep(500);
 
                 var baixaXml = true;// DownloadXML(_driver);
 

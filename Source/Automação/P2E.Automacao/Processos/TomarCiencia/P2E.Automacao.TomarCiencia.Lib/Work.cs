@@ -358,7 +358,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         /// Principal método do Robô. Aqui a sessão para cada Inscrição Estadual é estabelecida
         /// ao acessar a "_urlInscriçao"
         /// </summary>
-        protected void Main()
+        protected async Task Main()
         {
             // Talvez esse passo de acesso a esta URL nem seja mais necessário.
             //this._driver.Navigate().GoToUrl(_urlPrincipal);
@@ -373,6 +373,9 @@ namespace P2E.Automacao.TomarCiencia.Lib
             int colData = 0;
             int colSinal = 0;
             ExcelWorksheet sheet = null;
+
+            //Parallel.ForEach(ListaEmpres)
+
 
             foreach (Empresa empresa in this.ListaEmpresas)
             {
