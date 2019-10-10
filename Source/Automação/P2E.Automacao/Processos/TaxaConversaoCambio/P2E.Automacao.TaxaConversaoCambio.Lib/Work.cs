@@ -137,7 +137,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                     element = _driver.FindElementByCssSelector(@"#j_id11 > div:nth-child(4) > center > input");
                     element.Click();
 
-                    Thread.Sleep(5000);
+                    Thread.Sleep(3000);
 
                     if (_driver.PageSource.Contains("Texto digitado não corresponde a imagem"))
                     {
@@ -156,23 +156,23 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 element = _driver.FindElement(By.CssSelector("#j_id110\\:agrupamento\\:13\\:grupo\\:0\\:j_id121 > center > a"));
                 element.Click();
 
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
 
                 //CLICA EM TODOS
                 element = _driver.FindElement(By.Id(@"j_id111:j_id163"));
                 element.Click();
 
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
 
                 //CLICA NO EXTRAIR TABELA
                 element = _driver.FindElement(By.Id(@"j_id111:j_id207"));
                 element.Click();
 
-                Thread.Sleep(5000);
+                Thread.Sleep(2000);
 
                 element = _driver.FindElement(By.CssSelector("#j_id111\\:arquivoxml"));
                 element.Click();
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
 
                 SendKeys.SendWait("{TAB}");
                 Thread.Sleep(500);
@@ -195,7 +195,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                     
                     try
                     {
-                        await DeleteTaxa();
+                        var aux =  DeleteTaxa();
                     }
                     catch (Exception e)
                     {
@@ -323,7 +323,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         {
             try
             {
-                HttpResponseMessage resultado;
+                //HttpResponseMessage resultado;
 
                 using (var client = new HttpClient())
                 {
@@ -332,7 +332,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                     client.BaseAddress = new Uri(_urlApiBase);
                     //resultado = await client.PutAsJsonAsync($"imp/v1/taxa/{0}", taxaConversaoCambio);
-                    resultado = await client.PostAsync($"imp/v1/taxa", httpContent);
+                    var resultado = client.PostAsync($"imp/v1/taxa", httpContent).Result;
                     resultado.EnsureSuccessStatusCode();
 
                     LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
@@ -352,7 +352,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                 using (var client = new HttpClient())
                 {
-                    var result = await client.GetAsync(url + "/todos");
+                    var result = client.GetAsync(url + "/todos").Result;
                     var aux = await result.Content.ReadAsStringAsync();
                     var registros = JsonConvert.DeserializeObject<List<TaxaCambio>>(aux);
 

@@ -73,7 +73,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 using (var client = new HttpClient())
                 {
                     Console.WriteLine("");
-                    LogController.RegistrarLog("ABRINDO CONEXãO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog("ABRINDO CONEXÃO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                     var result = await client.GetAsync(urlAcompanha);
                     var aux = await result.Content.ReadAsStringAsync();
                     registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
