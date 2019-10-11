@@ -182,5 +182,9 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         {
 
         }
+
+        private void gvAgendaBots_MouseClick(object sender, MouseEventArgs e)
+        {
+        }
     }
 }

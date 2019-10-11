@@ -1,5 +1,6 @@
 ﻿using MicroOrm.Dapper.Repositories.Attributes;
 using P2E.Automacao.Orquestrador.Lib.Util.Enum;
+using P2E.Automacao.Orquestrador.Lib.Util.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -43,5 +44,11 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
 
         public AgendaExec UltimaAgendaExecutada { get; set; }
         public override string ToString() => $"{TX_DESCRICAO?.ToString()}";
+
+        [NotMapped]
+        public string Status { get { return OP_STATUS.GetDescription(); } }
+
+        [NotMapped]
+        public string tipoRepeticao { get { return OP_TIPO_REP.GetDescription(); } }
     }
 }
