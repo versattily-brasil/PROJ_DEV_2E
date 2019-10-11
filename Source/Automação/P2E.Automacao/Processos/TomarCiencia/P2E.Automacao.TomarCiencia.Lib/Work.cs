@@ -10,12 +10,15 @@ using P2E.Automacao.Shared.Extensions;
 using P2E.Automacao.Shared.Log;
 using P2E.Automacao.Shared.Log.Enum;
 using P2E.Automacao.TomarCiencia.Lib.Model;
+using Selenium.Utils.Html;
+using SimpleBrowser.WebDriver;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,6 +34,9 @@ namespace P2E.Automacao.TomarCiencia.Lib
         private string _urlDocLacre = @"https://online.sefaz.am.gov.br/sinf2004/DI/rel_lacre.asp?idDi=";
         private List<Importacao> ListaProcessosBD;
         int _cd_bot_exec;
+        private string razaoSocial = "";
+        private string CNPJ = "";
+        private string inscricaoEstadual = "";
         #endregion
 
         List<string> Inscricoes = new List<string>();
@@ -115,20 +121,30 @@ namespace P2E.Automacao.TomarCiencia.Lib
             bool leEmpresas = true;
             bool leInscricoes = true;
             int contagemImpar = 1;
-            int contagemPar = 2;
+            int contagemPar = 4;
             int contagemInscricao = 1;
 
-            string razaoSocial;
-            string CNPJ;
-            string inscricaoEstadual;
+
+            // int count = 200;
+
+            //Parallel.For(1, count,
+            //index =>
+            //{
+            //    int i = index;
+            //});
+
             while (leEmpresas)
             {
                 Empresa empresa = new Empresa();
                 try
                 {
                     // Carrega os dados básicos da empresa à partir de busca via XPath.
-                    razaoSocial = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[1]/td[3]", contagemImpar))).Text;
-                    CNPJ = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[2]/td[3]", contagemImpar))).Text;
+                    //razaoSocial = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[1]/td[3]", contagemImpar))).Text;
+                    //CNPJ = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[2]/td[3]", contagemImpar))).Text;
+
+                    razaoSocial = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child(1) > td:nth-child(3)", contagemImpar))).Text;
+                    CNPJ = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child(2) > td:nth-child(3)", contagemImpar))).Text;
+
 
                     empresa.Nome = razaoSocial;
                     empresa.CNPJ = CNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
@@ -144,7 +160,10 @@ namespace P2E.Automacao.TomarCiencia.Lib
                         try
                         {
                             // Carrega todas as inscrições estaduais da empresa à partir de busca via XPath.
-                            inscricaoEstadual = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[{1}]/td[2]", contagemPar, contagemInscricao))).Text;
+                            //inscricaoEstadual = this._driver.FindElement(By.XPath(String.Format("/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table[{0}]/tbody/tr[{1}]/td[2]", contagemPar, contagemInscricao))).Text;
+                            //empresa.IncricoesEstaduais.Add(inscricaoEstadual.Replace(".", "").Replace("-", ""));
+
+                            inscricaoEstadual = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child({1}) > td.dg_item > a > b", contagemPar, contagemInscricao))).Text;
                             empresa.IncricoesEstaduais.Add(inscricaoEstadual.Replace(".", "").Replace("-", ""));
 
                             contagemInscricao += 1;
@@ -158,14 +177,15 @@ namespace P2E.Automacao.TomarCiencia.Lib
                         }
                     }
 
-                    contagemPar += 2;
-                    contagemImpar += 2;
+                    contagemPar += 6;
+                    contagemImpar += 6;
                 }
                 catch
                 {
                     // Não foi encontrado mais nenhuma empresa na estrutura, então sai do loop e encerra o método.
                     Log(String.Format("{0} empresas carregadas.", this.ListaEmpresas.Count));
                     leEmpresas = false;
+
                 }
             }
         }
@@ -238,7 +258,18 @@ namespace P2E.Automacao.TomarCiencia.Lib
                             var nroLacre = aux.Substring((position - 13), 7);
 
                             _driverTemp.Navigate().GoToUrl(_urlDocLacre + nroLacre);
-                            Thread.Sleep(3000);
+                            Thread.Sleep(1000);
+
+                            var print = CapturaImagem(_driverTemp, nroLacre);
+                        }
+                        else
+                        {
+                            nroDI = aux.Substring((position - 781), 9);
+
+                            var nroLacre = aux.Substring((position - 13), 7);
+
+                            _driverTemp.Navigate().GoToUrl(_urlDocLacre + nroLacre);
+                            Thread.Sleep(1000);
 
                             var print = CapturaImagem(_driverTemp, nroLacre);
                         }
@@ -386,6 +417,19 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
             //});
 
+            //List<Thread> threads = new List<Thread>();
+            //var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
+            //thread.Start();
+            //threads.Add(thread);
+
+            //// fica aguardnado todas as threads terminarem...
+            //while (threads.Any(t => t.IsAlive))
+            //{
+            //    continue;
+            //}
+
+
+
             foreach (Empresa empresa in this.ListaEmpresas)
             {
                 Log("Empresa - " + empresa.Nome.Trim());
@@ -464,7 +508,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     // Segue diretamente à listagem das DAI's da Inscrição Estadual
                     // selecionada no passo anterior
                     this._driver.Navigate().GoToUrl(this._urlConsultaDI + paginaInicial);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
 
                     string totalPaginas = "0";
 
@@ -481,6 +525,20 @@ namespace P2E.Automacao.TomarCiencia.Lib
                         //Log("######" + mensagem + "######");
                     }
 
+                    try
+                    {
+                        Select selectTipo = new Select(_driver, By.Id("canal"));
+                        selectTipo.SelectByValue("1");
+
+                        element = _driver.FindElement(By.Id("btPesq"));
+                        element.Click();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    
+
 
                     //Parallel.For(1, numeroPaginas,
                     //index => {
@@ -492,7 +550,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                         Log("Navegando para a página " + pag);
                         this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
                         Log("Loading de 5 mils.");
-                        Thread.Sleep(500);
+                        Thread.Sleep(1000);
 
                         r++;
 
