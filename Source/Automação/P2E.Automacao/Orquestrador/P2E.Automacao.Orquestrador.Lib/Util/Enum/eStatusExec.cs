@@ -20,7 +20,7 @@ namespace P2E.Automacao.Orquestrador.Lib.Util.Enum
         [Description("Falha")]
         Falha,
         [Description("Concluído")]
-        Conclúído,
+        Concluído,
         [Description("Interrompido")]
         Interrompido
     }

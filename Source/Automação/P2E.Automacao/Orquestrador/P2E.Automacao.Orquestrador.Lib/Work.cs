@@ -89,7 +89,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                 }
                 else
                 {
-                    AlterarStatusAgendaAsync(agenda, eStatusExec.Conclúído).Wait();
+                    AlterarStatusAgendaAsync(agenda, eStatusExec.Concluído).Wait();
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         agenda.DT_DATA_FIM_ULTIMA_EXEC = null;
                     }
 
-                    if (novoStatus == eStatusExec.Falha || novoStatus == eStatusExec.Conclúído)
+                    if (novoStatus == eStatusExec.Falha || novoStatus == eStatusExec.Concluído)
                     {
                         agenda.AgendaProgramada.DT_FIM_EXEC = DateTime.Now;
                         agenda.CD_ULTIMA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC;
@@ -149,7 +149,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         bot.BotProgramado.DT_INICIO_EXEC = DateTime.Now;
                     }
 
-                    if (novoStatus == eStatusExec.Falha || novoStatus == eStatusExec.Conclúído)
+                    if (novoStatus == eStatusExec.Falha || novoStatus == eStatusExec.Concluído)
                     {
                         bot.BotProgramado.DT_FIM_EXEC = DateTime.Now;
 
@@ -177,7 +177,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 Task task = new BaixarExtratos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
                                 task.Wait();
 
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -192,7 +192,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             try
                             {
                                 await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -207,7 +207,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             try
                             {
                                 await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -222,7 +222,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             try
                             {
                                 await new ExonerarIcms.Lib.Work().ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -237,7 +237,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             try
                             {
                                 await new Processos.ExtratoRetificacao.Lib.Work().ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -252,7 +252,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             try
                             {
                                 await new Processos.TelaDebito.Lib.Work().ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -269,7 +269,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             try
                             {
                                 await new Processos.TaxaConversaoCambio.Lib.Work().ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -285,7 +285,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             {
 
                                 new TomarCiencia.Lib.Work().Start();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -305,7 +305,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             {
 
                                 await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work().ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -321,7 +321,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             {
 
                                 await new P2E.Automacao.Processos.AtualizaListaSuframa.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Conclúído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
                             catch (Exception ex)
                             {
@@ -515,7 +515,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                     {
                         switch (agenda.OP_TIPO_REP)
                         {
-                            case eTipoRepete.Horario:
+                            case eTipoRepete.Horário:
                                 if (!agenda.DT_DATA_FIM_ULTIMA_EXEC.HasValue)
                                 {
                                     if (agenda.HR_HORA_EXEC_PROG <= new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second))
@@ -529,7 +529,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                     return true;
                                 }
                                 break;
-                            case eTipoRepete.Diario:
+                            case eTipoRepete.Diário:
                                 if (!agenda.DT_DATA_FIM_ULTIMA_EXEC.HasValue)
                                 {
                                     if (agenda.HR_HORA_EXEC_PROG <= new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second))
@@ -602,7 +602,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         switch (agenda.OP_STATUS)
                         {
                             case eStatusExec.Falha:
-                            case eStatusExec.Conclúído:
+                            case eStatusExec.Concluído:
                             case eStatusExec.Não_Programado:
                                 {
                                     agenda.AgendaProgramada = new AgendaExec()

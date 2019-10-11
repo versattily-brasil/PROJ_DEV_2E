@@ -8,8 +8,8 @@ namespace P2E.Automacao.Orquestrador.Lib.Util.Enum
 {
     public enum eTipoRepete
     {
-        Horario,
-        Diario,
+        Horário,
+        Diário,
         Semanal,
         Mensal
     }
