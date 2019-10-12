@@ -16,6 +16,7 @@ namespace P2E.SSO.API.Controllers
         private readonly IRotinaServicoRepository _rotinaServicoRepository;
         private readonly IServicoRepository _servicoRepository;
         private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
+
         public RotinaController(IRotinaRepository rotinaRepository,
                                 IRotinaServicoRepository rotinaServicoRepository,
                                 IServicoRepository servicoRepository,
@@ -54,19 +55,19 @@ namespace P2E.SSO.API.Controllers
             if (id > 0)
             {
                 rotina = _rotinaRepository.Find(p => p.CD_ROT == id);
-                rotina.RotinaServico = _rotinaServicoRepository.FindAll(p => p.CD_ROT == id).ToList();
+                rotina.RotinaServico = _rotinaServicoRepository.FindAll(p => p.CD_ROT == id).ToList();                
 
                 rotina.Servicos = _servicoRepository.FindAll().ToList();
 
                 int i = 0;
                 foreach (var pns in rotina.RotinaServico)
                 {
-                    rotina.RotinaServico[i].Servico = rotina.Servicos.Find(p => p.CD_SRV == pns.CD_SRV);                  
+                    rotina.RotinaServico[i].Servico = rotina.Servicos.Find(p => p.CD_SRV == pns.CD_SRV);
                     i++;
                 }
             }
 
-            return rotina;            
+            return rotina;
         }
 
         // POST: api/rotina
@@ -158,6 +159,6 @@ namespace P2E.SSO.API.Controllers
             {
                 return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
             }
-        }        
+        }
     }
 }

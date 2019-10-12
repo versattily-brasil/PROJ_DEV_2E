@@ -50,6 +50,7 @@ namespace P2E.SSO.API
             services.AddTransient<IRotinaRepository, RotinaRepository>();
             services.AddTransient<IParceiroNegocioRepository, ParceiroNegocioRepository>();
             services.AddTransient<IRotinaRepository, RotinaRepository>();
+            services.AddTransient<IRotinaAssociadaRepository, RotinaAssociadaRepository>();
             services.AddTransient<IParceiroNegocioRepository, ParceiroNegocioRepository>();            
             services.AddTransient<IGrupoRepository, GrupoRepository>();
             services.AddTransient<IUsuarioModuloRepository, UsuarioModuloRepository>();
@@ -63,6 +64,7 @@ namespace P2E.SSO.API
             services.AddTransient<IRotinaServicoRepository, RotinaServicoRepository>();
             services.AddTransient<IRotinaGrupoOperacaoRepository, RotinaGrupoOperacaoRepository>();
             services.AddTransient<IRotinaUsuarioOperacaoRepository, RotinaUsuarioOperacaoRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
