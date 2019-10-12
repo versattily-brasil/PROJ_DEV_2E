@@ -135,7 +135,8 @@ namespace P2E.Main.UI.Web.Controllers
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
                     var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
                     rotinaViewModel.Servicos = CarregarServico().Result;
-
+                    rotinaViewModel.RotinasAssociadas = await CarregarRotinasAssociadas(rotinaViewModel.CD_ROT);
+                    
                     return View("View", rotinaViewModel);
                 }
             }
@@ -155,6 +156,7 @@ namespace P2E.Main.UI.Web.Controllers
         {
             var vm = new RotinaViewModel();
             vm.Servicos = CarregarServico().Result;
+            vm.Rotinas = CarregarRotina().Result;
             return View("Form", vm);            
         }
 
@@ -261,6 +263,27 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-       
+        private async Task<List<Rotina>> CarregarRotina()
+        {
+            string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/rotina/todos";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlServico);
+                var lista = await result.Content.ReadAsAsync<List<Rotina>>();
+                return lista;
+            }
+        }
+
+        private async Task<List<RotinaAssociada>> CarregarRotinasAssociadas(int id)
+        {
+            string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/associada/{id}";
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(urlServico);
+                var lista = await result.Content.ReadAsAsync<List<RotinaAssociada>>();
+                return lista;
+            }
+        }
+
     }
 }

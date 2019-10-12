@@ -35,6 +35,7 @@ namespace P2E.SSO.Domain.Entities
 
         public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();
         public List<Servico> Servicos { get; set; } = new List<Servico>();
+        public List<RotinaAssociada> RotinasAssociadas { get; set; } = new List<RotinaAssociada>();
         
         public bool IsValid()
         {
