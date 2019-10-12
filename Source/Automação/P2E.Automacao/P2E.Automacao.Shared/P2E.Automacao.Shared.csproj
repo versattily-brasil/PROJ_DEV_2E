@@ -69,6 +69,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\eFormaExec.cs" />
+    <Compile Include="Enum\eStatusExec.cs" />
+    <Compile Include="Enum\eStatusGenerico.cs" />
+    <Compile Include="Enum\eTipoLog.cs" />
+    <Compile Include="Enum\eTipoRepete.cs" />
     <Compile Include="Extensions\AzCaptcha.cs" />
     <Compile Include="Extensions\ControleCertificados.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -76,10 +81,12 @@
     <Compile Include="Extensions\Utils.cs" />
     <Compile Include="Log\DataContext\LogContext.cs" />
     <Compile Include="Log\Entidades\AgendaExecLog.cs" />
+    <Compile Include="Log\Entidades\BotExec.cs" />
     <Compile Include="Log\Entidades\BotExecLog.cs" />
     <Compile Include="Log\Entidades\eTipoLog.cs" />
     <Compile Include="Log\Entidades\Map\AgendaExecLogMap.cs" />
     <Compile Include="Log\Entidades\Map\BotExecLogMap.cs" />
+    <Compile Include="Log\Entidades\Map\BotExecMap.cs" />
     <Compile Include="Log\LogController.cs" />
     <Compile Include="Log\Repositories\AgendaExecLogRepository.cs" />
     <Compile Include="Log\Repositories\BotExecLogRepository.cs" />

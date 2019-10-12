@@ -1,12 +1,12 @@
 ﻿using P2E.Automacao.Orquestrador.DataContext;
-using P2E.Automacao.Orquestrador.Lib.Util.Enum;
-using P2E.Automacao.Orquestrador.Repositories;
+using P2E.Automacao.Orquestrador.Repositories;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using P2E.Automacao.Orquestrador.Lib.Util.Extensions;
+using P2E.Automacao.Shared.Enum;
 
 namespace P2E.Automacao.Orquestrador.Lib.Util.Extensions
 {

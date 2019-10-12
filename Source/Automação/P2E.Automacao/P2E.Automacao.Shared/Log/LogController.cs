@@ -1,8 +1,10 @@
 ﻿using P2E.Automacao.Shared.Extensions;
 using P2E.Automacao.Shared.Log.DataContext;
+using P2E.Automacao.Shared.Log.Entidades;
 using P2E.Automacao.Shared.Log.Enum;
 using P2E.Automacao.Shared.Log.Repositories;
 using System;
+using System.Threading;
 
 namespace P2E.Automacao.Shared.Log
 {
@@ -39,13 +41,15 @@ namespace P2E.Automacao.Shared.Log
                         });
                     }
                 }
+
+                RoboInterrompido(parentId);
             }
         }
 
         private static void RegistrarLogAgenda(eTipoLog tipo, int parentId, string msg, string adicional, LogContext context)
         {
-            var agendaExecRep = new AgendaExecLogRepository(context);
-            agendaExecRep.Insert(new Entidades.AgendaExecLog()
+            var agendaExecLogRep = new AgendaExecLogRepository(context);
+            agendaExecLogRep.Insert(new Entidades.AgendaExecLog()
             {
                 CD_AGENDA_EXEC = parentId,
                 DT_DATAHORA_REG = DateTime.Now,
@@ -58,6 +62,20 @@ namespace P2E.Automacao.Shared.Log
         private static void EscreverLog(string msg, string tipo)
         { 
             Console.WriteLine($"{tipo} [ {DateTime.Now} ]: {msg}");
+        }
+
+        private static void RoboInterrompido(int cdBotExec)
+        {
+            using (var context = new LogContext())
+            {
+                var botExecRep = new MicroOrm.Dapper.Repositories.DapperRepository<BotExec>(context.Connection);
+                var execBot = botExecRep.Find(p => p.CD_BOT_EXEC == cdBotExec);
+
+                if (execBot.OP_STATUS_BOT_EXEC == Shared.Enum.eStatusExec.Interrompido)
+                {
+                    Thread.CurrentThread.Abort(Shared.Enum.eStatusExec.Interrompido);
+                }
+            }
         }
     }
 }

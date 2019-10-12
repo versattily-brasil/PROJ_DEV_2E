@@ -1,6 +1,6 @@
 ﻿using P2E.Automacao.Orquestrador.Lib;
 using P2E.Automacao.Orquestrador.Lib.Entidades;
-using P2E.Automacao.Orquestrador.Lib.Util.Enum;
+using P2E.Automacao.Shared.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -185,6 +185,38 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
         private void gvAgendaBots_MouseClick(object sender, MouseEventArgs e)
         {
+        }
+
+        private void interromperExecuçãoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
+            if (agendaSelecionada.OP_STATUS == eStatusExec.Executando || agendaSelecionada.OP_STATUS == eStatusExec.Programado || agendaSelecionada.OP_STATUS == eStatusExec.Aguardando_Processamento)
+            {
+                if (MessageBox.Show($"Confirmar interrupção da execução da agenda '{agendaSelecionada.TX_DESCRICAO}'?", "Confirma", 
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    _work.AlterarStatusAgendaAsync(agendaSelecionada, eStatusExec.Interrompido);
+
+                    barraProgresso.Style = ProgressBarStyle.Marquee;
+                    agendaBindingSource.DataSource = null;
+                    agendaBindingSource.DataSource = _work.CarregarProgramacaoAsync();
+                    gvAgendaBots.Refresh();
+                    barraProgresso.Style = ProgressBarStyle.Blocks;
+
+                    MessageBox.Show($"Execução interrompida.");
+                }
+            }
+            else
+            {
+                MessageBox.Show($"A agenda {agendaSelecionada.TX_DESCRICAO} não está em execução e nem programada.");
+            }
+        }
+
+        private void alterarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
+
+            new frmManterAgenda(agendaSelecionada).Show();
         }
     }
 }
