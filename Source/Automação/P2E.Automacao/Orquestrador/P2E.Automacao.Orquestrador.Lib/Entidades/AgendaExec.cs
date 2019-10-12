@@ -1,5 +1,5 @@
 ﻿using MicroOrm.Dapper.Repositories.Attributes;
-using P2E.Automacao.Orquestrador.Lib.Util.Enum;
+using P2E.Automacao.Shared.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

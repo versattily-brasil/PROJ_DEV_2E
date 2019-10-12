@@ -1,8 +1,8 @@
 ﻿using P2E.Automacao.Orquestrador.DataContext;
 using P2E.Automacao.Orquestrador.Lib.Entidades;
-using P2E.Automacao.Orquestrador.Lib.Util.Enum;
 using P2E.Automacao.Orquestrador.Lib.Util.Extensions;
 using P2E.Automacao.Orquestrador.Repositories;
+using P2E.Automacao.Shared.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,15 +96,17 @@ namespace P2E.Automacao.Orquestrador.Lib
 
         public async Task AlterarStatusAgendaAsync(Agenda agenda, eStatusExec novoStatus)
         {
-            if (agenda.AgendaProgramada != null)
+            using (var context = new OrquestradorContext())
             {
-                LogController.RegistrarLog($"Alterando status da agenda ['{agenda.TX_DESCRICAO}'] de ['{agenda.OP_STATUS.GetDescription()}'] " +
-                       $"para ['{novoStatus.GetDescription()}']", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda", "");
+                var agendaRep = new AgendaRepository(context);
+                var botExecRep = new BotExecRepository(context);
+                var agendaExecRep = new AgendaExecRepository(context);
 
-                using (var context = new OrquestradorContext())
+                if (agenda.AgendaProgramada != null)
                 {
-                    var agendaRep = new AgendaRepository(context);
-                    var agendaExecRep = new AgendaExecRepository(context);
+                    LogController.RegistrarLog($"Alterando status da agenda ['{agenda.TX_DESCRICAO}'] de ['{agenda.OP_STATUS.GetDescription()}'] " +
+                           $"para ['{novoStatus.GetDescription()}']", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda", "");
+
 
                     agenda.AgendaProgramada.OP_STATUS_AGENDA_EXEC = novoStatus;
                     agenda.OP_STATUS = novoStatus;
@@ -114,6 +116,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         agenda.AgendaProgramada.DT_INICIO_EXEC = DateTime.Now;
                         agenda.DT_DATA_INICIO_ULTIMA_EXEC = agenda.AgendaProgramada.DT_INICIO_EXEC;
                         agenda.DT_DATA_FIM_ULTIMA_EXEC = null;
+                        agenda.CD_ULTIMA_EXEC = agenda.AgendaProgramada.CD_AGENDA_EXEC;
                     }
 
                     if (novoStatus == eStatusExec.Falha || novoStatus == eStatusExec.Concluído)
@@ -125,10 +128,9 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                     await agendaExecRep.UpdateAsync(agenda.AgendaProgramada);
                     await agendaRep.UpdateAsync(agenda);
-                } 
+                }
             }
         }
-
         public async Task AlterarStatusBotAsync(AgendaBot bot, eStatusExec novoStatus)
         {
             if (bot.BotProgramado != null)
@@ -178,6 +180,11 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 task.Wait();
 
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                            }
+                            catch (ThreadAbortException abort)
+                            { 
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
                             }
                             catch (Exception ex)
                             {
@@ -423,9 +430,9 @@ namespace P2E.Automacao.Orquestrador.Lib
                     {
                         foreach (var agenda in agendas)
                         {
-                            if (agenda.OP_STATUS == eStatusExec.Programado || agenda.OP_STATUS == eStatusExec.Aguardando_Processamento)
+                            if (agenda.OP_STATUS == eStatusExec.Programado || agenda.OP_STATUS == eStatusExec.Aguardando_Processamento || agenda.OP_STATUS == eStatusExec.Executando)
                             {
-                                agenda.AgendaProgramada = agendaExecRep.Find(p => p.CD_AGENDA == agenda.CD_AGENDA && (p.OP_STATUS_AGENDA_EXEC == eStatusExec.Programado));
+                                agenda.AgendaProgramada = agendaExecRep.Find(p => p.CD_AGENDA_EXEC == agenda.CD_ULTIMA_EXEC);
                             }
 
                             agenda.Bots = agendaBotRep.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA);
@@ -602,6 +609,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                         switch (agenda.OP_STATUS)
                         {
                             case eStatusExec.Falha:
+                            case eStatusExec.Interrompido:
                             case eStatusExec.Concluído:
                             case eStatusExec.Não_Programado:
                                 {

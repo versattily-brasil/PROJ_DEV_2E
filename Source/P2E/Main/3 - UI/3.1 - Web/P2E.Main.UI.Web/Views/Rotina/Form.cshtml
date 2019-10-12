@@ -91,55 +91,133 @@
                             </div>
                             <hr />
                             @*<div class="form-group mb-0">
-                                    <div class="panel">
-                                        <div class="panel-hdr bg-gray-100">
-                                            <h3>Associação de Serviços a Rotina</h3>
-                                        </div>
-                                        <div class="panel-container show">
-                                            <div class="panel-content">
-                                                <div class="row">
-                                                    <div class="col-lg-11">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Serviços</label>
-                                                            <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServicox">
-                                                                <option disabled selected>- Selecione um Serviço -</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
+            <div class="panel">
+                <div class="panel-hdr bg-gray-100">
+                    <h3>Associação de Serviços a Rotina</h3>
+                </div>
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-lg-11">
+                                <div class="form-group">
+                                    <label class="form-label">Serviços</label>
+                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServicox">
+                                        <option disabled selected>- Selecione um Serviço -</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                                                    <div class="col-md-1">
-                                                        <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina-servico">
-                                                            <i class="fal fa-download"></i>
-                                                        </a>
+                            <div class="col-md-1">
+                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina-servico">
+                                    <i class="fal fa-download"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+                            @*<div class="form-group mb-0">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover m-0" id="tabela_rotina_servico">
+                    <thead class="thead-themed">
+                        <tr>
+                            <th>Serviços</th>
+                            <th width="20"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var rotina_servico in Model.RotinaServico)
+                        {
+                            <tr data-cdsrv="@rotina_servico.CD_SRV">
+                                <td>@rotina_servico.Servico.TXT_DEC</td>
+                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger btn-delete-srv"></i></td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>*@
+
+                            <div class="form-group mb-0">
+                                <div class="panel">
+                                    <div class="panel-hdr bg-gray-100">
+                                        <h3>
+                                            Associação de Rotinas Relacionadas.
+                                        </h3>
+                                    </div>
+                                    <div class="panel-container show">
+                                        <div class="panel-content">
+                                            <div class="row">
+                                                <div class="col-5">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Serviço</label>
+                                                        <select asp-items="@(new SelectList(@Model.Rotinas, "TXT_DEC"))" class="form-control" id="comboServico">
+                                                            <option disabled selected>--- Selecione um serviço ---</option>
+                                                        </select>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-1">
+                                                    <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
+                                                        <i class="fal fa-plus"></i>
+                                                    </a>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
-                                </div>*@
+                                </div>
+                            </div>
 
-                            @*<div class="form-group mb-0">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover m-0" id="tabela_rotina_servico">
-                                            <thead class="thead-themed">
-                                                <tr>
-                                                    <th>Serviços</th>
-                                                    <th width="20"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var rotina_servico in Model.RotinaServico)
+
+                            <div class="form-group mb-0">
+                                <div class="table-responsive">
+                                    <table id="tabela_grupo_rotina" class="table table-bordered table-hover m-0">
+                                        <thead class="thead-themed">
+                                            <tr>
+                                                <th></th>
+                                                <th colspan="@Model.RotinasAssociadas.Count" style="text-align:center">Rotinas Associadas</th>
+                                                <th></th>
+
+                                            </tr>
+                                            <tr>
+                                                <th>Rotina</th>
+                                                @foreach (var operacao in @Model.RotinasAssociadas)
                                                 {
-                                                    <tr data-cdsrv="@rotina_servico.CD_SRV">
-                                                        <td>@rotina_servico.Servico.TXT_DEC</td>
-                                                        <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger btn-delete-srv"></i></td>
-                                                    </tr>
-
+                                                    <th class="text-center">@operacao.CD_ROT_SRV</th>
                                                 }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>*@
+                                                <th width="20"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @*@foreach (var opRotina in Model.rOT.GroupBy(o => o.CD_ROT).Select(o => o.First()).ToList())
+                                            {
+                                                <tr>
+                                                    <td>@Model.Rotinas.FirstOrDefault(o => o.CD_ROT == opRotina.CD_ROT).TX_NOME</td>
+                                                    @foreach (var operacao in Model.Operacoes)
+                                                    {
+                                                        if (Model.RotinaGrupoOperacao.Any(o => o.CD_OPR == operacao.CD_OPR && o.CD_ROT == opRotina.CD_ROT))
+                                                        {
+                                                            <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" type="checkbox" checked /></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" type="checkbox" /></td>
+                                                        }
+
+                                                    }
+
+                                                    <td><i style="font-weight:bold;cursor:pointer" class="excluir-rotina fal fa-minus-circle text-danger bt-selecao-md"></i></td>
+
+                                                </tr>
+                                            }*@
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
                             <div class="form-group mb-0">
                                 <div class="row">

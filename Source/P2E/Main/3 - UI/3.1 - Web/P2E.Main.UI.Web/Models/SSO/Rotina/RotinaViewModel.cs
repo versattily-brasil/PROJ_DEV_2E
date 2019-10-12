@@ -21,6 +21,8 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
         public string TX_URL { get; set; }
 
         public List<P2E.SSO.Domain.Entities.Servico> Servicos { get; set; }
+        public List<P2E.SSO.Domain.Entities.Rotina> Rotinas { get; set; }
+        public List<P2E.SSO.Domain.Entities.RotinaAssociada> RotinasAssociadas { get; set; }
 
         public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();
 

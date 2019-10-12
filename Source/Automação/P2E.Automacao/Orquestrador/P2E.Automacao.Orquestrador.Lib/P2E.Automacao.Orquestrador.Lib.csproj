@@ -56,11 +56,63 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="P2E.Automacao.AcompanharDespachos.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.AtualizaListaSuframa.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\AtualizaListaSuframa\P2E.Automacao.AtualizaListaSuframa.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.BaixarExtratos.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.ComprovanteImportacao.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.EnviarDAI.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\EnviarDAI\P2E.Automacao.EnviarDAI.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.ExonerarIcms.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\ExonerarICMS\P2E.Automacao.ExonerarIcms.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.ExtratoRetificacao.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\ExtratoRetificacao\P2E.Automacao.ExtratoRetificacao.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.Processos.EnviarPLI.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\EnviarPLI\P2E.Automacao.Processos.EnviarPLI.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.StatusDesembaracoSefaz.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\StatusDesembaracoSefaz\P2E.Automacao.StatusDesembaracoSefaz.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.TaxaConversaoCambio.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\TaxaConversaoCambio\P2E.Automacao.TaxaConversaoCambio.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.TelaDebito.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\TelaDebito\P2E.Automacao.TelaDebito.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="P2E.Automacao.TomarCiencia.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Versatilly\2E\Builds\TomarCiencia\P2E.Automacao.TomarCiencia.Lib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.ComponentModel.Primitives, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Primitives.4.3.0\lib\net45\System.ComponentModel.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -105,11 +157,6 @@
     <Compile Include="Repositories\BotExecLogRepository.cs" />
     <Compile Include="Repositories\BotExecRepository.cs" />
     <Compile Include="Repositories\BotRepository.cs" />
-    <Compile Include="Util\Enum\eFormaExec.cs" />
-    <Compile Include="Util\Enum\eStatusExec.cs" />
-    <Compile Include="Util\Enum\eTipoLog.cs" />
-    <Compile Include="Util\Enum\eStatusGenerico.cs" />
-    <Compile Include="Util\Enum\eTipoRepete.cs" />
     <Compile Include="Util\Extensions\EnumExtensions.cs" />
     <Compile Include="Util\Extensions\LogController.cs" />
     <Compile Include="Work.cs" />
@@ -117,6 +164,40 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="app.config" />
+    <None Include="Dependencias\Projetos\AcompanharDespachos\Certificado\.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Dependencias\Projetos\AcompanharDespachos\Certificado\client-certificate.crt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Dependencias\Projetos\AcompanharDespachos\Certificado\client-certificate.key">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Dependencias\Projetos\AcompanharDespachos\Certificado\client.pem">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Dependencias\Projetos\AcompanharDespachos\Certificado\ENDERSON RUIZ DE CASTRO67635466291.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Dependencias\Projetos\AcompanharDespachos\Certificado\ENDERSON RUIZ DE CASTRO67635466291.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Dependencias\Projetos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Dependencias\Projetos\AtualizaListaSuframa\P2E.Automacao.AtualizaListaSuframa.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\BaixarExtratos\SimpleBrowser.WebDriver.dll.config" />
+    <None Include="Dependencias\Projetos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\EnviarDAI\P2E.Automacao.EnviarDAI.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\EnviarPLI\P2E.Automacao.Processos.EnviarPLI.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\ExonerarICMS\P2E.Automacao.ExonerarIcms.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\ExtratoRetificacao\P2E.Automacao.ExtratoRetificacao.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\StatusDesembaracoSefaz\P2E.Automacao.StatusDesembaracoSefaz.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\TaxaConversaoCambio\P2E.Automacao.TaxaConversaoCambio.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\TelaDebito\P2E.Automacao.TelaDebito.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\TomarCiencia\P2E.Automacao.TomarCiencia.Lib.dll.config" />
+    <None Include="Dependencias\Projetos\TomarCiencia\SimpleBrowser.WebDriver.dll.config" />
     <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="obj\Debug\P2E.Automacao.Orquestrador.Lib.csproj.CoreCompileInputs.cache" />
     <None Include="obj\Debug\P2E.Automacao.Orquestrador.Lib.csprojAssemblyReference.cache" />
@@ -132,54 +213,6 @@
       <Project>{d05ad0b7-5353-49d3-9351-9079657b20cf}</Project>
       <Name>P2E.Automacao.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Processos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib\P2E.Automacao.AcompanharDespachos.Lib.csproj">
-      <Project>{c98d07c3-081f-48a5-bdf5-e245406d6c73}</Project>
-      <Name>P2E.Automacao.AcompanharDespachos.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\AtualizaListaSuframa\P2E.Automacao.AtualizaListaSuframa.Lib\P2E.Automacao.AtualizaListaSuframa.Lib.csproj">
-      <Project>{24abbebc-d4b9-421f-91cc-3e65c047a93d}</Project>
-      <Name>P2E.Automacao.AtualizaListaSuframa.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib\P2E.Automacao.BaixarExtratos.Lib.csproj">
-      <Project>{9ad75dea-943c-4705-9f91-34953f83fad4}</Project>
-      <Name>P2E.Automacao.BaixarExtratos.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib\P2E.Automacao.ComprovanteImportacao.Lib.csproj">
-      <Project>{f268cfe9-9338-4739-a4cb-0f458585cc38}</Project>
-      <Name>P2E.Automacao.ComprovanteImportacao.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\EnviarDAI\P2E.Automacao.EnviarDAI.Lib\P2E.Automacao.EnviarDAI.Lib.csproj">
-      <Project>{a2196d7e-f424-4999-9962-d5246e074ded}</Project>
-      <Name>P2E.Automacao.EnviarDAI.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\EnvioPLI\P2E.Automacao.Processos.EnvioPLI.Lib\P2E.Automacao.Processos.EnviarPLI.Lib.csproj">
-      <Project>{ede400c3-1a56-4ade-a22b-8438e3f4153d}</Project>
-      <Name>P2E.Automacao.Processos.EnviarPLI.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\ExonerarIcms\P2E.Automacao.ExonerarIcms.Lib\P2E.Automacao.ExonerarIcms.Lib.csproj">
-      <Project>{58bba388-7451-4cb2-92eb-75fb08830afd}</Project>
-      <Name>P2E.Automacao.ExonerarIcms.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\ExtratoRetificacao\P2E.Automacao.ExtratoRetificacao.Lib\P2E.Automacao.ExtratoRetificacao.Lib.csproj">
-      <Project>{d22a1a1f-f75a-4fb0-9339-82eef34e086d}</Project>
-      <Name>P2E.Automacao.ExtratoRetificacao.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\StatusDesembaracoSefaz\P2E.Automacao.StatusDesembaracoSefaz.Lib\P2E.Automacao.StatusDesembaracoSefaz.Lib.csproj">
-      <Project>{322c419f-e349-499d-975d-d00e68ca00dd}</Project>
-      <Name>P2E.Automacao.StatusDesembaracoSefaz.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\TaxaConversaoCambio\P2E.Automacao.TaxaConversaoCambio.Lib\P2E.Automacao.TaxaConversaoCambio.Lib.csproj">
-      <Project>{2c148298-afe0-4daf-a819-a64d51773218}</Project>
-      <Name>P2E.Automacao.TaxaConversaoCambio.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\TelaDebito\P2E.Automacao.TelaDebito.Lib\P2E.Automacao.TelaDebito.Lib.csproj">
-      <Project>{34e6f9a1-bd25-463b-aba3-274f8b0d40e6}</Project>
-      <Name>P2E.Automacao.TelaDebito.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Processos\TomarCiencia\P2E.Automacao.TomarCiencia.Lib\P2E.Automacao.TomarCiencia.Lib.csproj">
-      <Project>{b636f0ee-9adb-4a78-9562-40ab057ce927}</Project>
-      <Name>P2E.Automacao.TomarCiencia.Lib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.2.9.6\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />
@@ -193,9 +226,666 @@
     <Analyzer Include="..\..\packages\Microsoft.NetFramework.Analyzers.2.9.6\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="chromedriver.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Dapper.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Dapper.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\DapperExtensions.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\DapperExtensions.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\EPPlus.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\EPPlus.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Ionic.Zip.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\MicroOrm.Dapper.Repositories.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\MicroOrm.Dapper.Repositories.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.AspNetCore.Http.Abstractions.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.AspNetCore.Http.Abstractions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.AspNetCore.Http.Features.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.AspNetCore.Http.Features.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.AspNetCore.Mvc.Abstractions.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.AspNetCore.Mvc.Abstractions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.AspNetCore.Routing.Abstractions.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.AspNetCore.Routing.Abstractions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.Extensions.Primitives.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.Extensions.Primitives.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.Net.Http.Headers.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Microsoft.Net.Http.Headers.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Newtonsoft.Json.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Newtonsoft.Json.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\P2E.Automacao.AcompanharDespachos.Lib.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\P2E.Automacao.Entidades.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\P2E.Automacao.Entidades.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\P2E.Automacao.Shared.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\P2E.Automacao.Shared.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\phantomjs-license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\phantomjs.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\Selenium.Utils.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Buffers.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Buffers.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Memory.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Memory.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Net.Http.Formatting.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Net.Http.Formatting.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Numerics.Vectors.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Numerics.Vectors.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Runtime.CompilerServices.Unsafe.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Runtime.CompilerServices.Unsafe.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Text.Encodings.Web.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\System.Text.Encodings.Web.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\WebDriver.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\WebDriver.Support.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\WebDriver.Support.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AcompanharDespachos\WebDriver.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.AspNetCore.Http.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.AspNetCore.Mvc.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.AspNetCore.Routing.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\P2E.Automacao.AtualizaListaSuframa.Lib.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\P2E.Automacao.AtualizaListaSuframa.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.IO.Pipelines.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.IO.Pipelines.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Threading.Tasks.Extensions.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\System.Threading.Tasks.Extensions.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\AtualizaListaSuframa\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\P2E.Automacao.BaixarExtratos.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\SimpleBrowser.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\SimpleBrowser.pdb" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\SimpleBrowser.WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\SimpleBrowser.WebDriver.pdb" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\BaixarExtratos\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.AspNetCore.Http.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.AspNetCore.Mvc.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.AspNetCore.Routing.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\P2E.Automacao.ComprovanteImportacao.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\ComprovanteImportacao\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.AspNetCore.Http.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.AspNetCore.Mvc.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.AspNetCore.Routing.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\P2E.Automacao.EnviarDAI.Lib.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\P2E.Automacao.EnviarDAI.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\EnviarDAI\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\DotNetZip.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\DotNetZip.pdb" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\DotNetZip.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Configuration.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Configuration.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Configuration.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Configuration.FileExtensions.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Configuration.FileExtensions.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Configuration.Json.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Configuration.Json.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Configuration.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.FileProviders.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.FileProviders.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.FileProviders.Physical.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.FileProviders.Physical.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.FileSystemGlobbing.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.FileSystemGlobbing.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\P2E.Automacao.Processos.EnviarPLI.Lib.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\P2E.Automacao.Processos.EnviarPLI.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\EnviarPLI\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\P2E.Automacao.ExonerarIcms.Lib.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\P2E.Automacao.ExonerarIcms.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\ExonerarICMS\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.AspNetCore.Http.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.AspNetCore.Mvc.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.AspNetCore.Routing.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\P2E.Automacao.ExtratoRetificacao.Lib.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\P2E.Automacao.ExtratoRetificacao.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\ExtratoRetificacao\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.AspNetCore.Http.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.AspNetCore.Mvc.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.AspNetCore.Routing.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\P2E.Automacao.StatusDesembaracoSefaz.Lib.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\P2E.Automacao.StatusDesembaracoSefaz.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\StatusDesembaracoSefaz\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\chromedriver.exe" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.AspNetCore.Http.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.AspNetCore.Mvc.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.AspNetCore.Routing.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\P2E.Automacao.TaxaConversaoCambio.Lib.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\P2E.Automacao.TaxaConversaoCambio.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.IO.Pipelines.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.IO.Pipelines.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Threading.Tasks.Extensions.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\System.Threading.Tasks.Extensions.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\TaxaConversaoCambio\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\TelaDebito\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.AspNetCore.Http.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.AspNetCore.Mvc.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.AspNetCore.Routing.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\TelaDebito\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\TelaDebito\P2E.Automacao.TelaDebito.Lib.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\P2E.Automacao.TelaDebito.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\TelaDebito\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\TelaDebito\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\TelaDebito\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\TelaDebito\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\TelaDebito\WebDriver.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\chromedriver.exe" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Dapper.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Dapper.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\DapperExtensions.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\DapperExtensions.pdb" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\EPPlus.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\EPPlus.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Ionic.Zip.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\itextsharp.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\itextsharp.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\MicroOrm.Dapper.Repositories.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\MicroOrm.Dapper.Repositories.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.AspNetCore.Http.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.AspNetCore.Http.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.AspNetCore.Http.Features.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.AspNetCore.Http.Features.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.AspNetCore.Mvc.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.AspNetCore.Mvc.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.AspNetCore.Routing.Abstractions.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.AspNetCore.Routing.Abstractions.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.Extensions.Primitives.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.Net.Http.Headers.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Microsoft.Net.Http.Headers.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Newtonsoft.Json.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Newtonsoft.Json.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\P2E.Automacao.Entidades.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\P2E.Automacao.Entidades.pdb" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\P2E.Automacao.Shared.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\P2E.Automacao.Shared.pdb" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\P2E.Automacao.TomarCiencia.Lib.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\P2E.Automacao.TomarCiencia.Lib.pdb" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\phantomjs-license.txt" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\phantomjs.exe" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\Selenium.Utils.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\SimpleBrowser.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\SimpleBrowser.pdb" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\SimpleBrowser.WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\SimpleBrowser.WebDriver.pdb" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Buffers.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Buffers.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Memory.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Memory.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Net.Http.Formatting.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Net.Http.Formatting.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Numerics.Vectors.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Numerics.Vectors.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Text.Encodings.Web.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\System.Text.Encodings.Web.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\WebDriver.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\WebDriver.Support.dll" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\WebDriver.Support.xml" />
+    <Content Include="Dependencias\Projetos\TomarCiencia\WebDriver.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
