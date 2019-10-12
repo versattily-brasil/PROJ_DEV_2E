@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using P2E.Automacao.Shared.Log;
@@ -29,6 +30,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         private string arquivoPath = "";
         private string valorCaptcha = "";
         int _cd_bot_exec;
+        ChromeOptions options = null;
 
         #endregion
 
@@ -60,11 +62,14 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         private async Task CarregarListaDIAsync()
         {
             LogController.RegistrarLog("CONFIGURANDO AMBIENTE...", eTipoLog.INFO, _cd_bot_exec, "bot");
+
             using (var client = new HttpClient())
             {
                 try
                 {
-                    ChromeOptions options = new ChromeOptions();
+                                        
+
+                    options = new ChromeOptions();
 
                     var downloadDirectory = "C:\\Versatilly";
 
@@ -78,10 +83,12 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                     options.AddArgument("test-type");
                     options.AddArgument("no-sandbox");
-                    //service.HideCommandPromptWindow = true;
+                    //options.AddExtension(@"c:\\path\to\extension.crx");
+
+                    
 
                     // Initialize the Chrome Driver
-                    using (var _driver = new ChromeDriver(options))
+                    using (var _driver = new  ChromeDriver( options))
                     {
                         try
                         {
@@ -162,13 +169,13 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 element = _driver.FindElement(By.Id(@"j_id111:j_id163"));
                 element.Click();
 
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
 
                 //CLICA NO EXTRAIR TABELA
                 element = _driver.FindElement(By.Id(@"j_id111:j_id207"));
                 element.Click();
 
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
 
                 element = _driver.FindElement(By.CssSelector("#j_id111\\:arquivoxml"));
                 element.Click();
@@ -180,6 +187,8 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 Thread.Sleep(500);
                 SendKeys.SendWait("{ENTER}");
                 Thread.Sleep(500);
+
+                _driver.Close();
 
                 var baixaXml = true;// DownloadXML(_driver);
 

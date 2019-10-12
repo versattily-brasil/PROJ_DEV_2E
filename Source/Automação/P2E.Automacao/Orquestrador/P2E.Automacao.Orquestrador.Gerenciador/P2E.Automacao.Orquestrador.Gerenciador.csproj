@@ -58,7 +58,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>1D704E25D0D750D644AB3ED0358B2F4B949F0261</ManifestCertificateThumbprint>
