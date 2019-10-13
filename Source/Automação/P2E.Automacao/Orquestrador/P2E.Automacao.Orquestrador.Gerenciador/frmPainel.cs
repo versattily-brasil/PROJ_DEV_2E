@@ -18,7 +18,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
     public partial class frmPainel : Form
     {
         private string _urlApiBase;
-        private readonly Work _work;
+        public readonly Work _work;
         public frmPainel()
         {
             InitializeComponent();
@@ -44,7 +44,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 }
                 else
                 {
-                    await _work.ProgramarAgendaAsync(agendaSelecionada, eFormaExec.Manual);
+                    await _work.ProgramarAgendaAsync(agendaSelecionada, agendaSelecionada.OP_FORMA_EXEC);
 
                     if (!bgwConsultar.IsBusy)
                     {
@@ -59,7 +59,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             }
         }
 
-        private void BtnConsultar_Click(object sender, EventArgs e)
+        public void BtnConsultar_Click(object sender, EventArgs e)
         {
             if (!bgwConsultar.IsBusy)
             {
@@ -196,14 +196,8 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     _work.AlterarStatusAgendaAsync(agendaSelecionada, eStatusExec.Interrompido);
-
-                    barraProgresso.Style = ProgressBarStyle.Marquee;
-                    agendaBindingSource.DataSource = null;
-                    agendaBindingSource.DataSource = _work.CarregarProgramacaoAsync();
-                    gvAgendaBots.Refresh();
-                    barraProgresso.Style = ProgressBarStyle.Blocks;
-
                     MessageBox.Show($"Execução interrompida.");
+                    btnConsultar.PerformClick();
                 }
             }
             else
@@ -216,7 +210,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         {
             var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
 
-            new frmManterAgenda(agendaSelecionada).Show();
+            new frmManterAgenda(agendaSelecionada, this).Show();
         }
     }
 }

@@ -53,63 +53,73 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// <returns></returns>
         public async Task ExecutarAsync()
         {
-            // Carrega todas as DI's que ainda não foram exoneradas.
-            await CarregarListaDIAsync();
-
-            if (registros != null && registros.Any())
+            try
             {
-                using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+                // Carrega todas as DI's que ainda não foram exoneradas.
+                await CarregarListaDIAsync();
+
+                if (registros != null && registros.Any())
                 {
-                    try
+                    using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                     {
-                        ControleCertificados.CarregarCertificado(service);
-
-                        service.AddArgument("test-type");
-                        service.AddArgument("no-sandbox");
-                        service.HideCommandPromptWindow = true;
-
-                        using (var _driver = new PhantomJSDriver(service))
+                        try
                         {
-                            try
-                            {
-                                _driver.Navigate().GoToUrl(uUrlInicio);
+                            ControleCertificados.CarregarCertificado(service);
 
-                                // percorre todos os registros para tentar a exoneração.
-                                foreach (var di in registros)
+                            service.AddArgument("test-type");
+                            service.AddArgument("no-sandbox");
+                            service.HideCommandPromptWindow = true;
+
+                            using (var _driver = new PhantomJSDriver(service))
+                            {
+                                try
                                 {
-                                    LogController.RegistrarLog("################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                    _driver.Navigate().GoToUrl(uUrlInicio);
 
-                                    List<Thread> threads = new List<Thread>();
-
-                                    var thread = new Thread(() => ExonerarDIAsync(_driver, di));
-                                    thread.Start();
-                                    threads.Add(thread);
-
-                                    // fica aguardnado todas as threads terminarem...
-                                    while (threads.Any(t => t.IsAlive))
+                                    // percorre todos os registros para tentar a exoneração.
+                                    foreach (var di in registros)
                                     {
-                                        continue;
-                                    }
-                                }
+                                        LogController.RegistrarLog("################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                                LogController.RegistrarLog("Robô Finalizado !", eTipoLog.INFO, _cd_bot_exec, "bot");
-                                //Console.ReadKey();
-                            }
-                            catch (Exception)
-                            {
-                                _driver.Close();
+                                        List<Thread> threads = new List<Thread>();
+
+                                        var thread = new Thread(() => ExonerarDIAsync(_driver, di));
+                                        thread.Start();
+                                        threads.Add(thread);
+
+                                        // fica aguardnado todas as threads terminarem...
+                                        while (threads.Any(t => t.IsAlive))
+                                        {
+                                            continue;
+                                        }
+                                    }
+
+                                    LogController.RegistrarLog("Robô Finalizado !", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                    //Console.ReadKey();
+                                }
+                                catch (Exception)
+                                {
+                                    _driver.Close();
+                                }
                             }
                         }
-                    }
-                    catch (Exception)
-                    {
+                        catch (Exception)
+                        {
+                        }
                     }
                 }
+                else
+                {
+                    LogController.RegistrarLog("Não existe DI's pendente de exoneração.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                LogController.RegistrarLog("Não existe DI's pendente de exoneração.", eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                throw;
             }
+
+            Task.WaitAll();
         }
 
         /// <summary>
@@ -180,7 +190,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             // realiza a requisição para a api de importação
             using (var client = new HttpClient())
             {
-                var result = await client.GetAsync(urlExoneracao);
+                var result = client.GetAsync(urlExoneracao).Result;
 
                 // recupera os registros.
                 registros = await result.Content.ReadAsAsync<List<Importacao>>();

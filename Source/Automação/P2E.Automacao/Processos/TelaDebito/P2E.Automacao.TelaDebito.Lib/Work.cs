@@ -55,7 +55,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
             using (var client = new HttpClient())
             {
                 LogController.RegistrarLog("ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                var result = await client.GetAsync(urlAcompanha);
+                var result = client.GetAsync(urlAcompanha).Result;
                 var aux = await result.Content.ReadAsStringAsync();
                 registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
 

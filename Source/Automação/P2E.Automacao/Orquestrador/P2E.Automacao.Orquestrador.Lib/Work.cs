@@ -78,18 +78,18 @@ namespace P2E.Automacao.Orquestrador.Lib
                 {
                     if (bot.BotProgramado != null)
                     {
-                        AlterarStatusBotAsync(bot, eStatusExec.Executando).Wait();
-                        ExecutarBotAsync(bot).Wait();
+                        await AlterarStatusBotAsync(bot, eStatusExec.Executando);
+                        await ExecutarBotAsync(bot);
                     }
-                }
 
-                if (agenda.Bots.Any(p => p.CD_ULTIMO_STATUS_EXEC_BOT == eStatusExec.Falha))
-                {
-                    AlterarStatusAgendaAsync(agenda, eStatusExec.Falha).Wait();
-                }
-                else
-                {
-                    AlterarStatusAgendaAsync(agenda, eStatusExec.Concluído).Wait();
+                    if (agenda.Bots.Any(p => p.CD_ULTIMO_STATUS_EXEC_BOT == eStatusExec.Falha))
+                    {
+                        AlterarStatusAgendaAsync(agenda, eStatusExec.Falha).Wait();
+                    }
+                    else
+                    {
+                        await AlterarStatusAgendaAsync(agenda, eStatusExec.Concluído);
+                    }
                 }
             }
         }
@@ -201,6 +201,11 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                            }
                             catch (Exception ex)
                             {
                                 await AlterarStatusBotAsync(bot, eStatusExec.Falha);
@@ -214,7 +219,12 @@ namespace P2E.Automacao.Orquestrador.Lib
                             try
                             {
                                 await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
-                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                                await AlterarStatusBotAsync(bot, eStatusExec.Concluído);                             
+                            }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
                             }
                             catch (Exception ex)
                             {
@@ -228,8 +238,13 @@ namespace P2E.Automacao.Orquestrador.Lib
                         {
                             try
                             {
-                                await new ExonerarIcms.Lib.Work().ExecutarAsync();
+                                new ExonerarIcms.Lib.Work().ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                            }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
                             }
                             catch (Exception ex)
                             {
@@ -246,6 +261,11 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 await new Processos.ExtratoRetificacao.Lib.Work().ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                            }
                             catch (Exception ex)
                             {
                                 await AlterarStatusBotAsync(bot, eStatusExec.Falha);
@@ -260,6 +280,11 @@ namespace P2E.Automacao.Orquestrador.Lib
                             {
                                 await new Processos.TelaDebito.Lib.Work().ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                            }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
                             }
                             catch (Exception ex)
                             {
@@ -278,6 +303,11 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 await new Processos.TaxaConversaoCambio.Lib.Work().ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                            }
                             catch (Exception ex)
                             {
                                 await AlterarStatusBotAsync(bot, eStatusExec.Falha);
@@ -293,6 +323,11 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                                 new TomarCiencia.Lib.Work().Start();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                            }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
                             }
                             catch (Exception ex)
                             {
@@ -314,6 +349,11 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work().ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                             }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                            }
                             catch (Exception ex)
                             {
                                 await AlterarStatusBotAsync(bot, eStatusExec.Falha);
@@ -329,6 +369,11 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                                 await new P2E.Automacao.Processos.AtualizaListaSuframa.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
                                 await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                            }
+                            catch (ThreadAbortException abort)
+                            {
+                                await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                                LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
                             }
                             catch (Exception ex)
                             {
@@ -513,12 +558,29 @@ namespace P2E.Automacao.Orquestrador.Lib
                         agenda.AgendaProgramada = agendaExecRep.Find(p => p.CD_AGENDA == agenda.CD_AGENDA && (p.OP_STATUS_AGENDA_EXEC == eStatusExec.Programado));
                     }
 
+                    // se não estiver programado, não faz nada.
+                    if (agenda.OP_STATUS != eStatusExec.Programado)
+                    {
+                        return false;
+                    }
+                    
+                    // se for programadado e a execução for manual, não aguarda o tempo mínimo e já põe na fila para processar
                     if (agenda.OP_FORMA_EXEC == eFormaExec.Manual)
                     {
                         return true;
                     }
-                    else
-                    if (agenda.OP_REPETE == 1)
+
+                    // se não for de repetição e a data programada for igual a hoje
+                    if (agenda.DT_DATA_EXEC_PROG.HasValue && agenda.DT_DATA_EXEC_PROG.Value == DateTime.Today )
+                    {
+                        // se extá ou já passou da hora de execução do dia programado.
+                        if (agenda.HR_HORA_EXEC_PROG <= new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second))
+                        {
+                            return true;
+                        }
+                    }
+
+                    if (agenda.OP_REPETE == 1 && agenda.OP_FORMA_EXEC == eFormaExec.Automática)
                     {
                         switch (agenda.OP_TIPO_REP)
                         {
@@ -574,13 +636,6 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 break;
                             default:
                                 break;
-                        }
-                    }
-                    else
-                    {
-                        if (agenda.DT_DATA_EXEC_PROG.HasValue && agenda.DT_DATA_EXEC_PROG.Value <= DateTime.Now)
-                        {
-                            return true;
                         }
                     }
                 }

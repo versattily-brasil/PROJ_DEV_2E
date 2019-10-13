@@ -199,7 +199,7 @@
             this.gvAgendamentos.MultiSelect = false;
             this.gvAgendamentos.Name = "gvAgendamentos";
             this.gvAgendamentos.ReadOnly = true;
-            this.gvAgendamentos.RowHeadersWidth = 51;
+            this.gvAgendamentos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.gvAgendamentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvAgendamentos.Size = new System.Drawing.Size(1374, 385);
             this.gvAgendamentos.TabIndex = 0;
@@ -258,7 +258,6 @@
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Visible = false;
             this.dataGridViewTextBoxColumn4.Width = 150;
             // 
             // dataGridViewTextBoxColumn5
@@ -740,7 +739,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.StatusStrip barraStatus;
         private System.Windows.Forms.Button btnExecutarAgenda;
-        private System.Windows.Forms.Button btnConsultar;
         private System.Windows.Forms.ToolStripProgressBar barraProgresso;
         private System.ComponentModel.BackgroundWorker bgwConsultar;
         private System.Windows.Forms.DataGridViewTextBoxColumn cDAGENDADataGridViewTextBoxColumn;
@@ -777,6 +775,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         public System.Windows.Forms.BindingSource bsBotExecLog;
         public System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ContextMenuStrip menuAgenda;
+        private System.Windows.Forms.ToolStripMenuItem interromperExecuçãoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem alterarToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
@@ -794,8 +795,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Status;
         private System.Windows.Forms.DataGridViewTextBoxColumn DT_DATA_INICIO_ULTIMA_EXEC;
         private System.Windows.Forms.DataGridViewTextBoxColumn DT_DATA_FIM_ULTIMA_EXEC;
-        private System.Windows.Forms.ContextMenuStrip menuAgenda;
-        private System.Windows.Forms.ToolStripMenuItem interromperExecuçãoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem alterarToolStripMenuItem;
+        public System.Windows.Forms.Button btnConsultar;
     }
 }
