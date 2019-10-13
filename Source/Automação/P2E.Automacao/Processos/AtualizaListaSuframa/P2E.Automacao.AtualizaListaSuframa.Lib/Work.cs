@@ -56,6 +56,11 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 LogController.RegistrarLog("Executando arquivo .exe", eTipoLog.INFO, _cd_bot_exec, "bot");
                 aux = ExecutaExe(arquivoPath);
 
+                if (!System.IO.Directory.Exists(@"C:\Rotinas_Automaticas\Listagem_Insumos\"))
+                {
+                    System.IO.Directory.CreateDirectory(@"C:\Rotinas_Automaticas\Listagem_Insumos\");
+                }
+
                 LogController.RegistrarLog("Conectando ao Banco Acess", eTipoLog.INFO, _cd_bot_exec, "bot");
                 ConnectionDBAcess(@"C:\Rotinas_Automaticas\Listagem_Insumos\pli_suframa.mdb");
 
