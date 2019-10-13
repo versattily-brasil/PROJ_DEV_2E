@@ -1,5 +1,4 @@
 ﻿using P2E.SSO.Domain.Entities;
-using System;
 using System.Collections.Generic;
 
 namespace P2E.SSO.API.ViewModel

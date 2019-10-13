@@ -17,7 +17,7 @@ namespace P2E.Importacao.Domain.Entities
         public TBImportacao(int num_pi,
                             int cd_imp_status,
                             int cd_imp_canal,
-                            string tx_num_dec, 
+                            string tx_num_dec,
                             DateTime dt_data_des,
                             decimal vl_multa,
                             string tx_nome_fiscal,

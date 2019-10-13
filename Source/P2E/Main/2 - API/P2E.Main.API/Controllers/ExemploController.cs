@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
 using P2E.Main.Domain.Entities;
 using P2E.Main.Domain.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace P2E.Main.API.Controllers
 {
@@ -54,10 +54,11 @@ namespace P2E.Main.API.Controllers
                     _exemploRepository.Insert(exemplo);
                     return new { message = "OK" };
                 }
-                else {
+                else
+                {
                     return new { message = exemplo.Notifications.FirstOrDefault().Message };
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -81,7 +82,8 @@ namespace P2E.Main.API.Controllers
                         _exemploRepository.Insert(exemplo);
                     return new { message = "OK" };
                 }
-                else {
+                else
+                {
                     return new { message = exemplo.Notifications.FirstOrDefault().Message };
                 }
             }

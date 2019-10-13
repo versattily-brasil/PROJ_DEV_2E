@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace P2E.Main.UI.Web.Models.SSO.Usuario
+﻿namespace P2E.Main.UI.Web.Models.SSO.Usuario
 {
     public class UsuarioModuloViewModel
     {

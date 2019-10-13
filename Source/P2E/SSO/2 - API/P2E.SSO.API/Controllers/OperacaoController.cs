@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 
 namespace P2E.SSO.API.Controllers
 {
@@ -111,6 +111,6 @@ namespace P2E.SSO.API.Controllers
             {
                 return new { message = "Error." + ex.Message };
             }
-        }        
+        }
     }
 }

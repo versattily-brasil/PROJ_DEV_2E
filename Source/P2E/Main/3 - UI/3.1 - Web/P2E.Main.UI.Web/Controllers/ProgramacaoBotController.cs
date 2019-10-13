@@ -1,20 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using P2E.Administrativo.Domain.Entities;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
+using P2E.Main.UI.Web.Models.ADM.ProgramacaoBot;
 using P2E.Main.UI.Web.Models.SSO.Rotina;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
-using P2E.Main.UI.Web.Extensions.Filters;
-using P2E.Administrativo.Domain.Entities;
-using P2E.Main.UI.Web.Models.ADM.ProgramacaoBot;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -79,7 +78,7 @@ namespace P2E.Main.UI.Web.Controllers
 
                         vm.DataPage.UrlSearch = $"programacao-bot?";
                         if (vm.DataPage.Items.Any())
-                        {                         
+                        {
                             return View("Index", vm);
                         }
                         else
@@ -105,7 +104,7 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpGet]
         //[PermissaoFilter("programacao-bot", "Editar")]
         public async Task<IActionResult> Edit(long id)
-        {           
+        {
             try
             {
                 using (var client = new HttpClient())
@@ -158,7 +157,7 @@ namespace P2E.Main.UI.Web.Controllers
         {
             var vm = new RotinaViewModel();
             vm.Servicos = CarregarServico().Result;
-            return View("Form", vm);            
+            return View("Form", vm);
         }
 
         /// <summary>
@@ -264,6 +263,6 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-       
+
     }
 }

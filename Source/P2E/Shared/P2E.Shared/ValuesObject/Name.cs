@@ -1,8 +1,5 @@
 ﻿using FluentValidator;
 using FluentValidator.Validation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace P2E.Shared.ValuesObject
 {

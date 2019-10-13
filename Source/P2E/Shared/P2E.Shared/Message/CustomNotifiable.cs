@@ -1,13 +1,11 @@
 ﻿using FluentValidator;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace P2E.Shared.Message
 {
     public class CustomNotifiable : Notifiable
     {
-        public string Messages { get { return ParseMessages(); }}
+        public string Messages { get { return ParseMessages(); } }
 
         private string ParseMessages()
         {
@@ -16,8 +14,8 @@ namespace P2E.Shared.Message
             {
                 foreach (var item in Notifications)
                 {
-                    if(!msg.ToString().Contains(item.Message))
-                    msg.AppendLine($"{item.Message}");
+                    if (!msg.ToString().Contains(item.Message))
+                        msg.AppendLine($"{item.Message}");
                 }
             }
 

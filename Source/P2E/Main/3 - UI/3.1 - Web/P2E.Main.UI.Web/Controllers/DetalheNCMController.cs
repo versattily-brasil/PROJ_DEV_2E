@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Importacao.Domain.Entities;
 using P2E.Main.UI.Web.Extensions.Alerts;
@@ -14,6 +8,10 @@ using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.IMP.DetalheNCM;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {

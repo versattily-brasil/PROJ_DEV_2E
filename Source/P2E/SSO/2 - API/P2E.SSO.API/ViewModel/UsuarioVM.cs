@@ -1,9 +1,6 @@
 ﻿using P2E.Shared.Enum;
 using P2E.SSO.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace P2E.SSO.API.ViewModel
 {

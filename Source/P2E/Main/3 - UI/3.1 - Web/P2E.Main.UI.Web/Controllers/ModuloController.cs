@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
@@ -12,6 +7,10 @@ using P2E.Main.UI.Web.Models.SSO.Modulo;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {

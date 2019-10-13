@@ -1,8 +1,5 @@
 ﻿using P2E.Importacao.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace P2E.Importacao.API.ViewModel
 {
@@ -15,7 +12,7 @@ namespace P2E.Importacao.API.ViewModel
         public int TotalRows { get; set; }
 
         public string tx_sfncm_codigo { get; set; }
-        public string tx_sfncm_detalhe{ get; set; }
+        public string tx_sfncm_detalhe { get; set; }
         public string tx_sfncm_descricao { get; set; }
     }
 }

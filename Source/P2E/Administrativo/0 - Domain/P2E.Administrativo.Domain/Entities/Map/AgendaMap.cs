@@ -1,7 +1,4 @@
 ﻿using DapperExtensions.Mapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace P2E.Administrativo.Domain.Entities.Map
 {

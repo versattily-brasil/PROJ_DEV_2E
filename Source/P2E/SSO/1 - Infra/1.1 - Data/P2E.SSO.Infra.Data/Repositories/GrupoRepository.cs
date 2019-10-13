@@ -52,7 +52,7 @@ namespace P2E.SSO.Infra.Data.Repositories
             predicateGroup.Operator = (predicateGroup.Predicates.Count > 1 ? GroupOperator.And : GroupOperator.Or);
 
             dataPage.Items = _ssoContext.Connection.GetPage<Grupo>(predicateGroup, listSort, dataPage.CurrentPage - 1, dataPage.PageSize).ToList();
-            
+
             dataPage.TotalItems = GetTotalRows(predicateGroup);
 
             return dataPage;
@@ -70,14 +70,14 @@ namespace P2E.SSO.Infra.Data.Repositories
                 if (FindAll(p => p.TX_DSC == grupo.TX_DSC && p.CD_GRP != grupo.CD_GRP).Any())
                 {
                     grupo.AddNotification("TX_DSC", $"A Descrição do Grupo {grupo.TX_DSC} já está cadastrada.");
-                }               
+                }
             }
             else
             {
                 if (FindAll(p => p.TX_DSC == grupo.TX_DSC).Any())
                 {
                     grupo.AddNotification("TX_DSC", $"A Descrição do Grupo {grupo.TX_DSC} já está cadastrada.");
-                }              
+                }
             }
 
             return grupo.IsValid();

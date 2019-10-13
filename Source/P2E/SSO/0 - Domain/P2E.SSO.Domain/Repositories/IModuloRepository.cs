@@ -6,7 +6,7 @@ using P2E.SSO.Domain.Entities;
 namespace P2E.SSO.Domain.Repositories
 {
     public interface IModuloRepository : IDapperRepository<Modulo>
-    {   
+    {
         DataPage<Modulo> GetByPage(DataPage<Modulo> page, string tx_dsc);
 
         int GetTotalRows(PredicateGroup predicateGroup);

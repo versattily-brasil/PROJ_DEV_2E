@@ -38,7 +38,7 @@ namespace P2E.SSO.API
 
             services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-         
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "P2E [SSO-API]", Version = "v1" });
@@ -51,7 +51,7 @@ namespace P2E.SSO.API
             services.AddTransient<IParceiroNegocioRepository, ParceiroNegocioRepository>();
             services.AddTransient<IRotinaRepository, RotinaRepository>();
             services.AddTransient<IRotinaAssociadaRepository, RotinaAssociadaRepository>();
-            services.AddTransient<IParceiroNegocioRepository, ParceiroNegocioRepository>();            
+            services.AddTransient<IParceiroNegocioRepository, ParceiroNegocioRepository>();
             services.AddTransient<IGrupoRepository, GrupoRepository>();
             services.AddTransient<IUsuarioModuloRepository, UsuarioModuloRepository>();
             services.AddTransient<IUsuarioGrupoRepository, UsuarioGrupoRepository>();
@@ -64,7 +64,7 @@ namespace P2E.SSO.API
             services.AddTransient<IRotinaServicoRepository, RotinaServicoRepository>();
             services.AddTransient<IRotinaGrupoOperacaoRepository, RotinaGrupoOperacaoRepository>();
             services.AddTransient<IRotinaUsuarioOperacaoRepository, RotinaUsuarioOperacaoRepository>();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

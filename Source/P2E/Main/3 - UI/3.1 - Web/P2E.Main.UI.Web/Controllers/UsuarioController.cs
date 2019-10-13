@@ -1,27 +1,25 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using P2E.Main.UI.Web.Extensions.Alerts;
+using P2E.Main.UI.Web.Extensions.Filters;
 using P2E.Main.UI.Web.Models;
+using P2E.Main.UI.Web.Models.SSO.Operacao;
+using P2E.Main.UI.Web.Models.SSO.Rotina;
+using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.Main.UI.Web.Models.SSO.Usuario;
-using P2E.Main.UI.Web.Models.SSO.Modulo;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
-using P2E.Main.UI.Web.Models.SSO.Rotina;
-using P2E.Main.UI.Web.Models.SSO.Operacao;
-using P2E.Main.UI.Web.Models.SSO.Servico;
-using Newtonsoft.Json;
-using P2E.Main.UI.Web.Extensions.Util;
-using P2E.Main.UI.Web.Extensions.Filters;
+using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -180,7 +178,7 @@ namespace P2E.Main.UI.Web.Controllers
             var result = new HttpResponseMessage();
             string responseBody = string.Empty;
             var usuario = _mapper.Map<Usuario>(itemViewModel);
-            
+
             try
             {
                 if (usuario.CD_USR <= 0)
@@ -347,7 +345,7 @@ namespace P2E.Main.UI.Web.Controllers
                     result.EnsureSuccessStatusCode();
 
                     var usuario = await result.Content.ReadAsAsync<Usuario>();
-                    if(usuario != null)
+                    if (usuario != null)
                     {
                         if (usuario.OP_STATUS.ToString().Trim() == "INATIVO")
                         {
@@ -367,7 +365,7 @@ namespace P2E.Main.UI.Web.Controllers
                         var prop = new AuthenticationProperties()
                         {
                             IsPersistent = true,
-                            ExpiresUtc = DateTime.UtcNow.AddHours(8)                            
+                            ExpiresUtc = DateTime.UtcNow.AddHours(8)
                         };
 
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, prop);
@@ -379,13 +377,13 @@ namespace P2E.Main.UI.Web.Controllers
                     {
                         return View(itemViewModel).WithDanger("Erro.", "Usuário ou Senha inválidos");
                     }
-                    
-                    
+
+
                 }
             }
             catch (Exception ex)
             {
-                return View( itemViewModel).WithDanger("Erro", responseBody + ex.Message);
+                return View(itemViewModel).WithDanger("Erro", responseBody + ex.Message);
             }
         }
 
@@ -422,7 +420,7 @@ namespace P2E.Main.UI.Web.Controllers
                 var lista = await result.Content.ReadAsAsync<List<Rotina>>();
 
                 var rotinas = _mapper.Map<List<RotinaViewModel>>(lista);
-                
+
                 return rotinas;
             }
         }

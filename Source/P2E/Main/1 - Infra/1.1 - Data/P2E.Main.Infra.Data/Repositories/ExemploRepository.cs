@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dapper;
+﻿using Dapper;
 using MicroOrm.Dapper.Repositories;
 using P2E.Main.Domain.Entities;
 using P2E.Main.Domain.Repositories;
 using P2E.Main.Infra.Data.DataContext;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace P2E.Main.Infra.Data.Repositories
 {
     public class ExemploRepository : DapperRepository<Exemplo>, IExemploRepository
     {
-        private readonly MainContext _mainContext; 
+        private readonly MainContext _mainContext;
 
         public ExemploRepository(MainContext mainContext) : base(mainContext.Connection)
         {

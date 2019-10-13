@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Importacao.Domain.Entities;
 using P2E.Importacao.Domain.Repositories;
-using P2E.Shared.Model;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 
 namespace P2E.Importacao.API.Controllers
@@ -35,7 +32,7 @@ namespace P2E.Importacao.API.Controllers
         [Route("api/v1/enviopli/pendentes")]
         public IEnumerable<EnvioPLI> Pendentes()
         {
-            var result = _envioPLIRepository.FindAll(p=> p.OP_STATUS == 0);
+            var result = _envioPLIRepository.FindAll(p => p.OP_STATUS == 0);
             return result;
         }
 

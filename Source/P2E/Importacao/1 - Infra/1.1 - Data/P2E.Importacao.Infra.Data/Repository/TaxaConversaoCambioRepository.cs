@@ -4,7 +4,6 @@ using P2E.Importacao.Domain.Entities;
 using P2E.Importacao.Domain.Repositories;
 using P2E.Importacao.Infra.Data.DataContext;
 using P2E.Shared.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

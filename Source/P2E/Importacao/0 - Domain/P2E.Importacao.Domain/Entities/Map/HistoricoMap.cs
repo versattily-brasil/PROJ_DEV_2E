@@ -1,11 +1,7 @@
 ﻿using DapperExtensions.Mapper;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace P2E.Importacao.Domain.Entities.Map
-{   
+{
     public class HistoricoMap : ClassMapper<Historico>
     {
         public HistoricoMap()
@@ -19,7 +15,7 @@ namespace P2E.Importacao.Domain.Entities.Map
             Map(p => p.TX_NUM_DEC).Column("TX_NUM_DEC");
             Map(p => p.DT_DATA).Column("DT_DATA");
             Map(p => p.HR_HORA).Column("HR_HORA");
-            
+
 
         }
     }

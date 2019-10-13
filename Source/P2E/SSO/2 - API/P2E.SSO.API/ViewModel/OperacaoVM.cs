@@ -1,6 +1,4 @@
-﻿using P2E.Shared.Enum;
-using P2E.SSO.Domain.Entities;
-using System;
+﻿using P2E.SSO.Domain.Entities;
 using System.Collections.Generic;
 
 namespace P2E.SSO.API.ViewModel
@@ -16,7 +14,7 @@ namespace P2E.SSO.API.ViewModel
         public int TotalRows { get; set; }
 
 
-        public int CD_OPR { get; set; }        
+        public int CD_OPR { get; set; }
         public string TX_DSC { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace P2E.SSO.Infra.Data.Repositories
             {
                 var predicate = Predicates.Field<Operacao>(p => p.TX_DSC, Operator.Like, "%" + descricao.Trim() + "%", false);
                 predicateGroup.Predicates.Add(predicate);
-            }            
+            }
 
             #endregion
 

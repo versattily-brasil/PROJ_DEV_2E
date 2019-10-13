@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Dapper;
-using DapperExtensions;
+﻿using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
 using P2E.Shared.Model;
-using P2E.Shared.ValuesObject;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 using P2E.SSO.Infra.Data.DataContext;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace P2E.SSO.Infra.Data.Repositories
 {
     public class ParceiroNegocioRepository : DapperRepository<ParceiroNegocio>, IParceiroNegocioRepository
     {
-        private readonly SSOContext _context; 
+        private readonly SSOContext _context;
 
         public ParceiroNegocioRepository(SSOContext context) : base(context.Connection)
         {
@@ -34,13 +30,13 @@ namespace P2E.SSO.Infra.Data.Repositories
         {
             var sSQL = new StringBuilder();
             dataPage.OrderBy = dataPage.OrderBy ?? "txt_rzsoc";
-            var sort = new Sort() { PropertyName = dataPage.OrderBy, Ascending = !dataPage.Descending  };
+            var sort = new Sort() { PropertyName = dataPage.OrderBy, Ascending = !dataPage.Descending };
 
             #region Ordenação
             var listSort = new List<ISort>();
             listSort.Add(sort);
             #endregion
-            
+
             #region Filtros
             var predicateGroup = new PredicateGroup();
             predicateGroup.Predicates = new List<IPredicate>();
@@ -81,7 +77,7 @@ namespace P2E.SSO.Infra.Data.Repositories
                     parceiroNegocio.AddNotification("TXT_RZSOC", $"A Razão Social {parceiroNegocio.TXT_RZSOC} já está cadastrada.");
                 }
 
-                if (FindAll(p => p.CNPJ == parceiroNegocio.CNPJ &&  p.CD_PAR != parceiroNegocio.CD_PAR).Any())
+                if (FindAll(p => p.CNPJ == parceiroNegocio.CNPJ && p.CD_PAR != parceiroNegocio.CD_PAR).Any())
                 {
                     parceiroNegocio.AddNotification("CNPJ", $"O CNPJ {parceiroNegocio.CNPJ} já está cadastrado.");
                 }

@@ -1,8 +1,5 @@
 ﻿using P2E.Administrativo.Domain.Entities;
-using P2E.Main.UI.Web.Models.SSO.Modulo;
-using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.Shared.Enum;
-using P2E.SSO.Domain.Entities;
 using System;
 using System.Collections.Generic;
 

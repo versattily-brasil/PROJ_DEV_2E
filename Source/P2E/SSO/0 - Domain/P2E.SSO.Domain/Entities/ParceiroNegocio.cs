@@ -1,12 +1,9 @@
-﻿using FluentValidator;
-using MicroOrm.Dapper.Repositories.Attributes;
+﻿using MicroOrm.Dapper.Repositories.Attributes;
 using P2E.Shared.Message;
 using P2E.Shared.ValuesObject;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace P2E.SSO.Domain.Entities
 {
@@ -17,7 +14,7 @@ namespace P2E.SSO.Domain.Entities
         {
             //IsValid();
         }
-        
+
         public ParceiroNegocio(string tXT_RZSOC, string cNPJ, string tx_email)
         {
             TXT_RZSOC = tXT_RZSOC?.Trim();
@@ -45,7 +42,7 @@ namespace P2E.SSO.Domain.Entities
                 AddNotification("CNPJ", $"CNPJ é obrigatório.");
             else
             {
-                if ( !Funcoes.IsCnpj(CNPJ))
+                if (!Funcoes.IsCnpj(CNPJ))
                 {
                     AddNotification("CNPJ", $"CNPJ é inválido.");
                 }

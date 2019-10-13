@@ -8,10 +8,10 @@ namespace P2E.SSO.Domain.Entities
     [Table("TB_OPR")]
     public class Operacao : CustomNotifiable
     {
-        public Operacao() {}
+        public Operacao() { }
 
         public Operacao(string tx_dsc)
-        {            
+        {
             TX_DSC = tx_dsc?.Trim();
 
             IsValid();
@@ -23,7 +23,7 @@ namespace P2E.SSO.Domain.Entities
         public string TX_DSC { get; set; }
 
         public bool IsValid()
-        {            
+        {
             if (string.IsNullOrEmpty(TX_DSC))
                 AddNotification("TX_DSC", $"A Descrição da Operação é um campo obrigatório.");
 

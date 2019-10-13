@@ -1,14 +1,10 @@
-﻿using Dapper;
-using DapperExtensions;
+﻿using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
-using MicroOrm.Dapper.Repositories.SqlGenerator;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 using P2E.SSO.Infra.Data.DataContext;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 

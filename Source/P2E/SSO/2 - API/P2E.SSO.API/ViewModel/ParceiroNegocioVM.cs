@@ -1,10 +1,5 @@
-﻿using FluentValidator;
-using P2E.Shared.Model;
-using P2E.SSO.Domain.Entities;
-using System;
+﻿using P2E.SSO.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace P2E.SSO.API.ViewModel
 {

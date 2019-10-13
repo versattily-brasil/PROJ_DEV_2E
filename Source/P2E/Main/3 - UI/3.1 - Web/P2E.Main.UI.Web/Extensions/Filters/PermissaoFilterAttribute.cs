@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace P2E.Main.UI.Web.Extensions.Filters
 {
@@ -16,7 +14,7 @@ namespace P2E.Main.UI.Web.Extensions.Filters
 
         public PermissaoFilterAttribute(string rotina, string operacao) : base(typeof(ClaimRequirementFilter))
         {
-           Arguments = new object[] { rotina, operacao };
+            Arguments = new object[] { rotina, operacao };
         }
 
         public class ClaimRequirementFilter : IAuthorizationFilter

@@ -1,9 +1,5 @@
 ﻿using P2E.Shared.Enum;
 using P2E.Shared.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Models.SSO.Usuario
 {

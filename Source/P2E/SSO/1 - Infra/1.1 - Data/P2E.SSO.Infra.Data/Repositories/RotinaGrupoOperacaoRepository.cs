@@ -12,13 +12,13 @@ namespace P2E.SSO.Infra.Data.Repositories
         public RotinaGrupoOperacaoRepository(SSOContext context) : base(context.Connection)
         {
             _context = context;
-        }        
+        }
 
         public bool ExcluirRotinaGrupoOperacao(int rotinaGrupoOperacaoId)
         {
             bool result = this.Delete(o => o.CD_ROT_GRP == rotinaGrupoOperacaoId);
 
             return result;
-        }        
+        }
     }
 }

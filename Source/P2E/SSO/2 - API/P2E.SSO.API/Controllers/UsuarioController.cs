@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
-using P2E.SSO.API.ViewModel;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 
 namespace P2E.SSO.API.Controllers
 {
@@ -27,16 +25,16 @@ namespace P2E.SSO.API.Controllers
         private readonly IServicoRepository _servicoRepository;
 
         private readonly IMapper _mapper;
-        public UsuarioController(IUsuarioRepository usuarioRepository, 
-                                 IUsuarioModuloRepository usuarioModuloRepository, 
-                                 IUsuarioGrupoRepository usuarioGrupoRepository, 
-                                 IModuloRepository moduloRepository, 
+        public UsuarioController(IUsuarioRepository usuarioRepository,
+                                 IUsuarioModuloRepository usuarioModuloRepository,
+                                 IUsuarioGrupoRepository usuarioGrupoRepository,
+                                 IModuloRepository moduloRepository,
                                  IGrupoRepository grupoRepository,
-                                 IRotinaRepository rotinaRepository, 
+                                 IRotinaRepository rotinaRepository,
                                  IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository,
                                  IRotinaUsuarioOperacaoRepository rotinaUsuarioOperacaoRepository,
-                                 IOperacaoRepository operacaoRepository, 
-                                 IServicoRepository servicoRepository, 
+                                 IOperacaoRepository operacaoRepository,
+                                 IServicoRepository servicoRepository,
                                  IMapper mapper)
         {
             _mapper = mapper;
@@ -78,8 +76,8 @@ namespace P2E.SSO.API.Controllers
                     rotinaGrupo.Rotina = _rotinaRepository.Find(p => p.CD_ROT == rotinaGrupo.CD_ROT);
 
                     // Carrega as Permissões
-                    rotinaGrupo.Rotina.Operacoes = _operacaoRepository.FindAll(p=> p.CD_OPR == rotinaGrupo.CD_OPR).ToList();
-                    rotinaGrupo.Operacao = _operacaoRepository.Find(p=> p.CD_OPR == rotinaGrupo.CD_OPR);
+                    rotinaGrupo.Rotina.Operacoes = _operacaoRepository.FindAll(p => p.CD_OPR == rotinaGrupo.CD_OPR).ToList();
+                    rotinaGrupo.Operacao = _operacaoRepository.Find(p => p.CD_OPR == rotinaGrupo.CD_OPR);
 
 
 
@@ -141,7 +139,7 @@ namespace P2E.SSO.API.Controllers
                 result.Modulo = _moduloRepository.FindAll().ToList();
             }
 
-            
+
             return result;
         }
 
@@ -259,7 +257,7 @@ namespace P2E.SSO.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
-            }            
+            }
         }
     }
 }

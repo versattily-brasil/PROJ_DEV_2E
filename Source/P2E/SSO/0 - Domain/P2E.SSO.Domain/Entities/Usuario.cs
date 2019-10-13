@@ -1,5 +1,4 @@
-﻿using FluentValidator;
-using MicroOrm.Dapper.Repositories.Attributes;
+﻿using MicroOrm.Dapper.Repositories.Attributes;
 using P2E.Shared.Enum;
 using P2E.Shared.Message;
 using System.Collections.Generic;

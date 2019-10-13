@@ -2,10 +2,7 @@
 using FluentValidator.Validation;
 using P2E.Shared.Enum;
 using P2E.Shared.TypeConverter;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace P2E.Shared.ValuesObject
 {
@@ -14,7 +11,7 @@ namespace P2E.Shared.ValuesObject
     {
         //public Document()
         //{
-            
+
         //}
         public Document(string number, eTIPODOC tipodoc = eTIPODOC.CNPJ)
         {
