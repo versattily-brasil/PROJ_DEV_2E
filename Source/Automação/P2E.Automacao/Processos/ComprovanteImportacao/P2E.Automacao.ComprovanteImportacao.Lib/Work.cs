@@ -61,7 +61,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
                 if (registros != null && registros.Any())
                 {
-                    using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+                    using (var service = PhantomJSDriverService.CreateDefaultService())
                     {
                         LogController.RegistrarLog("Carregando certificado...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         ControleCertificados.CarregarCertificado(service);
@@ -72,6 +72,8 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
                         using (var _driver = new PhantomJSDriver(service))
                         {
+                            _driver.Navigate().GoToUrl(_urlSite);
+
                             try
                             {
                                 foreach (var di in registros)
@@ -117,8 +119,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                 var numDeclaracao = numero;
 
                 LogController.RegistrarLog("Acessando URL...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                // _driver.Navigate().GoToUrl(_urlSite);
-
+                
                 _driver.Navigate().GoToUrl(_urlTelaConsulta);
 
                 //COLOCANDO O NUMERO DA DI NO CAMPO
