@@ -74,6 +74,15 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
 
         private bool ExecutaExe(string path)
         {
+            string diretorioArquivo = @"C:\Rotinas_Automaticas\Listagem_Insumos\pli_suframa.mdb";
+            bool existe = true;
+            FileInfo file = new FileInfo(diretorioArquivo);
+
+            if (!file.Exists)
+            {
+                existe = false;
+            }
+
             Process myProcess = new Process();
 
             try
@@ -88,8 +97,12 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 SendKeys.SendWait("{ENTER}");
                 Thread.Sleep(3000);
                 SendKeys.SendWait("{ENTER}");
-                Thread.Sleep(3000);
-                SendKeys.SendWait("{ENTER}");
+
+                if (existe)
+                {
+                    Thread.Sleep(3000);
+                    SendKeys.SendWait("{ENTER}");
+                }
 
                 return true;
             }
@@ -222,7 +235,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
 
                 using (var client = new HttpClient())
                 {
-                    var result = await client.GetAsync(url+"/todos");
+                    var result = await client.GetAsync(url + "/todos");
                     var aux = await result.Content.ReadAsStringAsync();
                     registros = JsonConvert.DeserializeObject<List<DetalheNCM>>(aux);
 

@@ -1,17 +1,19 @@
 [Languages]
 Name: "portugues"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 
-#define MyAppName "Orquestrador"
+#define MyAppName "Orquestrador_Console"
+#define DefaultGroupName "VersattilyBots"
 #define MyAppFileName "P2E.Automacao.Orquestrador.Console"
-#define MyAppVersion "0.2.0"
+#define MyAppVersion "0.7.0"
 #define MyAppVerName "Orquestrador " + MyAppVersion
-#define MyAppPublisher "Versattily"
+#define MyAppPublisher "C:\VersattilyBots\2E\Console"
 #define UninstallDisplayName "Orquestrador " + MyAppVersion
 
 [Setup]
 AppName={#MyAppName}
-DefaultDirName={pf}\{#MyAppName}
-DefaultGroupName={#MyAppName}
+UsePreviousAppDir=no
+DefaultDirName={#MyAppPublisher}
+DefaultGroupName={#DefaultGroupName}
 AppCopyright={#MyAppPublisher}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany={#MyAppPublisher}
@@ -19,7 +21,7 @@ VersionInfoCopyright={#MyAppPublisher}
 VersionInfoDescription={#MyAppName}
 DisableProgramGroupPage=true
 SolidCompression=true
-OutputBaseFilename={#MyAppFileName}-{#MyAppVersion}
+OutputBaseFilename={#MyAppName}-{#MyAppVersion}
 VersionInfoTextVersion={#MyAppVersion}
 VersionInfoProductName={#MyAppName}
 AppVersion={#MyAppVersion}

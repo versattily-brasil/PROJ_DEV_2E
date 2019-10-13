@@ -5,6 +5,7 @@ using P2E.Automacao.Shared.Log;
 using P2E.Automacao.Shared.Log.Enum;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -71,9 +72,12 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                     if (registros != null && registros.Any())
                     {
-                        using (var service = PhantomJSDriverService.CreateDefaultService())
+                        using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                         {
                             LogController.RegistrarLog("CARREGANDO CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                            string cert = $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
+                            LogController.RegistrarLog(cert, eTipoLog.INFO, _cd_bot_exec, "bot");
+
                             ControleCertificados.CarregarCertificado(service);
 
                             service.AddArgument("test-type");
