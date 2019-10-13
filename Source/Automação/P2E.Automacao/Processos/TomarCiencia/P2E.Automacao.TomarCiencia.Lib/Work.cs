@@ -92,7 +92,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             }
 
             // Executa o passo-a-passo
-            //await CarregarListaDIAsync();
+            
             CarregaListaEmpresas();
             Main(service);
             Finish();
