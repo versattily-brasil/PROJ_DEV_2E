@@ -1,12 +1,12 @@
 [Languages]
 Name: "portugues"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 
-#define MyAppName "Orquestrador_Gerenciador"
+#define MyAppName "Orquestrador"
 #define DefaultGroupName "VersattilyBots"
 #define MyAppFileName "P2E.Automacao.Orquestrador.Gerenciador"
 #define MyAppVersion "1.0.0"
 #define MyAppVerName "Gerenciador " + MyAppVersion
-#define MyAppPublisher "C:\VersattilyBots\2E\Gerenciador"
+#define MyAppPublisher "C:\VersattilyBots\2E\Orquestrador"
 #define MyAppIcon "ManagerIcone.ico"
 #define UninstallDisplayName "Gerenciador " + MyAppVersion
 

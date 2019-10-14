@@ -178,6 +178,10 @@
       <Project>{d05ad0b7-5353-49d3-9351-9079657b20cf}</Project>
       <Name>P2E.Automacao.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\P2E.Automacao.Orquestrador.Console\P2E.Automacao.Orquestrador.Console.csproj">
+      <Project>{ec7c339f-40fb-4893-8ca8-b997cf249129}</Project>
+      <Name>P2E.Automacao.Orquestrador.Console</Name>
+    </ProjectReference>
     <ProjectReference Include="..\P2E.Automacao.Orquestrador.Lib\P2E.Automacao.Orquestrador.Lib.csproj">
       <Project>{527117a2-f7bc-43aa-9178-5675028e8167}</Project>
       <Name>P2E.Automacao.Orquestrador.Lib</Name>
