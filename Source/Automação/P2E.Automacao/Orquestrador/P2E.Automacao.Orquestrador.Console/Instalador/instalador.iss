@@ -7,6 +7,7 @@ Name: "portugues"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 #define MyAppVersion "0.9.0"
 #define MyAppVerName "Orquestrador " + MyAppVersion
 #define MyAppPublisher "C:\VersattilyBots\2E\Console"
+#define MyAppIcon "ConsoleIcone.ico"
 #define UninstallDisplayName "Orquestrador " + MyAppVersion
 
 [Setup]
@@ -27,14 +28,24 @@ VersionInfoProductName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppVerName}
 AppPublisher={#MyAppPublisher}
+UninstallDisplayIcon={app}\{#MyAppIcon}
 UninstallDisplayName={#UninstallDisplayName}
 
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
+Source: ..\ConsoleIcone.ico; DestDir: {app}; Flags: ignoreversion
 Source: C:\ProgramData\Lerron\TFS\Projeto2E\2E-dev\Source\Automação\P2E.Automacao\Orquestrador\P2E.Automacao.Orquestrador.Console\bin\Debug\*; DestDir: {app}; Flags: ignoreversion
 Source: C:\ProgramData\Lerron\TFS\Projeto2E\2E-dev\Source\Automação\P2E.Automacao\Orquestrador\P2E.Automacao.Orquestrador.Console\bin\Debug\Certificado\*; DestDir: {app}\Certificado; Flags: ignoreversion
+
+[Icons]
+Name: {group}\Orquestrador_Console; Filename: {app}\P2E.Automacao.Orquestrador.Console.exe; WorkingDir: {app}
+
+;Cria atalho no grupo de programas
+Name: {group}\Orquestrador_Console; Filename: {app}\P2E.Automacao.Orquestrador.Console.exe; WorkingDir: {app}; Comment: Acesso ao Orquestrador_Console; IconIndex: 0
+
+;Cria atalho no desktop
+Name: {userdesktop}\Orquestrador_Console; Filename: {app}\P2E.Automacao.Orquestrador.Console.exe; WorkingDir: {app}; Comment: Atalho de acesso direto ao Orquestrador_Console; IconIndex: 0
+
 
 [Dirs]
 Name: "{app}"; Permissions: everyone-full;
