@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Models;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -52,7 +51,7 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Cadastro(TabelaAuxiliarVM tabela)
         {
-            if (tabela.TX_TABELA == String.Empty )
+            if (tabela.TX_TABELA == String.Empty)
             {
                 return View(tabela).WithDanger("Erro.", "Preencha todos os campos.");
             }

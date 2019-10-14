@@ -1,9 +1,8 @@
-﻿using P2E.Shared.Enum;
-using System.Collections.Generic;
+﻿using P2E.Main.UI.Web.Models.SSO.Operacao;
+using P2E.Shared.Enum;
 using P2E.SSO.Domain.Entities;
-using P2E.Main.UI.Web.Models.SSO.Servico;
-using P2E.Main.UI.Web.Models.SSO.Operacao;
 using System;
+using System.Collections.Generic;
 
 namespace P2E.Main.UI.Web.Models.SSO.Rotina
 {
@@ -13,8 +12,8 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
     [Serializable]
     public class RotinaViewModel
     {
-        public int CD_ROT { get; set; }        
-        public string TX_NOME { get; set; }        
+        public int CD_ROT { get; set; }
+        public string TX_NOME { get; set; }
         public string TX_DSC { get; set; }
         public eTipoRotina OP_TIPO { get; set; }
         public int CD_SRV { get; set; }
@@ -22,6 +21,7 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
 
         public List<P2E.SSO.Domain.Entities.Servico> Servicos { get; set; }
         public List<P2E.SSO.Domain.Entities.Rotina> Rotinas { get; set; }
+        
         public List<P2E.SSO.Domain.Entities.RotinaAssociada> RotinasAssociadas { get; set; }
 
         public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();

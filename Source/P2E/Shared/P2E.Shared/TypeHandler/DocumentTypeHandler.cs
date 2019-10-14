@@ -1,9 +1,6 @@
 ﻿using Dapper;
 using P2E.Shared.ValuesObject;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace P2E.Shared.TypeHandler
 {

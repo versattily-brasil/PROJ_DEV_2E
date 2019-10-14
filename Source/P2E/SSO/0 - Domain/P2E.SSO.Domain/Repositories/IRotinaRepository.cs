@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DapperExtensions;
+﻿using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;

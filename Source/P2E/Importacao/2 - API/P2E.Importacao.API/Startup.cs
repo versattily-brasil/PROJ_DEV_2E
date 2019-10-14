@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using P2E.Importacao.Domain.Repositories;
-using P2E.Importacao.Infra.Data.Repository;
 using P2E.Importacao.Infra.Data.DataContext;
+using P2E.Importacao.Infra.Data.Repository;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace P2E.Importacao.API

@@ -1,5 +1,4 @@
 ﻿using P2E.Shared.Model;
-using P2E.SSO.Domain.Entities;
 
 namespace P2E.Main.UI.Web.Models.SSO.ParceiroNegocio
 {

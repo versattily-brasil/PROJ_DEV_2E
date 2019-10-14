@@ -5,18 +5,18 @@ using P2E.SSO.Infra.Data.DataContext;
 
 namespace P2E.SSO.Infra.Data.Repositories
 {
-    public class RotinaServicoRepository : DapperRepository<RotinaServico>, IRotinaServicoRepository
+    public class RotinaAssociadaRepository : DapperRepository<RotinaAssociada>, IRotinaAssociadaRepository
     {
         private readonly SSOContext _context;
 
-        public RotinaServicoRepository(SSOContext context) : base(context.Connection)
+        public RotinaAssociadaRepository(SSOContext context) : base(context.Connection)
         {
             _context = context;
         }
 
-        public bool ExcluirRotinaServico(int rotinaServicoId)
+        public bool ExcluirRotinaAssociada(long cd_rot_principal)
         {
-            bool result = this.Delete(o => o.CD_ROT_SRV == rotinaServicoId);
+            bool result = this.Delete(o => o.CD_ROT_PRINCIPAL == cd_rot_principal);
 
             return result;
         }

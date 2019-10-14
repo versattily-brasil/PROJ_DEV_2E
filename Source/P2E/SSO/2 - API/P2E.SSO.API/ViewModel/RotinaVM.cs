@@ -1,6 +1,5 @@
 ﻿using P2E.Shared.Enum;
 using P2E.SSO.Domain.Entities;
-using System;
 using System.Collections.Generic;
 
 namespace P2E.SSO.API.ViewModel
@@ -18,7 +17,7 @@ namespace P2E.SSO.API.ViewModel
 
         public int CD_ROT { get; set; }
         public string TX_NOME { get; set; }
-        public string TX_DSC { get; set; }        
+        public string TX_DSC { get; set; }
         public eTipoRotina OP_TIPO { get; set; }
         public int CD_SRV { get; set; }
     }

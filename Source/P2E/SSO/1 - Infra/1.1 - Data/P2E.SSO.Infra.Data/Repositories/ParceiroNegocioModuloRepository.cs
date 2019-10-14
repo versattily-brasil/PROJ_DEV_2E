@@ -1,13 +1,7 @@
-﻿using Dapper;
-using MicroOrm.Dapper.Repositories;
+﻿using MicroOrm.Dapper.Repositories;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 using P2E.SSO.Infra.Data.DataContext;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
 
 namespace P2E.SSO.Infra.Data.Repositories
 {

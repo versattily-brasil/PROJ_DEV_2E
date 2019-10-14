@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using P2E.Shared.ValuesObject;
+using System;
 using System.ComponentModel;
 using System.Globalization;
-using P2E.Shared.ValuesObject;
-using System.Linq;
 
 namespace P2E.Shared.TypeConverter
 {
@@ -14,7 +11,7 @@ namespace P2E.Shared.TypeConverter
         {
             return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
         }
-        
+
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             string stringValue;

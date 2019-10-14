@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace P2E.Main.UI.Web.Models.IMP.DetalheNCM
+﻿namespace P2E.Main.UI.Web.Models.IMP.DetalheNCM
 {
     public class DetalheNCMViewModel
     {

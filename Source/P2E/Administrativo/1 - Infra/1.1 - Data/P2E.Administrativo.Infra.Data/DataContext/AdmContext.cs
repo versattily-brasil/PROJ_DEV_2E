@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dapper;
+using DapperExtensions;
+using P2E.Administrativo.Domain.Entities.Map;
+using P2E.Shared.TypeHandler;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
-using P2E.Administrativo.Domain.Entities.Map;
-using DapperExtensions;
-using Dapper;
-using P2E.Shared.TypeHandler;
 
 namespace P2E.Administrativo.Infra.Data.DataContext
 {

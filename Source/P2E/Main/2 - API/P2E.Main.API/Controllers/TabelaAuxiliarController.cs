@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.API.ViewModel;
 using P2E.Main.Domain.Entities;
 using P2E.Main.Domain.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace P2E.Main.API.Controllers
 {
@@ -72,7 +72,7 @@ namespace P2E.Main.API.Controllers
         public object Put(string id, [FromBody] TabelaAuxiliarVM tabelaAuxiliarVM)
         {
             try
-            {                
+            {
                 var exemplo = _mapper.Map<TabelaAuxiliar>(tabelaAuxiliarVM);
                 if (exemplo.IsValid())
                 {

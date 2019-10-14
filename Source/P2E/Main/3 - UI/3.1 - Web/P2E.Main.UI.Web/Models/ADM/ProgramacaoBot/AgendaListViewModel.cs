@@ -1,8 +1,5 @@
-﻿using P2E.Shared.Enum;
+﻿using P2E.Shared.Model;
 using System.Collections.Generic;
-using P2E.SSO.Domain.Entities;
-using P2E.Main.UI.Web.Models.SSO.Servico;
-using P2E.Shared.Model;
 
 namespace P2E.Main.UI.Web.Models.ADM.ProgramacaoBot
 {
@@ -13,8 +10,8 @@ namespace P2E.Main.UI.Web.Models.ADM.ProgramacaoBot
             DataPage = new DataPage<P2E.Administrativo.Domain.Entities.Agenda>();
         }
 
-        public string Descricao { get;  set; }
-        
+        public string Descricao { get; set; }
+
         public DataPage<P2E.Administrativo.Domain.Entities.Agenda> DataPage { get; set; }
 
         public List<P2E.SSO.Domain.Entities.Servico> Servicos { get; set; }

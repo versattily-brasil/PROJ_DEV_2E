@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MicroOrm.Dapper.Repositories;
+﻿using MicroOrm.Dapper.Repositories;
 using P2E.Main.Domain.Entities;
+using System.Collections.Generic;
 
 namespace P2E.Main.Domain.Repositories
 {

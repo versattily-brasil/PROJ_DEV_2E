@@ -1,13 +1,10 @@
-﻿using P2E.Main.UI.Web.Models.SSO.Modulo;
-using P2E.Main.UI.Web.Models.SSO.Grupo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using P2E.Shared.Enum;
-using P2E.Main.UI.Web.Models.SSO.Rotina;
+﻿using P2E.Main.UI.Web.Models.SSO.Grupo;
+using P2E.Main.UI.Web.Models.SSO.Modulo;
 using P2E.Main.UI.Web.Models.SSO.Operacao;
+using P2E.Main.UI.Web.Models.SSO.Rotina;
 using P2E.Main.UI.Web.Models.SSO.Servico;
+using P2E.Shared.Enum;
+using System.Collections.Generic;
 
 namespace P2E.Main.UI.Web.Models.SSO.Usuario
 {
@@ -23,7 +20,7 @@ namespace P2E.Main.UI.Web.Models.SSO.Usuario
         public List<UsuarioModuloViewModel> UsuarioModulo { get; set; } = new List<UsuarioModuloViewModel>();
         public List<UsuarioGrupoViewModel> UsuarioGrupo { get; set; } = new List<UsuarioGrupoViewModel>();
 
-        public List<ModuloViewModel> Modulo { get; set; } = new List<ModuloViewModel>();               
+        public List<ModuloViewModel> Modulo { get; set; } = new List<ModuloViewModel>();
         public List<GrupoViewModel> Grupo { get; set; } = new List<GrupoViewModel>();
 
         public IList<RotinaViewModel> Rotinas { get; set; } = new List<RotinaViewModel>();

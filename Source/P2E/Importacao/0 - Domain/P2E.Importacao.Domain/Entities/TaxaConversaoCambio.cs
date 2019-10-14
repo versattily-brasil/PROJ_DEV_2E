@@ -1,10 +1,8 @@
 ﻿using MicroOrm.Dapper.Repositories.Attributes;
 using P2E.Shared.Message;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace P2E.Importacao.Domain.Entities
 {
@@ -17,9 +15,9 @@ namespace P2E.Importacao.Domain.Entities
         }
 
         public TaxaConversaoCambio(string tx_moeda,
-                                   string tx_descricao, 
-                                   DateTime dt_inicio_vigencia, 
-                                   DateTime dt_fim_vigencia, 
+                                   string tx_descricao,
+                                   DateTime dt_inicio_vigencia,
+                                   DateTime dt_fim_vigencia,
                                    decimal vl_taxa_conversao)
         {
             TX_MOEDA = tx_moeda?.Trim();

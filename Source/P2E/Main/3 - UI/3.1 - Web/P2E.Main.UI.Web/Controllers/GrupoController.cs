@@ -1,21 +1,21 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using P2E.Main.UI.Web.Extensions.Alerts;
+using P2E.Main.UI.Web.Extensions.Filters;
+using P2E.Main.UI.Web.Models;
+using P2E.Main.UI.Web.Models.SSO.Grupo;
+using P2E.Main.UI.Web.Models.SSO.Operacao;
+using P2E.Main.UI.Web.Models.SSO.Rotina;
+using P2E.Main.UI.Web.Models.SSO.Servico;
+using P2E.Shared.Message;
+using P2E.Shared.Model;
+using P2E.SSO.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using P2E.Main.UI.Web.Extensions.Alerts;
-using P2E.Main.UI.Web.Models;
-using P2E.Main.UI.Web.Models.SSO.Grupo;
-using P2E.Main.UI.Web.Models.SSO.Rotina;
-using P2E.Main.UI.Web.Models.SSO.Operacao;
-using P2E.Shared.Message;
-using P2E.Shared.Model;
-using P2E.SSO.Domain.Entities;
-using P2E.Main.UI.Web.Models.SSO.Servico;
-using P2E.Main.UI.Web.Extensions.Filters;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -156,7 +156,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
             catch (Exception)
             {
-            throw;
+                throw;
             }
         }
 
@@ -175,7 +175,7 @@ namespace P2E.Main.UI.Web.Controllers
             try
             {
                 var grupo = _mapper.Map<Grupo>(itemViewModel);
-                                
+
                 if (grupo.IsValid())
                 {
                     if (grupo.RotinaGrupoOperacao.Count <= 0)
@@ -231,7 +231,7 @@ namespace P2E.Main.UI.Web.Controllers
             catch (Exception ex)
             {
                 return RedirectToAction("Edit", new { id = Id }).WithWarning("Erro.", responseBody);
-            }            
+            }
         }
 
 
@@ -308,7 +308,7 @@ namespace P2E.Main.UI.Web.Controllers
                 var lista = await result.Content.ReadAsAsync<List<Servico>>();
 
                 var servicos = _mapper.Map<List<ServicoViewModel>>(lista);
-                
+
                 return servicos;
             }
         }

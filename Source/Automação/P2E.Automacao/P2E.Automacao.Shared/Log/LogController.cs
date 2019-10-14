@@ -69,11 +69,27 @@ namespace P2E.Automacao.Shared.Log
             using (var context = new LogContext())
             {
                 var botExecRep = new MicroOrm.Dapper.Repositories.DapperRepository<BotExec>(context.Connection);
+                var agendaExecRep = new MicroOrm.Dapper.Repositories.DapperRepository<AgendaExec>(context.Connection);
+                var agendaRep = new MicroOrm.Dapper.Repositories.DapperRepository<Agenda>(context.Connection);
+                
                 var execBot = botExecRep.Find(p => p.CD_BOT_EXEC == cdBotExec);
 
-                if (execBot.OP_STATUS_BOT_EXEC == Shared.Enum.eStatusExec.Interrompido)
+                if (execBot != null)
                 {
-                    Thread.CurrentThread.Abort(Shared.Enum.eStatusExec.Interrompido);
+                    var agendaExec = agendaExecRep.Find(p => p.CD_AGENDA_EXEC == execBot.CD_AGENDA_EXEC);
+
+                    if (agendaExec != null)
+                    {
+                        var agenda = agendaRep.Find(p => p.CD_AGENDA == agendaExec.CD_AGENDA);
+
+                        if (agenda != null && agenda.OP_STATUS == Shared.Enum.eStatusExec.Interrompido)
+                        {
+                            if (execBot.OP_STATUS_BOT_EXEC == Shared.Enum.eStatusExec.Interrompido)
+                            {
+                                Thread.CurrentThread.Abort(Shared.Enum.eStatusExec.Interrompido);
+                            }
+                        }
+                    }
                 }
             }
         }

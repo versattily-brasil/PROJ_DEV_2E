@@ -15,7 +15,7 @@ namespace P2E.SSO.API.Controllers
         private readonly IGrupoRepository _grupoRepository;
         private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
         private readonly IUsuarioGrupoRepository _usuarioGrupoRepository;
-        public GrupoController(IGrupoRepository grupoRepository, 
+        public GrupoController(IGrupoRepository grupoRepository,
             IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository, IUsuarioGrupoRepository usuarioGrupoRepository)
         {
             _grupoRepository = grupoRepository;
@@ -38,7 +38,7 @@ namespace P2E.SSO.API.Controllers
         public DataPage<Grupo> Get([FromQuery] string tx_dsc, [FromQuery] DataPage<Grupo> page)
         {
             page = _grupoRepository.GetByPage(page, tx_dsc);
-            
+
             return page;
         }
 
@@ -86,7 +86,7 @@ namespace P2E.SSO.API.Controllers
             {
                 if (item.IsValid() && _grupoRepository.ValidarDuplicidades(item))
                 {
-                    _rotinaGrupoOperacaoRepository.Delete(o=>o.CD_GRP == item.CD_GRP);
+                    _rotinaGrupoOperacaoRepository.Delete(o => o.CD_GRP == item.CD_GRP);
 
                     if (id > 0)
                         _grupoRepository.Update(item);
@@ -151,7 +151,7 @@ namespace P2E.SSO.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
-            }            
+            }
         }
     }
 }

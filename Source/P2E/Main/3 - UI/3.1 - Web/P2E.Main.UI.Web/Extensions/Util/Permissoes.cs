@@ -1,13 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Operacao;
 using P2E.Main.UI.Web.Models.SSO.Rotina;
 using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.SSO.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;

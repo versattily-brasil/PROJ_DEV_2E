@@ -1,15 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using P2E.Shared.Model;
+using P2E.SSO.Domain.Entities;
+using P2E.SSO.Domain.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using P2E.Shared.Model;
-using P2E.SSO.API.ViewModel;
-using P2E.SSO.Domain.Entities;
-using P2E.SSO.Domain.Repositories;
 
 namespace P2E.SSO.API.Controllers
 {
@@ -19,7 +16,7 @@ namespace P2E.SSO.API.Controllers
         private readonly IServicoRepository _servicoRepository;
         private readonly IRotinaRepository _rotinaRepository;
         private readonly IRotinaServicoRepository _rotinaServicoRepository;
-        private readonly IParceiroNegocioModuloRepository  _parceiroNegocioModuloRepository;
+        private readonly IParceiroNegocioModuloRepository _parceiroNegocioModuloRepository;
 
         public ServicoController(IServicoRepository servicoRepository, IRotinaServicoRepository rotinaServicoRepository, IRotinaRepository rotinaRepository, IParceiroNegocioModuloRepository parceiroNegocioModuloRepository)
         {
@@ -111,7 +108,7 @@ namespace P2E.SSO.API.Controllers
         public IActionResult Delete(int id)
         {
             try
-            {                
+            {
                 var objeto = _servicoRepository.FindById(id);
                 var rotinas = _rotinaRepository.Find(p => p.CD_SRV == id);
                 var parceiro = _parceiroNegocioModuloRepository.Find(p => p.CD_SRV == id);

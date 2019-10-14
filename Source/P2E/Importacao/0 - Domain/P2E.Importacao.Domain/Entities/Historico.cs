@@ -27,7 +27,7 @@ namespace P2E.Importacao.Domain.Entities
             TX_NUM_DEC = tx_num_dec;
             DT_DATA = dt_data;
             HR_HORA = hr_hora;
-            
+
         }
 
         [Key]

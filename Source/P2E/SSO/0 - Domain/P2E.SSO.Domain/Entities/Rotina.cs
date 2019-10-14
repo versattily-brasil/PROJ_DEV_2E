@@ -10,7 +10,7 @@ namespace P2E.SSO.Domain.Entities
     [Table("TB_ROT")]
     public class Rotina : CustomNotifiable
     {
-        public Rotina() {}
+        public Rotina() { }
 
         public Rotina(string tx_nome, string tx_dsc, eTipoRotina op_tipo, int cd_srv, string tx_url)
         {
@@ -36,7 +36,7 @@ namespace P2E.SSO.Domain.Entities
         public List<RotinaServico> RotinaServico { get; set; } = new List<RotinaServico>();
         public List<Servico> Servicos { get; set; } = new List<Servico>();
         public List<RotinaAssociada> RotinasAssociadas { get; set; } = new List<RotinaAssociada>();
-        
+
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(TX_NOME))

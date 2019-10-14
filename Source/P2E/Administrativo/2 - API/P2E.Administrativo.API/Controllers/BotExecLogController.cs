@@ -2,12 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using P2E.Administrativo.Domain.Entities;
 using P2E.Administrativo.Domain.Repositories;
-using P2E.Shared.Enum;
-using P2E.Shared.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 
 namespace P2E.Administrativo.API.Controllers
 {
@@ -22,7 +18,7 @@ namespace P2E.Administrativo.API.Controllers
         private readonly IBotExecLogRepository _BotExecLogRepository;
 
         public BotExecLogController(IAgendaRepository AgendaRepository
-            , IAgendaBotRepository AgendaBotRepository         
+            , IAgendaBotRepository AgendaBotRepository
             , IAgendaExecRepository agendaExecRepository
             , IAgendaExecLogRepository agendaExecLogRepository
             , IBotRepository BotRepository

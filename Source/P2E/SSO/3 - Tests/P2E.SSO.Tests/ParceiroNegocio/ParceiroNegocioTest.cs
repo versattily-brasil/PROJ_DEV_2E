@@ -1,12 +1,4 @@
 ﻿using NUnit.Framework;
-using P2E.SSO.Infra.Data.DataContext;
-using P2E.SSO.Infra.Data.Repositories;
-using P2E.SSO.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using P2E.Shared.ValuesObject;
-using P2E.Shared.Enum;
 
 namespace P2E.SSO.Tests.ParceiroNegocio
 {

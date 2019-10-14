@@ -1,5 +1,4 @@
-﻿using P2E.Shared.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace P2E.Main.UI.Web.Models.SSO.Rotina
 {
@@ -10,7 +9,7 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
     {
         public int CD_ROT_SRV { get; set; }
 
-        [Required]        
+        [Required]
         public int CD_ROT { get; set; }
 
         [Required]

@@ -1,8 +1,6 @@
-﻿using DapperExtensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace P2E.Shared.Model
 {
@@ -31,8 +29,8 @@ namespace P2E.Shared.Model
         public int FirstPage { get { return (1); } }
         public int PriorPage { get { return (CurrentPage > 1 ? CurrentPage - 1 : 1); } }
         public int CurrentPage { get; set; } = 1;
-        public int NextPage { get { return (CurrentPage < LastPage ? CurrentPage + 1 : LastPage); }}
-        public int LastPage { get { return TotalPages; }}
+        public int NextPage { get { return (CurrentPage < LastPage ? CurrentPage + 1 : LastPage); } }
+        public int LastPage { get { return TotalPages; } }
 
         public string OrderBy { get; set; }
         public bool Descending { get; set; }
@@ -40,7 +38,7 @@ namespace P2E.Shared.Model
 
         public int TotalItems { get; set; }
 
-        public int TotalPages { get { return GetTotalPages(); }}
+        public int TotalPages { get { return GetTotalPages(); } }
         public IList<Page> Pages { get; set; }
 
         public string Message { get; set; }
@@ -53,8 +51,8 @@ namespace P2E.Shared.Model
             int totalPage = TotalItems > 0 ? ((int)Math.Ceiling((decimal)TotalItems / (decimal)PageSize)) : 1;
             for (int i = 1; i <= totalPage; i++)
             {
-                if(!Pages.Any(p=> p.PageNumber == i))
-                    Pages.Add(new Page() { PageNumber = i, Url = ""});
+                if (!Pages.Any(p => p.PageNumber == i))
+                    Pages.Add(new Page() { PageNumber = i, Url = "" });
             }
             return totalPage;
         }

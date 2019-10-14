@@ -1,10 +1,6 @@
 ﻿using FluentValidator;
 using MicroOrm.Dapper.Repositories.Attributes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace P2E.Main.Domain.Entities
 {
@@ -29,7 +25,7 @@ namespace P2E.Main.Domain.Entities
 
         public bool IsValid()
         {
-            if(string.IsNullOrEmpty(Descricao))
+            if (string.IsNullOrEmpty(Descricao))
                 AddNotification("Descricao", $"Descrição é um campo obrigatório.");
 
             if (Valor <= 0)

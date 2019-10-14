@@ -12,7 +12,7 @@ namespace P2E.Importacao.API.Controllers
     public class ImportacaoController : ControllerBase
     {
         private readonly IImportacaoRepository _ImportacaoRepository;
-        
+
         public ImportacaoController(IImportacaoRepository ImportacaoRepository)
         {
             _ImportacaoRepository = ImportacaoRepository;
@@ -68,7 +68,7 @@ namespace P2E.Importacao.API.Controllers
         [Route("api/v1/importacao/extrato-retif")]
         public IEnumerable<TBImportacao> ExtratoRetificacao()
         {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_RETIF == 0 );
+            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_RETIF == 0);
             return result;
         }
 
@@ -101,7 +101,7 @@ namespace P2E.Importacao.API.Controllers
         public TBImportacao Get(long id)
         {
             TBImportacao Importacao = _ImportacaoRepository.Find(p => p.CD_IMP == id);
-            
+
             return Importacao;
         }
 

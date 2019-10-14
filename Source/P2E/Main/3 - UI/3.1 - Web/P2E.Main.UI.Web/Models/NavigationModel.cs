@@ -1,27 +1,10 @@
-﻿using P2E.SSO.Domain.Entities;
+﻿using Newtonsoft.Json;
+using P2E.Main.UI.Web.Extensions.Util;
+using P2E.Main.UI.Web.Models.SSO.Servico;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Claims;
-using System.Security.Policy;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using P2E.Main.UI.Web.Extensions.Alerts;
-using P2E.Main.UI.Web.Models;
-using P2E.Main.UI.Web.Models.SSO.ParceiroNegocio;
-using P2E.Shared.Message;
-using P2E.Shared.Model;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Web;
-using Microsoft.AspNetCore.Identity;
-using P2E.Main.UI.Web.Models.SSO.Servico;
-using P2E.Main.UI.Web.Models.SSO.Rotina;
-using Newtonsoft.Json;
-using P2E.Main.UI.Web.Extensions.Util;
-using P2E.Main.UI.Web.Controllers;
 
 namespace P2E.Main.UI.Web.Models
 {

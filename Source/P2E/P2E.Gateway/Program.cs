@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Ocelot.Middleware;
 using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
 namespace P2E.Gateway
 {

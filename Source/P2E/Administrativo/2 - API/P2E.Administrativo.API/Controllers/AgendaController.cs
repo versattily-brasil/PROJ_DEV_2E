@@ -22,7 +22,7 @@ namespace P2E.Administrativo.API.Controllers
         private readonly IBotExecLogRepository _BotExecLogRepository;
 
         public AgendaController(IAgendaRepository AgendaRepository
-            , IAgendaBotRepository AgendaBotRepository         
+            , IAgendaBotRepository AgendaBotRepository
             , IAgendaExecRepository agendaExecRepository
             , IAgendaExecLogRepository agendaExecLogRepository
             , IBotRepository BotRepository
@@ -92,7 +92,8 @@ namespace P2E.Administrativo.API.Controllers
                         agenda.CD_ULTIMA_EXEC = ultimaAgendaExec?.CD_AGENDA_EXEC;
                         agenda.OP_ULTIMO_STATUS_EXEC = ultimaAgendaExec.OP_STATUS_AGENDA_EXEC;
                     }
-                    else {
+                    else
+                    {
                         agenda.OP_ULTIMO_STATUS_EXEC = eStatusExec.Nao_Programado;
                     }
 
@@ -108,7 +109,8 @@ namespace P2E.Administrativo.API.Controllers
                                 bot.CD_ULTIMA_EXEC_BOT = ultimoBotExec?.CD_BOT_EXEC;
                                 bot.CD_ULTIMO_STATUS_EXEC_BOT = (int)ultimoBotExec.OP_STATUS_BOT_EXEC;
                             }
-                            else {
+                            else
+                            {
                                 bot.CD_ULTIMO_STATUS_EXEC_BOT = (int)eStatusExec.Nao_Programado;
                             }
                         }
@@ -116,7 +118,7 @@ namespace P2E.Administrativo.API.Controllers
 
                     // obtem a execução programada
                     agenda.AgendaProgramada = _AgendaExecRepository.Find(
-                        p => p.CD_AGENDA == agenda.CD_AGENDA 
+                        p => p.CD_AGENDA == agenda.CD_AGENDA
                         && (p.OP_STATUS_AGENDA_EXEC == eStatusExec.Aguardando_Processamento || p.OP_STATUS_AGENDA_EXEC == eStatusExec.Programado));
                 }
 
@@ -187,7 +189,7 @@ namespace P2E.Administrativo.API.Controllers
                 }
                 else
                 {
-                    var agendaExec = _AgendaExecRepository.Find(p=> p.CD_AGENDA_EXEC == agenda.CD_ULTIMA_EXEC);
+                    var agendaExec = _AgendaExecRepository.Find(p => p.CD_AGENDA_EXEC == agenda.CD_ULTIMA_EXEC);
                     agendaExec.OP_STATUS_AGENDA_EXEC = agenda.OP_ULTIMO_STATUS_EXEC;
 
                     RegistrarLogAgenda(eTipoLog.MSG, $"Agenda '{agenda.TX_DESCRICAO}' alterada status para {agenda.OP_ULTIMO_STATUS_EXEC}.", agendaExec.CD_AGENDA_EXEC);
@@ -293,7 +295,7 @@ namespace P2E.Administrativo.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest ("Error." + ex.Message);
+                return BadRequest("Error." + ex.Message);
             }
         }
 
@@ -344,7 +346,8 @@ namespace P2E.Administrativo.API.Controllers
 
         protected void RegistrarLogAgenda(eTipoLog tipo, string msg, int cdAgendaExec)
         {
-            var log = new AgendaExecLog() {
+            var log = new AgendaExecLog()
+            {
                 CD_AGENDA_EXEC = cdAgendaExec,
                 OP_TIPO_LOG = eTipoLog.MSG,
                 TX_MENSAGEM = msg,

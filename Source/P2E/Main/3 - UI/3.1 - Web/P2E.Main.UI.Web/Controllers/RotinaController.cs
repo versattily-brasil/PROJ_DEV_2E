@@ -1,18 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
+using P2E.Main.UI.Web.Extensions.Filters;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Rotina;
 using P2E.Shared.Message;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
-using P2E.Main.UI.Web.Extensions.Filters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {
@@ -68,15 +68,15 @@ namespace P2E.Main.UI.Web.Controllers
                         vm.DataPage = await result.Content.ReadAsAsync<DataPage<Rotina>>();
 
                         foreach (Rotina item in vm.DataPage.Items.ToList())
-                        { 
-                            var results= await client.GetAsync($"{_urlServico}/{item.CD_SRV}");
+                        {
+                            var results = await client.GetAsync($"{_urlServico}/{item.CD_SRV}");
 
                             item.Servico = await results.Content.ReadAsAsync<Servico>();
                         }
 
                         vm.DataPage.UrlSearch = $"rotina?";
                         if (vm.DataPage.Items.Any())
-                        {                         
+                        {
                             return View("Index", vm);
                         }
                         else
@@ -102,7 +102,7 @@ namespace P2E.Main.UI.Web.Controllers
         [HttpGet]
         [PermissaoFilter("Rotinas", "Editar")]
         public async Task<IActionResult> Edit(long id)
-        {           
+        {
             try
             {
                 using (var client = new HttpClient())
@@ -111,7 +111,7 @@ namespace P2E.Main.UI.Web.Controllers
                     result.EnsureSuccessStatusCode();
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
                     var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
-                    rotinaViewModel.Servicos = CarregarServico().Result;                    
+                    rotinaViewModel.Rotinas = CarregarRotinas().Result;
 
                     return View("Form", rotinaViewModel);
                 }
@@ -135,8 +135,8 @@ namespace P2E.Main.UI.Web.Controllers
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
                     var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
                     rotinaViewModel.Servicos = CarregarServico().Result;
-                    rotinaViewModel.RotinasAssociadas = await CarregarRotinasAssociadas(rotinaViewModel.CD_ROT);
-                    
+                    //rotinaViewModel.RotinasAssociadas = await CarregarRotinasAssociadas(rotinaViewModel.CD_ROT);
+
                     return View("View", rotinaViewModel);
                 }
             }
@@ -144,6 +144,11 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 throw;
             }
+        }
+
+        private Task<List<RotinaAssociada>> CarregarRotinasAssociadas(int cD_ROT)
+        {
+            return null;
         }
 
         /// <summary>
@@ -156,8 +161,8 @@ namespace P2E.Main.UI.Web.Controllers
         {
             var vm = new RotinaViewModel();
             vm.Servicos = CarregarServico().Result;
-            vm.Rotinas = CarregarRotina().Result;
-            return View("Form", vm);            
+            vm.Rotinas = CarregarRotinas().Result;
+            return View("Form", vm);
         }
 
         /// <summary>
@@ -263,7 +268,7 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-        private async Task<List<Rotina>> CarregarRotina()
+        private async Task<List<Rotina>> CarregarRotinas()
         {
             string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/rotina/todos";
             using (var client = new HttpClient())
@@ -274,16 +279,16 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-        private async Task<List<RotinaAssociada>> CarregarRotinasAssociadas(int id)
-        {
-            string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/associada/{id}";
-            using (var client = new HttpClient())
-            {
-                var result = await client.GetAsync(urlServico);
-                var lista = await result.Content.ReadAsAsync<List<RotinaAssociada>>();
-                return lista;
-            }
-        }
+        //private async Task<List<RotinaAssociada>> CarregarRotinasAssociadas(int id)
+        //{
+        //    string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/associada/{id}";
+        //    using (var client = new HttpClient())
+        //    {
+        //        var result = await client.GetAsync(urlServico);
+        //        var lista = await result.Content.ReadAsAsync<List<RotinaAssociada>>();
+        //        return lista;
+        //    }
+        //}
 
     }
 }

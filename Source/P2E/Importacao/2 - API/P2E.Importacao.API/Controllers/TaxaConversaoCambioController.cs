@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using P2E.Importacao.Domain.Entities;
 using P2E.Importacao.Domain.Repositories;
 using P2E.Shared.Model;
@@ -65,7 +64,7 @@ namespace P2E.Importacao.API.Controllers
 
         // PUT: api/TaxaConversaoCambio/5
         [HttpPut]
-        [Route("api/v1/taxa/{id}")]        
+        [Route("api/v1/taxa/{id}")]
         public IActionResult Put(int id, [FromBody] TaxaConversaoCambio item)
         {
             try

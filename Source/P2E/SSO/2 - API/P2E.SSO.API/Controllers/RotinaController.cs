@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 
 namespace P2E.SSO.API.Controllers
 {
@@ -55,7 +55,7 @@ namespace P2E.SSO.API.Controllers
             if (id > 0)
             {
                 rotina = _rotinaRepository.Find(p => p.CD_ROT == id);
-                rotina.RotinaServico = _rotinaServicoRepository.FindAll(p => p.CD_ROT == id).ToList();                
+                rotina.RotinaServico = _rotinaServicoRepository.FindAll(p => p.CD_ROT == id).ToList();
 
                 rotina.Servicos = _servicoRepository.FindAll().ToList();
 
