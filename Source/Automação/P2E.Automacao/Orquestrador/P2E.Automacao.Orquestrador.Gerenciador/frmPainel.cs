@@ -217,14 +217,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
         private void frmPainel_Load(object sender, EventArgs e)
         {
-            try
-            {
-                Process.Start("P2E.Automacao.Orquestrador.Console.exe", Directory.GetCurrentDirectory());
-            }
-            catch (Exception)
-            {
-
-            }
+            
         }
     }
 }
