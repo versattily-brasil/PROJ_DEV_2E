@@ -328,3 +328,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/Source/Automação/P2E.Automacao/Orquestrador/P2E.Automacao.Orquestrador.Console/Instalador/Output
+/Source/Automação/P2E.Automacao/Orquestrador/P2E.Automacao.Orquestrador.Gerenciador/Instalador/Output

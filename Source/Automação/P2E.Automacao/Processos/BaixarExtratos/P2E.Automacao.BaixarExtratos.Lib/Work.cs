@@ -74,15 +74,21 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 {
                     Console.WriteLine("");
                     LogController.RegistrarLog("ABRINDO CONEXÃO...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                    var result = client.GetAsync(urlAcompanha).Result;
-                    var aux = await result.Content.ReadAsStringAsync();
-                    registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
+                    //var result = client.GetAsync(urlAcompanha).Result;
+                    //LogController.RegistrarLog(result.StatusCode.ToString(), eTipoLog.INFO, _cd_bot_exec, "bot");
+                    //var aux = await result.Content.ReadAsStringAsync();
+                    //registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
+
+                    var result = await client.GetAsync(urlAcompanha);
+                    registros = await result.Content.ReadAsAsync<List<Importacao>>();
 
                     if (registros != null && registros.Any())
                     {
-                        using (var service = PhantomJSDriverService.CreateDefaultService())
+                        using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                         {
                             LogController.RegistrarLog("CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                            string cert = $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
+                            LogController.RegistrarLog(cert, eTipoLog.INFO, _cd_bot_exec, "bot");
                             ControleCertificados.CarregarCertificado(service);
 
                             service.AddArgument("test-type");
@@ -237,14 +243,15 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
                 {
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
-                    Thread.Sleep(1000);
+                    Thread.Sleep(3000);
                     myWebClient.DownloadFile(_url, arquivoPath);
                 }
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogController.RegistrarLog("Erro ao Baixar Extrato PDF " + e.Message.Trim(), eTipoLog.INFO, _cd_bot_exec, "bot");
                 return false;
             }
         }
@@ -295,6 +302,8 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
             catch (Exception e)
             {
+                LogController.RegistrarLog("Erro ao Baixar Extrato XML " + e.Message.Trim(), eTipoLog.INFO, _cd_bot_exec, "bot");
+
                 return false;
             }
         }
