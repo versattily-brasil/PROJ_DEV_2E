@@ -4,7 +4,7 @@ Name: "portugues"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 #define MyAppName "Orquestrador_Console"
 #define DefaultGroupName "VersattilyBots"
 #define MyAppFileName "P2E.Automacao.Orquestrador.Console"
-#define MyAppVersion "0.7.0"
+#define MyAppVersion "0.9.0"
 #define MyAppVerName "Orquestrador " + MyAppVersion
 #define MyAppPublisher "C:\VersattilyBots\2E\Console"
 #define UninstallDisplayName "Orquestrador " + MyAppVersion
