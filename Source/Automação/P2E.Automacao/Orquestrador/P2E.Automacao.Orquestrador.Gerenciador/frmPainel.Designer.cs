@@ -111,9 +111,8 @@
             this.panel1.Controls.Add(this.btnExecutarAgenda);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1390, 55);
+            this.panel1.Size = new System.Drawing.Size(1042, 45);
             this.panel1.TabIndex = 0;
             // 
             // btnConsultar
@@ -123,7 +122,7 @@
             this.btnConsultar.Location = new System.Drawing.Point(0, 1);
             this.btnConsultar.Margin = new System.Windows.Forms.Padding(0);
             this.btnConsultar.Name = "btnConsultar";
-            this.btnConsultar.Size = new System.Drawing.Size(223, 49);
+            this.btnConsultar.Size = new System.Drawing.Size(167, 40);
             this.btnConsultar.TabIndex = 2;
             this.btnConsultar.Text = "Consultar";
             this.btnConsultar.UseVisualStyleBackColor = true;
@@ -133,10 +132,9 @@
             // 
             this.btnExecutarAgenda.Image = ((System.Drawing.Image)(resources.GetObject("btnExecutarAgenda.Image")));
             this.btnExecutarAgenda.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnExecutarAgenda.Location = new System.Drawing.Point(225, 1);
-            this.btnExecutarAgenda.Margin = new System.Windows.Forms.Padding(4);
+            this.btnExecutarAgenda.Location = new System.Drawing.Point(169, 1);
             this.btnExecutarAgenda.Name = "btnExecutarAgenda";
-            this.btnExecutarAgenda.Size = new System.Drawing.Size(222, 49);
+            this.btnExecutarAgenda.Size = new System.Drawing.Size(166, 40);
             this.btnExecutarAgenda.TabIndex = 0;
             this.btnExecutarAgenda.Text = "Enviar para Execução";
             this.btnExecutarAgenda.UseVisualStyleBackColor = true;
@@ -147,20 +145,18 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1390, 422);
+            this.tabControl1.Size = new System.Drawing.Size(1042, 343);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.gvAgendamentos);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(1382, 393);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(1034, 317);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Agendamentos";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -194,14 +190,13 @@
             this.gvAgendamentos.ContextMenuStrip = this.menuAgenda;
             this.gvAgendamentos.DataSource = this.agendaBindingSource;
             this.gvAgendamentos.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvAgendamentos.Location = new System.Drawing.Point(4, 4);
-            this.gvAgendamentos.Margin = new System.Windows.Forms.Padding(4);
+            this.gvAgendamentos.Location = new System.Drawing.Point(3, 3);
             this.gvAgendamentos.MultiSelect = false;
             this.gvAgendamentos.Name = "gvAgendamentos";
             this.gvAgendamentos.ReadOnly = true;
             this.gvAgendamentos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.gvAgendamentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvAgendamentos.Size = new System.Drawing.Size(1374, 385);
+            this.gvAgendamentos.Size = new System.Drawing.Size(1028, 311);
             this.gvAgendamentos.TabIndex = 0;
             this.gvAgendamentos.SelectionChanged += new System.EventHandler(this.GvAgendamentos_SelectionChanged);
             // 
@@ -406,20 +401,20 @@
             this.interromperExecuçãoToolStripMenuItem,
             this.alterarToolStripMenuItem});
             this.menuAgenda.Name = "contextMenuStrip1";
-            this.menuAgenda.Size = new System.Drawing.Size(215, 52);
+            this.menuAgenda.Size = new System.Drawing.Size(184, 48);
             // 
             // interromperExecuçãoToolStripMenuItem
             // 
             this.interromperExecuçãoToolStripMenuItem.Name = "interromperExecuçãoToolStripMenuItem";
             this.interromperExecuçãoToolStripMenuItem.ShowShortcutKeys = false;
-            this.interromperExecuçãoToolStripMenuItem.Size = new System.Drawing.Size(214, 24);
+            this.interromperExecuçãoToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.interromperExecuçãoToolStripMenuItem.Text = "Interromper Execução";
             this.interromperExecuçãoToolStripMenuItem.Click += new System.EventHandler(this.interromperExecuçãoToolStripMenuItem_Click);
             // 
             // alterarToolStripMenuItem
             // 
             this.alterarToolStripMenuItem.Name = "alterarToolStripMenuItem";
-            this.alterarToolStripMenuItem.Size = new System.Drawing.Size(214, 24);
+            this.alterarToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.alterarToolStripMenuItem.Text = "Alterar";
             this.alterarToolStripMenuItem.Click += new System.EventHandler(this.alterarToolStripMenuItem_Click);
             // 
@@ -431,31 +426,28 @@
             // 
             this.panel2.Controls.Add(this.tabControl1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 55);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4);
+            this.panel2.Location = new System.Drawing.Point(0, 45);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1390, 422);
+            this.panel2.Size = new System.Drawing.Size(1042, 343);
             this.panel2.TabIndex = 2;
             // 
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage2);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl2.Location = new System.Drawing.Point(0, 477);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(4);
+            this.tabControl2.Location = new System.Drawing.Point(0, 388);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1390, 188);
+            this.tabControl2.Size = new System.Drawing.Size(1042, 152);
             this.tabControl2.TabIndex = 3;
             // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.splitContainer1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1382, 159);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(1034, 126);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Bots do Agendamento";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -464,8 +456,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(4, 4);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -476,9 +467,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(1374, 151);
+            this.splitContainer1.Size = new System.Drawing.Size(1028, 120);
             this.splitContainer1.SplitterDistance = 707;
-            this.splitContainer1.SplitterWidth = 11;
+            this.splitContainer1.SplitterWidth = 8;
             this.splitContainer1.TabIndex = 2;
             // 
             // gvAgendaBots
@@ -502,12 +493,11 @@
             this.gvAgendaBots.DataSource = this.bsAgendaBots;
             this.gvAgendaBots.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvAgendaBots.Location = new System.Drawing.Point(0, 0);
-            this.gvAgendaBots.Margin = new System.Windows.Forms.Padding(4);
             this.gvAgendaBots.Name = "gvAgendaBots";
             this.gvAgendaBots.ReadOnly = true;
             this.gvAgendaBots.RowHeadersWidth = 51;
             this.gvAgendaBots.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvAgendaBots.Size = new System.Drawing.Size(707, 151);
+            this.gvAgendaBots.Size = new System.Drawing.Size(707, 120);
             this.gvAgendaBots.StandardTab = true;
             this.gvAgendaBots.TabIndex = 0;
             this.gvAgendaBots.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAgendaBots_CellContentClick);
@@ -632,10 +622,8 @@
             this.groupBox1.Controls.Add(this.listBox1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(656, 151);
+            this.groupBox1.Size = new System.Drawing.Size(313, 120);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Log de Execução do Bot";
@@ -649,11 +637,10 @@
             this.listBox1.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.HorizontalScrollbar = true;
-            this.listBox1.ItemHeight = 17;
-            this.listBox1.Location = new System.Drawing.Point(4, 19);
-            this.listBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.listBox1.ItemHeight = 14;
+            this.listBox1.Location = new System.Drawing.Point(3, 16);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(648, 128);
+            this.listBox1.Size = new System.Drawing.Size(307, 101);
             this.listBox1.TabIndex = 0;
             this.listBox1.ValueMember = "CD_BOT_EXEC_LOG";
             // 
@@ -666,18 +653,17 @@
             this.barraStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.barraStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.barraProgresso});
-            this.barraStatus.Location = new System.Drawing.Point(0, 640);
+            this.barraStatus.Location = new System.Drawing.Point(0, 518);
             this.barraStatus.Name = "barraStatus";
-            this.barraStatus.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
             this.barraStatus.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.barraStatus.Size = new System.Drawing.Size(1390, 25);
+            this.barraStatus.Size = new System.Drawing.Size(1042, 22);
             this.barraStatus.TabIndex = 4;
             this.barraStatus.Text = "statusStrip1";
             // 
             // barraProgresso
             // 
             this.barraProgresso.Name = "barraProgresso";
-            this.barraProgresso.Size = new System.Drawing.Size(500, 17);
+            this.barraProgresso.Size = new System.Drawing.Size(375, 16);
             // 
             // bgwConsultar
             // 
@@ -691,17 +677,17 @@
             // 
             // frmPainel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1390, 665);
+            this.ClientSize = new System.Drawing.Size(1042, 540);
             this.Controls.Add(this.barraStatus);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmPainel";
             this.Text = "Painel de Agendamentos";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.frmPainel_Load);
             this.panel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

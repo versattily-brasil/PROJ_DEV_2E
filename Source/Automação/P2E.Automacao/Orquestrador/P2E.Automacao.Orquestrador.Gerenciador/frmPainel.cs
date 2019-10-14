@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -211,6 +213,18 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
 
             new frmManterAgenda(agendaSelecionada, this).Show();
+        }
+
+        private void frmPainel_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start("P2E.Automacao.Orquestrador.Console.exe", Directory.GetCurrentDirectory());
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }
