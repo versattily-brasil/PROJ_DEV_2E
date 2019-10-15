@@ -25,6 +25,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
         private string _urlApiBase;
         private List<Importacao> registros;
         int _cd_bot_exec;
+        int _cd_par;
         #endregion
 
         public Work()
@@ -33,10 +34,11 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        public Work(int cd_bot_exec)
+        public Work(int cd_bot_exec, int cd_par)
         {
             _cd_bot_exec = cd_bot_exec;
-            
+            _cd_par = cd_par;
+
             LogController.RegistrarLog("#####################  INICIALIZANDO - ACOMPANHAMENTO DE DESPACHO  ##################### ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
@@ -59,7 +61,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
         {
             try
             {
-                string urlAcompanha = _urlApiBase + $"imp/v1/importacao/todos";
+                string urlAcompanha = _urlApiBase + $"imp/v1/importacao/despacho/" + _cd_par;
 
                 using (var client = new HttpClient())
                 {

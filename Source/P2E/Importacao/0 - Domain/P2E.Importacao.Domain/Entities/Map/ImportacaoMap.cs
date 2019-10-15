@@ -28,6 +28,8 @@ namespace P2E.Importacao.Domain.Entities.Map
             Map(p => p.OP_TELA_DEBITO).Column("OP_TELA_DEBITO");
             Map(p => p.OP_STATUS_DESEMB).Column("OP_STATUS_DESEMB");
             Map(p => p.OP_COMPROVANTE_IMP).Column("OP_COMPROVANTE_IMP");
+            Map(p => p.CD_PAR).Column("CD_PAR");
+            Map(p => p.TX_INSCRICAO).Column("TX_INSCRICAO");
 
         }
     }

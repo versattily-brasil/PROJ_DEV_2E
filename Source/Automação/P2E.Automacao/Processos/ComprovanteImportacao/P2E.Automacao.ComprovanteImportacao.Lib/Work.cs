@@ -27,6 +27,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
         private string _urlApiBase;
         private List<Importacao> registros;
         int _cd_bot_exec;
+        int _cd_par;
         #endregion
 
         public Work()
@@ -35,9 +36,11 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        public Work(int cd_bot_exec)
+        public Work(int cd_bot_exec, int cd_par)
         {
             _cd_bot_exec = cd_bot_exec;
+            _cd_par = cd_par;
+
             LogController.RegistrarLog("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot"); 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
@@ -50,7 +53,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
         private async Task CarregarListaDIAsync()
         {
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/comprovante-imp";
+            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/comprovante-imp/" + _cd_par;
 
             using (var client = new HttpClient())
             {

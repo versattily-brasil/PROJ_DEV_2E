@@ -29,7 +29,10 @@ namespace P2E.Importacao.Domain.Entities
                             int op_extrato_xml,
                             int op_extrato_retif,
                             int op_tela_debito,
-                            int op_status_desemb)
+                            int op_status_desemb,
+                            int op_comprovante_imp,
+                            int cd_par,
+                            string tx_inscricao)
         {
 
             NUM_PI = num_pi;
@@ -47,7 +50,10 @@ namespace P2E.Importacao.Domain.Entities
             OP_EXTRATO_XML = op_extrato_xml;
             OP_EXTRATO_RETIF = op_extrato_retif;
             OP_TELA_DEBITO = op_tela_debito;
-            OP_STATUS_DESEMB = OP_STATUS_DESEMB;
+            OP_STATUS_DESEMB = op_status_desemb;
+            OP_COMPROVANTE_IMP = op_comprovante_imp;
+            CD_PAR = cd_par;
+            TX_INSCRICAO = tx_inscricao;
         }
 
         [Key]
@@ -72,5 +78,7 @@ namespace P2E.Importacao.Domain.Entities
         public int OP_TELA_DEBITO { get; set; }
         public int OP_STATUS_DESEMB { get; set; }
         public int OP_COMPROVANTE_IMP { get; set; }
+        public int CD_PAR { get; set; }
+        public string TX_INSCRICAO { get; set; }
     }
 }

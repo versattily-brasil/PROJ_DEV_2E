@@ -28,6 +28,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         public string urlDeclararICMS = @"https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/DeclararICMSMenu.do?i=0";
         private string _urlApiBase;
         int _cd_bot_exec;
+        int _cd_par;
         private List<Importacao> registros;
 
         public Work()
@@ -38,9 +39,10 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             LogController.RegistrarLog($"********************************************************************************************************************", eTipoLog.INFO, _cd_bot_exec, "bot");
         }
 
-        public Work(int cd_bot_exec)
+        public Work(int cd_bot_exec, int cd_par)
         {
             _cd_bot_exec = cd_bot_exec;
+            _cd_par = cd_par;
             LogController.RegistrarLog($"********************************************************************************************************************", eTipoLog.INFO, _cd_bot_exec, "bot");
             LogController.RegistrarLog("ROBÔ 04 – EXONERAÇÃO DO ICMS", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
@@ -185,7 +187,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             LogController.RegistrarLog("Obtendo DI's para exoneração.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
             // monta url para api de importação.
-            string urlExoneracao = _urlApiBase + $"imp/v1/importacao/obter-exoneracao-icms";
+            string urlExoneracao = _urlApiBase + $"imp/v1/importacao/obter-exoneracao-icms/" + _cd_par;
 
             // realiza a requisição para a api de importação
             using (var client = new HttpClient())

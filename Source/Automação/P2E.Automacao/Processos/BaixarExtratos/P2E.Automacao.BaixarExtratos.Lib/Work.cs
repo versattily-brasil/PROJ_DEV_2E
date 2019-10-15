@@ -1,18 +1,15 @@
-﻿using Newtonsoft.Json;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using P2E.Automacao.Shared.Log;
 using P2E.Automacao.Shared.Log.Enum;
-using SimpleBrowser;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,6 +28,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         private string _urlApiBase;
         private List<Importacao> registros;
         int _cd_bot_exec;
+        int _cd_par;
 
         #endregion
         public Work()
@@ -42,11 +40,13 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
         }
 
-        public Work(int cd_bot_exec)
+        public Work(int cd_bot_exec, int cd_par)
         {
             _cd_bot_exec = cd_bot_exec;
+            _cd_par = cd_par;
+
             LogController.RegistrarLog("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ", eTipoLog.INFO, _cd_bot_exec, "bot");
-            //_urlApiBase = "http://localhost:7000/";
+            
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
 
         }
@@ -68,17 +68,13 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                string urlAcompanha = _urlApiBase + $"imp/v1/importacao/extrato-pdf-xml";
+                string urlAcompanha = _urlApiBase + $"imp/v1/importacao/extrato-pdf-xml/" + _cd_par;
 
                 using (var client = new HttpClient())
                 {
                     Console.WriteLine("");
                     LogController.RegistrarLog("ABRINDO CONEXÃO...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                    //var result = client.GetAsync(urlAcompanha).Result;
-                    //LogController.RegistrarLog(result.StatusCode.ToString(), eTipoLog.INFO, _cd_bot_exec, "bot");
-                    //var aux = await result.Content.ReadAsStringAsync();
-                    //registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
-
+                    
                     var result = await client.GetAsync(urlAcompanha);
                     registros = await result.Content.ReadAsAsync<List<Importacao>>();
 

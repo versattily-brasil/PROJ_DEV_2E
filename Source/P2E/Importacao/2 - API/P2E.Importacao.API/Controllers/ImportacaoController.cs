@@ -5,6 +5,7 @@ using P2E.Importacao.Domain.Repositories;
 using P2E.Shared.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace P2E.Importacao.API.Controllers
@@ -27,48 +28,74 @@ namespace P2E.Importacao.API.Controllers
             return result;
         }
 
+        // GET: api/Importacao
+        [HttpGet]
+        [Route("api/v1/importacao/cd_par")]
+        public List<TBImportacao> GetParceirosNeg()
+        {
+            var result = _ImportacaoRepository.FindAll().ToList();
+
+            var clientes = from r in result.ToList()
+                           group r by r.CD_PAR into grupo
+                           select new TBImportacao()
+                           {
+                               CD_PAR = grupo.Key
+                           };
+
+            return clientes.ToList();
+        }
+
         // GET: api/Importacao/baixarextrato
         [HttpGet]
-        [Route("api/v1/importacao/tela-debito")]
-        public IEnumerable<TBImportacao> TelaDebito()
+        [Route("api/v1/importacao/despacho/{cd_par}")]
+        public IEnumerable<TBImportacao> AcompanhaDespacho(int cd_par)
         {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_TELA_DEBITO == 0);
+            var result = _ImportacaoRepository.FindAll(p => p.CD_PAR == cd_par);
+            return result;
+        }
+
+        // GET: api/Importacao/baixarextrato
+        [HttpGet]
+        [Route("api/v1/importacao/tela-debito/{cd_par}")]
+        public IEnumerable<TBImportacao> TelaDebito(int cd_par)
+        {
+            var result = _ImportacaoRepository.FindAll(p => p.OP_TELA_DEBITO == 0 && p.CD_PAR == cd_par);
             return result;
         }
 
         // GET: api/Importacao/status_desembaraco
         [HttpGet]
-        [Route("api/v1/importacao/status-desembaraco")]
-        public IEnumerable<TBImportacao> StatusDesembaraco()
+        [Route("api/v1/importacao/status-desembaraco/{cd_par}")]
+        public IEnumerable<TBImportacao> StatusDesembaraco(int cd_par)
         {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_STATUS_DESEMB == 0);
+            var result = _ImportacaoRepository.FindAll(p => p.OP_STATUS_DESEMB == 0 && p.CD_PAR == cd_par);
             return result;
         }
 
         // GET: api/Importacao/comprovante_imp
         [HttpGet]
-        [Route("api/v1/importacao/comprovante-imp")]
-        public IEnumerable<TBImportacao> ComprovanteImp()
+        [Route("api/v1/importacao/comprovante-imp/{cd_par}")]
+        public IEnumerable<TBImportacao> ComprovanteImp(int cd_par)
         {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_COMPROVANTE_IMP == 0);
+            var result = _ImportacaoRepository.FindAll(p => p.OP_COMPROVANTE_IMP == 0 && p.CD_PAR == cd_par);
             return result;
         }
 
         // GET: api/Importacao/baixarextrato
         [HttpGet]
-        [Route("api/v1/importacao/extrato-pdf-xml")]
-        public IEnumerable<TBImportacao> ExtratoPdf()
+        [Route("api/v1/importacao/extrato-pdf-xml/{cd_par}")]
+        public IEnumerable<TBImportacao> ExtratoPdf(int cd_par)
         {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_PDF == 0 || p.OP_EXTRATO_XML == 0);
+            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_PDF == 0 || p.OP_EXTRATO_XML == 0 && p.CD_PAR == cd_par);
             return result;
         }
 
         // GET: api/Importacao/baixarextrato
         [HttpGet]
-        [Route("api/v1/importacao/extrato-retif")]
-        public IEnumerable<TBImportacao> ExtratoRetificacao()
+        [Route("api/v1/importacao/extrato-retif/{cd_par}")]
+        public IEnumerable<TBImportacao> ExtratoRetificacao(int cd_par)
         {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_RETIF == 0);
+            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_RETIF == 0 && p.CD_PAR == cd_par);
             return result;
         }
 
@@ -78,10 +105,10 @@ namespace P2E.Importacao.API.Controllers
         /// <returns></returns>
         // GET: api/Importacao
         [HttpGet]
-        [Route("api/v1/importacao/obter-exoneracao-icms")]
-        public IEnumerable<TBImportacao> ObterExoneracaoIcms()
+        [Route("api/v1/importacao/obter-exoneracao-icms/{cd_par}")]
+        public IEnumerable<TBImportacao> ObterExoneracaoIcms(int cd_par)
         {
-            var result = _ImportacaoRepository.FindAll();
+            var result = _ImportacaoRepository.FindAll(p => p.CD_PAR == cd_par);
             return result;
         }
 

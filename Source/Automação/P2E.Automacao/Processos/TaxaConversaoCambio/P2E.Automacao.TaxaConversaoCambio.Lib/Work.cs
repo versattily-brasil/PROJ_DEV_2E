@@ -63,47 +63,48 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         {
             LogController.RegistrarLog("CONFIGURANDO AMBIENTE...", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-            using (var client = new HttpClient())
+            try
             {
-                try
+                options = new ChromeOptions();
+
+                var downloadDirectory = "C:\\Versatilly";
+
+                options.AddUserProfilePreference("download.default_directory", downloadDirectory);
+                options.AddUserProfilePreference("download.prompt_for_download", false);
+                options.AddUserProfilePreference("disable-popup-blocking", true);
+              
+                options.AddArguments("--disable-web-security");
+                options.AddArguments("--allow-running-insecure-content");
+                options.AddArgument("--disable-privacy");
+                options.AddArgument("--whitelisted-ips");
+                options.AddArgument("safebrowsing-disable-download-protection");
+                options.AddArgument(Directory.GetCurrentDirectory() + @"\chromedriver.exe");
+                LogController.RegistrarLog(Directory.GetCurrentDirectory() + @"\chromedriver.exe", eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                //options.AddArguments("headless");
+
+                options.AddArgument("test-type");
+                options.AddArgument("no-sandbox");
+                //options.AddExtension(@"c:\\path\to\extension.crx");
+
+
+
+                // Initialize the Chrome Driver
+                using (var _driver = new ChromeDriver(options))
                 {
-                                        
-
-                    options = new ChromeOptions();
-
-                    var downloadDirectory = "C:\\Versatilly";
-
-                    options.AddUserProfilePreference("download.default_directory", downloadDirectory);
-                    options.AddUserProfilePreference("download.prompt_for_download", false);
-                    options.AddUserProfilePreference("disable-popup-blocking", true);
-                    options.AddArguments("--disable-web-security");
-                    options.AddArguments("--allow-running-insecure-content");
-                    options.AddArgument("--disable-privacy");
-                    //options.AddArguments("headless");
-
-                    options.AddArgument("test-type");
-                    options.AddArgument("no-sandbox");
-                    //options.AddExtension(@"c:\\path\to\extension.crx");
-
-                    
-
-                    // Initialize the Chrome Driver
-                    using (var _driver = new  ChromeDriver( options))
+                    try
                     {
-                        try
-                        {
-                            Acessar(_driver);
-                        }
-                        catch (Exception)
-                        {
-                            _driver.Close();
-                        }
+                        Acessar(_driver);
+                    }
+                    catch (Exception)
+                    {
+                        _driver.Close();
                     }
                 }
-                catch (Exception e)
-                {
+            }
+            catch (Exception e)
+            {
 
-                }
             }
         }
 
@@ -181,14 +182,17 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 element.Click();
                 Thread.Sleep(2000);
 
-                SendKeys.SendWait("{TAB}");
+                _driver.Keyboard.SendKeys("{TAB}");
+                //SendKeys.SendWait("{TAB}");
                 Thread.Sleep(500);
-                SendKeys.SendWait("{TAB}");
+                _driver.Keyboard.SendKeys("{TAB}");
+                //SendKeys.SendWait("{TAB}");
                 Thread.Sleep(500);
-                SendKeys.SendWait("{ENTER}");
-                Thread.Sleep(500);
+                _driver.Keyboard. SendKeys("{ENTER}");
+                //SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(2000);
 
-                _driver.Close();
+                //_driver.Close();
 
                 var baixaXml = true;// DownloadXML(_driver);
 
@@ -201,15 +205,15 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                     }
 
                     arquivoPath = Path.Combine("C:\\Versatilly\\TaxaConversaoCambio.xml");
-                    
+
                     try
                     {
-                        var aux =  DeleteTaxa();
+                        var aux = DeleteTaxa();
                     }
                     catch (Exception e)
                     {
 
-                    }                    
+                    }
 
                     TaxaCambio taxaCambio = new TaxaCambio();
 

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPainel));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnConsultar = new System.Windows.Forms.Button();
             this.btnExecutarAgenda = new System.Windows.Forms.Button();
@@ -84,6 +84,9 @@
             this.barraProgresso = new System.Windows.Forms.ToolStripProgressBar();
             this.bgwConsultar = new System.ComponentModel.BackgroundWorker();
             this.agendaBotBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btnAtualizacao = new System.Windows.Forms.Button();
+            this.saveFile = new System.Windows.Forms.SaveFileDialog();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -107,6 +110,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnAtualizacao);
             this.panel1.Controls.Add(this.btnConsultar);
             this.panel1.Controls.Add(this.btnExecutarAgenda);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -155,7 +159,7 @@
             this.tabPage1.Controls.Add(this.gvAgendamentos);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1034, 317);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Agendamentos";
@@ -313,9 +317,9 @@
             // hRHORAEXECPROGDataGridViewTextBoxColumn
             // 
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.DataPropertyName = "HR_HORA_EXEC_PROG";
-            dataGridViewCellStyle1.Format = "T";
-            dataGridViewCellStyle1.NullValue = null;
-            this.hRHORAEXECPROGDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Format = "T";
+            dataGridViewCellStyle7.NullValue = null;
+            this.hRHORAEXECPROGDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.FillWeight = 93.2858F;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.Frozen = true;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.HeaderText = "Hora Programada";
@@ -371,9 +375,9 @@
             // DT_DATA_INICIO_ULTIMA_EXEC
             // 
             this.DT_DATA_INICIO_ULTIMA_EXEC.DataPropertyName = "DT_DATA_INICIO_ULTIMA_EXEC";
-            dataGridViewCellStyle2.Format = "G";
-            dataGridViewCellStyle2.NullValue = null;
-            this.DT_DATA_INICIO_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Format = "G";
+            dataGridViewCellStyle8.NullValue = null;
+            this.DT_DATA_INICIO_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle8;
             this.DT_DATA_INICIO_ULTIMA_EXEC.Frozen = true;
             this.DT_DATA_INICIO_ULTIMA_EXEC.HeaderText = "Início Última Execução";
             this.DT_DATA_INICIO_ULTIMA_EXEC.MinimumWidth = 6;
@@ -384,9 +388,9 @@
             // DT_DATA_FIM_ULTIMA_EXEC
             // 
             this.DT_DATA_FIM_ULTIMA_EXEC.DataPropertyName = "DT_DATA_FIM_ULTIMA_EXEC";
-            dataGridViewCellStyle3.Format = "G";
-            dataGridViewCellStyle3.NullValue = null;
-            this.DT_DATA_FIM_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Format = "G";
+            dataGridViewCellStyle9.NullValue = null;
+            this.DT_DATA_FIM_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle9;
             this.DT_DATA_FIM_ULTIMA_EXEC.Frozen = true;
             this.DT_DATA_FIM_ULTIMA_EXEC.HeaderText = "Fim Última Execução";
             this.DT_DATA_FIM_ULTIMA_EXEC.MinimumWidth = 6;
@@ -438,7 +442,7 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 388);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1042, 152);
+            this.tabControl2.Size = new System.Drawing.Size(1042, 340);
             this.tabControl2.TabIndex = 3;
             // 
             // tabPage2
@@ -446,8 +450,8 @@
             this.tabPage2.Controls.Add(this.splitContainer1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage2.Size = new System.Drawing.Size(1034, 126);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1034, 314);
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Bots do Agendamento";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -467,7 +471,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(1028, 120);
+            this.splitContainer1.Size = new System.Drawing.Size(1028, 308);
             this.splitContainer1.SplitterDistance = 707;
             this.splitContainer1.SplitterWidth = 8;
             this.splitContainer1.TabIndex = 2;
@@ -497,7 +501,7 @@
             this.gvAgendaBots.ReadOnly = true;
             this.gvAgendaBots.RowHeadersWidth = 51;
             this.gvAgendaBots.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvAgendaBots.Size = new System.Drawing.Size(707, 120);
+            this.gvAgendaBots.Size = new System.Drawing.Size(707, 308);
             this.gvAgendaBots.StandardTab = true;
             this.gvAgendaBots.TabIndex = 0;
             this.gvAgendaBots.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAgendaBots_CellContentClick);
@@ -623,7 +627,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(313, 120);
+            this.groupBox1.Size = new System.Drawing.Size(313, 308);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Log de Execução do Bot";
@@ -640,7 +644,7 @@
             this.listBox1.ItemHeight = 14;
             this.listBox1.Location = new System.Drawing.Point(3, 16);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(307, 101);
+            this.listBox1.Size = new System.Drawing.Size(307, 289);
             this.listBox1.TabIndex = 0;
             this.listBox1.ValueMember = "CD_BOT_EXEC_LOG";
             // 
@@ -653,7 +657,7 @@
             this.barraStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.barraStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.barraProgresso});
-            this.barraStatus.Location = new System.Drawing.Point(0, 518);
+            this.barraStatus.Location = new System.Drawing.Point(0, 706);
             this.barraStatus.Name = "barraStatus";
             this.barraStatus.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.barraStatus.Size = new System.Drawing.Size(1042, 22);
@@ -675,11 +679,32 @@
             // 
             this.agendaBotBindingSource.DataSource = typeof(P2E.Automacao.Orquestrador.Lib.Entidades.AgendaBot);
             // 
+            // btnAtualizacao
+            // 
+            this.btnAtualizacao.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAtualizacao.Location = new System.Drawing.Point(886, 0);
+            this.btnAtualizacao.Name = "btnAtualizacao";
+            this.btnAtualizacao.Size = new System.Drawing.Size(156, 45);
+            this.btnAtualizacao.TabIndex = 3;
+            this.btnAtualizacao.Text = "Atualização";
+            this.btnAtualizacao.UseVisualStyleBackColor = true;
+            this.btnAtualizacao.Click += new System.EventHandler(this.btnAtualizacao_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBar1.Location = new System.Drawing.Point(0, 683);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(1042, 23);
+            this.progressBar1.TabIndex = 5;
+            this.progressBar1.Visible = false;
+            // 
             // frmPainel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1042, 540);
+            this.ClientSize = new System.Drawing.Size(1042, 728);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.barraStatus);
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.panel2);
@@ -782,5 +807,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DT_DATA_INICIO_ULTIMA_EXEC;
         private System.Windows.Forms.DataGridViewTextBoxColumn DT_DATA_FIM_ULTIMA_EXEC;
         public System.Windows.Forms.Button btnConsultar;
+        private System.Windows.Forms.Button btnAtualizacao;
+        private System.Windows.Forms.SaveFileDialog saveFile;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

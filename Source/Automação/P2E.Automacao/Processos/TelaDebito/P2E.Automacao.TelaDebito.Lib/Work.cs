@@ -25,6 +25,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
         private string _urlApiBase;
         private List<Importacao> registros;
         int _cd_bot_exec;
+        int _cd_par;
         #endregion
 
         public Work()
@@ -34,12 +35,13 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
             //_urlApiBase = "http://localhost:7000/";
         }
 
-        public Work(int cd_bot_exec)
+        public Work(int cd_bot_exec, int cd_par)
         {
             _cd_bot_exec = cd_bot_exec;
+            _cd_par = cd_par;
+
             LogController.RegistrarLog("#################  INICIALIZANDO - TELA DE DÉBITO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
-            //_urlApiBase = "http://localhost:7000/";
         }
 
         public async Task ExecutarAsync()
@@ -50,7 +52,7 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
 
         private async Task CarregarListaDIAsync()
         {
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/tela-debito";
+            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/tela-debito/" + _cd_par;
 
             using (var client = new HttpClient())
             {

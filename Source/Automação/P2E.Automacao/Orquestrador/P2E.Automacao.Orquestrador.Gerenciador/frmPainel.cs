@@ -9,7 +9,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -194,11 +197,11 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             var agendaSelecionada = (Agenda)gvAgendamentos.SelectedRows[0].DataBoundItem;
             if (agendaSelecionada.OP_STATUS == eStatusExec.Executando || agendaSelecionada.OP_STATUS == eStatusExec.Programado || agendaSelecionada.OP_STATUS == eStatusExec.Aguardando_Processamento)
             {
-                if (MessageBox.Show($"Confirmar interrupção da execução da agenda '{agendaSelecionada.TX_DESCRICAO}'?", "Confirma", 
+                if (MessageBox.Show($"Confirmar interrupção da execução da agenda '{agendaSelecionada.TX_DESCRICAO}'?", "Confirma",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     _work.AlterarStatusAgendaAsync(agendaSelecionada, eStatusExec.Interrompido);
-                    MessageBox.Show($"Execução interrompida.");
+                    //MessageBox.Show($"Execução interrompida.");
                     btnConsultar.PerformClick();
                 }
             }
@@ -219,12 +222,40 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         {
             try
             {
+                if (!bgwConsultar.IsBusy)
+                {
+                    bgwConsultar.RunWorkerAsync();
+                    btnConsultar.Enabled = false;
+                }
+
                 Process.Start("P2E.Automacao.Orquestrador.Console.exe", Directory.GetCurrentDirectory());
             }
             catch (Exception)
             {
 
             }
+        }
+
+        private void btnAtualizacao_Click(object sender, EventArgs e)
+        {
+            progressBar1.Visible = true;
+
+            WebClient webClient = new WebClient();
+            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completo);
+            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressoFeito);
+            webClient.DownloadFileAsync(new Uri("http://deploy.2e.versattily.com/Orquestrador/Orquestrador.exe"), @"C:\ProgramData\Orquestrador.exe");
+        }
+
+        private void ProgressoFeito(object sender, DownloadProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void Completo(object sender, AsyncCompletedEventArgs e)
+        {
+            MessageBox.Show("Download efetuado!","Informação",MessageBoxButtons.OK,MessageBoxIcon.Information);
+
+            System.Diagnostics.Process.Start(@"C:\\ProgramData\\Orquestrador.exe", "/silent");
         }
     }
 }
