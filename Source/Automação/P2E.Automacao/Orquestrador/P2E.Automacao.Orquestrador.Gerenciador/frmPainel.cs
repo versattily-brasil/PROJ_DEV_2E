@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
@@ -222,6 +223,11 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
         {
             try
             {
+                Assembly entryAssembly = Assembly.GetEntryAssembly();
+                Version version = entryAssembly.GetName().Version;
+
+                toolStripVersao.Text = "Versão: "+string.Format("v{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+
                 if (!bgwConsultar.IsBusy)
                 {
                     bgwConsultar.RunWorkerAsync();

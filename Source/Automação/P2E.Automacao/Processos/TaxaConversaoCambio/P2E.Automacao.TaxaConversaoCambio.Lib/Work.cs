@@ -182,14 +182,14 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 element.Click();
                 Thread.Sleep(2000);
 
-                _driver.Keyboard.SendKeys("{TAB}");
-                //SendKeys.SendWait("{TAB}");
+                //_driver.Keyboard.SendKeys("{TAB}");
+                SendKeys.SendWait("{TAB}");
                 Thread.Sleep(500);
-                _driver.Keyboard.SendKeys("{TAB}");
-                //SendKeys.SendWait("{TAB}");
+                //_driver.Keyboard.SendKeys("{TAB}");
+                SendKeys.SendWait("{TAB}");
                 Thread.Sleep(500);
-                _driver.Keyboard. SendKeys("{ENTER}");
-                //SendKeys.SendWait("{ENTER}");
+                //_driver.Keyboard. SendKeys("{ENTER}");
+                SendKeys.SendWait("{ENTER}");
                 Thread.Sleep(2000);
 
                 //_driver.Close();
@@ -375,7 +375,8 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                         foreach (var ncm in registros)
                         {
-                            result = await client.DeleteAsync($"{url}/{ncm.CD_TAXA_CAMBIO}");
+                            LogController.RegistrarLog("Excluindo Registro " + ncm.TX_MOEDA + " - " + ncm.TX_DESCRICAO, eTipoLog.INFO, _cd_bot_exec, "bot");
+                            result = client.DeleteAsync($"{url}/{ncm.CD_TAXA_CAMBIO}").Result;
                             responseBody = await result.Content.ReadAsStringAsync();
                             result.EnsureSuccessStatusCode();
                         }

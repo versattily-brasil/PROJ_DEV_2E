@@ -30,10 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPainel));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAtualizacao = new System.Windows.Forms.Button();
             this.btnConsultar = new System.Windows.Forms.Button();
             this.btnExecutarAgenda = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -84,9 +85,9 @@
             this.barraProgresso = new System.Windows.Forms.ToolStripProgressBar();
             this.bgwConsultar = new System.ComponentModel.BackgroundWorker();
             this.agendaBotBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.btnAtualizacao = new System.Windows.Forms.Button();
             this.saveFile = new System.Windows.Forms.SaveFileDialog();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.toolStripVersao = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -118,6 +119,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1042, 45);
             this.panel1.TabIndex = 0;
+            // 
+            // btnAtualizacao
+            // 
+            this.btnAtualizacao.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnAtualizacao.Location = new System.Drawing.Point(886, 0);
+            this.btnAtualizacao.Name = "btnAtualizacao";
+            this.btnAtualizacao.Size = new System.Drawing.Size(156, 45);
+            this.btnAtualizacao.TabIndex = 3;
+            this.btnAtualizacao.Text = "Atualização";
+            this.btnAtualizacao.UseVisualStyleBackColor = true;
+            this.btnAtualizacao.Click += new System.EventHandler(this.btnAtualizacao_Click);
             // 
             // btnConsultar
             // 
@@ -317,9 +329,9 @@
             // hRHORAEXECPROGDataGridViewTextBoxColumn
             // 
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.DataPropertyName = "HR_HORA_EXEC_PROG";
-            dataGridViewCellStyle7.Format = "T";
-            dataGridViewCellStyle7.NullValue = null;
-            this.hRHORAEXECPROGDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle4.Format = "T";
+            dataGridViewCellStyle4.NullValue = null;
+            this.hRHORAEXECPROGDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.FillWeight = 93.2858F;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.Frozen = true;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.HeaderText = "Hora Programada";
@@ -375,9 +387,9 @@
             // DT_DATA_INICIO_ULTIMA_EXEC
             // 
             this.DT_DATA_INICIO_ULTIMA_EXEC.DataPropertyName = "DT_DATA_INICIO_ULTIMA_EXEC";
-            dataGridViewCellStyle8.Format = "G";
-            dataGridViewCellStyle8.NullValue = null;
-            this.DT_DATA_INICIO_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle5.Format = "G";
+            dataGridViewCellStyle5.NullValue = null;
+            this.DT_DATA_INICIO_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle5;
             this.DT_DATA_INICIO_ULTIMA_EXEC.Frozen = true;
             this.DT_DATA_INICIO_ULTIMA_EXEC.HeaderText = "Início Última Execução";
             this.DT_DATA_INICIO_ULTIMA_EXEC.MinimumWidth = 6;
@@ -388,9 +400,9 @@
             // DT_DATA_FIM_ULTIMA_EXEC
             // 
             this.DT_DATA_FIM_ULTIMA_EXEC.DataPropertyName = "DT_DATA_FIM_ULTIMA_EXEC";
-            dataGridViewCellStyle9.Format = "G";
-            dataGridViewCellStyle9.NullValue = null;
-            this.DT_DATA_FIM_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle6.Format = "G";
+            dataGridViewCellStyle6.NullValue = null;
+            this.DT_DATA_FIM_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle6;
             this.DT_DATA_FIM_ULTIMA_EXEC.Frozen = true;
             this.DT_DATA_FIM_ULTIMA_EXEC.HeaderText = "Fim Última Execução";
             this.DT_DATA_FIM_ULTIMA_EXEC.MinimumWidth = 6;
@@ -656,6 +668,7 @@
             // 
             this.barraStatus.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.barraStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripVersao,
             this.barraProgresso});
             this.barraStatus.Location = new System.Drawing.Point(0, 706);
             this.barraStatus.Name = "barraStatus";
@@ -679,17 +692,6 @@
             // 
             this.agendaBotBindingSource.DataSource = typeof(P2E.Automacao.Orquestrador.Lib.Entidades.AgendaBot);
             // 
-            // btnAtualizacao
-            // 
-            this.btnAtualizacao.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAtualizacao.Location = new System.Drawing.Point(886, 0);
-            this.btnAtualizacao.Name = "btnAtualizacao";
-            this.btnAtualizacao.Size = new System.Drawing.Size(156, 45);
-            this.btnAtualizacao.TabIndex = 3;
-            this.btnAtualizacao.Text = "Atualização";
-            this.btnAtualizacao.UseVisualStyleBackColor = true;
-            this.btnAtualizacao.Click += new System.EventHandler(this.btnAtualizacao_Click);
-            // 
             // progressBar1
             // 
             this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -698,6 +700,12 @@
             this.progressBar1.Size = new System.Drawing.Size(1042, 23);
             this.progressBar1.TabIndex = 5;
             this.progressBar1.Visible = false;
+            // 
+            // toolStripVersao
+            // 
+            this.toolStripVersao.Name = "toolStripVersao";
+            this.toolStripVersao.Size = new System.Drawing.Size(118, 17);
+            this.toolStripVersao.Text = "toolStripStatusLabel1";
             // 
             // frmPainel
             // 
@@ -810,5 +818,6 @@
         private System.Windows.Forms.Button btnAtualizacao;
         private System.Windows.Forms.SaveFileDialog saveFile;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripVersao;
     }
 }

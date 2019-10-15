@@ -213,7 +213,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 {
                                     try
                                     {
-                                        await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
+                                        await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
                                         await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                                     }
                                     catch (ThreadAbortException abort)
@@ -233,7 +233,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 {
                                     try
                                     {
-                                        await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
+                                        await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
                                         await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                                     }
                                     catch (ThreadAbortException abort)
@@ -253,7 +253,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 {
                                     try
                                     {
-                                        new ExonerarIcms.Lib.Work().ExecutarAsync();
+                                        new ExonerarIcms.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
                                         await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                                     }
                                     catch (ThreadAbortException abort)
@@ -273,7 +273,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 {
                                     try
                                     {
-                                        await new Processos.ExtratoRetificacao.Lib.Work().ExecutarAsync();
+                                        await new Processos.ExtratoRetificacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
                                         await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                                     }
                                     catch (ThreadAbortException abort)
@@ -293,7 +293,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 {
                                     try
                                     {
-                                        await new Processos.TelaDebito.Lib.Work().ExecutarAsync();
+                                        await new Processos.TelaDebito.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
                                         await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                                     }
                                     catch (ThreadAbortException abort)
@@ -361,7 +361,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                     try
                                     {
 
-                                        await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work().ExecutarAsync();
+                                        await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
                                         await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                                     }
                                     catch (ThreadAbortException abort)

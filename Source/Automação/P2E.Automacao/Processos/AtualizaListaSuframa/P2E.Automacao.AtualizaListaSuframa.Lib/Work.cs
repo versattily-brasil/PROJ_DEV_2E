@@ -215,7 +215,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(_urlApiBase);
-                    resultado = await client.PutAsJsonAsync($"imp/v1/ncm/{0}", detalheNcm);
+                    resultado = client.PutAsJsonAsync($"imp/v1/ncm/{0}", detalheNcm).Result;
                     resultado.EnsureSuccessStatusCode();
 
                     LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
@@ -235,7 +235,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
 
                 using (var client = new HttpClient())
                 {
-                    var result = await client.GetAsync(url + "/todos");
+                    var result = client.GetAsync(url + "/todos").Result;
                     var aux = await result.Content.ReadAsStringAsync();
                     registros = JsonConvert.DeserializeObject<List<DetalheNCM>>(aux);
 
@@ -245,7 +245,9 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
 
                         foreach (var ncm in registros)
                         {
-                            result = await client.DeleteAsync($"{url}/{ncm.CD_DET_NCM}");
+                            LogController.RegistrarLog("Excluindo Registro " + ncm.TX_SFNCM_CODIGO + " - " + ncm.TX_SFNCM_DESCRICAO, eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                            result = client.DeleteAsync($"{url}/{ncm.CD_DET_NCM}").Result;
                             responseBody = await result.Content.ReadAsStringAsync();
                             result.EnsureSuccessStatusCode();
                         }
