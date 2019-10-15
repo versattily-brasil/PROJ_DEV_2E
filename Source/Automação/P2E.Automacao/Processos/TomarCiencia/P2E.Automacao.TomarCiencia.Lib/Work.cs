@@ -16,6 +16,8 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,9 +33,11 @@ namespace P2E.Automacao.TomarCiencia.Lib
         private string _urlDocLacre = @"https://online.sefaz.am.gov.br/sinf2004/DI/rel_lacre.asp?idDi=";
         private List<Importacao> ListaProcessosBD;
         int _cd_bot_exec;
+        int _cd_par;
         private string razaoSocial = "";
         private string CNPJ = "";
         private string inscricaoEstadual = "";
+        private List<ParceiroNegocio> registros;
         #endregion
 
         List<string> Inscricoes = new List<string>();
@@ -53,9 +57,11 @@ namespace P2E.Automacao.TomarCiencia.Lib
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        public Work(int cd_bot_exec)
+        public Work(int cd_bot_exec, int cd_par)
         {
             _cd_bot_exec = cd_bot_exec;
+            _cd_par = cd_par;
+
             Log("############ Inicialização de automação [Tomar Ciência] ############");
             Log(null, null, true);
 
@@ -70,7 +76,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 LogController.RegistrarLog(string.Empty, eTipoLog.INFO, _cd_bot_exec, "bot");
         }
 
-        public void Start()
+        public async Task Start()
         {
             try
             {
@@ -92,10 +98,31 @@ namespace P2E.Automacao.TomarCiencia.Lib
             }
 
             // Executa o passo-a-passo
-            
+
             CarregaListaEmpresas();
-            Main(service);
-            Finish();
+
+            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/tomarciencia/" + _cd_par;
+
+            using (var client = new HttpClient())
+            {
+                LogController.RegistrarLog("ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                var result = await client.GetAsync(urlAcompanha);
+                var aux = await result.Content.ReadAsStringAsync();
+                registros = JsonConvert.DeserializeObject<List<ParceiroNegocio>>(aux);
+
+                if (registros != null && registros.Any())
+                {
+                    foreach (var item in ListaEmpresas)
+                    {
+                        if (item.CNPJ == registros[0].CNPJ)
+                        {
+                            Main(item);
+                            Finish();
+                        }
+                    }
+                }
+            }
         }
 
         protected void Finish()
@@ -363,7 +390,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         /// Principal método do Robô. Aqui a sessão para cada Inscrição Estadual é estabelecida
         /// ao acessar a "_urlInscriçao"
         /// </summary>
-        protected async Task Main(PhantomJSDriverService service)
+        protected async Task Main(Empresa empTomarCiencia)
         {
             int paginaInicial = 1;
             int numeroPaginas;
@@ -378,227 +405,207 @@ namespace P2E.Automacao.TomarCiencia.Lib
             ExcelPackage xlsDoc = null;
             ExcelWorksheet sheet = null;
 
-            foreach (Empresa empresa in this.ListaEmpresas)
+            var drEmpresa = empTomarCiencia;
+
+            Log("Empresa - " + drEmpresa.Nome.Trim());
+
+            //CRIA PLANILHA PARA SAMSUNG E VENTISOL
+            if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
             {
-                Log("Empresa - " + empresa.Nome.Trim());
+                Log("*****Criando Planilha*****");
+                xlsDoc = new ExcelPackage();
 
+                xlsDoc.Workbook.Properties.Title = "2E";
+
+                r = 0;
+                r++;
+                colDI = 1;
+                colData = 2;
+                colSinal = 3;
+            }
+
+            foreach (string inscricao in drEmpresa.IncricoesEstaduais)
+            {
                 //CRIA PLANILHA PARA SAMSUNG E VENTISOL
-                if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
+                if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
                 {
-                    Log("*****Criando Planilha*****");
-                    xlsDoc = new ExcelPackage();
+                    sheet = xlsDoc.Workbook.Worksheets.Add(inscricao.Trim());
+                    sheet.Name = inscricao.Trim();
 
-                    xlsDoc.Workbook.Properties.Title = "2E";
-
-                    r = 0;
                     r++;
-                    colDI = 1;
-                    colData = 2;
-                    colSinal = 3;
+                    sheet.Cells[r, colDI].Value = "Inscrição Nº " + inscricao.Trim();
+                    r++;
+
+                    sheet.Cells[r, colDI].Value = "Numero DI";
+                    sheet.Cells[r, colData].Value = "Data";
+                    sheet.Cells[r, colSinal].Value = "Canal";
+
+                    r++;
                 }
 
-                foreach (string inscricao in empresa.IncricoesEstaduais)
+                // Garante que a sessão corrente esteja no contexto da Inscrição Estadual atual
+                this._driver.Navigate().GoToUrl(this._urlIncricao + inscricao);
+                Log(null, null, true);
+                Log(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao), nameof(Main));
+
+                // Segue diretamente à listagem das DAI's da Inscrição Estadual
+                // selecionada no passo anterior
+                this._driver.Navigate().GoToUrl(this._urlConsultaDI + paginaInicial);
+                Thread.Sleep(1000);
+
+                string totalPaginas = "0";
+
+                try
                 {
-                    //CRIA PLANILHA PARA SAMSUNG E VENTISOL
-                    if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
+                    // Captura o total de páginas da listagem de DAI's da Inscrição Estadual atual
+                    totalPaginas = this._driver.FindElement(By.XPath("/html/body/table[1]/tbody/tr/td/table/tbody/tr/td[3]")).Text;
+                    numeroPaginas = Convert.ToInt32(totalPaginas.Substring(totalPaginas.LastIndexOf('/') + 1).Trim());
+                }
+                catch (Exception)
+                {
+                    numeroPaginas = 0;
+                    string mensagem = this._driver.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/b")).Text;
+                    Log("######" + mensagem + "######");
+                }
+
+                // Página a página, busca pelas DAI's que estejam pendentes de "Tomar Ciência".
+                for (int pag = 1; pag < numeroPaginas; pag++)
+                {
+                    Log("Navegando para a página " + pag);
+                    this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
+                    Log("Loading de 5 mils.");
+                    Thread.Sleep(500);
+
+                    r++;
+
+                    if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
                     {
-                        sheet = xlsDoc.Workbook.Worksheets.Add(inscricao.Trim());
-                        sheet.Name = inscricao.Trim();
-
-                        r++;
-                        sheet.Cells[r, colDI].Value = "Inscrição Nº " + inscricao.Trim();
-                        r++;
-
-                        sheet.Cells[r, colDI].Value = "Numero DI";
-                        sheet.Cells[r, colData].Value = "Data";
-                        sheet.Cells[r, colSinal].Value = "Canal";
-
-                        r++;
+                        sheet.Cells[r, colDI].Value = "Pagina " + pag;
                     }
 
-                    // Garante que a sessão corrente esteja no contexto da Inscrição Estadual atual
-                    this._driver.Navigate().GoToUrl(this._urlIncricao + inscricao);
-                    Log(null, null, true);
-                    Log(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao), nameof(Main));
+                    r++;
+                    r++;
 
-                    // Segue diretamente à listagem das DAI's da Inscrição Estadual
-                    // selecionada no passo anterior
-                    this._driver.Navigate().GoToUrl(this._urlConsultaDI + paginaInicial);
-                    Thread.Sleep(1000);
-
-                    string totalPaginas = "0";
-
+                    ReadOnlyCollection<IWebElement> elements;
                     try
                     {
-                        // Captura o total de páginas da listagem de DAI's da Inscrição Estadual atual
-                        totalPaginas = this._driver.FindElement(By.XPath("/html/body/table[1]/tbody/tr/td/table/tbody/tr/td[3]")).Text;
-                        numeroPaginas = Convert.ToInt32(totalPaginas.Substring(totalPaginas.LastIndexOf('/') + 1).Trim());
-                    }
-                    catch (Exception)
-                    {
-                        numeroPaginas = 0;
-                        string mensagem = this._driver.FindElement(By.XPath("/html/body/table/tbody/tr/td[2]/b")).Text;
-                        Log("######" + mensagem + "######");
-                    }
+                        elements = _driver.FindElements(By.ClassName("dg_ln_impar"));
 
-                    //try
-                    //{
-                    //    Select selectTipo = new Select(_driver, By.Id("canal"));
-                    //    selectTipo.SelectByValue("1");
-
-                    //    element = _driver.FindElement(By.Id("btPesq"));
-                    //    element.Click();
-                    //}
-                    //catch (Exception e)
-                    //{
-
-                    //}
-
-
-
-                    //Parallel.For(1, numeroPaginas,
-                    //index => {
-
-                    // });
-                    // Página a página, busca pelas DAI's que estejam pendentes de "Tomar Ciência".
-                    for (int pag = 1; pag < numeroPaginas; pag++)
-                    {
-                        Log("Navegando para a página " + pag);
-                        this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
-                        Log("Loading de 5 mils.");
-                        Thread.Sleep(500);
-
-                        r++;
-
-                        if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
+                        foreach (IWebElement element in elements)
                         {
-                            sheet.Cells[r, colDI].Value = "Pagina " + pag;
-                        }
-
-                        r++;
-                        r++;
-
-                        ReadOnlyCollection<IWebElement> elements;
-                        try
-                        {
-                            elements = _driver.FindElements(By.ClassName("dg_ln_impar"));
-
-                            foreach (IWebElement element in elements)
+                            if (element.Text.Contains("[Imp. de Lacre]"))
                             {
-                                if (element.Text.Contains("[Imp. de Lacre]"))
+                                var retornoPrint = DownloadDAILacre(element.Text.Substring(0, 9));
+
+                                if (retornoPrint)
                                 {
-                                    var retornoPrint = DownloadDAILacre(element.Text.Substring(0, 9));
-
-                                    if (retornoPrint)
-                                    {
-                                        Log("PDF DOC. LACRE SALVO !");
-                                    }
-                                }
-
-                                if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
-                                {
-                                    var nroDI = element.Text.Substring(0, 9);
-                                    Log("GRAVANDO DI= " + nroDI);
-
-                                    var data = element.Text.Substring(10, 10);
-                                    var status = "";
-
-                                    sheet.Cells[r, colDI].Value = nroDI;
-                                    sheet.Cells[r, colData].Value = data;
-
-                                    if (element.Text.Contains("Parametriza"))
-                                    {
-                                        status = "Pendente de parametrização";
-                                        sheet.Cells[r, colSinal].Value = status;
-                                    }
-                                    else
-                                    {
-                                        status = "Verde";
-                                        sheet.Cells[r, colSinal].Value = status;
-
-                                        using (var range = sheet.Cells[r, colSinal])
-                                        {
-                                            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                            range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
-                                        }
-                                    }
-
-                                    r++;
+                                    Log("PDF DOC. LACRE SALVO !");
                                 }
                             }
 
-                            elements = _driver.FindElements(By.ClassName("dg_ln_par"));
-
-                            foreach (IWebElement elemento in elements)
+                            if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
                             {
-                                if (elemento.Text.Contains("[Imp. de Lacre]"))
-                                {
-                                    var retornoPrint = DownloadDAILacre(elemento.Text.Substring(0, 9));
+                                var nroDI = element.Text.Substring(0, 9);
+                                Log("GRAVANDO DI= " + nroDI);
 
-                                    if (retornoPrint)
+                                var data = element.Text.Substring(10, 10);
+                                var status = "";
+
+                                sheet.Cells[r, colDI].Value = nroDI;
+                                sheet.Cells[r, colData].Value = data;
+
+                                if (element.Text.Contains("Parametriza"))
+                                {
+                                    status = "Pendente de parametrização";
+                                    sheet.Cells[r, colSinal].Value = status;
+                                }
+                                else
+                                {
+                                    status = "Verde";
+                                    sheet.Cells[r, colSinal].Value = status;
+
+                                    using (var range = sheet.Cells[r, colSinal])
                                     {
-                                        Log("PDF DOC. LACRE SALVO !");
+                                        range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
                                     }
                                 }
 
-                                if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
-                                {
-                                    var nroDI = elemento.Text.Substring(0, 9);
-                                    Log("GRAVANDO DI= " + nroDI);
-
-                                    var data = elemento.Text.Substring(10, 10);
-                                    var status = "";
-
-                                    sheet.Cells[r, colDI].Value = nroDI;
-                                    sheet.Cells[r, colData].Value = data;
-
-                                    if (elemento.Text.Contains("Parametriza"))
-                                    {
-                                        status = "Pendente de parametrização";
-                                        sheet.Cells[r, colSinal].Value = status;
-                                    }
-                                    else
-                                    {
-                                        status = "Verde";
-                                        sheet.Cells[r, colSinal].Value = status;
-
-                                        using (var range = sheet.Cells[r, colSinal])
-                                        {
-                                            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                            range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
-                                        }
-                                    }
-
-                                    r++;
-                                }
+                                r++;
                             }
                         }
-                        catch (NoSuchElementException ex)
-                        {
 
+                        elements = _driver.FindElements(By.ClassName("dg_ln_par"));
+
+                        foreach (IWebElement elemento in elements)
+                        {
+                            if (elemento.Text.Contains("[Imp. de Lacre]"))
+                            {
+                                var retornoPrint = DownloadDAILacre(elemento.Text.Substring(0, 9));
+
+                                if (retornoPrint)
+                                {
+                                    Log("PDF DOC. LACRE SALVO !");
+                                }
+                            }
+
+                            if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
+                            {
+                                var nroDI = elemento.Text.Substring(0, 9);
+                                Log("GRAVANDO DI= " + nroDI);
+
+                                var data = elemento.Text.Substring(10, 10);
+                                var status = "";
+
+                                sheet.Cells[r, colDI].Value = nroDI;
+                                sheet.Cells[r, colData].Value = data;
+
+                                if (elemento.Text.Contains("Parametriza"))
+                                {
+                                    status = "Pendente de parametrização";
+                                    sheet.Cells[r, colSinal].Value = status;
+                                }
+                                else
+                                {
+                                    status = "Verde";
+                                    sheet.Cells[r, colSinal].Value = status;
+
+                                    using (var range = sheet.Cells[r, colSinal])
+                                    {
+                                        range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
+                                    }
+                                }
+
+                                r++;
+                            }
                         }
                     }
+                    catch (NoSuchElementException ex)
+                    {
 
-                    r = 1;
-                    colDI = 1;
-                    colData = 2;
-                    colSinal = 3;
+                    }
                 }
 
-                if (empresa.Nome.Contains("SAMSUNG") || empresa.Nome.Contains("VENTISOL"))
+                r = 1;
+                colDI = 1;
+                colData = 2;
+                colSinal = 3;
+            }
+
+            if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
+            {
+                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
                 {
-                    //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                    if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
-                    {
-                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
-                    }
-
-                    var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
-
-                    string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-TomarCiencia" + empresa.Nome.Trim().Replace(" ", "") + ".xlsx");
-
-                    File.WriteAllBytes(arquivoPath, xlsDoc.GetAsByteArray());
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
                 }
+
+                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+
+                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-TomarCiencia" + drEmpresa.Nome.Trim().Replace(" ", "") + ".xlsx");
+
+                File.WriteAllBytes(arquivoPath, xlsDoc.GetAsByteArray());
             }
 
             var debugStop = false;

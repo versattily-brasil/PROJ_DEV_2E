@@ -13,10 +13,12 @@ namespace P2E.Importacao.API.Controllers
     public class ImportacaoController : ControllerBase
     {
         private readonly IImportacaoRepository _ImportacaoRepository;
+        //private readonly IParceiroNegocioRepository _ParceiroNegocioRepository;
 
-        public ImportacaoController(IImportacaoRepository ImportacaoRepository)
+        public ImportacaoController(IImportacaoRepository ImportacaoRepository/*, IParceiroNegocioRepository parceiroNegocioRepository*/)
         {
             _ImportacaoRepository = ImportacaoRepository;
+            //_ParceiroNegocioRepository = parceiroNegocioRepository;
         }
 
         // GET: api/Importacao
@@ -44,6 +46,15 @@ namespace P2E.Importacao.API.Controllers
 
             return clientes.ToList();
         }
+
+        //// GET: api/Importacao/baixarextrato
+        //[HttpGet]
+        //[Route("api/v1/importacao/tomarciencia/{cd_par}")]
+        //public IEnumerable<ParceiroNegocio> TomarCiencia(int cd_par)
+        //{
+        //    var result = _ParceiroNegocioRepository.FindAll(p => p.CD_PAR == cd_par);
+        //    return result;
+        //}
 
         // GET: api/Importacao/baixarextrato
         [HttpGet]
