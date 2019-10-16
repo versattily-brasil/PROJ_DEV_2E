@@ -16,6 +16,7 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades.Map
             Map(p => p.CD_BOT).Column("CD_BOT");
             Map(p => p.NR_ORDEM_EXEC).Column("NR_ORDEM_EXEC");
             Map(p => p.TX_PARAM_EXEC).Column("TX_PARAM_EXEC");
+          
         }
     }
 }

@@ -137,8 +137,10 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                                         LogController.RegistrarLog(_nome_cliente + " - " + $"Não foram localizadas DI's.", eTipoLog.ALERTA, _cd_bot_exec, "bot");
                                     }
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
+                                    LogController.RegistrarLog(_nome_cliente + " - " + "ERRO: - " + ex.Message, eTipoLog.ERRO, _cd_bot_exec, "bot");
+
                                     _driver.Close();
                                 }
 

@@ -58,6 +58,9 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             lblstatus.Text = _agenda.OP_STATUS.GetDescription();
 
             chkAtivo.Checked = _agenda.OP_ATIVO > 0;
+
+            chkLoop.Checked = _agenda.OP_LOOP > 0;
+            chkRetentar.Checked = _agenda.OP_RETENTAR > 0;
         }
 
         private void btnSalvar_Click(object sender, EventArgs e)
@@ -134,6 +137,8 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             _agenda.OP_ATIVO = chkAtivo.Checked ? 1 : 0;
             _agenda.OP_REPETE = chkRepete.Checked ? 1 : 0;
 
+            _agenda.OP_RETENTAR = chkRetentar.Checked ? 1 : 0;
+            _agenda.OP_LOOP = chkLoop.Checked ? 1 : 0;
 
             _agenda.OP_FORMA_EXEC = rdFormaExecAuto.Checked ? eFormaExec.Automática : eFormaExec.Manual;
 

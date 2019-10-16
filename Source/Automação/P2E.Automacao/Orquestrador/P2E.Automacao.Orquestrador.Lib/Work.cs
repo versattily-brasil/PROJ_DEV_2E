@@ -152,6 +152,8 @@ namespace P2E.Automacao.Orquestrador.Lib
                         bot.BotProgramado.DT_INICIO_EXEC = DateTime.Now;
                     }
 
+                    
+
                     if (novoStatus == eStatusExec.Falha || novoStatus == eStatusExec.Concluído)
                     {
                         bot.BotProgramado.DT_FIM_EXEC = DateTime.Now;
@@ -190,7 +192,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                             nomeCliente = clientes.Result[0].TXT_RZSOC.Trim();
                         }
 
-                        
+
 
                         switch (bot.Bot.TX_NOME.ToUpper())
                         {
@@ -556,7 +558,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                     {
                         foreach (var agenda in agendas)
                         {
-                            if (agenda.OP_STATUS == eStatusExec.Programado || agenda.OP_STATUS == eStatusExec.Aguardando_Processamento || agenda.OP_STATUS == eStatusExec.Executando)
+                            if (agenda.OP_STATUS == eStatusExec.Programado || agenda.OP_STATUS == eStatusExec.Aguardando_Processamento || agenda.OP_STATUS == eStatusExec.Executando || agenda.OP_STATUS == eStatusExec.Retentar)
                             {
                                 agenda.AgendaProgramada = agendaExecRep.Find(p => p.CD_AGENDA_EXEC == agenda.CD_ULTIMA_EXEC);
                             }

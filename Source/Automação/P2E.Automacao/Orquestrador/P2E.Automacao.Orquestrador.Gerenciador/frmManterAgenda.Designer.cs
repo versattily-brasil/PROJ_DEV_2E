@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.txtDescricao = new System.Windows.Forms.TextBox();
+            this.agendaBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtDataProgramada = new System.Windows.Forms.MaskedTextBox();
@@ -49,23 +50,25 @@
             this.rdFormaExecAuto = new System.Windows.Forms.RadioButton();
             this.grpFormaExec = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rdTipoRepeteHorario = new System.Windows.Forms.RadioButton();
-            this.rdTipoRepeteDiario = new System.Windows.Forms.RadioButton();
             this.rdTipoExecSemanal = new System.Windows.Forms.RadioButton();
             this.rdTipoExecMensal = new System.Windows.Forms.RadioButton();
-            this.agendaBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.rdTipoRepeteHorario = new System.Windows.Forms.RadioButton();
+            this.rdTipoRepeteDiario = new System.Windows.Forms.RadioButton();
+            this.chkLoop = new System.Windows.Forms.CheckBox();
+            this.chkRetentar = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.agendaBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
             this.grpFormaExec.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.agendaBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(8, 87);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(71, 17);
+            this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Descrição";
             // 
@@ -74,57 +77,67 @@
             this.txtDescricao.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.agendaBindingSource, "TX_DESCRICAO", true));
             this.txtDescricao.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.agendaBindingSource, "TX_DESCRICAO", true));
             this.txtDescricao.Enabled = false;
-            this.txtDescricao.Location = new System.Drawing.Point(15, 29);
+            this.txtDescricao.Location = new System.Drawing.Point(10, 104);
+            this.txtDescricao.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtDescricao.Multiline = true;
             this.txtDescricao.Name = "txtDescricao";
-            this.txtDescricao.Size = new System.Drawing.Size(773, 22);
-            this.txtDescricao.TabIndex = 1;
+            this.txtDescricao.Size = new System.Drawing.Size(538, 19);
+            this.txtDescricao.TabIndex = 4;
+            // 
+            // agendaBindingSource
+            // 
+            this.agendaBindingSource.DataSource = typeof(P2E.Automacao.Orquestrador.Lib.Entidades.Agenda);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 149);
+            this.label3.Location = new System.Drawing.Point(11, 147);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(120, 17);
+            this.label3.Size = new System.Drawing.Size(90, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "Data Programada";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(135, 147);
+            this.label4.Location = new System.Drawing.Point(103, 145);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(121, 17);
+            this.label4.Size = new System.Drawing.Size(90, 13);
             this.label4.TabIndex = 7;
             this.label4.Text = "Hora Programada";
             // 
             // txtDataProgramada
             // 
-            this.txtDataProgramada.Location = new System.Drawing.Point(15, 169);
+            this.txtDataProgramada.Location = new System.Drawing.Point(13, 163);
+            this.txtDataProgramada.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtDataProgramada.Mask = "00/00/0000";
             this.txtDataProgramada.Name = "txtDataProgramada";
-            this.txtDataProgramada.Size = new System.Drawing.Size(117, 22);
-            this.txtDataProgramada.TabIndex = 10;
+            this.txtDataProgramada.Size = new System.Drawing.Size(89, 20);
+            this.txtDataProgramada.TabIndex = 5;
             this.txtDataProgramada.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtDataProgramada.ValidatingType = typeof(System.DateTime);
             // 
             // txtHoraProgramada
             // 
-            this.txtHoraProgramada.Location = new System.Drawing.Point(138, 167);
+            this.txtHoraProgramada.Location = new System.Drawing.Point(106, 162);
+            this.txtHoraProgramada.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtHoraProgramada.Mask = "00:00";
             this.txtHoraProgramada.Name = "txtHoraProgramada";
-            this.txtHoraProgramada.Size = new System.Drawing.Size(118, 22);
-            this.txtHoraProgramada.TabIndex = 11;
+            this.txtHoraProgramada.Size = new System.Drawing.Size(90, 20);
+            this.txtHoraProgramada.TabIndex = 6;
             this.txtHoraProgramada.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtHoraProgramada.ValidatingType = typeof(System.DateTime);
             // 
             // chkAtivo
             // 
             this.chkAtivo.AutoSize = true;
-            this.chkAtivo.Location = new System.Drawing.Point(15, 96);
+            this.chkAtivo.Location = new System.Drawing.Point(11, 57);
+            this.chkAtivo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkAtivo.Name = "chkAtivo";
-            this.chkAtivo.Size = new System.Drawing.Size(61, 21);
-            this.chkAtivo.TabIndex = 12;
+            this.chkAtivo.Size = new System.Drawing.Size(50, 17);
+            this.chkAtivo.TabIndex = 2;
             this.chkAtivo.Text = "Ativo";
             this.chkAtivo.UseVisualStyleBackColor = true;
             // 
@@ -133,10 +146,11 @@
             this.chkRepete.AutoSize = true;
             this.chkRepete.Checked = true;
             this.chkRepete.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkRepete.Location = new System.Drawing.Point(311, 96);
+            this.chkRepete.Location = new System.Drawing.Point(65, 57);
+            this.chkRepete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkRepete.Name = "chkRepete";
-            this.chkRepete.Size = new System.Drawing.Size(84, 21);
-            this.chkRepete.TabIndex = 13;
+            this.chkRepete.Size = new System.Drawing.Size(66, 17);
+            this.chkRepete.TabIndex = 3;
             this.chkRepete.Text = "Repetir?";
             this.chkRepete.UseVisualStyleBackColor = true;
             // 
@@ -145,16 +159,18 @@
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panel1.Controls.Add(this.btnSalvar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 235);
+            this.panel1.Location = new System.Drawing.Point(0, 212);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(816, 60);
+            this.panel1.Size = new System.Drawing.Size(585, 49);
             this.panel1.TabIndex = 16;
             // 
             // btnSalvar
             // 
-            this.btnSalvar.Location = new System.Drawing.Point(8, 11);
+            this.btnSalvar.Location = new System.Drawing.Point(6, 9);
+            this.btnSalvar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(98, 37);
+            this.btnSalvar.Size = new System.Drawing.Size(74, 30);
             this.btnSalvar.TabIndex = 0;
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.UseVisualStyleBackColor = true;
@@ -163,9 +179,10 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(262, 145);
+            this.label6.Location = new System.Drawing.Point(198, 144);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(148, 17);
+            this.label6.Size = new System.Drawing.Size(117, 13);
             this.label6.TabIndex = 17;
             this.label6.Text = "Início Última Execução";
             // 
@@ -173,9 +190,10 @@
             // 
             this.lblDataIniExec.AutoSize = true;
             this.lblDataIniExec.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDataIniExec.Location = new System.Drawing.Point(262, 172);
+            this.lblDataIniExec.Location = new System.Drawing.Point(198, 166);
+            this.lblDataIniExec.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDataIniExec.Name = "lblDataIniExec";
-            this.lblDataIniExec.Size = new System.Drawing.Size(159, 17);
+            this.lblDataIniExec.Size = new System.Drawing.Size(129, 13);
             this.lblDataIniExec.TabIndex = 18;
             this.lblDataIniExec.Text = "00/00/0000 00:00:00";
             // 
@@ -183,18 +201,20 @@
             // 
             this.lblDataFimExec.AutoSize = true;
             this.lblDataFimExec.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDataFimExec.Location = new System.Drawing.Point(436, 172);
+            this.lblDataFimExec.Location = new System.Drawing.Point(329, 166);
+            this.lblDataFimExec.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDataFimExec.Name = "lblDataFimExec";
-            this.lblDataFimExec.Size = new System.Drawing.Size(159, 17);
+            this.lblDataFimExec.Size = new System.Drawing.Size(129, 13);
             this.lblDataFimExec.TabIndex = 20;
             this.lblDataFimExec.Text = "00/00/0000 00:00:00";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(436, 145);
+            this.label9.Location = new System.Drawing.Point(329, 144);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(138, 17);
+            this.label9.Size = new System.Drawing.Size(106, 13);
             this.label9.TabIndex = 19;
             this.label9.Text = "Fim Última Execução";
             // 
@@ -202,18 +222,20 @@
             // 
             this.lblstatus.AutoSize = true;
             this.lblstatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblstatus.Location = new System.Drawing.Point(611, 172);
+            this.lblstatus.Location = new System.Drawing.Point(460, 166);
+            this.lblstatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblstatus.Name = "lblstatus";
-            this.lblstatus.Size = new System.Drawing.Size(14, 17);
+            this.lblstatus.Size = new System.Drawing.Size(11, 13);
             this.lblstatus.TabIndex = 22;
             this.lblstatus.Text = "-";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(611, 145);
+            this.label11.Location = new System.Drawing.Point(460, 144);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(113, 17);
+            this.label11.Size = new System.Drawing.Size(88, 13);
             this.label11.TabIndex = 21;
             this.label11.Text = "Status Execução";
             // 
@@ -221,9 +243,10 @@
             // 
             this.rdFormaExecManual.AutoSize = true;
             this.rdFormaExecManual.Checked = true;
-            this.rdFormaExecManual.Location = new System.Drawing.Point(7, 25);
+            this.rdFormaExecManual.Location = new System.Drawing.Point(14, 17);
+            this.rdFormaExecManual.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdFormaExecManual.Name = "rdFormaExecManual";
-            this.rdFormaExecManual.Size = new System.Drawing.Size(75, 21);
+            this.rdFormaExecManual.Size = new System.Drawing.Size(60, 17);
             this.rdFormaExecManual.TabIndex = 23;
             this.rdFormaExecManual.TabStop = true;
             this.rdFormaExecManual.Text = "Manual";
@@ -232,9 +255,10 @@
             // rdFormaExecAuto
             // 
             this.rdFormaExecAuto.AutoSize = true;
-            this.rdFormaExecAuto.Location = new System.Drawing.Point(88, 25);
+            this.rdFormaExecAuto.Location = new System.Drawing.Point(82, 17);
+            this.rdFormaExecAuto.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdFormaExecAuto.Name = "rdFormaExecAuto";
-            this.rdFormaExecAuto.Size = new System.Drawing.Size(99, 21);
+            this.rdFormaExecAuto.Size = new System.Drawing.Size(78, 17);
             this.rdFormaExecAuto.TabIndex = 24;
             this.rdFormaExecAuto.Text = "Automático";
             this.rdFormaExecAuto.UseVisualStyleBackColor = true;
@@ -243,10 +267,12 @@
             // 
             this.grpFormaExec.Controls.Add(this.rdFormaExecManual);
             this.grpFormaExec.Controls.Add(this.rdFormaExecAuto);
-            this.grpFormaExec.Location = new System.Drawing.Point(90, 71);
+            this.grpFormaExec.Location = new System.Drawing.Point(11, 11);
+            this.grpFormaExec.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grpFormaExec.Name = "grpFormaExec";
-            this.grpFormaExec.Size = new System.Drawing.Size(206, 52);
-            this.grpFormaExec.TabIndex = 25;
+            this.grpFormaExec.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.grpFormaExec.Size = new System.Drawing.Size(170, 42);
+            this.grpFormaExec.TabIndex = 0;
             this.grpFormaExec.TabStop = false;
             this.grpFormaExec.Text = "Forma de Execução";
             // 
@@ -256,20 +282,45 @@
             this.groupBox2.Controls.Add(this.rdTipoExecMensal);
             this.groupBox2.Controls.Add(this.rdTipoRepeteHorario);
             this.groupBox2.Controls.Add(this.rdTipoRepeteDiario);
-            this.groupBox2.Location = new System.Drawing.Point(401, 71);
+            this.groupBox2.Location = new System.Drawing.Point(185, 11);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(387, 52);
-            this.groupBox2.TabIndex = 26;
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Size = new System.Drawing.Size(290, 42);
+            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tipo de Repetição";
+            // 
+            // rdTipoExecSemanal
+            // 
+            this.rdTipoExecSemanal.AutoSize = true;
+            this.rdTipoExecSemanal.Location = new System.Drawing.Point(151, 17);
+            this.rdTipoExecSemanal.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rdTipoExecSemanal.Name = "rdTipoExecSemanal";
+            this.rdTipoExecSemanal.Size = new System.Drawing.Size(66, 17);
+            this.rdTipoExecSemanal.TabIndex = 25;
+            this.rdTipoExecSemanal.Text = "Semanal";
+            this.rdTipoExecSemanal.UseVisualStyleBackColor = true;
+            // 
+            // rdTipoExecMensal
+            // 
+            this.rdTipoExecMensal.AutoSize = true;
+            this.rdTipoExecMensal.Location = new System.Drawing.Point(228, 17);
+            this.rdTipoExecMensal.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rdTipoExecMensal.Name = "rdTipoExecMensal";
+            this.rdTipoExecMensal.Size = new System.Drawing.Size(52, 17);
+            this.rdTipoExecMensal.TabIndex = 26;
+            this.rdTipoExecMensal.Text = "Diário";
+            this.rdTipoExecMensal.UseVisualStyleBackColor = true;
             // 
             // rdTipoRepeteHorario
             // 
             this.rdTipoRepeteHorario.AutoSize = true;
             this.rdTipoRepeteHorario.Checked = true;
-            this.rdTipoRepeteHorario.Location = new System.Drawing.Point(20, 21);
+            this.rdTipoRepeteHorario.Location = new System.Drawing.Point(15, 17);
+            this.rdTipoRepeteHorario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdTipoRepeteHorario.Name = "rdTipoRepeteHorario";
-            this.rdTipoRepeteHorario.Size = new System.Drawing.Size(76, 21);
+            this.rdTipoRepeteHorario.Size = new System.Drawing.Size(59, 17);
             this.rdTipoRepeteHorario.TabIndex = 23;
             this.rdTipoRepeteHorario.TabStop = true;
             this.rdTipoRepeteHorario.Text = "Horário";
@@ -278,42 +329,45 @@
             // rdTipoRepeteDiario
             // 
             this.rdTipoRepeteDiario.AutoSize = true;
-            this.rdTipoRepeteDiario.Location = new System.Drawing.Point(118, 21);
+            this.rdTipoRepeteDiario.Location = new System.Drawing.Point(88, 17);
+            this.rdTipoRepeteDiario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdTipoRepeteDiario.Name = "rdTipoRepeteDiario";
-            this.rdTipoRepeteDiario.Size = new System.Drawing.Size(66, 21);
+            this.rdTipoRepeteDiario.Size = new System.Drawing.Size(52, 17);
             this.rdTipoRepeteDiario.TabIndex = 24;
             this.rdTipoRepeteDiario.Text = "Diário";
             this.rdTipoRepeteDiario.UseVisualStyleBackColor = true;
             // 
-            // rdTipoExecSemanal
+            // chkLoop
             // 
-            this.rdTipoExecSemanal.AutoSize = true;
-            this.rdTipoExecSemanal.Location = new System.Drawing.Point(201, 21);
-            this.rdTipoExecSemanal.Name = "rdTipoExecSemanal";
-            this.rdTipoExecSemanal.Size = new System.Drawing.Size(84, 21);
-            this.rdTipoExecSemanal.TabIndex = 25;
-            this.rdTipoExecSemanal.Text = "Semanal";
-            this.rdTipoExecSemanal.UseVisualStyleBackColor = true;
+            this.chkLoop.AutoSize = true;
+            this.chkLoop.Location = new System.Drawing.Point(185, 57);
+            this.chkLoop.Margin = new System.Windows.Forms.Padding(2);
+            this.chkLoop.Name = "chkLoop";
+            this.chkLoop.Size = new System.Drawing.Size(56, 17);
+            this.chkLoop.TabIndex = 23;
+            this.chkLoop.Text = "Loop?";
+            this.chkLoop.UseVisualStyleBackColor = true;
             // 
-            // rdTipoExecMensal
+            // chkRetentar
             // 
-            this.rdTipoExecMensal.AutoSize = true;
-            this.rdTipoExecMensal.Location = new System.Drawing.Point(304, 21);
-            this.rdTipoExecMensal.Name = "rdTipoExecMensal";
-            this.rdTipoExecMensal.Size = new System.Drawing.Size(66, 21);
-            this.rdTipoExecMensal.TabIndex = 26;
-            this.rdTipoExecMensal.Text = "Diário";
-            this.rdTipoExecMensal.UseVisualStyleBackColor = true;
-            // 
-            // agendaBindingSource
-            // 
-            this.agendaBindingSource.DataSource = typeof(P2E.Automacao.Orquestrador.Lib.Entidades.Agenda);
+            this.chkRetentar.AutoSize = true;
+            this.chkRetentar.Checked = true;
+            this.chkRetentar.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRetentar.Location = new System.Drawing.Point(255, 57);
+            this.chkRetentar.Margin = new System.Windows.Forms.Padding(2);
+            this.chkRetentar.Name = "chkRetentar";
+            this.chkRetentar.Size = new System.Drawing.Size(220, 17);
+            this.chkRetentar.TabIndex = 24;
+            this.chkRetentar.Text = "Em caso de Falha executar novamente ?";
+            this.chkRetentar.UseVisualStyleBackColor = true;
             // 
             // frmManterAgenda
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(816, 295);
+            this.ClientSize = new System.Drawing.Size(585, 261);
+            this.Controls.Add(this.chkRetentar);
+            this.Controls.Add(this.chkLoop);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.grpFormaExec);
             this.Controls.Add(this.lblstatus);
@@ -331,16 +385,17 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtDescricao);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmManterAgenda";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Manutenção da Agenda";
             this.Load += new System.EventHandler(this.frmManterAgenda_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.agendaBindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
             this.grpFormaExec.ResumeLayout(false);
             this.grpFormaExec.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.agendaBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -373,5 +428,7 @@
         private System.Windows.Forms.RadioButton rdTipoRepeteDiario;
         private System.Windows.Forms.RadioButton rdTipoExecSemanal;
         private System.Windows.Forms.RadioButton rdTipoExecMensal;
+        private System.Windows.Forms.CheckBox chkLoop;
+        private System.Windows.Forms.CheckBox chkRetentar;
     }
 }

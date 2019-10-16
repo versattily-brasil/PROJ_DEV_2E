@@ -9,6 +9,7 @@ namespace P2E.Automacao.Shared.Enum
     public enum eFormaExec
     {
         Automática,
-        Manual
+        Manual,
+        Loop
     }
 }

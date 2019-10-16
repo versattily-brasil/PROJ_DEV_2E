@@ -22,6 +22,7 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public int NR_ORDEM_EXEC { get; set; }
         public string TX_PARAM_EXEC { get; set; }
 
+
         public eStatusExec? CD_ULTIMO_STATUS_EXEC_BOT { get; set; }//{ get { return BotProgramado?.OP_STATUS_BOT_EXEC; } }
         public int? CD_ULTIMA_EXEC_BOT { get; set; }//{ get { return BotProgramado?.CD_BOT_EXEC; } }
 

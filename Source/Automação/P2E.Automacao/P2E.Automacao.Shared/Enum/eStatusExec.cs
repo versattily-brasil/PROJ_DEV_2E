@@ -22,6 +22,8 @@ namespace P2E.Automacao.Shared.Enum
         [Description("Concluído")]
         Concluído,
         [Description("Interrompido")]
-        Interrompido
+        Interrompido,
+        [Description("Retentar")]
+        Retentar
     }
 }
