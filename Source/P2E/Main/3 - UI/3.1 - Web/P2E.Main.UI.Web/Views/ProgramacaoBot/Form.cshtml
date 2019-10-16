@@ -14,169 +14,169 @@
     var actionCancel = "CancelInsert";
 }
 
-<body onbeforeunload="return myFunction()">
-    <div class="row">
-        <div class="col-xl-12">
+@*<body onbeforeunload="return myFunction()">*@
+<div class="row">
+    <div class="col-xl-12">
 
-            @if (!string.IsNullOrEmpty(type))
-            {
-                <partial name="_DisplayMessagePartial" />
-            }
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <partial name="_DisplayMessagePartial" />
+        }
 
-            <div class="panel">
-                <div class="panel-hdr">
-                    @if (Model.CD_PAR > 0)
-                    {
-                        <h1>
-                            Edição de Parceiro de Negócio
-                        </h1>
-                    }
-                    else
-                    {
-                        <h1>
-                            Cadastro de Parceiro de Negócio
-                        </h1>
-                    }
-                </div>
-                <div class="panel-container show">
-                    <div class="panel-content">
-                        <form id="form" asp-action="Save" method="post">
+        <div class="panel">
+            <div class="panel-hdr">
+                @if (Model.CD_PAR > 0)
+                {
+                    <h1>
+                        Edição de Parceiro de Negócio
+                    </h1>
+                }
+                else
+                {
+                    <h1>
+                        Cadastro de Parceiro de Negócio
+                    </h1>
+                }
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form id="form" asp-action="Save" method="post">
 
-                            <div class="form-group mb-0">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <input type="hidden" asp-for="CD_PAR" />
-                                        <div class="form-group">
-                                            <label class="form-label" asp-for="TXT_RZSOC">Razão  Social</label>
-                                            <input type="text" maxlength="100" asp-for="TXT_RZSOC" placeholder="Razão Social" class="form-control">
-                                        </div>
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-8">
+                                    <input type="hidden" asp-for="CD_PAR" />
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TXT_RZSOC">Razão  Social</label>
+                                        <input type="text" maxlength="100" asp-for="TXT_RZSOC" placeholder="Razão Social" class="form-control">
                                     </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <label class="form-label" asp-for="CNPJ">CNPJ</label>
-                                            <input type="text" id="txt-cnpj" maxlength="21" asp-for="CNPJ" placeholder="Valor" class="form-control">
-                                        </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="CNPJ">CNPJ</label>
+                                        <input type="text" id="txt-cnpj" maxlength="21" asp-for="CNPJ" placeholder="Valor" class="form-control">
                                     </div>
-                                    <div class="col-8">
-                                        <div class="form-group">
-                                            <label class="form-label" asp-for="TX_EMAIL">Email</label>
-                                            <input type="text" id="tx-email" maxlength="50" asp-for="TX_EMAIL" placeholder="Email" class="form-control">
-                                        </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_EMAIL">Email</label>
+                                        <input type="text" id="tx-email" maxlength="50" asp-for="TX_EMAIL" placeholder="Email" class="form-control">
                                     </div>
                                 </div>
                             </div>
-                            <hr />
-                            <div class="form-group mb-0">
-                                <div class="panel">
-                                    <div class="panel-hdr bg-gray-100">
-                                        <h3>
-                                            Associação : Parceiro Negócio x Módulo x Serviço
-                                        </h3>
-                                    </div>
-                                    <div class="panel-container show">
-                                        <div class="panel-content">
-                                            <div class="row">
-                                                <div class="col-5">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Módulo</label>
-                                                        <select asp-items="@(new SelectList(@Model.Modulos,"CD_MOD", "TX_DSC"))" class="form-control" id="comboModulo">
-                                                            <option disabled selected>--- Selecione um módulo ---</option>
-                                                        </select>
-                                                    </div>
+                        </div>
+                        <hr />
+                        <div class="form-group mb-0">
+                            <div class="panel">
+                                <div class="panel-hdr bg-gray-100">
+                                    <h3>
+                                        Associação : Parceiro Negócio x Módulo x Serviço
+                                    </h3>
+                                </div>
+                                <div class="panel-container show">
+                                    <div class="panel-content">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <div class="form-group">
+                                                    <label class="form-label">Módulo</label>
+                                                    <select asp-items="@(new SelectList(@Model.Modulos,"CD_MOD", "TX_DSC"))" class="form-control" id="comboModulo">
+                                                        <option disabled selected>--- Selecione um módulo ---</option>
+                                                    </select>
                                                 </div>
+                                            </div>
 
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Serviço</label>
-                                                        <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
-                                                            <option disabled selected>--- Selecione um serviço ---</option>
-                                                        </select>
-                                                    </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Serviço</label>
+                                                    <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
+                                                        <option disabled selected>--- Selecione um serviço ---</option>
+                                                    </select>
                                                 </div>
+                                            </div>
 
-                                                <div class="col-1">
-                                                    <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-parceiro-servico-usuario">
-                                                        <i class="fal fa-download"></i>
-                                                    </a>
-                                                </div>
+                                            <div class="col-1">
+                                                <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-parceiro-servico-usuario">
+                                                    <i class="fal fa-download"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="form-group mb-0">
-                                <div class="table-responsive">
-                                    <table id="tabela_servico_modulo" class="table table-bordered table-hover m-0">
-                                        <thead class="thead-themed">
-                                            <tr>
-                                                <th>Módulo</th>
-                                                <th>Serviço</th>
-                                                <th width="20"></th>
+                        <div class="form-group mb-0">
+                            <div class="table-responsive">
+                                <table id="tabela_servico_modulo" class="table table-bordered table-hover m-0">
+                                    <thead class="thead-themed">
+                                        <tr>
+                                            <th>Módulo</th>
+                                            <th>Serviço</th>
+                                            <th width="20"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var modulo_servico in Model.ParceiroNegocioServicoModulo)
+                                        {
+                                            <tr data-cdmod="@modulo_servico.Modulo.CD_MOD" data-cdsrv="@modulo_servico.Servico.CD_SRV">
+                                                <td>@modulo_servico.Modulo.TX_DSC</td>
+                                                <td>@modulo_servico.Servico.TXT_DEC</td>
+                                                <td class="text-center">
+                                                    <a data-mod="@modulo_servico.CD_MOD" data-srv="@modulo_servico.CD_SRV">
+                                                        <i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var modulo_servico in Model.ParceiroNegocioServicoModulo)
-                                            {
-                                                <tr data-cdmod="@modulo_servico.Modulo.CD_MOD" data-cdsrv="@modulo_servico.Servico.CD_SRV">
-                                                    <td>@modulo_servico.Modulo.TX_DSC</td>
-                                                    <td>@modulo_servico.Servico.TXT_DEC</td>
-                                                    <td class="text-center">
-                                                        <a data-mod="@modulo_servico.CD_MOD" data-srv="@modulo_servico.CD_SRV">
-                                                            <i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
 
-                                            }
-                                        </tbody>
-                                    </table>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <br />
+
+                                    @if (Model.CD_PAR > 0)
+                                    {
+                                        mensagemConfirma = "Confirma alteração do registro?";
+                                    }
+                                    <button data-body-message="@mensagemConfirma"
+                                            id="btnSalvar"
+                                            style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                        Salvar
+                                    </button>
+
+                                    @if (Model.CD_PAR > 0)
+                                    {
+                                        actionCancel = "CancelEdit";
+                                    }
+
+                                    <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
+                                            data-action="@actionCancel"
+                                            data-body-message="Deseja cancelar as alterações?"
+                                            style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
+                                        Cancelar
+                                    </button>
+
                                 </div>
                             </div>
-
-                            <div class="form-group mb-0">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <br />
-
-                                        @if (Model.CD_PAR > 0)
-                                        {
-                                            mensagemConfirma = "Confirma alteração do registro?";
-                                        }
-                                        <button data-body-message="@mensagemConfirma"
-                                                id="btnSalvar"
-                                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                                            Salvar
-                                        </button>
-
-                                        @if (Model.CD_PAR > 0)
-                                        {
-                                            actionCancel = "CancelEdit";
-                                        }
-
-                                        <button data-controller="ParceiroNegocio" data-id="@Model.CD_PAR"
-                                                data-action="@actionCancel"
-                                                data-body-message="Deseja cancelar as alterações?"
-                                                style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
-                                            Cancelar
-                                        </button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        function myFunction() {
-            return "Write something clever here...";
-        }
-    </script>
+</div>
+<script>
+    function myFunction() {
+        return "Write something clever here...";
+    }
+</script>
 
-</body>
+@*</body>*@
 @section Scripts {
     <script src="~/js/ParceiroNegocio/TabelaParceiroNegocioServicoModulo.js"></script>
     <script src="~/js/ParceiroNegocio/ParceiroNegocioServicoModulo.js"></script>
