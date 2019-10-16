@@ -14,276 +14,141 @@
     var actionCancel = "CancelInsert";
 }
 
-<body onbeforeunload="return myFunction()">
-    <div class="row">
-        <div class="col-xl-12">
-            @if (!string.IsNullOrEmpty(type))
-            {
-                <partial name="_DisplayMessagePartial" />
-            }
-            <div class="panel">
-                <div class="panel-hdr">
-                    @if (Model.CD_USR > 0)
-                    {
-                        <h1>
-                            Edição de Usuário
-                        </h1>
-                    }
-                    else
-                    {
-                        <h1>
-                            Cadastro de Usuário
-                        </h1>
-                    }
-                </div>
-                <div class="panel-container show">
-                    <form id="form" asp-action="Save" method="post">
-                        <div class="panel-content" style="border-bottom: 1px solid rgba(0, 0, 0, 0.07);">
+<div class="row">
+    <div class="col-xl-12">
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <partial name="_DisplayMessagePartial" />
+        }
+        <div class="panel">
+            <div class="panel-hdr">
+                @if (Model.CD_USR > 0)
+                {
+                    <h1>
+                        Edição de Usuário
+                    </h1>
+                }
+                else
+                {
+                    <h1>
+                        Cadastro de Usuário
+                    </h1>
+                }
+            </div>
+            <div class="panel-container show">
+                <form id="form" asp-action="Save" method="post">
+                    <div class="panel-content" style="border-bottom: 1px solid rgba(0, 0, 0, 0.07);">
 
-                            <div class="form-group mb-0">
-                                <div class="row">
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="hidden" asp-for="CD_USR" />
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_NOME">Nome</label>
+                                        <input type="text" maxlength="40" asp-for="TX_NOME" placeholder="Nome" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_LOGIN">Login</label>
+                                        <input type="text" maxlength="40" asp-for="TX_LOGIN" placeholder="Login" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+
+                                @if (Model.CD_USR > 0)
+                                {
+                                    <input type="hidden" asp-for="TX_SENHA" />
                                     <div class="col-6">
-                                        <input type="hidden" asp-for="CD_USR" />
                                         <div class="form-group">
-                                            <label class="form-label" asp-for="TX_NOME">Nome</label>
-                                            <input type="text" maxlength="40" asp-for="TX_NOME" placeholder="Nome" class="form-control">
+                                            <label class="form-label">Senha</label>
+                                            <input type="password" maxlength="255" value="@Model.TX_SENHA" placeholder="Senha" class="form-control" id="senha" disabled>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label class="form-label" asp-for="TX_LOGIN">Login</label>
-                                            <input type="text" maxlength="40" asp-for="TX_LOGIN" placeholder="Login" class="form-control">
+                                            <label class="form-label">Confirme a Senha</label>
+                                            <input type="password" maxlength="255" value="@Model.TX_SENHA" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha" disabled>
                                         </div>
                                     </div>
-                                </div>
-                                <br />
-                                <div class="row">
-
-                                    @if (Model.CD_USR > 0)
-                                    {
-                                        <input type="hidden" asp-for="TX_SENHA" />
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Senha</label>
-                                                <input type="password" maxlength="255" value="@Model.TX_SENHA" placeholder="Senha" class="form-control" id="senha" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label class="form-label">Confirme a Senha</label>
-                                                <input type="password" maxlength="255" value="@Model.TX_SENHA" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha" disabled>
-                                            </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label class="form-label" asp-for="TX_SENHA">Senha</label>
-                                                <input type="password" maxlength="255" asp-for="TX_SENHA" placeholder="Senha" class="form-control" id="senha">
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group">
-                                                <label class="form-label" asp-for="CONFIRMA_SENHA">Confirme a Senha</label>
-                                                <input type="password" maxlength="255" asp-for="CONFIRMA_SENHA" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha">
-                                            </div>
-                                        </div>
-                                    }
-
-
-                                </div>
-                                <br />
-                                <div class="row">
+                                }
+                                else
+                                {
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label class="form-label" asp-for="OP_STATUS">Status</label>
-                                            <select asp-for="OP_STATUS" class="form-control" asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
+                                            <label class="form-label" asp-for="TX_SENHA">Senha</label>
+                                            <input type="password" maxlength="255" asp-for="TX_SENHA" placeholder="Senha" class="form-control" id="senha">
                                         </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="form-label" asp-for="CONFIRMA_SENHA">Confirme a Senha</label>
+                                            <input type="password" maxlength="255" asp-for="CONFIRMA_SENHA" placeholder="Confirme a Senha" class="form-control" id="confirmeSenha">
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="OP_STATUS">Status</label>
+                                        <select asp-for="OP_STATUS" class="form-control" asp-items="@Html.GetEnumSelectList <eStatusUsuario>()"> </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-content">
+                    </div>
+                    <div class="panel-content">
 
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab_direction-1" role="tab">Módulos</a></li>
-                                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_direction-2" role="tab">Grupos</a></li>
-                                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_direction-3" role="tab">Rotinas</a></li>
-                            </ul>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab_direction-1" role="tab">Módulos</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_direction-2" role="tab">Grupos</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab_direction-3" role="tab">Rotinas</a></li>
+                        </ul>
 
-                            <div class="tab-content p-3">
+                        <div class="tab-content p-3">
 
-                                <div class="tab-pane fade show active" id="tab_direction-1" role="tabpanel">
-                                    <div class="container container-demo">
-                                        <div class="row">
-                                            <div class="col">
-                                                <table id="table-origem-md" class="table table-bordered table-hover m-0">
-                                                    <thead class="thead-themed">
-                                                        <tr>
-                                                            <th>Módulos</th>
-                                                            <th width="100px"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var modulo in Model.Modulo.Where(o1 => !Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
-                                                        {
-                                                            <tr data-mod="@modulo.CD_MOD">
-                                                                <td>@modulo.TX_DSC</td>
-                                                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao-md"></i></td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="col">
-                                                <table id="table-destino-md" class="table table-bordered table-hover m-0">
-                                                    <thead class="thead-themed">
-                                                        <tr>
-                                                            <th>Módulos Associados ao Usuário</th>
-                                                            <th width="100px"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var modulo in Model.Modulo.Where(o1 => Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
-                                                        {
-                                                            <tr data-mod="@modulo.CD_MOD">
-                                                                <td>@modulo.TX_DSC</td>
-                                                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-md"></i></td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="tab_direction-2" role="tabpanel">
-                                    <div class="container container-demo">
-                                        <div class="row">
-                                            <div class="col">
-                                                <table id="table-origem-grp" class="table table-bordered table-hover m-0">
-                                                    <thead class="thead-themed">
-                                                        <tr>
-                                                            <th>Grupos</th>
-                                                            <th width="100px"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var grupo in Model.Grupo.Where(o1 => !Model.UsuarioGrupo.Any(o2 => o2.CD_GRP == o1.CD_GRP)))
-                                                        {
-                                                            <tr data-grp="@grupo.CD_GRP">
-                                                                <td>@grupo.TX_DSC</td>
-                                                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao-grp"></i></td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="col">
-                                                <table id="table-destino-grp" class="table table-bordered table-hover m-0">
-                                                    <thead class="thead-themed">
-                                                        <tr>
-                                                            <th>Grupos Associados ao Usuário</th>
-                                                            <th width="100px"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var grupo in Model.Grupo.Where(o1 => Model.UsuarioGrupo.Any(o2 => o2.CD_GRP == o1.CD_GRP)))
-                                                        {
-                                                            <tr data-grp="@grupo.CD_GRP">
-                                                                <td>@grupo.TX_DSC</td>
-                                                                <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-grp"></i></td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="tab_direction-3" role="tabpanel">
-                                    <div class="container container-demo">
-
-
-                                        <div class="panel">
-
-                                            <div class="panel-container show">
-                                                <div class="panel-content">
-                                                    <div class="row">
-                                                        <div class="col-5">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Serviço</label>
-                                                                <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
-                                                                    <option disabled selected>--- Selecione um serviço ---</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-5">
-                                                            <div class="form-group">
-                                                                <label class="form-label">Rotina</label>
-                                                                <select class="form-control" id="comboRotina" disabled>
-                                                                    <option disabled selected>--- Selecione uma rotina ---</option>
-                                                                    @foreach (var rotina in Model.Rotinas)
-                                                                    {
-                                                                        <option data-cd_srv="@rotina.CD_SRV" value="@rotina.CD_ROT">@rotina.TX_NOME</option>
-                                                                    }
-                                                                </select>
-                                                                <p class="text-danger" id="rotina-selecao-validacao">
-
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-1">
-                                                            <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
-                                                                <i class="fal fa-plus"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table id="tabela_grupo_rotina" class="table table-bordered table-hover m-0">
+                            <div class="tab-pane fade show active" id="tab_direction-1" role="tabpanel">
+                                <div class="container container-demo">
+                                    <div class="row">
+                                        <div class="col">
+                                            <table id="table-origem-md" class="table table-bordered table-hover m-0">
                                                 <thead class="thead-themed">
                                                     <tr>
-                                                        <th></th>
-                                                        <th colspan="@Model.Operacoes.Count" style="text-align:center">Permissões</th>
-                                                        <th></th>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Rotina</th>
-                                                        @foreach (var operacao in @Model.Operacoes)
-                                                        {
-                                                            <th class="text-center">@operacao.TX_DSC</th>
-                                                        }
-                                                        <th width="20"></th>
+                                                        <th>Módulos</th>
+                                                        <th width="100px"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var opRotina in Model.RotinaUsuarioOperacao.GroupBy(o => o.CD_ROT).Select(o => o.First()).ToList())
+                                                    @foreach (var modulo in Model.Modulo.Where(o1 => !Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
                                                     {
-                                                        <tr>
-                                                            <td>@Model.Rotinas.FirstOrDefault(o => o.CD_ROT == opRotina.CD_ROT).TX_NOME</td>
-                                                            @foreach (var operacao in Model.Operacoes)
-                                                            {
-                                                                if (Model.RotinaUsuarioOperacao.Any(o => o.CD_OPR == operacao.CD_OPR && o.CD_ROT == opRotina.CD_ROT))
-                                                                {
-                                                                    <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" type="checkbox" checked /></td>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" type="checkbox" /></td>
-                                                                }
-
-                                                            }
-
-                                                            <td><i style="font-weight:bold;cursor:pointer" class="excluir-rotina fal fa-minus-circle text-danger bt-selecao-md"></i></td>
-
+                                                        <tr data-mod="@modulo.CD_MOD">
+                                                            <td>@modulo.TX_DSC</td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao-md"></i></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col">
+                                            <table id="table-destino-md" class="table table-bordered table-hover m-0">
+                                                <thead class="thead-themed">
+                                                    <tr>
+                                                        <th>Módulos Associados ao Usuário</th>
+                                                        <th width="100px"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var modulo in Model.Modulo.Where(o1 => Model.UsuarioModulo.Any(o2 => o2.CD_MOD == o1.CD_MOD)))
+                                                    {
+                                                        <tr data-mod="@modulo.CD_MOD">
+                                                            <td>@modulo.TX_DSC</td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-md"></i></td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -292,46 +157,179 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <p class="text-danger" id="rotina-validacao">
-                                </p>
+
+                            <div class="tab-pane fade" id="tab_direction-2" role="tabpanel">
+                                <div class="container container-demo">
+                                    <div class="row">
+                                        <div class="col">
+                                            <table id="table-origem-grp" class="table table-bordered table-hover m-0">
+                                                <thead class="thead-themed">
+                                                    <tr>
+                                                        <th>Grupos</th>
+                                                        <th width="100px"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var grupo in Model.Grupo.Where(o1 => !Model.UsuarioGrupo.Any(o2 => o2.CD_GRP == o1.CD_GRP)))
+                                                    {
+                                                        <tr data-grp="@grupo.CD_GRP">
+                                                            <td>@grupo.TX_DSC</td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-plus-circle text-success bt-selecao-grp"></i></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col">
+                                            <table id="table-destino-grp" class="table table-bordered table-hover m-0">
+                                                <thead class="thead-themed">
+                                                    <tr>
+                                                        <th>Grupos Associados ao Usuário</th>
+                                                        <th width="100px"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var grupo in Model.Grupo.Where(o1 => Model.UsuarioGrupo.Any(o2 => o2.CD_GRP == o1.CD_GRP)))
+                                                    {
+                                                        <tr data-grp="@grupo.CD_GRP">
+                                                            <td>@grupo.TX_DSC</td>
+                                                            <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-selecao-grp"></i></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            @if (Model.CD_USR > 0)
-                            {
-                                mensagemConfirma = "Confirma alteração do registro?";
-                            }
-                            <button data-body-message="@mensagemConfirma"
-                                    id="btnSalvar"
-                                    style="font-weight:normal;cursor:pointer" class="save btn btn-success">
-                                Salvar
-                            </button>
+                            <div class="tab-pane fade" id="tab_direction-3" role="tabpanel">
+                                <div class="container container-demo">
 
-                            @if (Model.CD_USR > 0)
-                            {
-                                actionCancel = "CancelEdit";
-                            }
 
-                            <button data-controller="Usuario" data-id="@Model.CD_USR"
-                                    data-action="@actionCancel"
-                                    data-body-message="Deseja cancelar as alterações?"
-                                    style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
-                                Cancelar
-                            </button>
+                                    <div class="panel">
 
+                                        <div class="panel-container show">
+                                            <div class="panel-content">
+                                                <div class="row">
+                                                    <div class="col-5">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Serviço</label>
+                                                            <select asp-items="@(new SelectList(@Model.Servicos,"CD_SRV", "TXT_DEC"))" class="form-control" id="comboServico">
+                                                                <option disabled selected>--- Selecione um serviço ---</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Rotina</label>
+                                                            <select class="form-control" id="comboRotina" disabled>
+                                                                <option disabled selected>--- Selecione uma rotina ---</option>
+                                                                @foreach (var rotina in Model.Rotinas)
+                                                                {
+                                                                    <option data-cd_srv="@rotina.CD_SRV" value="@rotina.CD_ROT">@rotina.TX_NOME</option>
+                                                                }
+                                                            </select>
+                                                            <p class="text-danger" id="rotina-selecao-validacao">
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-1">
+                                                        <a href="javascript:void(0);" class="btn btn-success btn-lg btn-icon hover-effect-dot btn-add-rotina" id="btn-add-rotina">
+                                                            <i class="fal fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="tabela_grupo_rotina" class="table table-bordered table-hover m-0">
+                                            <thead class="thead-themed">
+                                                <tr>
+                                                    <th></th>
+                                                    <th colspan="@Model.Operacoes.Count" style="text-align:center">Permissões</th>
+                                                    <th></th>
+
+                                                </tr>
+                                                <tr>
+                                                    <th>Rotina</th>
+                                                    @foreach (var operacao in @Model.Operacoes)
+                                                    {
+                                                        <th class="text-center">@operacao.TX_DSC</th>
+                                                    }
+                                                    <th width="20"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var opRotina in Model.RotinaUsuarioOperacao.GroupBy(o => o.CD_ROT).Select(o => o.First()).ToList())
+                                                {
+                                                    <tr>
+                                                        <td>@Model.Rotinas.FirstOrDefault(o => o.CD_ROT == opRotina.CD_ROT).TX_NOME</td>
+                                                        @foreach (var operacao in Model.Operacoes)
+                                                        {
+                                                            if (Model.RotinaUsuarioOperacao.Any(o => o.CD_OPR == operacao.CD_OPR && o.CD_ROT == opRotina.CD_ROT))
+                                                            {
+                                                                <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" type="checkbox" checked /></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td class="rotina_selecionada text-center" data-cd_rot="@opRotina.CD_ROT" data-cd_opr="@operacao.CD_OPR"><input class="rotina_check" type="checkbox" /></td>
+                                                            }
+
+                                                        }
+
+                                                        <td><i style="font-weight:bold;cursor:pointer" class="excluir-rotina fal fa-minus-circle text-danger bt-selecao-md"></i></td>
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                </div>
+                        <div>
+                            <p class="text-danger" id="rotina-validacao">
+                            </p>
+                        </div>
+
+                        @if (Model.CD_USR > 0)
+                        {
+                            mensagemConfirma = "Confirma alteração do registro?";
+                        }
+                        <button data-body-message="@mensagemConfirma"
+                                id="btnSalvar"
+                                style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                            Salvar
+                        </button>
+
+                        @if (Model.CD_USR > 0)
+                        {
+                            actionCancel = "CancelEdit";
+                        }
+
+                        <button data-controller="Usuario" data-id="@Model.CD_USR"
+                                data-action="@actionCancel"
+                                data-body-message="Deseja cancelar as alterações?"
+                                style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
+                            Cancelar
+                        </button>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <script>
-        function myFunction() {
-            return "Write something clever here...";
-        }
-    </script>
+</div>
+<script>
+    function myFunction() {
+        return "Write something clever here...";
+    }
+</script>
 
-</body>
 @foreach (var operacao in @Model.Operacoes)
 {
     <input type="hidden" class="operacao_hidden" data-tx_dsc="@operacao.TX_DSC" data-cd_opr="@operacao.CD_OPR" />

@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPainel));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnAtualizacao = new System.Windows.Forms.Button();
             this.btnConsultar = new System.Windows.Forms.Button();
@@ -82,12 +82,12 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.bsBotExecLog = new System.Windows.Forms.BindingSource(this.components);
             this.barraStatus = new System.Windows.Forms.StatusStrip();
+            this.toolStripVersao = new System.Windows.Forms.ToolStripStatusLabel();
             this.barraProgresso = new System.Windows.Forms.ToolStripProgressBar();
             this.bgwConsultar = new System.ComponentModel.BackgroundWorker();
             this.agendaBotBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.saveFile = new System.Windows.Forms.SaveFileDialog();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.toolStripVersao = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -123,11 +123,11 @@
             // btnAtualizacao
             // 
             this.btnAtualizacao.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnAtualizacao.Location = new System.Drawing.Point(886, 0);
+            this.btnAtualizacao.Location = new System.Drawing.Point(927, 0);
             this.btnAtualizacao.Name = "btnAtualizacao";
-            this.btnAtualizacao.Size = new System.Drawing.Size(156, 45);
+            this.btnAtualizacao.Size = new System.Drawing.Size(115, 45);
             this.btnAtualizacao.TabIndex = 3;
-            this.btnAtualizacao.Text = "Atualização";
+            this.btnAtualizacao.Text = "Buscar Atualização";
             this.btnAtualizacao.UseVisualStyleBackColor = true;
             this.btnAtualizacao.Click += new System.EventHandler(this.btnAtualizacao_Click);
             // 
@@ -329,9 +329,9 @@
             // hRHORAEXECPROGDataGridViewTextBoxColumn
             // 
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.DataPropertyName = "HR_HORA_EXEC_PROG";
-            dataGridViewCellStyle4.Format = "T";
-            dataGridViewCellStyle4.NullValue = null;
-            this.hRHORAEXECPROGDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Format = "T";
+            dataGridViewCellStyle1.NullValue = null;
+            this.hRHORAEXECPROGDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.FillWeight = 93.2858F;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.Frozen = true;
             this.hRHORAEXECPROGDataGridViewTextBoxColumn.HeaderText = "Hora Programada";
@@ -387,9 +387,9 @@
             // DT_DATA_INICIO_ULTIMA_EXEC
             // 
             this.DT_DATA_INICIO_ULTIMA_EXEC.DataPropertyName = "DT_DATA_INICIO_ULTIMA_EXEC";
-            dataGridViewCellStyle5.Format = "G";
-            dataGridViewCellStyle5.NullValue = null;
-            this.DT_DATA_INICIO_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Format = "G";
+            dataGridViewCellStyle2.NullValue = null;
+            this.DT_DATA_INICIO_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle2;
             this.DT_DATA_INICIO_ULTIMA_EXEC.Frozen = true;
             this.DT_DATA_INICIO_ULTIMA_EXEC.HeaderText = "Início Última Execução";
             this.DT_DATA_INICIO_ULTIMA_EXEC.MinimumWidth = 6;
@@ -400,9 +400,9 @@
             // DT_DATA_FIM_ULTIMA_EXEC
             // 
             this.DT_DATA_FIM_ULTIMA_EXEC.DataPropertyName = "DT_DATA_FIM_ULTIMA_EXEC";
-            dataGridViewCellStyle6.Format = "G";
-            dataGridViewCellStyle6.NullValue = null;
-            this.DT_DATA_FIM_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Format = "G";
+            dataGridViewCellStyle3.NullValue = null;
+            this.DT_DATA_FIM_ULTIMA_EXEC.DefaultCellStyle = dataGridViewCellStyle3;
             this.DT_DATA_FIM_ULTIMA_EXEC.Frozen = true;
             this.DT_DATA_FIM_ULTIMA_EXEC.HeaderText = "Fim Última Execução";
             this.DT_DATA_FIM_ULTIMA_EXEC.MinimumWidth = 6;
@@ -677,6 +677,12 @@
             this.barraStatus.TabIndex = 4;
             this.barraStatus.Text = "statusStrip1";
             // 
+            // toolStripVersao
+            // 
+            this.toolStripVersao.Name = "toolStripVersao";
+            this.toolStripVersao.Size = new System.Drawing.Size(118, 17);
+            this.toolStripVersao.Text = "toolStripStatusLabel1";
+            // 
             // barraProgresso
             // 
             this.barraProgresso.Name = "barraProgresso";
@@ -701,12 +707,6 @@
             this.progressBar1.TabIndex = 5;
             this.progressBar1.Visible = false;
             // 
-            // toolStripVersao
-            // 
-            this.toolStripVersao.Name = "toolStripVersao";
-            this.toolStripVersao.Size = new System.Drawing.Size(118, 17);
-            this.toolStripVersao.Text = "toolStripStatusLabel1";
-            // 
             // frmPainel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -717,6 +717,7 @@
             this.Controls.Add(this.tabControl2);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmPainel";
             this.Text = "Painel de Agendamentos";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

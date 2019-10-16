@@ -24,27 +24,29 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
         private List<Importacao> registros;
         int _cd_bot_exec;
         int _cd_par;
+        string _nome_cliente;
         #endregion
 
         public Work()
         {
-            LogController.RegistrarLog("#################  INICIALIZANDO - STATUS DE DESEMBARAÇO DA SEFAZ  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "#################  INICIALIZANDO - STATUS DE DESEMBARAÇO DA SEFAZ  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
             //_urlApiBase = "http://localhost:7000/";
         }
 
-        public Work(int cd_bot_exec, int cd_par)
+        public Work(int cd_bot_exec, int cd_par, string nome_cliente)
         {
             _cd_bot_exec = cd_bot_exec;
             _cd_par = cd_par;
+            _nome_cliente = nome_cliente;
 
-            LogController.RegistrarLog("#################  INICIALIZANDO - STATUS DE DESEMBARAÇO DA SEFAZ  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "#################  INICIALIZANDO - STATUS DE DESEMBARAÇO DA SEFAZ  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
         public async Task ExecutarAsync()
         {
-            LogController.RegistrarLog("Obtendo DI's para Consultar Status de Desembaraço na Sefaz.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Obtendo DI's para Consultar Status de Desembaraço na Sefaz.", eTipoLog.INFO, _cd_bot_exec, "bot");
             await CarregarListaDIAsync();
         }
 
@@ -54,7 +56,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
 
             using (var client = new HttpClient())
             {
-                LogController.RegistrarLog("ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
                 registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
@@ -73,7 +75,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                             {
                                 foreach (var di in registros)
                                 {
-                                    LogController.RegistrarLog("################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                    LogController.RegistrarLog(_nome_cliente + " - " + "################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                     List<Thread> threads = new List<Thread>();
 
@@ -99,7 +101,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                 }
                 else
                 {
-                    LogController.RegistrarLog("Não existe DI's para Acompanhar Status.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Status.", eTipoLog.INFO, _cd_bot_exec, "bot");
                     //Console.ReadKey();
                 }
             }
@@ -111,20 +113,20 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             var numDeclaracao = numero.Substring(2, 7);
             var numDigito = numero.Substring(9, 1);
 
-            LogController.RegistrarLog("ACESSANDO SITE...", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "ACESSANDO SITE...", eTipoLog.INFO, _cd_bot_exec, "bot");
             _driver.Navigate().GoToUrl(_urlSite);
 
-            LogController.RegistrarLog("Inserindo o Ano...", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Inserindo o Ano...", eTipoLog.INFO, _cd_bot_exec, "bot");
             //COLOCANDO O ANO
             OpenQA.Selenium.IWebElement element = _driver.FindElementById("txtAno");
             element.SendKeys("20"+numAno);
 
-            LogController.RegistrarLog("Inserindo o Numero...", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Inserindo o Numero...", eTipoLog.INFO, _cd_bot_exec, "bot");
             //COLOCANDO O NUMERO
             element = _driver.FindElementById("txtNumeroDI");
             element.SendKeys(numDeclaracao);
 
-            LogController.RegistrarLog("Inserindo o Digito Verificador...", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Inserindo o Digito Verificador...", eTipoLog.INFO, _cd_bot_exec, "bot");
             //COLOCANDO O NUMERO DO DIGITO VERIFICADOR
             element = _driver.FindElementById("txtDigito");
             element.SendKeys(numDigito);
@@ -133,16 +135,16 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             element = _driver.FindElementById("pesquisar");
             element.Click();
 
-            LogController.RegistrarLog("Gravando o Screenshot da Tela de Consulta...", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Gravando o Screenshot da Tela de Consulta...", eTipoLog.INFO, _cd_bot_exec, "bot");
 
             var retorno = capturaImagem(_driver, numero);
 
-            LogController.RegistrarLog("Gravando Status...", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Gravando Status...", eTipoLog.INFO, _cd_bot_exec, "bot");
 
             import.OP_STATUS_DESEMB = retorno ? 1 : 0;
             await AtualizaStatusDesembaraco(import, nroDI);
 
-            LogController.RegistrarLog("Concluído !!!", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Concluído !!!", eTipoLog.INFO, _cd_bot_exec, "bot");
         }
 
         public void Screenshot(IWebDriver driver, string screenshotsPasta)
@@ -187,12 +189,12 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                     resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
                     resultado.EnsureSuccessStatusCode();
 
-                    LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
             catch (Exception e)
             {
-                LogController.RegistrarLog($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
             }
         }
     }

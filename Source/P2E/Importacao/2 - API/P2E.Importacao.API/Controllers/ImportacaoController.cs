@@ -47,15 +47,6 @@ namespace P2E.Importacao.API.Controllers
             return clientes.ToList();
         }
 
-        //// GET: api/Importacao/baixarextrato
-        //[HttpGet]
-        //[Route("api/v1/importacao/tomarciencia/{cd_par}")]
-        //public IEnumerable<ParceiroNegocio> TomarCiencia(int cd_par)
-        //{
-        //    var result = _ParceiroNegocioRepository.FindAll(p => p.CD_PAR == cd_par);
-        //    return result;
-        //}
-
         // GET: api/Importacao/baixarextrato
         [HttpGet]
         [Route("api/v1/importacao/despacho/{cd_par}")]

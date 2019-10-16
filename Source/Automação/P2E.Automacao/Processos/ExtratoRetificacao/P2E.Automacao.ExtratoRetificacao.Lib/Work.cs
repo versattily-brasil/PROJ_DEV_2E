@@ -28,27 +28,30 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
         private List<Importacao> registros;
         int _cd_bot_exec;
         int _cd_par;
+        string _nome_cliente;
+
         #endregion
 
         public Work()
         {
-            LogController.RegistrarLog("#################  INICIALIZANDO - EXTRATO DE RETIFICAÇÃO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "#################  INICIALIZANDO - EXTRATO DE RETIFICAÇÃO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
             //_urlApiBase = "http://localhost:7000/";
         }
 
-        public Work(int cd_bot_exec, int cd_par)
+        public Work(int cd_bot_exec, int cd_par, string nome_cliente)
         {
             _cd_bot_exec = cd_bot_exec;
             _cd_par = cd_par;
+            _nome_cliente = nome_cliente;
 
-            LogController.RegistrarLog("#################  INICIALIZANDO - EXTRATO DE RETIFICAÇÃO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "#################  INICIALIZANDO - EXTRATO DE RETIFICAÇÃO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
         public async Task ExecutarAsync()
         {
-            LogController.RegistrarLog("Obtendo DI's para Consultar Extrato de Retificação.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Obtendo DI's para Consultar Extrato de Retificação.", eTipoLog.INFO, _cd_bot_exec, "bot");
             await CarregarListaDIAsync();
         }
 
@@ -58,7 +61,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
 
             using (var client = new HttpClient())
             {
-                LogController.RegistrarLog("ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 var result = await client.GetAsync(urlAcompanha);
                 var aux = await result.Content.ReadAsStringAsync();
                 registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
@@ -67,7 +70,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                 {
                     using (var service = PhantomJSDriverService.CreateDefaultService())
                     {
-                        LogController.RegistrarLog("CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         ControleCertificados.CarregarCertificado(service);
 
                         service.AddArgument("test-type");
@@ -78,12 +81,12 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                         {
                             try
                             {
-                                LogController.RegistrarLog("ACESSANDO SITE...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                LogController.RegistrarLog(_nome_cliente + " - " + "ACESSANDO SITE...", eTipoLog.INFO, _cd_bot_exec, "bot");
                                 _driver.Navigate().GoToUrl(_urlSite);
 
                                 foreach (var di in registros)
                                 {
-                                    LogController.RegistrarLog("################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                    LogController.RegistrarLog(_nome_cliente + " - " + "################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                     List<Thread> threads = new List<Thread>();
 
@@ -109,7 +112,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                 }
                 else
                 {
-                    LogController.RegistrarLog("Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
         }
@@ -120,7 +123,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
 
             var numDeclaracao = numero;
 
-            LogController.RegistrarLog("ACESSAO PAGINA DE CONSULTA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "ACESSAO PAGINA DE CONSULTA...", eTipoLog.INFO, _cd_bot_exec, "bot");
             _driver.Navigate().GoToUrl(_urlTelaConsulta);
 
             //COLOCANDO O NUMERO DA DI NO CAMPO
@@ -139,7 +142,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
 
                 await AtualizaExtratoRetificacao(import, nroDI); 
 
-                LogController.RegistrarLog("DI NÃO RETIFICADA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + "DI NÃO RETIFICADA...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 return;
             }
 
@@ -147,7 +150,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                                         numDeclaracao.Substring(2, 7) + "-" +
                                         numDeclaracao.Substring(9, 1);
 
-            LogController.RegistrarLog("DOWNLOAD DO EXTRATO DE RETIFICACAO EM PDF...", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "DOWNLOAD DO EXTRATO DE RETIFICACAO EM PDF...", eTipoLog.INFO, _cd_bot_exec, "bot");
             var retornoRetif = DownloadComprovante(_driver, _urlDownload + "?nrDeclaracao=" + numeroDec);
 
             import.OP_EXTRATO_RETIF = retornoRetif ? 1 : 0;
@@ -167,12 +170,12 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                     resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
                     resultado.EnsureSuccessStatusCode();
 
-                    LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
             catch (Exception e)
             {
-                LogController.RegistrarLog($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
             }
         }
 

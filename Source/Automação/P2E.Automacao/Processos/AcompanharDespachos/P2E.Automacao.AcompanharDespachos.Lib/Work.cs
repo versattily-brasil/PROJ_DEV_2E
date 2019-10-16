@@ -26,20 +26,23 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
         private List<Importacao> registros;
         int _cd_bot_exec;
         int _cd_par;
+        string _nome_cliente;
+
         #endregion
 
         public Work()
         {
-            LogController.RegistrarLog("#####################  INICIALIZANDO - ACOMPANHAMENTO DE DESPACHO  ##################### ");
+            LogController.RegistrarLog(_nome_cliente + " - " + "#####################  INICIALIZANDO - ACOMPANHAMENTO DE DESPACHO  ##################### ");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        public Work(int cd_bot_exec, int cd_par)
+        public Work(int cd_bot_exec, int cd_par, string nome_cliente)
         {
             _cd_bot_exec = cd_bot_exec;
             _cd_par = cd_par;
+            _nome_cliente = nome_cliente;
 
-            LogController.RegistrarLog("#####################  INICIALIZANDO - ACOMPANHAMENTO DE DESPACHO  ##################### ", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "#####################  INICIALIZANDO - ACOMPANHAMENTO DE DESPACHO  ##################### ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
@@ -47,13 +50,13 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
         {
             try
             {
-                LogController.RegistrarLog("Obtendo DI's para exoneração.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + "Obtendo DI's para exoneração.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 await CarregarListaDIAsync();
-                LogController.RegistrarLog("Finalizando execução.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + "Finalizando execução.", eTipoLog.INFO, _cd_bot_exec, "bot");
             }
             catch (Exception ex)
             {
-                LogController.RegistrarLog($"Erro em ExecutarAsync. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em ExecutarAsync. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 
@@ -68,7 +71,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                     Historico historicoImp = new Historico();
                     Vistoria vistoriaImp = new Vistoria();
 
-                    LogController.RegistrarLog("ABRINDO CONEXÃO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXÃO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                     var result = await client.GetAsync(urlAcompanha);
                     registros = await result.Content.ReadAsAsync<List<Importacao>>();
 
@@ -76,9 +79,9 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                     {
                         using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
                         {
-                            LogController.RegistrarLog("CARREGANDO CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                            LogController.RegistrarLog(_nome_cliente + " - " + "CARREGANDO CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                             string cert = $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
-                            LogController.RegistrarLog(cert, eTipoLog.INFO, _cd_bot_exec, "bot");
+                            LogController.RegistrarLog(_nome_cliente + " - " + cert, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                             ControleCertificados.CarregarCertificado(service);
 
@@ -95,14 +98,14 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                                     if (registros != null)
                                     {
-                                        LogController.RegistrarLog($"{registros.Count} DI's localizadas.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                        LogController.RegistrarLog(_nome_cliente + " - " + $"{registros.Count} DI's localizadas.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                         foreach (var di in registros)
                                         {
                                             //FILTRANDO O STATUS DA DI. TAMANHO 10/ CANAL VERDE == 1 / DESEMBARAÇADA == 11
                                             if (di.TX_NUM_DEC.Trim().Length == 10 && di.CD_IMP_CANAL != 1 && di.CD_IMP_STATUS != 11)
                                             {
-                                                LogController.RegistrarLog("################## DI: " + di.TX_NUM_DEC + " ##################", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                                LogController.RegistrarLog(_nome_cliente + " - " + "################## DI: " + di.TX_NUM_DEC + " ##################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                                 List<Thread> threads = new List<Thread>();
 
@@ -120,18 +123,18 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                                             {
                                                 if (di.TX_NUM_DEC.Trim().Length == 10 && di.CD_IMP_CANAL == 1)
                                                 {
-                                                    LogController.RegistrarLog($"DI {di.TX_NUM_DEC} está com status 'CANAL VERDE'", eTipoLog.ALERTA, _cd_bot_exec, "bot");
+                                                    LogController.RegistrarLog(_nome_cliente + " - " + $"DI {di.TX_NUM_DEC} está com status 'CANAL VERDE'", eTipoLog.ALERTA, _cd_bot_exec, "bot");
                                                 }
                                                 else if (di.CD_IMP_STATUS != 11)
                                                 {
-                                                    LogController.RegistrarLog($"DI {di.TX_NUM_DEC} está com status 'DESEMBARAÇADA'", eTipoLog.ALERTA, _cd_bot_exec, "bot");
+                                                    LogController.RegistrarLog(_nome_cliente + " - " + $"DI {di.TX_NUM_DEC} está com status 'DESEMBARAÇADA'", eTipoLog.ALERTA, _cd_bot_exec, "bot");
                                                 }
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        LogController.RegistrarLog($"Não foram localizadas DI's.", eTipoLog.ALERTA, _cd_bot_exec, "bot");
+                                        LogController.RegistrarLog(_nome_cliente + " - " + $"Não foram localizadas DI's.", eTipoLog.ALERTA, _cd_bot_exec, "bot");
                                     }
                                 }
                                 catch (Exception)
@@ -147,13 +150,13 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                     }
                     else
                     {
-                        LogController.RegistrarLog("Não existe DI's para Acompanhar Despacho.", eTipoLog.ALERTA, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Despacho.", eTipoLog.ALERTA, _cd_bot_exec, "bot");
                     }
                 }
             }
             catch (Exception ex)
             {
-                LogController.RegistrarLog($"Erro em CarregarListaDIAsync. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em CarregarListaDIAsync. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 
@@ -189,7 +192,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                 //localiza o status do despacho
                 element = _driver.FindElementByCssSelector("#tr_" + numDeclaracao + " > td:nth-child(2)");
                 var status = element.Text;
-                LogController.RegistrarLog("-----" + status + "-----");
+                LogController.RegistrarLog(_nome_cliente + " - " + "-----" + status + "-----");
 
                 switch (status)
                 {
@@ -237,7 +240,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         }
 
                         import.CD_IMP_STATUS = 11;
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                         break;
@@ -269,7 +272,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         }
 
                         import.CD_IMP_STATUS = 1;
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                         break;
@@ -294,7 +297,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         }
 
                         import.CD_IMP_STATUS = 3;
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                         break;
@@ -304,7 +307,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         import.CD_IMP_CANAL = 0;
 
                         import.CD_IMP_STATUS = 2;
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                         break;
@@ -329,7 +332,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         }
 
                         import.CD_IMP_STATUS = 5;
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                         break;
@@ -354,7 +357,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         }
 
                         import.CD_IMP_STATUS = 7;
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                         break;
@@ -383,7 +386,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         }
 
                         import.CD_IMP_STATUS = 8;
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                         break;
@@ -428,7 +431,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         }
 
                         import.CD_IMP_STATUS = 9;
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
 
                         break;
@@ -491,9 +494,9 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                             default:
                                 break;
                         }
-                        LogController.RegistrarLog("ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO HISTORICO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await SalvaHistoricoImp(numDeclaracao, historicoImp, import.CD_IMP, import.CD_IMP_STATUS, import.CD_IMP_CANAL);
-                        LogController.RegistrarLog("ATUALIZANDO VISTORIA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO VISTORIA...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await AtualizaVistoria(cd_imp, vistoriaImp);
 
                         break;
@@ -501,12 +504,12 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                     default:
                         break;
                 }
-                LogController.RegistrarLog("ATUALIZANDO STATUS...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO STATUS...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 await AtualizaStatus(import, cd_imp, historicoImp);
             }
             catch (Exception ex)
             {
-                LogController.RegistrarLog($"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
 
         }
@@ -540,7 +543,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
             }
             catch (Exception ex)
             {
-                LogController.RegistrarLog($"Erro em AtualizaStatus. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em AtualizaStatus. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 
@@ -581,7 +584,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
             }
             catch (Exception e)
             {
-                LogController.RegistrarLog($"Erro em AtualizaVistoria. {e.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em AtualizaVistoria. {e.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 
