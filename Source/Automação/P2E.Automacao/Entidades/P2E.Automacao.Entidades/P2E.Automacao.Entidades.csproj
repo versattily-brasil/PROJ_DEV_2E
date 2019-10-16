@@ -51,6 +51,7 @@
     <Compile Include="DetalheNCM.cs" />
     <Compile Include="Historico.cs" />
     <Compile Include="Importacao.cs" />
+    <Compile Include="ParceiroNegocio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxaCambio.cs" />
     <Compile Include="Vistoria.cs" />

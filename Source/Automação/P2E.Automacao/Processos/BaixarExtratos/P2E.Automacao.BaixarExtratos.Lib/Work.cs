@@ -131,7 +131,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
             catch (Exception ex)
             {
-               
+                LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 

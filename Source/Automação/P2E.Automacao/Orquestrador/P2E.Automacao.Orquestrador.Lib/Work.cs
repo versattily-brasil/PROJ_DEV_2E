@@ -336,7 +336,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                     try
                                     {
 
-                                        new TomarCiencia.Lib.Work().Start();
+                                        new TomarCiencia.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).Start();
                                         await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                                     }
                                     catch (ThreadAbortException abort)
