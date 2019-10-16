@@ -12,6 +12,10 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
     [Serializable]
     public class RotinaViewModel
     {
+        public RotinaViewModel()
+        {
+            RotinasAssociadas = new List<RotinaAssociada>(); 
+        }
         public int CD_ROT { get; set; }
         public string TX_NOME { get; set; }
         public string TX_DSC { get; set; }
@@ -20,7 +24,7 @@ namespace P2E.Main.UI.Web.Models.SSO.Rotina
         public string TX_URL { get; set; }
 
         public List<P2E.SSO.Domain.Entities.Servico> Servicos { get; set; }
-        public List<P2E.SSO.Domain.Entities.Rotina> Rotinas { get; set; }
+        public List<RotinaViewModel> Rotinas { get; set; }
         
         public List<P2E.SSO.Domain.Entities.RotinaAssociada> RotinasAssociadas { get; set; }
 

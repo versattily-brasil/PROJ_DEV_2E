@@ -2,7 +2,7 @@ var TabelaRotinasAssociadas = /** @class */ (function () {
     function TabelaRotinasAssociadas() {
     }
     TabelaRotinasAssociadas.prototype.addClickEvent = function () {
-        $(".excluir-rotina-associada").on("click", function () {
+        $(".bt-excluir").on("click", function () {
             $(this).closest("tr").remove();
         });
     };
@@ -24,12 +24,12 @@ var TabelaRotinasAssociadas = /** @class */ (function () {
             });
             if (registroEncontrato === false) {
                 var row = void 0;
-                row = '<tr data-rot-ass="' + rotinaSelecionada.value + '">';
+                row = '<tr data-cd-rot-ass="' + rotinaSelecionada.value + '">';
                 var cols = "";
                 cols += '<td>' + rotinaSelecionada.text + '</td>';
                 cols += '<td class="text-center">';
-                cols += '<a data-cd-rot_ass="' + rotinaSelecionada.value + '">';
-                cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger excluir-rotina-associada"></i>';
+                cols += '<a data-cd-rot-ass="' + rotinaSelecionada.value + '">';
+                cols += '<i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i>';
                 cols += '</a>';
                 cols += '</td>';
                 row += cols;

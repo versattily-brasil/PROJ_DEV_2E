@@ -617,6 +617,8 @@ namespace P2E.Main.UI.Web.Controllers
                         });
                     }
 
+                    CarregarRotinasAssociadasAsync(rotinaViewModel);
+
                     servico.RotinasViewModel.Add(rotinaViewModel);
                 }
                 else
@@ -645,6 +647,19 @@ namespace P2E.Main.UI.Web.Controllers
             var permissoes = JsonConvert.SerializeObject(servicosViewModel);
 
             return permissoes;
+        }
+
+        private async Task CarregarRotinasAssociadasAsync(RotinaViewModel rotinaViewModel)
+        {
+            string url = this.appSettings.ApiBaseURL + $"sso/v1/rotina/associadas/{rotinaViewModel.CD_ROT}";
+
+            using (var client = new HttpClient())
+            {
+                var result = client.GetAsync(url).Result;
+                var lista = await result.Content.ReadAsAsync<List<RotinaAssociada>>();
+
+                rotinaViewModel.RotinasAssociadas = lista;
+            }
         }
     }
 }

@@ -46,11 +46,27 @@ namespace P2E.Main.UI.Web.Models
 
                         foreach (var rotina in servico.RotinasViewModel.Where(p => p.OperacoesViewModel.Any(x => x.TX_DSC.Contains("Consultar"))))
                         {
-                            item.Items.Add(new ListItem()
+                            var listItem = new ListItem()
                             {
                                 Title = rotina.TX_NOME,
                                 Href = rotina.TX_URL
-                            });
+                            };
+
+
+                            if (rotina.RotinasAssociadas != null)
+                            {
+                                foreach (var rotinaAssociada in rotina.RotinasAssociadas)
+                                {
+                                    listItem.Associados.Add(
+                                        new ListItem() { 
+                                            Title = rotinaAssociada?.Rotina?.TX_NOME,
+                                            Href = rotinaAssociada?.Rotina?.TX_URL
+                                        });
+                                }
+                            }
+
+                            item.Items.Add(listItem);
+
                         }
 
                         listItems.Add(item);

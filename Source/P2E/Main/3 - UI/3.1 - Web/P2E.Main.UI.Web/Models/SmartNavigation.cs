@@ -56,6 +56,9 @@ namespace P2E.Main.UI.Web.Models
         public bool Disabled { get; set; }
         public List<ListItem> Items { set; get; } = new List<ListItem>();
         public Span Span { get; set; } = new Span();
+        
+        public List<ListItem> Associados { get; set; }
+
     }
 
     public sealed class Span

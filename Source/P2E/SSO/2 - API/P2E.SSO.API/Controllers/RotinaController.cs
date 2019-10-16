@@ -16,16 +16,18 @@ namespace P2E.SSO.API.Controllers
         private readonly IRotinaServicoRepository _rotinaServicoRepository;
         private readonly IServicoRepository _servicoRepository;
         private readonly IRotinaGrupoOperacaoRepository _rotinaGrupoOperacaoRepository;
-
+        private readonly IRotinaAssociadaRepository _rotinaAssociadaRepository;
         public RotinaController(IRotinaRepository rotinaRepository,
                                 IRotinaServicoRepository rotinaServicoRepository,
                                 IServicoRepository servicoRepository,
+                                IRotinaAssociadaRepository rotinaAssociadaRepository,
                                 IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository)
         {
             _rotinaRepository = rotinaRepository;
             _rotinaServicoRepository = rotinaServicoRepository;
             _servicoRepository = servicoRepository;
             _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
+            _rotinaAssociadaRepository = rotinaAssociadaRepository;
         }
 
         // GET: api/rotina/todos
@@ -70,6 +72,26 @@ namespace P2E.SSO.API.Controllers
             return rotina;
         }
 
+        // GET: api/rotina/5
+        [HttpGet]
+        [Route("api/v1/rotina/associadas/{id}")]
+        public List<RotinaAssociada> Associadas(int id)
+        {
+            var retorno = new List<RotinaAssociada>();
+
+            retorno = _rotinaAssociadaRepository.FindAll(p => p.CD_ROT_PRINCIPAL == id).ToList();
+
+            foreach (var item in retorno)
+            {
+                var rotina = _rotinaRepository.Find(p => p.CD_ROT == item.CD_ROT_ASS);
+                item.Rotina = rotina;
+                item.NomeRotinaAssociada = rotina.TX_NOME;
+            }
+
+            return retorno;
+        }
+
+
         // POST: api/rotina
         [HttpPost]
         [Route("api/v1/rotina")]
@@ -106,6 +128,8 @@ namespace P2E.SSO.API.Controllers
                 {
                     _rotinaServicoRepository.Delete(a => a.CD_ROT == item.CD_ROT);
 
+                    _rotinaAssociadaRepository.Delete(o => o.CD_ROT_PRINCIPAL == item.CD_ROT);
+
                     if (id > 0)
                         _rotinaRepository.Update(item);
                     else
@@ -116,6 +140,15 @@ namespace P2E.SSO.API.Controllers
                         rotinaServico.CD_ROT = item.CD_ROT;
 
                         _rotinaServicoRepository.Insert(rotinaServico);
+                    }
+
+                    if (item.RotinasAssociadas != null)
+                    {
+                        foreach (var rotinaAssociada in item.RotinasAssociadas)
+                        {
+                            rotinaAssociada.CD_ROT_PRINCIPAL = item.CD_ROT;
+                            _rotinaAssociadaRepository.Insert(rotinaAssociada);
+                        }
                     }
 
                     return Ok(item);
