@@ -78,44 +78,71 @@
                         </div>
                         <hr />
 
-                        <div class="form-group mb-0">
-                            <div class="row">
-                                <div class="col-12">
-                                    <br />
-                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotinas", "Editar", User))
-                                    {
-                                        <button data-controller="Rotina" data-id="@Model.CD_ROT"
-                                                data-action="Edit"
-                                                data-body-message="Deseja Editar o Registro?"
-                                                style="font-weight:normal;cursor:pointer" class=" edit btn btn-success">
-                                            Editar
-                                        </button>
-                                    }
-                                    <button data-controller="Rotina" data-id="@Model.CD_ROT"
-                                            data-action="CancelView"
-                                            data-body-message="Voltar para a tela inicial?"
-                                            style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
-                                        Cancelar
-                                    </button>
-
-                                    @if (Model.CD_ROT > 0)
-                                    {
-                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotinas", "Deletar", User))
-                                        {
-                                            <button data-id="@Model.CD_ROT"
-                                                    data-controller="Rotina"
-                                                    data-action="Delete"
-                                                    data-body-message="Deseja excluir esta Rotina?"
-                                                    style="font-weight:normal;cursor:pointer"
-                                                    class="delete btn btn-danger fa-pull-right">
-                                                Deletar
-                                            </button>
-                                        }
-                                    }
-
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div class="row">
+                                    <table id="tabela_rotina_associada" class="table table-bordered table-hover m-0">
+                                        <thead class="thead-themed">
+                                            <tr>
+                                                <th colspan="2" style="text-align:center">Rotinas Associadas</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Rotina</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.RotinasAssociadas != null)
+                                            {
+                                                @foreach (var item in Model.RotinasAssociadas)
+                                                {
+                                                    <tr data-cd-rot-ass="@item.CD_ROT_ASS" data-cd-ass="@item.CD_ASS">
+                                                        <td>@item.NomeRotinaAssociada</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>
+
+                            <div class="form-group mb-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <br />
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotinas", "Editar", User))
+                                        {
+                                            <button data-controller="Rotina" data-id="@Model.CD_ROT"
+                                                    data-action="Edit"
+                                                    data-body-message="Deseja Editar o Registro?"
+                                                    style="font-weight:normal;cursor:pointer" class=" edit btn btn-success">
+                                                Editar
+                                            </button>
+                                        }
+                                        <button data-controller="Rotina" data-id="@Model.CD_ROT"
+                                                data-action="CancelView"
+                                                data-body-message="Voltar para a tela inicial?"
+                                                style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
+                                            Cancelar
+                                        </button>
+
+                                        @if (Model.CD_ROT > 0)
+                                        {
+                                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao("Rotinas", "Deletar", User))
+                                            {
+                                                <button data-id="@Model.CD_ROT"
+                                                        data-controller="Rotina"
+                                                        data-action="Delete"
+                                                        data-body-message="Deseja excluir esta Rotina?"
+                                                        style="font-weight:normal;cursor:pointer"
+                                                        class="delete btn btn-danger fa-pull-right">
+                                                    Deletar
+                                                </button>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
                     </form>
                 </div>
             </div>

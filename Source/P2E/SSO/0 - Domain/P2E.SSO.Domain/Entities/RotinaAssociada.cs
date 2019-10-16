@@ -15,5 +15,7 @@ namespace P2E.SSO.Domain.Entities
 
         [NotMapped]
         public string NomeRotinaAssociada { get; set; }
+
+        public Rotina Rotina { get; set; }
     }
 }

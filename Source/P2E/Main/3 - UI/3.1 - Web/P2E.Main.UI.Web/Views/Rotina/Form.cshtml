@@ -103,8 +103,9 @@
                                             <div class="row">
                                                 <div class="col-11">
                                                     <div class="form-group">
-                                                        <select asp-items="@(new SelectList(@Model.Rotinas, "TXT_NOME"))" class="form-control" id="comboRotinaAssociada">
-                                                            <option disabled selected>--- Selecione uma rotina ---</option>
+                                                        <label class="form-label" asp-for="Rotinas">Rotinas</label>
+                                                        <select asp-items="@(new SelectList(@Model.Rotinas,"CD_ROT", "TX_NOME"))" asp-for="CD_ROT" class="form-control" id="comboRotinaAssociada">
+                                                            <option disabled selected>- Selecione uma rotina -</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -151,7 +152,7 @@
                                                                 <tr data-cd-rot-ass="@item.CD_ROT_ASS" data-cd-ass="@item.CD_ASS">
                                                                     <td>@item.NomeRotinaAssociada</td>
 
-                                                                    <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger excluir-rotina-associada"></i></td>
+                                                                    <td class="text-center"><i style="font-weight:bold;cursor:pointer" class="fal fa-minus-circle text-danger bt-excluir"></i></td>
                                                                 </tr>
                                                             }
                                                         }

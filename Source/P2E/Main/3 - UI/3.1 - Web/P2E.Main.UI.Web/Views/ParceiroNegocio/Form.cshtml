@@ -1,8 +1,8 @@
-﻿@model P2E.Main.UI.Web.Models.ADM.ProgramacaoBot.AgendaViewModel
+﻿@model P2E.Main.UI.Web.Models.SSO.ParceiroNegocio.ParceiroNegocioViewModel
 @{
     ViewData["Title"] = "Cadastro";
-    ViewData["PageName"] = "programacaobot";
-    ViewData["Category1"] = "progrmacaobot";
+    ViewData["PageName"] = "parceiro_negocio";
+    ViewData["Category1"] = "Parceiro de Negócio";
 
     //Alert info
     var type = (string)TempData["_alert.type"];
@@ -25,17 +25,17 @@
 
             <div class="panel">
                 <div class="panel-hdr">
-                    @if (Model.CD_AGENDA > 0)
+                    @if (Model.CD_PAR > 0)
                     {
                         <h1>
-                            Edição de Programação de Execução de Bot
+                            Edição de Parceiro de Negócio
                         </h1>
                     }
                     else
                     {
-                <h1>
-                    Cadastro de Programação de Execução de Bot
-                </h1>
+                        <h1>
+                            Cadastro de Parceiro de Negócio
+                        </h1>
                     }
                 </div>
                 <div class="panel-container show">
@@ -45,28 +45,28 @@
                             <div class="form-group mb-0">
                                 <div class="row">
                                     <div class="col-8">
-                                        <input type="hidden" asp-for="CD_AGENDA" />
+                                        <input type="hidden" asp-for="CD_PAR" />
                                         <div class="form-group">
-                                            <label class="form-label" asp-for="TX_DESCRICAO">Descrição</label>
-                                            <input type="text" maxlength="100" asp-for="TX_DESCRICAO" placeholder="Razão Social" class="form-control">
+                                            <label class="form-label" asp-for="TXT_RZSOC">Razão  Social</label>
+                                            <input type="text" maxlength="100" asp-for="TXT_RZSOC" placeholder="Razão Social" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="form-group">
-                                            <label class="form-label" asp-for="OP_REPETE">CNPJ</label>
-                                            <input type="text" id="txt-cnpj" maxlength="21" asp-for="OP_REPETE" placeholder="Valor" class="form-control">
+                                            <label class="form-label" asp-for="CNPJ">CNPJ</label>
+                                            <input type="text" id="txt-cnpj" maxlength="21" asp-for="CNPJ" placeholder="Valor" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-8">
                                         <div class="form-group">
-                                            <label class="form-label" asp-for="DT_DATA_EXEC_PROG">Email</label>
-                                            <input type="text" id="tx-email" maxlength="50" asp-for="DT_DATA_EXEC_PROG" placeholder="Email" class="form-control">
+                                            <label class="form-label" asp-for="TX_EMAIL">Email</label>
+                                            <input type="text" id="tx-email" maxlength="50" asp-for="TX_EMAIL" placeholder="Email" class="form-control">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <hr />
-                            @*<div class="form-group mb-0">
+                            <div class="form-group mb-0">
                                 <div class="panel">
                                     <div class="panel-hdr bg-gray-100">
                                         <h3>
@@ -163,7 +163,7 @@
 
                                     </div>
                                 </div>
-                            </div>*@
+                            </div>
                         </form>
                     </div>
                 </div>

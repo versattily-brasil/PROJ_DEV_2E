@@ -111,7 +111,12 @@ namespace P2E.Main.UI.Web.Controllers
                     result.EnsureSuccessStatusCode();
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
                     var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
-                    rotinaViewModel.Rotinas = CarregarRotinas().Result;
+
+                    var rotinas = CarregarRotinas().Result;
+                    rotinaViewModel.Rotinas = _mapper.Map<List<RotinaViewModel>>(rotinas);
+
+                    // Carregar Rotinas Associadas
+                    rotinaViewModel.RotinasAssociadas = CarregarRotinasAssociadas(rotinaViewModel.CD_ROT).Result;
 
                     return View("Form", rotinaViewModel);
                 }
@@ -135,7 +140,7 @@ namespace P2E.Main.UI.Web.Controllers
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
                     var rotinaViewModel = _mapper.Map<RotinaViewModel>(rotina);
                     rotinaViewModel.Servicos = CarregarServico().Result;
-                    //rotinaViewModel.RotinasAssociadas = await CarregarRotinasAssociadas(rotinaViewModel.CD_ROT);
+                    rotinaViewModel.RotinasAssociadas = CarregarRotinasAssociadas(rotinaViewModel.CD_ROT).Result;
 
                     return View("View", rotinaViewModel);
                 }
@@ -144,11 +149,6 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 throw;
             }
-        }
-
-        private Task<List<RotinaAssociada>> CarregarRotinasAssociadas(int cD_ROT)
-        {
-            return null;
         }
 
         /// <summary>
@@ -161,7 +161,10 @@ namespace P2E.Main.UI.Web.Controllers
         {
             var vm = new RotinaViewModel();
             vm.Servicos = CarregarServico().Result;
-            vm.Rotinas = CarregarRotinas().Result;
+
+            var rotinas = CarregarRotinas().Result;
+            vm.Rotinas = _mapper.Map<List<RotinaViewModel>>(rotinas);
+
             return View("Form", vm);
         }
 
@@ -180,7 +183,6 @@ namespace P2E.Main.UI.Web.Controllers
 
             try
             {
-
                 if (rotina.IsValid())
                 {
                     using (var client = new HttpClient())
@@ -279,16 +281,17 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
-        //private async Task<List<RotinaAssociada>> CarregarRotinasAssociadas(int id)
-        //{
-        //    string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/associada/{id}";
-        //    using (var client = new HttpClient())
-        //    {
-        //        var result = await client.GetAsync(urlServico);
-        //        var lista = await result.Content.ReadAsAsync<List<RotinaAssociada>>();
-        //        return lista;
-        //    }
-        //}
+        private async Task<List<RotinaAssociada>> CarregarRotinasAssociadas(int id)
+        {
+            string url = this.appSettings.ApiBaseURL + $"sso/v1/rotina/associadas/{id}";
+            
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetAsync(url);
+                var lista = await result.Content.ReadAsAsync<List<RotinaAssociada>>();
+                return lista;
+            }
+        }
 
     }
 }

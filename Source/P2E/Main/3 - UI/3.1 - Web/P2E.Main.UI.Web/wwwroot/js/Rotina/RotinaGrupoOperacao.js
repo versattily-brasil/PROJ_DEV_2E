@@ -10,12 +10,14 @@ var RotinaGrupoOperacao = /** @class */ (function () {
             _this.form.submit();
         });
         this.btnSalvar.on("click", function (e) {
-            var agrupamento = "RotinaServico";
+            var agrupamento = "RotinasAssociadas";
             var g = 0;
-            $("#tabela_rotina_servico > tbody > tr").each(function () {
-                var CD_SRV = $(this).data("cdsrv");
-                if (CD_SRV != undefined) {
-                    $("#form").append("<input type='hidden' name= '" + agrupamento + "[" + g + "].CD_SRV' value= '" + CD_SRV + "' > ");
+            $("#tabela_rotina_associada > tbody > tr").each(function () {
+                alert();
+                console.log(this);
+                var ROT_ASS = $(this).data("cd-rot-ass");
+                if (ROT_ASS != undefined) {
+                    $("#form").append("<input type='hidden' name= '" + agrupamento + "[" + g + "].CD_ROT_ASS' value= '" + ROT_ASS + "' > ");
                 }
                 g += 1;
             });
