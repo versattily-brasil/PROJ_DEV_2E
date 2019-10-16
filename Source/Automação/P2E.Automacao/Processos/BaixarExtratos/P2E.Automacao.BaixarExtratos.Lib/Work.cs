@@ -34,9 +34,9 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         #endregion
         public Work()
         {
-            Console.WriteLine();
+            LogController.RegistrarLog(_nome_cliente + " - " , eTipoLog.INFO, _cd_bot_exec, "bot");
 
-            LogController.RegistrarLog(_nome_cliente + " - " + "#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
+            LogController.RegistrarLog(_nome_cliente + " - " + "#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
 
         }
@@ -84,7 +84,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                     if (registros != null && registros.Any())
                     {
-                        using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
+                        using (var service = PhantomJSDriverService.CreateDefaultService())
                         {
 
                             LogController.RegistrarLog(_nome_cliente + " - " + "CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
@@ -97,12 +97,14 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                             service.AddArgument("no-sandbox");
                             service.HideCommandPromptWindow = true;
 
-                            using (var _driver = new PhantomJSDriver(service))
+                            var options = new PhantomJSOptions();
+
+                            using (var _driver = new PhantomJSDriver(service, options, TimeSpan.FromMinutes(2)))
                             {
                                 try
                                 {
                                     _driver.Navigate().GoToUrl(_urlSite);
-                                    Console.WriteLine(_driver.Url);
+                                    LogController.RegistrarLog(_nome_cliente + " - " + _driver.Url, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                     foreach (var di in registros)
                                     {
@@ -153,32 +155,34 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 //página da consulta DI.
                 _driver.Navigate().GoToUrl(_urlConsultaDI);
-                Console.WriteLine(_driver.Url);
+                LogController.RegistrarLog(_nome_cliente + " - " + _driver.Url, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                 //obtendo o campo de numero de declaração.
                 IWebElement element = _driver.FindElementById("nrDeclaracao");
 
-                Console.WriteLine("inserindo o numero da declaração");
+                LogController.RegistrarLog(_nome_cliente + " - " + "inserindo o numero da declaração - Nro.: " + numero, eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                //string di = numero.Substring(0, 10);
                 element.SendKeys(numero);
 
-                Console.WriteLine("Acionando o Click no enviar.");
-                Thread.Sleep(1000);
+                LogController.RegistrarLog(_nome_cliente + " - " + "Acionando o Click no enviar.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                Thread.Sleep(2000);
 
                 element = _driver.FindElement(By.Name("enviar"));
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 element.Click();
 
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
 
                 //indo para a página de consulta de declaração de importação.
                 _driver.FindElement(By.Id("btnRegistrarDI")).Click();
 
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
 
 
                 LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - PDF.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
 
                 var numeroDec = numero.Substring(0, 2) + "%2F" +
                                 numero.Substring(2, 7) + "-" +
@@ -197,8 +201,9 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 await AtualizaExtratoPdfXml(import, cd_imp);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                LogController.RegistrarLog(_nome_cliente + " - " + "ERRO: " + ex.Message, eTipoLog.ERRO, _cd_bot_exec, "bot");
                 _driver.Close();
             }
         }
@@ -358,7 +363,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //        #endregion
 //        public Work()
 //        {
-//            Console.WriteLine("#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
+//            LogController.RegistrarLog(_nome_cliente + " - " + "#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ");
 //            //_urlApiBase = "http://localhost:7000/";
 //            _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
 
@@ -366,7 +371,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
 //        public async Task ExecutarAsync()
 //        {
-//            Console.WriteLine("Obtendo DI's para Baixar Extrato.");
+//            LogController.RegistrarLog(_nome_cliente + " - " + "Obtendo DI's para Baixar Extrato.");
 //            await CarregarListaDIAsync();
 //        }
 
@@ -376,7 +381,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
 //            using (var client = new HttpClient())
 //            {
-//                Console.WriteLine("ABRINDO CONEXAO...");
+//                LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXAO...");
 //                var result = await client.GetAsync(urlAcompanha);
 //                var aux = await result.Content.ReadAsStringAsync();
 //                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
@@ -389,7 +394,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                        {
 //                            ChromeOptions options = new ChromeOptions();
 
-//                            Console.WriteLine("CARREGANDO O CERTIFICADO...");
+//                            LogController.RegistrarLog(_nome_cliente + " - " + "CARREGANDO O CERTIFICADO...");
 //                            ControleCertificados.CarregarCertificado(options);
 
 //                            options.AddArgument("test-type");
@@ -399,11 +404,11 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                            using (var _driver = new /*PhantomJSDriver*/ ChromeDriver(service, options))
 //                            {
 //                                _driver.Navigate().GoToUrl(_urlSite);
-//                                Console.WriteLine(_driver.Url);
+//                                LogController.RegistrarLog(_nome_cliente + " - " + _driver.Url);
 
 //                                foreach (var di in registros)
 //                                {
-//                                    Console.WriteLine("################## DI: " + di.TX_NUM_DEC + " ##################");
+//                                    LogController.RegistrarLog(_nome_cliente + " - " + "################## DI: " + di.TX_NUM_DEC + " ##################");
 
 //                                    List<Thread> threads = new List<Thread>();
 
@@ -422,12 +427,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                    }
 //                    catch (Exception e)
 //                    {
-//                        Console.WriteLine("erro no driver " + e.Message.Trim());
+//                        LogController.RegistrarLog(_nome_cliente + " - " + "erro no driver " + e.Message.Trim());
 //                    }
 //                }
 //                else
 //                {
-//                    Console.WriteLine("Não existe DI's para Acompanhar Despacho.");
+//                    LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Despacho.");
 //                }
 //            }
 //        }
@@ -436,25 +441,25 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //        {
 //            try
 //            {
-//                Console.WriteLine("Inciando processo de navegação...");
+//                LogController.RegistrarLog(_nome_cliente + " - " + "Inciando processo de navegação...");
 
 //                ////navega para primeira url.
 //                ////onde é realizado o login através do certificado.
 //                //_driver.Navigate().GoToUrl(_urlSite);
-//                //Console.WriteLine(_driver.Url);
+//                //LogController.RegistrarLog(_nome_cliente + " - " + _driver.Url);
 
 //                //Navega para seguinda url.
 //                //página da consulta DI.
 //                _driver.Navigate().GoToUrl(_urlConsultaDI);
-//                Console.WriteLine(_driver.Url);
+//                LogController.RegistrarLog(_nome_cliente + " - " + _driver.Url);
 //                Thread.Sleep(2000);
 //                //obtendo o campo de numero de declaração.
 //                IWebElement element = _driver.FindElementById("nrDeclaracao");
 
-//                Console.WriteLine("inserindo o numero da declaração");
+//                LogController.RegistrarLog(_nome_cliente + " - " + "inserindo o numero da declaração");
 //                element.SendKeys(numero);
 
-//                Console.WriteLine("Acionando o Click no enviar.");
+//                LogController.RegistrarLog(_nome_cliente + " - " + "Acionando o Click no enviar.");
 //                // Thread.Sleep(1000);
 
 //                element = _driver.FindElement(By.Name("enviar"));
@@ -488,7 +493,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                //                numero.Substring(2, 7) + "-" +
 //                //                numero.Substring(9, 1);
 
-//                //Console.WriteLine("Baixando o Extrato - PDF.");
+//                //LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - PDF.");
 //                //Thread.Sleep(1000);
 
 //                //var returnoPDF = DownloadExtratoPDF(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
@@ -507,7 +512,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                //}
 //                //catch (Exception e)
 //                //{
-//                //    Console.WriteLine(e.ToString());
+//                //    LogController.RegistrarLog(_nome_cliente + " - " + e.ToString());
 //                //}
 
 //            }
@@ -529,12 +534,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
 //                    resultado.EnsureSuccessStatusCode();
 
-//                    Console.WriteLine("Registro salvo com sucesso.");
+//                    LogController.RegistrarLog(_nome_cliente + " - " + "Registro salvo com sucesso.");
 //                }
 //            }
 //            catch (Exception e)
 //            {
-//                Console.WriteLine($"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
+//                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.");
 //            }
 //        }
 
@@ -630,13 +635,13 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //            }
 //            catch (Exception e)
 //            {
-//                Console.WriteLine("Erro: " + e.Message);
+//                LogController.RegistrarLog(_nome_cliente + " - " + "Erro: " + e.Message);
 //            }
 //        }
 
 //        private void MyWebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
 //        {
-//            Console.WriteLine("Download Concluído.");
+//            LogController.RegistrarLog(_nome_cliente + " - " + "Download Concluído.");
 //        }
 
 //        private void DownloadXML2(/*PhantomJSDriver*/ ChromeDriver driver)
@@ -665,7 +670,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                //{
 //                //    var html = reader.ReadToEnd();
 
-//                //    Console.WriteLine(reader.ReadToEnd());
+//                //    LogController.RegistrarLog(_nome_cliente + " - " + reader.ReadToEnd());
 //                //} 
 //                #endregion
 
@@ -691,17 +696,17 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                    var streamDados = resposta.GetResponseStream();
 //                    StreamReader reader = new StreamReader(streamDados);
 //                    object objResponse = reader.ReadToEnd();
-//                    Console.WriteLine(objResponse.ToString());
+//                    LogController.RegistrarLog(_nome_cliente + " - " + objResponse.ToString());
 //                    Console.ReadLine();
 //                    streamDados.Close();
 //                    resposta.Close();
 //                }
 
-//                Console.WriteLine("Download concluído!");
+//                LogController.RegistrarLog(_nome_cliente + " - " + "Download concluído!");
 //            }
 //            catch (Exception e)
 //            {
-//                Console.WriteLine("Erro: " + e.Message);
+//                LogController.RegistrarLog(_nome_cliente + " - " + "Erro: " + e.Message);
 //            }
 
 //        }

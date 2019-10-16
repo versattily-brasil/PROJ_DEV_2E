@@ -190,6 +190,8 @@ namespace P2E.Automacao.Orquestrador.Lib
                             nomeCliente = clientes.Result[0].TXT_RZSOC.Trim();
                         }
 
+                        
+
                         switch (bot.Bot.TX_NOME.ToUpper())
                         {
                             case "ROBÔ 01":

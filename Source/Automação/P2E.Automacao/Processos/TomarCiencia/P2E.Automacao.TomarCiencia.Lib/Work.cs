@@ -118,7 +118,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     {
                         foreach (var item in ListaEmpresas)
                         {
-                            if (item.CNPJ == registros[0].CNPJ)
+                            if (item.CNPJ.Trim() == registros[0].CNPJ.Replace(".","").Replace("/", "").Replace("-", "").Trim())
                             {
                                 Main(item);
                                 Finish();
@@ -165,28 +165,31 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     razaoSocial = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child(1) > td:nth-child(3)", contagemImpar))).Text;
                     CNPJ = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child(2) > td:nth-child(3)", contagemImpar))).Text;
 
-                    empresa.Nome = razaoSocial;
-                    empresa.CNPJ = CNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
-                    empresa.IncricoesEstaduais = new List<string>();
-
-                    ListaEmpresas.Add(empresa);
-
-                    leInscricoes = true;
-                    contagemInscricao = 1;
-
-                    while (leInscricoes)
+                    if (razaoSocial.Contains(_nome_cliente.Substring(0,10)))
                     {
-                        try
-                        {
-                            inscricaoEstadual = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child({1}) > td.dg_item > a > b", contagemPar, contagemInscricao))).Text;
-                            empresa.IncricoesEstaduais.Add(inscricaoEstadual.Replace(".", "").Replace("-", ""));
+                        empresa.Nome = razaoSocial;
+                        empresa.CNPJ = CNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
+                        empresa.IncricoesEstaduais = new List<string>();
 
-                            contagemInscricao += 1;
-                        }
-                        catch
+                        ListaEmpresas.Add(empresa);
+
+                        leInscricoes = true;
+                        contagemInscricao = 1;
+
+                        while (leInscricoes)
                         {
-                            Log(String.Format("Empresa {0}: {1} inscrição(ões) estadual(ais).", empresa.Nome, empresa.IncricoesEstaduais.Count), nameof(CarregaListaEmpresas));
-                            leInscricoes = false;
+                            try
+                            {
+                                inscricaoEstadual = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child({1}) > td.dg_item > a > b", contagemPar, contagemInscricao))).Text;
+                                empresa.IncricoesEstaduais.Add(inscricaoEstadual.Replace(".", "").Replace("-", ""));
+
+                                contagemInscricao += 1;
+                            }
+                            catch
+                            {
+                                Log(String.Format("Empresa {0}: {1} inscrição(ões) estadual(ais).", empresa.Nome, empresa.IncricoesEstaduais.Count), nameof(CarregaListaEmpresas));
+                                leInscricoes = false;
+                            }
                         }
                     }
 
