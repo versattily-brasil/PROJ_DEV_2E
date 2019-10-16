@@ -55,8 +55,14 @@ namespace P2E.Main.UI.Web.Models
 
                             if (rotina.RotinasAssociadas != null)
                             {
+                                if (listItem.Associados != null)
+                                {
+                                    listItem.Associados = new List<ListItem>();
+                                }
+
                                 foreach (var rotinaAssociada in rotina.RotinasAssociadas)
                                 {
+
                                     listItem.Associados.Add(
                                         new ListItem() { 
                                             Title = rotinaAssociada?.Rotina?.TX_NOME,

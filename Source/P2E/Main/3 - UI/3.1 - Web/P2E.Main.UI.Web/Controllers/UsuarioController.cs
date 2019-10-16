@@ -340,7 +340,7 @@ namespace P2E.Main.UI.Web.Controllers
                 var usuarioLogin = _mapper.Map<Usuario>(itemViewModel);
                 using (var client = new HttpClient())
                 {
-                    result = await client.PostAsJsonAsync($"{_urlUsuario}/login", usuarioLogin);
+                    result = client.PostAsJsonAsync($"{_urlUsuario}/login", usuarioLogin).Result;
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();
 
