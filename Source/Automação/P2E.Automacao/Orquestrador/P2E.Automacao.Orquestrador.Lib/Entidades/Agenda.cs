@@ -19,6 +19,9 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public int CD_AGENDA { get; set; }
         public string TX_DESCRICAO { get; set; }
         public int OP_ATIVO { get; set; }
+        public int? OP_RETENTAR { get; set; }
+        public int? OP_LOOP { get; set; }
+
         [NotMapped]
 
         public string sAtivo { get { return OP_ATIVO == 1 ? "Sim" : "Não"; } }

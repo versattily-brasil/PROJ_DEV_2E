@@ -28,26 +28,29 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
         private List<Importacao> registros;
         int _cd_bot_exec;
         int _cd_par;
+        string _nome_cliente;
+
         #endregion
 
         public Work()
         {
-            LogController.RegistrarLog("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ");
+            LogController.RegistrarLog(_nome_cliente + " - " + "#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        public Work(int cd_bot_exec, int cd_par)
+        public Work(int cd_bot_exec, int cd_par, string nome_cliente)
         {
             _cd_bot_exec = cd_bot_exec;
             _cd_par = cd_par;
+            _nome_cliente = nome_cliente;
 
-            LogController.RegistrarLog("#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot"); 
+            LogController.RegistrarLog(_nome_cliente + " - " + "#################  INICIALIZANDO - COMPROVANTE DE IMPORTACAO  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot"); 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
         public async Task ExecutarAsync()
         {
-            LogController.RegistrarLog("Obtendo DI's para Download de Comprovante.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + "Obtendo DI's para Download de Comprovante.", eTipoLog.INFO, _cd_bot_exec, "bot");
             await CarregarListaDIAsync();
         }
 
@@ -57,7 +60,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
             using (var client = new HttpClient())
             {
-                LogController.RegistrarLog("Abrindo conexão...", eTipoLog.INFO, _cd_bot_exec, "bot"); 
+                LogController.RegistrarLog(_nome_cliente + " - " + "Abrindo conexão...", eTipoLog.INFO, _cd_bot_exec, "bot"); 
                 var result = await client.GetAsync(urlAcompanha);
                 string aux = await result.Content.ReadAsStringAsync();
                 registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
@@ -66,7 +69,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                 {
                     using (var service = PhantomJSDriverService.CreateDefaultService())
                     {
-                        LogController.RegistrarLog("Carregando certificado...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog(_nome_cliente + " - " + "Carregando certificado...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         ControleCertificados.CarregarCertificado(service);
 
                         service.AddArgument("test-type");
@@ -81,7 +84,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                             {
                                 foreach (var di in registros)
                                 {
-                                   LogController.RegistrarLog($"Processando DI: {di.TX_NUM_DEC}", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                   LogController.RegistrarLog(_nome_cliente + " - " + $"Processando DI: {di.TX_NUM_DEC}", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                     List<Thread> threads = new List<Thread>();
 
@@ -96,7 +99,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                                     }
                                 }
 
-                               LogController.RegistrarLog($"Execução concluída.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                               LogController.RegistrarLog(_nome_cliente + " - " + $"Execução concluída.", eTipoLog.INFO, _cd_bot_exec, "bot");
                                 //Console.ReadKey();
                             }
                             catch (Exception)
@@ -108,7 +111,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                 }
                 else
                 {
-                   LogController.RegistrarLog("Não existe DI's para Acompanhar Despacho.", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                   LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Despacho.", eTipoLog.ERRO, _cd_bot_exec, "bot");
                 }
             }
         }
@@ -121,7 +124,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
                 var numDeclaracao = numero;
 
-                LogController.RegistrarLog("Acessando URL...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + "Acessando URL...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 
                 _driver.Navigate().GoToUrl(_urlTelaConsulta);
 
@@ -145,7 +148,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
                 if (status.Contains("COMPROVANTE JA EMITIDO. UTILIZAR EMISSAO SEGUNDA VIA"))
                 {
-                    LogController.RegistrarLog(status, eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + status, eTipoLog.INFO, _cd_bot_exec, "bot");
                     // clica no botao OK
                     element = _driver.FindElementByCssSelector(@"#botoes > input");
                     element.Click();
@@ -163,7 +166,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                 }
                 else if (status.Contains("DECLARACAO NAO ESTA DESEMBARACADA."))
                 {
-                    LogController.RegistrarLog(status, eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + status, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                     import.OP_COMPROVANTE_IMP = 0;
 
@@ -179,13 +182,13 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
 
                 if (status.Contains("COMPROVANTE RECUPERADO COM SUCESSO"))
                 {
-                    LogController.RegistrarLog(status, eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + status, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                     string numeroDec = numDeclaracao.Substring(0, 2) + "%2F" +
                                 numDeclaracao.Substring(2, 7) + "-" +
                                 numDeclaracao.Substring(9, 1);
 
-                    LogController.RegistrarLog("DOWNLOAD DE COMPROVANTE PDF...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + "DOWNLOAD DE COMPROVANTE PDF...", eTipoLog.INFO, _cd_bot_exec, "bot");
                     var retornFile = DownloadComprovante(_driver, _urlImprimir + "?nrDeclaracao=" + numeroDec);
 
                     import.OP_COMPROVANTE_IMP = retornFile ? 1 : 0;
@@ -195,7 +198,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
             }
             catch (Exception ex)
             {
-                LogController.RegistrarLog($"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 
@@ -227,7 +230,7 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
             }
             catch (Exception e)
             {
-                LogController.RegistrarLog($"Erro em DownloadComprovante. {e.Message}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em DownloadComprovante. {e.Message}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
                 return false;
             }
         }
@@ -244,12 +247,12 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                     resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
                     resultado.EnsureSuccessStatusCode();
 
-                   LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                   LogController.RegistrarLog(_nome_cliente + " - " + "Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
             catch (Exception e)
             {
-               LogController.RegistrarLog($"Erro em AtualizaComprovante ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
+               LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em AtualizaComprovante ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
     }

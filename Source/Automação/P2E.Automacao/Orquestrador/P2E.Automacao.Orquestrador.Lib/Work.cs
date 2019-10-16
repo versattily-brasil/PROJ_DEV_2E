@@ -26,7 +26,7 @@ namespace P2E.Automacao.Orquestrador.Lib
             LogController.RegistrarLog($"Execução iniciada em {DateTime.Now}");
             LogController.RegistrarLog($"-------------------------------------------------------------------------------------------------------");
             LogController.RegistrarLog($"Iniciando monitoramento--------------------------------------------------------------------------------");
-            
+
             while (true)
             {
                 try
@@ -34,7 +34,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                     string data = DateTime.Today.ToString("dd-MM-yyyy", null);
                     _agendas = CarregarAgendasAsync().Result;
 
-                    if(_agendas.Any())
+                    if (_agendas.Any())
                     {
                         LogController.RegistrarLog("Iniciando processo de execução das agendas pendentes");
 
@@ -51,7 +51,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                                 }
                             });
                         }
-                        else 
+                        else
                         {
                             LogController.RegistrarLog("Nenhuma agenda para executar.");
                         }
@@ -162,7 +162,7 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                     await botExecRep.UpdateAsync(bot.BotProgramado);
                     await agendaBotRep.UpdateAsync(bot);
-                } 
+                }
             }
         }
 
@@ -176,235 +176,297 @@ namespace P2E.Automacao.Orquestrador.Lib
                 {
                     var result = await client.GetAsync(urlParceirosNegocio);
                     registros = await result.Content.ReadAsAsync<List<Importacao>>();
-
-                    
+                    string nomeCliente = "";
 
                     Parallel.ForEach(registros, item =>
                     {
-                    
-                    //foreach (var item in registros.Select(x => x.CD_PAR).Distinct())
-                    //{
+                        string urlAcompanha = _urlApiBase + $"sso/v1/parceironegocio/consulta/" + item.CD_PAR;
+
+                        var resultadox = client.GetAsync(urlAcompanha).Result;
+                        var clientes = resultadox.Content.ReadAsAsync<List<ParceiroNegocio>>();
+
+                        if (clientes != null)
+                        {
+                            nomeCliente = clientes.Result[0].TXT_RZSOC.Trim();
+                        }
+
                         switch (bot.Bot.TX_NOME.ToUpper())
                         {
                             case "ROBÔ 01":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-                                        Task task = new BaixarExtratos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC,item.CD_PAR).ExecutarAsync();
-                                        task.Wait();
-
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
+                                RoboBaixarExtato(bot, item, nomeCliente);
                                 break;
                             case "ROBÔ 02":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-                                        await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
+                                RoboAcompanharDespacho(bot, item, nomeCliente);
                                 break;
                             case "ROBÔ 03":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-                                        await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
+                                RoboComprovanteImportacao(bot, item, nomeCliente);
                                 break;
                             case "ROBÔ 04":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-                                        new ExonerarIcms.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
+                                RoboExonerarICMS(bot, item, nomeCliente);
                                 break;
                             case "ROBÔ 05":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-                                        await new Processos.ExtratoRetificacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
+                                RoboExtratoRetificacao(bot, item, nomeCliente);
                                 break;
                             case "ROBÔ 06":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-                                        await new Processos.TelaDebito.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
+                                RoboTelaDebito(bot, item, nomeCliente);
                                 break;
                             case "ROBÔ 07":
                                 break;
                             case "ROBÔ 08":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-                                        await new Processos.TaxaConversaoCambio.Lib.Work().ExecutarAsync();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
                                 break;
                             case "ROBÔ 09":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-
-                                        new TomarCiencia.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).Start();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
+                                RoboTomarCiencia(bot, item, nomeCliente);
                                 break;
                             case "ROBÔ 10":
                                 break;
                             case "ROBÔ 11":
                                 break;
                             case "ROBÔ 12":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-
-                                        await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR).ExecutarAsync();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
+                                RoboStatusDesembaracoSefaz(bot, item, nomeCliente);
                                 break;
                             case "ROBÔ 15":
-                                 Task.Factory.StartNew(async () =>
-                                {
-                                    try
-                                    {
-
-                                        await new P2E.Automacao.Processos.AtualizaListaSuframa.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
-                                    }
-                                    catch (ThreadAbortException abort)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
-                                        LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        await AlterarStatusBotAsync(bot, eStatusExec.Falha);
-                                        LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
-                                    }
-                                });
                                 break;
                         }
                     });
+
+                    switch (bot.Bot.TX_NOME.ToUpper())
+                    {
+                        case "ROBÔ 08":
+                            RoboTaxaCambio(bot);
+                            break;
+                        case "ROBÔ 15":
+                            RoboAtualizaListaSuframa(bot);
+                            break;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 LogController.RegistrarLog($"Erro em [ExecutarBotAsync]. {ex.Message}", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
             }
+        }
+
+        private void RoboAtualizaListaSuframa(AgendaBot bot)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await new P2E.Automacao.Processos.AtualizaListaSuframa.Lib.Work(bot.BotProgramado.CD_BOT_EXEC).ExecutarAsync();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboStatusDesembaracoSefaz(AgendaBot bot, Importacao item, string nomeCliente)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboTomarCiencia(AgendaBot bot, Importacao item, string nomeCliente)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+
+                    new TomarCiencia.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).Start();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboTaxaCambio(AgendaBot bot)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await new Processos.TaxaConversaoCambio.Lib.Work().ExecutarAsync();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboTelaDebito(AgendaBot bot, Importacao item, string nomeCliente)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await new Processos.TelaDebito.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboExtratoRetificacao(AgendaBot bot, Importacao item, string nomeCliente)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await new Processos.ExtratoRetificacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboExonerarICMS(AgendaBot bot, Importacao item, string nomeCliente)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    new ExonerarIcms.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboComprovanteImportacao(AgendaBot bot, Importacao item, string nomeCliente)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboAcompanharDespacho(AgendaBot bot, Importacao item, string nomeCliente)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
+        }
+
+        private void RoboBaixarExtato(AgendaBot bot, Importacao item, string nomeCliente)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    Task task = new BaixarExtratos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    task.Wait();
+
+                    await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
+                }
+                catch (ThreadAbortException abort)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Interrompido);
+                    LogController.RegistrarLog($"Execução interrompida.", eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+                catch (Exception ex)
+                {
+                    await AlterarStatusBotAsync(bot, eStatusExec.Falha);
+                    LogController.RegistrarLog(ex.Message, eTipoLog.ERRO, bot.BotProgramado.CD_BOT_EXEC, "bot");
+                }
+            });
         }
 
         private async Task<List<Agenda>> CarregarAgendasAsync()
@@ -431,15 +493,15 @@ namespace P2E.Automacao.Orquestrador.Lib
                     {
                         LogController.RegistrarLog($"{agendas.Count()} agenda(s) localizada(s).");
 
-                        foreach (var agenda in agendas.Where(p=> p.OP_STATUS == eStatusExec.Programado))
+                        foreach (var agenda in agendas.Where(p => p.OP_STATUS == eStatusExec.Programado))
                         {
                             LogController.RegistrarLog($"Carregando os bots associados a agenda '{agenda.TX_DESCRICAO}.'");
-                            
+
                             if (VerificaProgramacaoAgenda(agenda))
                             {
                                 await CarregarBotsAsync(agenda);
 
-                                if ( agenda.Bots != null && agenda.Bots.Any())
+                                if (agenda.Bots != null && agenda.Bots.Any())
                                 {
                                     LogController.RegistrarLog($"{agenda.Bots.Count()} bots encontrados.", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda");
 
@@ -580,7 +642,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                     {
                         return false;
                     }
-                    
+
                     // se for programadado e a execução for manual, não aguarda o tempo mínimo e já põe na fila para processar
                     if (agenda.OP_FORMA_EXEC == eFormaExec.Manual)
                     {
@@ -588,7 +650,7 @@ namespace P2E.Automacao.Orquestrador.Lib
                     }
 
                     // se não for de repetição e a data programada for igual a hoje
-                    if (agenda.DT_DATA_EXEC_PROG.HasValue && agenda.DT_DATA_EXEC_PROG.Value == DateTime.Today )
+                    if (agenda.DT_DATA_EXEC_PROG.HasValue && agenda.DT_DATA_EXEC_PROG.Value == DateTime.Today)
                     {
                         // se extá ou já passou da hora de execução do dia programado.
                         if (agenda.HR_HORA_EXEC_PROG <= new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second))

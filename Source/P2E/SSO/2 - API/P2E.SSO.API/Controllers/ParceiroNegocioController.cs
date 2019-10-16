@@ -4,6 +4,7 @@ using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -25,6 +26,15 @@ namespace P2E.SSO.API.Controllers
             _parceiroNegocioModuloRepository = parceiroNegocioModuloRepository;
             _servicoRepository = servicoRepository;
             _moduloRepository = moduloRepository;
+        }
+
+        // GET: api/parceironegocio/consulta
+        [HttpGet]
+        [Route("api/v1/parceironegocio/consulta/{cd_par}")]
+        public IEnumerable<ParceiroNegocio> TomarCiencia(int cd_par)
+        {
+            var result = _parceiroNegocioRepository.FindAll(p =>  p.CD_PAR == cd_par);
+            return result;
         }
 
         // GET: api/parceironegocio

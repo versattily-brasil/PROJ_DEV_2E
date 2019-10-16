@@ -37,7 +37,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
         private string razaoSocial = "";
         private string CNPJ = "";
         private string inscricaoEstadual = "";
-        private List<ParceiroNegocio> registros;
+        string _nome_cliente;
+
         #endregion
 
         List<string> Inscricoes = new List<string>();
@@ -57,10 +58,11 @@ namespace P2E.Automacao.TomarCiencia.Lib
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        public Work(int cd_bot_exec, int cd_par)
+        public Work(int cd_bot_exec, int cd_par, string nome_cliente)
         {
             _cd_bot_exec = cd_bot_exec;
             _cd_par = cd_par;
+            _nome_cliente = nome_cliente;
 
             Log("############ Inicialização de automação [Tomar Ciência] ############");
             Log(null, null, true);
@@ -71,9 +73,9 @@ namespace P2E.Automacao.TomarCiencia.Lib
         protected void Log(string text, string caller = "", bool newLine = false)
         {
             if (!newLine)
-                LogController.RegistrarLog(String.Format("[{0}]", DateTime.Now.ToString()) + " -> " + caller + " - " + text, eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + String.Format("[{0}]", DateTime.Now.ToString()) + " -> " + caller + " - " + text, eTipoLog.INFO, _cd_bot_exec, "bot");
             else
-                LogController.RegistrarLog(string.Empty, eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + string.Empty, eTipoLog.INFO, _cd_bot_exec, "bot");
         }
 
         public async Task Start()
@@ -101,28 +103,35 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
             CarregaListaEmpresas();
 
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/tomarciencia/" + _cd_par;
+            string urlAcompanha = _urlApiBase + $"sso/v1/parceironegocio/consulta/" + _cd_par;
 
-            using (var client = new HttpClient())
+            try
             {
-                LogController.RegistrarLog("ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
-
-                var result = await client.GetAsync(urlAcompanha);
-                var aux = await result.Content.ReadAsStringAsync();
-                registros = JsonConvert.DeserializeObject<List<ParceiroNegocio>>(aux);
-
-                if (registros != null && registros.Any())
+                using (var client = new HttpClient())
                 {
-                    foreach (var item in ListaEmpresas)
+                    LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                    var result = await client.GetAsync(urlAcompanha);
+                    var registros = await result.Content.ReadAsAsync<List<ParceiroNegocio>>();
+
+                    if (registros != null && registros.Any())
                     {
-                        if (item.CNPJ == registros[0].CNPJ)
+                        foreach (var item in ListaEmpresas)
                         {
-                            Main(item);
-                            Finish();
+                            if (item.CNPJ == registros[0].CNPJ)
+                            {
+                                Main(item);
+                                Finish();
+                            }
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                LogController.RegistrarLog(_nome_cliente + " - " + ex.Message, eTipoLog.ERRO, _cd_bot_exec, "bot");
+            }
+            
         }
 
         protected void Finish()
