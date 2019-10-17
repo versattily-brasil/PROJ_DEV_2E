@@ -47,6 +47,7 @@ namespace P2E.Main.UI.Web.Extensions.Util
 
                 string urlBase = principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/uri");
                 string urlUsuario = urlBase + $"sso/v1/usuario";
+                string urlRotina = urlBase + $"sso/v1/rotina";
 
                 var claimPermissoes = identity.Claims.FirstOrDefault(p => p.Type == "http://schemas.xmlsoap.org/ws/2008/06/identity/claims/userdata");
 
@@ -103,6 +104,16 @@ namespace P2E.Main.UI.Web.Extensions.Util
                                 TX_NOME = subitem.Rotina.TX_NOME,
                                 TX_URL = subitem.Rotina.TX_URL
                             };
+
+                            string url = $"{urlRotina}/associadas/{subitem.CD_ROT}";
+
+                            using (var client = new HttpClient())
+                            {
+                                var result = client.GetAsync(url).Result;
+                                var lista = await result.Content.ReadAsAsync<List<RotinaAssociada>>();
+                                rotinaViewModel.RotinasAssociadas = lista;
+                            }
+
 
                             if (rotinaViewModel.OperacoesViewModel == null)
                             {

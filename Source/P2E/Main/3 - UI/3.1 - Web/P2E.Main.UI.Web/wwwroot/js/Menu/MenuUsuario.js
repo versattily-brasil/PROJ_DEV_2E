@@ -2,10 +2,9 @@ var MenuUsuario = /** @class */ (function () {
     function MenuUsuario() {
     }
     MenuUsuario.prototype.init = function () {
-        $(".linkMenuUsuario").on("click", function () {
-            alert();
-            var menu = this;
-            console.log(menu);
+        $(".link_associados").on("click", function (e) {
+            var link = (this);
+            console.log(link);
         });
     };
     return MenuUsuario;

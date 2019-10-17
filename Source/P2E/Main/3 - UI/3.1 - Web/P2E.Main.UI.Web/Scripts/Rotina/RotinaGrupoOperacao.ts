@@ -17,9 +17,7 @@
             var g = 0;
 
             $("#tabela_rotina_associada > tbody > tr").each(function () {
-
-                alert();
-                console.log(this);
+                    console.log(this);
                 var ROT_ASS = $(this).data("cd-rot-ass");
 
                 if (ROT_ASS != undefined) {

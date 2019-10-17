@@ -46,6 +46,8 @@ namespace P2E.Main.UI.Web.Models
 
                         foreach (var rotina in servico.RotinasViewModel.Where(p => p.OperacoesViewModel.Any(x => x.TX_DSC.Contains("Consultar"))))
                         {
+
+
                             var listItem = new ListItem()
                             {
                                 Title = rotina.TX_NOME,
@@ -53,9 +55,9 @@ namespace P2E.Main.UI.Web.Models
                             };
 
 
-                            if (rotina.RotinasAssociadas != null)
+                            if (rotina.RotinasAssociadas != null && rotina.RotinasAssociadas.Any())
                             {
-                                if (listItem.Associados != null)
+                                if (listItem.Associados == null)
                                 {
                                     listItem.Associados = new List<ListItem>();
                                 }
