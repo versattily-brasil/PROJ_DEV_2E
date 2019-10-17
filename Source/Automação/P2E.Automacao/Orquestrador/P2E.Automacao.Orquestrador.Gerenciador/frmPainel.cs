@@ -101,6 +101,8 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             barraProgresso.Style = ProgressBarStyle.Blocks;
             btnConsultar.Enabled = true;
             btnExecutarAgenda.Enabled = true;
+            gvAgendamentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            gvAgendamentos.Refresh();
         }
 
         private void GvAgendamentos_SelectionChanged(object sender, EventArgs e)
@@ -234,7 +236,8 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                     btnConsultar.Enabled = false;
                 }
 
-                Process.Start("P2E.Automacao.Orquestrador.Console.exe", Directory.GetCurrentDirectory());
+                //Process.Start("P2E.Automacao.Orquestrador.Console.exe", Directory.GetCurrentDirectory());
+                
             }
             catch (Exception)
             {

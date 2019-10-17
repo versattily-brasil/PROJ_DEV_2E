@@ -99,9 +99,11 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
             DateTime dataProg;
             TimeSpan horaProg;
 
+
+            DateTime.TryParse(txtDataProgramada.Text, out dataProg);
+
             if (txtDataProgramada.Text != "  /  /")
             {
-                DateTime.TryParse(txtDataProgramada.Text, out dataProg);
                 if (dataProg <= DateTime.MinValue)
                 {
                     MessageBox.Show("A data informada é inválida.");
@@ -125,7 +127,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                 return false;
             }
 
-            if (horaProg < new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second))
+            if (dataProg > DateTime.MinValue &&  horaProg < new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second))
             {
                 MessageBox.Show("A hora programada não pode ser menor que agora.");
                 return false;

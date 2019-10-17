@@ -36,7 +36,7 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                     if (_agendas.Any())
                     {
-                        LogController.RegistrarLog("Iniciando processo de execução das agendas pendentes");
+                        LogController.RegistrarLog("Veficicando Agendamentos");
 
                         if (_agendas.Any(p => p.OP_STATUS == eStatusExec.Aguardando_Processamento))
                         {
@@ -66,6 +66,11 @@ namespace P2E.Automacao.Orquestrador.Lib
             }
         }
 
+        /// <summary>
+        /// Executar as agendas que estao com status = Programada
+        /// </summary>
+        /// <param name="agenda"></param>
+        /// <returns></returns>
         public async Task ExecutarAgendaAsync(Agenda agenda)
         {
             LogController.RegistrarLog($"Executando agenda '{agenda.TX_DESCRICAO}'");
@@ -85,11 +90,20 @@ namespace P2E.Automacao.Orquestrador.Lib
 
                     if (agenda.Bots.Any(p => p.CD_ULTIMO_STATUS_EXEC_BOT == eStatusExec.Falha))
                     {
-                        AlterarStatusAgendaAsync(agenda, eStatusExec.Falha).Wait();
+                        await AlterarStatusAgendaAsync(agenda, eStatusExec.Falha);
+
+                        if (agenda.OP_RETENTAR == 1)
+                        {
+                            ProgramarAgendaAsync(agenda, eFormaExec.Automática);
+                        }
                     }
                     else
                     {
                         await AlterarStatusAgendaAsync(agenda, eStatusExec.Concluído);
+                        if (agenda.OP_LOOP == 1)
+                        {
+                            ProgramarAgendaAsync(agenda, eFormaExec.Automática);
+                        }
                     }
                 }
             }
@@ -473,6 +487,10 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
+        /// <summary>
+        /// Carregar as agendas para execução
+        /// </summary>
+        /// <returns></returns>
         private async Task<List<Agenda>> CarregarAgendasAsync()
         {
             try
@@ -497,27 +515,34 @@ namespace P2E.Automacao.Orquestrador.Lib
                     {
                         LogController.RegistrarLog($"{agendas.Count()} agenda(s) localizada(s).");
 
-                        foreach (var agenda in agendas.Where(p => p.OP_STATUS == eStatusExec.Programado))
+                        foreach (var agenda in agendas)
                         {
-                            LogController.RegistrarLog($"Carregando os bots associados a agenda '{agenda.TX_DESCRICAO}.'");
 
-                            if (VerificaProgramacaoAgenda(agenda))
+                            if (agenda.OP_FORMA_EXEC == eFormaExec.Automática && agenda.OP_STATUS != eStatusExec.Aguardando_Processamento && agenda.OP_STATUS != eStatusExec.Executando && agenda.OP_STATUS != eStatusExec.Programado)
                             {
-                                await CarregarBotsAsync(agenda);
+                                ProgramarAgendaAsync(agenda, eFormaExec.Automática);
+                            }
+                            else if (agenda.OP_STATUS == eStatusExec.Programado)
+                            {
+                                LogController.RegistrarLog($"Carregando os bots associados a agenda '{agenda.TX_DESCRICAO}.'");
 
-                                if (agenda.Bots != null && agenda.Bots.Any())
+                                if (VerificaProgramacaoAgenda(agenda))
                                 {
-                                    LogController.RegistrarLog($"{agenda.Bots.Count()} bots encontrados.", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda");
+                                    await CarregarBotsAsync(agenda);
+
+                                    if (agenda.Bots != null && agenda.Bots.Any())
+                                    {
+                                        LogController.RegistrarLog($"{agenda.Bots.Count()} bots encontrados.", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda");
 
 
-                                    await AlterarStatusAgendaAsync(agenda, eStatusExec.Aguardando_Processamento);
-                                }
-                                else
-                                {
-                                    LogController.RegistrarLog($"Nenhum bot localizado para a agenda '{agenda.TX_DESCRICAO}.'");
+                                        await AlterarStatusAgendaAsync(agenda, eStatusExec.Aguardando_Processamento);
+                                    }
+                                    else
+                                    {
+                                        LogController.RegistrarLog($"Nenhum bot localizado para a agenda '{agenda.TX_DESCRICAO}.'");
+                                    }
                                 }
                             }
-
                         }
                     }
                     else
@@ -558,6 +583,15 @@ namespace P2E.Automacao.Orquestrador.Lib
                     {
                         foreach (var agenda in agendas)
                         {
+                            // carregar ultima execução Concluída / Com falha / Interrompida.
+                            agenda.UltimaAgendaExecutada = agendaExecRep.FindAll(p =>
+                                p.CD_AGENDA == agenda.CD_AGENDA
+                                ).OrderByDescending(o=> o.CD_AGENDA_EXEC).Where(a =>
+                                    a.OP_STATUS_AGENDA_EXEC == eStatusExec.Concluído
+                                 || a.OP_STATUS_AGENDA_EXEC == eStatusExec.Falha
+                                 || a.OP_STATUS_AGENDA_EXEC == eStatusExec.Interrompido).FirstOrDefault();
+
+
                             if (agenda.OP_STATUS == eStatusExec.Programado || agenda.OP_STATUS == eStatusExec.Aguardando_Processamento || agenda.OP_STATUS == eStatusExec.Executando || agenda.OP_STATUS == eStatusExec.Retentar)
                             {
                                 agenda.AgendaProgramada = agendaExecRep.Find(p => p.CD_AGENDA_EXEC == agenda.CD_ULTIMA_EXEC);
@@ -763,6 +797,9 @@ namespace P2E.Automacao.Orquestrador.Lib
                                     agenda.OP_STATUS = agenda.AgendaProgramada.OP_STATUS_AGENDA_EXEC;
                                     agenda.OP_FORMA_EXEC = formaExec;
                                     agendaRep.Update(agenda);
+
+                                    LogController.RegistrarLog($"Programando agenda [{agenda.TX_DESCRICAO}]", eTipoLog.INFO, agenda.AgendaProgramada.CD_AGENDA_EXEC, "agenda");
+
 
                                     IEnumerable<AgendaBot> bots = agendaBotRep.FindAll(p => p.CD_AGENDA == agenda.CD_AGENDA);
                                     if (bots != null)

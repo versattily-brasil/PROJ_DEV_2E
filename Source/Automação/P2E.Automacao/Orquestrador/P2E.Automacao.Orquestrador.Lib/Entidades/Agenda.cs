@@ -24,11 +24,11 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public int? OP_LOOP { get; set; }
 
         [NotMapped]
-
         public string sAtivo { get { return OP_ATIVO == 1 ? "Sim" : "Não"; } }
 
         public eFormaExec OP_FORMA_EXEC { get; set; }
         public int OP_REPETE { get; set; }
+
         [NotMapped]
         public string sREPETE { get { return OP_REPETE == 1? "Sim" : "Não"; } }
         public eTipoRepete OP_TIPO_REP { get; set; }
@@ -37,10 +37,10 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
         public DateTime? DT_DATA_EXEC_PROG { get; set; }
         public TimeSpan HR_HORA_EXEC_PROG { get; set; }
         
-        public int? CD_ULTIMA_EXEC { get; set; }// { get { return AgendaProgramada?.CD_AGENDA_EXEC; } }
+        public int? CD_ULTIMA_EXEC { get; set; }
         
-        public DateTime? DT_DATA_INICIO_ULTIMA_EXEC { get; set; }//{ get { return AgendaProgramada?.DT_FIM_EXEC; } }
-        public DateTime? DT_DATA_FIM_ULTIMA_EXEC { get; set; }//{ get { return AgendaProgramada?.DT_FIM_EXEC; } }
+        public DateTime? DT_DATA_INICIO_ULTIMA_EXEC { get; set; }
+        public DateTime? DT_DATA_FIM_ULTIMA_EXEC { get; set; }
 
         public IEnumerable<AgendaBot> Bots { get; set; }
 
@@ -54,5 +54,9 @@ namespace P2E.Automacao.Orquestrador.Lib.Entidades
 
         [NotMapped]
         public string tipoRepeticao { get { return OP_TIPO_REP.GetDescription(); } }
+
+        [NotMapped]
+        public string sStatusUltimaExecucao { get { return UltimaAgendaExecutada?.OP_STATUS_AGENDA_EXEC.GetDescription(); } }
+
     }
 }
