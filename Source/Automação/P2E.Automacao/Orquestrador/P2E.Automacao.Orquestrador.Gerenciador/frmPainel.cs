@@ -2,19 +2,12 @@
 using P2E.Automacao.Orquestrador.Lib.Entidades;
 using P2E.Automacao.Shared.Enum;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
-using System.Security.AccessControl;
-using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -236,7 +229,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
                     btnConsultar.Enabled = false;
                 }
 
-                //Process.Start("P2E.Automacao.Orquestrador.Console.exe", Directory.GetCurrentDirectory());
+                Process.Start("P2E.Automacao.Orquestrador.Console.exe", Directory.GetCurrentDirectory());
                 
             }
             catch (Exception)

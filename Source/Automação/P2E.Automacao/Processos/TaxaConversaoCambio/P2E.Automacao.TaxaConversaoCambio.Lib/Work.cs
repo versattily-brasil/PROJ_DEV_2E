@@ -236,13 +236,31 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                         LogController.RegistrarLog("Moeda: " + sNome + " Descricao: " + descricao + "DataI: " + DataInicial + "DataF: " + DataFinal + "Taxa: " + Taxa, eTipoLog.INFO, _cd_bot_exec, "bot");
 
-
+                        LogController.RegistrarLog("INSERINDO NA TABELA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                   
                         taxaCambio.TX_MOEDA = sNome;
+                        LogController.RegistrarLog("MOEDA -" + sNome, eTipoLog.INFO, _cd_bot_exec, "bot");
                         taxaCambio.TX_DESCRICAO = descricao;
-                        taxaCambio.DT_INICIO_VIGENCIA = DateTime.Parse(DataInicial);
-                        try { taxaCambio.DT_FIM_VIGENCIA = DateTime.Parse(DataFinal); } catch { taxaCambio.DT_FIM_VIGENCIA = null; }
+                        LogController.RegistrarLog("DESCRICAO - " + descricao, eTipoLog.INFO, _cd_bot_exec, "bot");
+                        taxaCambio.DT_INICIO_VIGENCIA = DateTime.ParseExact(DataInicial, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);//DateTime.Parse(DataInicial);
+                        LogController.RegistrarLog("DATA INICIAL - " + DataInicial, eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                        if (DataFinal.Trim() == "-")
+                        {
+                            LogController.RegistrarLog("DATA FINAL - " +".....", eTipoLog.INFO, _cd_bot_exec, "bot");
+                            taxaCambio.DT_FIM_VIGENCIA = null;
+                        }
+                        else
+                        {
+                            LogController.RegistrarLog("DATA INICIAL - " + DataFinal, eTipoLog.INFO, _cd_bot_exec, "bot");
+                            taxaCambio.DT_FIM_VIGENCIA = DateTime.ParseExact(DataFinal, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        }
+
+                        LogController.RegistrarLog("TAXA - " + Taxa, eTipoLog.INFO, _cd_bot_exec, "bot");
                         taxaCambio.VL_TAXA_CONVERSAO = decimal.Parse(Taxa);
 
+                        
+                        LogController.RegistrarLog("ENVIANDO PARA O METODO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await AtualizaTaxaCambio(taxaCambio);
 
                     }
@@ -251,7 +269,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
             catch (Exception e)
             {
                 LogController.RegistrarLog("Erro-" + e.Message.Trim(), eTipoLog.INFO, _cd_bot_exec, "bot");
-                _driver.Close();
+                //_driver.Close();
                 ////Console.ReadKey();
             }
         }
@@ -341,11 +359,13 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                 using (var client = new HttpClient())
                 {
+                    LogController.RegistrarLog("SERIALIZANDO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                     var auxA = JsonConvert.SerializeObject(taxaConversaoCambio);
                     HttpContent httpContent = new StringContent(auxA, Encoding.UTF8, "application/json");
 
+                    LogController.RegistrarLog("ENVIANDO PARA API...", eTipoLog.INFO, _cd_bot_exec, "bot");
                     client.BaseAddress = new Uri(_urlApiBase);
-                    //resultado = await client.PutAsJsonAsync($"imp/v1/taxa/{0}", taxaConversaoCambio);
+                    
                     var resultado = client.PostAsync($"imp/v1/taxa", httpContent).Result;
                     resultado.EnsureSuccessStatusCode();
 
