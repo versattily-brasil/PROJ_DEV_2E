@@ -59,18 +59,20 @@ namespace P2E.Main.UI.Web.Models
                             {
                                 if (listItem.Associados == null)
                                 {
-                                    listItem.Associados = new List<ListItem>();
+                                    listItem.Associados = new List<ItemAssociado>();
                                 }
 
                                 foreach (var rotinaAssociada in rotina.RotinasAssociadas)
                                 {
 
                                     listItem.Associados.Add(
-                                        new ListItem() { 
+                                        new ItemAssociado() { 
                                             Title = rotinaAssociada?.Rotina?.TX_NOME,
                                             Href = rotinaAssociada?.Rotina?.TX_URL
                                         });
                                 }
+
+                                listItem.jsonAssociados = Newtonsoft.Json.JsonConvert.SerializeObject(listItem.Associados);
                             }
 
                             item.Items.Add(listItem);

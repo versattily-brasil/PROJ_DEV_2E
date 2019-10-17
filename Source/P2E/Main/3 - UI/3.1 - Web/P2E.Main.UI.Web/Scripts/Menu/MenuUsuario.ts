@@ -1,8 +1,30 @@
 ﻿class MenuUsuario {
     init(): void {
         $(".link_associados").on("click", function (e) {
-            let link: HTMLElement = <HTMLElement>(this);
-            console.log(link);
+
+            var json = $(this).data("associados");
+
+            if (json != "") {
+                console.log('Associados:    ' + json);
+                let associados = <ItemAssociado[]>json;
+
+                if (associados != undefined) {
+
+                    for (var i = 0; i < associados.length; i++) {
+                        var link = <HTMLLinkElement>(document.createElement('link'));
+
+                        link.href = associados[i].Href;
+                        link.title = associados[i].Title;
+                        link.target = associados[i].Title;
+                        
+                        var janela = window.open(link.href, link.target);
+                    }
+                }
+            }
+            else
+            {
+                console.log("menu sem associados.");
+            }
         });
     }
 }
@@ -12,3 +34,8 @@ $(function () {
     obj.init();
 });
 
+interface ItemAssociado {
+    Title: string;
+    Text: string;
+    Href: string;
+}

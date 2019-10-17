@@ -53,7 +53,7 @@
                                 }
                             }
                             <text>
-                                <a class="link_associados" href="@item.Route" title="@item.Title" data-filter-tags="@item.Tags" target="@item.Title" data-associados="@item.Associados?.ToArray()">
+                                <a class="link_associados" href="@item.Route" title="@item.Title" data-filter-tags="@item.Tags" target="@item.Title" data-associados="@item.jsonAssociados">
                                     <span class="link_associados nav-link-text" data-i18n="@item.I18n">@item.Text</span>
                                     @if (item.Span.HasValue())
                                     {
