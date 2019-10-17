@@ -1,4 +1,6 @@
-﻿using DapperExtensions;
+﻿using System.Data.SqlClient;
+using Dapper;
+using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
 using P2E.Importacao.Domain.Entities;
 using P2E.Importacao.Domain.Repositories;
@@ -17,6 +19,15 @@ namespace P2E.Importacao.Infra.Data.Repository
         public DetalheNCMRepository(ImportacaoContext impContext) : base(impContext.Connection)
         {
             _importacaoContext = impContext;
+        }
+
+        public void DeleteAll()
+        {
+            string sql = "delete from TB_DETALHE_NCM ";
+            using (var connection = new SqlConnection(_importacaoContext.Connection.ConnectionString))
+            {
+                connection.Execute(sql);
+            }
         }
 
         /// <summary>

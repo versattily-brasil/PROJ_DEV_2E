@@ -10,5 +10,7 @@ namespace P2E.Importacao.Domain.Repositories
         DataPage<DetalheNCM> GetByPage(DataPage<DetalheNCM> page, string tx_status);
 
         int GetTotalRows(PredicateGroup predicateGroup);
+
+        void DeleteAll();
     }
 }
