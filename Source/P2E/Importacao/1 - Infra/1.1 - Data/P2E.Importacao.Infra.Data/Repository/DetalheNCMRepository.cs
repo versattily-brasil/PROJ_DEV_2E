@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using Dapper;
+﻿using Dapper;
 using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
 using P2E.Importacao.Domain.Entities;
@@ -7,6 +6,7 @@ using P2E.Importacao.Domain.Repositories;
 using P2E.Importacao.Infra.Data.DataContext;
 using P2E.Shared.Model;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 

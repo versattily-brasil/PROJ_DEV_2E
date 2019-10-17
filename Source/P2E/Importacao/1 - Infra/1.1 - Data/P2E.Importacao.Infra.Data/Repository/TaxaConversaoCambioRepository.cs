@@ -1,10 +1,12 @@
-﻿using DapperExtensions;
+﻿using Dapper;
+using DapperExtensions;
 using MicroOrm.Dapper.Repositories;
 using P2E.Importacao.Domain.Entities;
 using P2E.Importacao.Domain.Repositories;
 using P2E.Importacao.Infra.Data.DataContext;
 using P2E.Shared.Model;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -17,6 +19,15 @@ namespace P2E.Importacao.Infra.Data.Repository
         public TaxaConversaoCambioRepository(ImportacaoContext impContext) : base(impContext.Connection)
         {
             _importacaoContext = impContext;
+        }
+
+        public void DeleteAll()
+        {
+            string sql = "delete from TB_TAXA_CONV_CAMBIO ";
+            using (var connection = new SqlConnection(_importacaoContext.Connection.ConnectionString))
+            {
+                connection.Execute(sql);
+            }
         }
 
         public DataPage<TaxaConversaoCambio> GetByPage(DataPage<TaxaConversaoCambio> dataPage, string descricao)

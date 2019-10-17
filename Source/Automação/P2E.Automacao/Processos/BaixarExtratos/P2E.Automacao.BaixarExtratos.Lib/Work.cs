@@ -172,7 +172,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 Thread.Sleep(2000);
                 element.Click();
 
-                Thread.Sleep(3000);
+                Thread.Sleep(5000);
 
                 //indo para a página de consulta de declaração de importação.
                 _driver.FindElement(By.Id("btnRegistrarDI")).Click();

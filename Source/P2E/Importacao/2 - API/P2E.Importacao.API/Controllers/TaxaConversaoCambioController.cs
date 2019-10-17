@@ -100,5 +100,21 @@ namespace P2E.Importacao.API.Controllers
                 return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
             }
         }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete]
+        [Route("api/v1/taxa/deleteall")]
+        public IActionResult DeleteAll()
+        {
+            try
+            {
+                _taxaConversaoCambioRepository.DeleteAll();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao tentar excluir os registros. {ex.Message}");
+            }
+        }
     }
 }

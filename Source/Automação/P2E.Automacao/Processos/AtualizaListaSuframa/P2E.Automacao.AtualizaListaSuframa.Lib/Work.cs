@@ -93,7 +93,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 myProcess.Start();
 
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
                 SendKeys.SendWait("{ENTER}");
                 Thread.Sleep(3000);
                 SendKeys.SendWait("{ENTER}");
@@ -112,7 +112,6 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 return false;
             }
         }
-
         public bool BaixarArquivoFTP(string url)
         {
             try
@@ -157,7 +156,6 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 return false;
             }
         }
-
         public async Task ConnectionDBAcess(string path)
         {
             DetalheNCM detalheNCM = new DetalheNCM();
@@ -205,7 +203,6 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 //return false;
             }
         }
-
         private async Task InsertDetalheNCM(DetalheNCM detalheNcm, string codigo)
         {
             try
@@ -231,27 +228,17 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
         {
             try
             {
-                string url = _urlApiBase + $"imp/v1/ncm";
+                string url = _urlApiBase + $"imp/v1/ncm/deleteall";
 
                 using (var client = new HttpClient())
                 {
-                    var result = client.GetAsync(url + "/todos").Result;
-                    var aux = await result.Content.ReadAsStringAsync();
-                    registros = JsonConvert.DeserializeObject<List<DetalheNCM>>(aux);
+                    string responseBody = string.Empty;
 
-                    if (registros != null && registros.Any())
-                    {
-                        string responseBody = string.Empty;
+                    LogController.RegistrarLog("Excluindo Registros", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                        foreach (var ncm in registros)
-                        {
-                            LogController.RegistrarLog("Excluindo Registro " + ncm.TX_SFNCM_CODIGO + " - " + ncm.TX_SFNCM_DESCRICAO, eTipoLog.INFO, _cd_bot_exec, "bot");
-
-                            result = client.DeleteAsync($"{url}/{ncm.CD_DET_NCM}").Result;
-                            responseBody = await result.Content.ReadAsStringAsync();
-                            result.EnsureSuccessStatusCode();
-                        }
-                    }
+                    var result = client.DeleteAsync($"{url}").Result;
+                    responseBody = await result.Content.ReadAsStringAsync();
+                    result.EnsureSuccessStatusCode();
                 }
             }
             catch (Exception e)

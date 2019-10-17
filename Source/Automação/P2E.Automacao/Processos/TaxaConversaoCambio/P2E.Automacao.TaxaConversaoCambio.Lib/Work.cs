@@ -382,26 +382,17 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         {
             try
             {
-                string url = _urlApiBase + $"imp/v1/taxa";
+                string url = _urlApiBase + $"imp/v1/taxa/deleteall";
 
                 using (var client = new HttpClient())
                 {
-                    var result = client.GetAsync(url + "/todos").Result;
-                    var aux = await result.Content.ReadAsStringAsync();
-                    var registros = JsonConvert.DeserializeObject<List<TaxaCambio>>(aux);
+                    string responseBody = string.Empty;
 
-                    if (registros != null && registros.Any())
-                    {
-                        string responseBody = string.Empty;
+                    LogController.RegistrarLog("Excluindo Registros", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                        foreach (var ncm in registros)
-                        {
-                            LogController.RegistrarLog("Excluindo Registro " + ncm.TX_MOEDA + " - " + ncm.TX_DESCRICAO, eTipoLog.INFO, _cd_bot_exec, "bot");
-                            result = client.DeleteAsync($"{url}/{ncm.CD_TAXA_CAMBIO}").Result;
-                            responseBody = await result.Content.ReadAsStringAsync();
-                            result.EnsureSuccessStatusCode();
-                        }
-                    }
+                    var result = client.DeleteAsync($"{url}").Result;
+                    responseBody = await result.Content.ReadAsStringAsync();
+                    result.EnsureSuccessStatusCode();
                 }
             }
             catch (Exception e)
