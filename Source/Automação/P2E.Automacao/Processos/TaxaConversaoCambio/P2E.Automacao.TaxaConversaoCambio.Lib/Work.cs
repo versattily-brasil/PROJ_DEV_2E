@@ -1,16 +1,16 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Interactions;
 using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using P2E.Automacao.Shared.Log;
 using P2E.Automacao.Shared.Log.Enum;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -72,19 +72,21 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 options.AddUserProfilePreference("download.default_directory", downloadDirectory);
                 options.AddUserProfilePreference("download.prompt_for_download", false);
                 options.AddUserProfilePreference("disable-popup-blocking", true);
-              
-                options.AddArguments("--disable-web-security");
-                options.AddArguments("--allow-running-insecure-content");
-                options.AddArgument("--disable-privacy");
-                options.AddArgument("--whitelisted-ips");
-                options.AddArgument("safebrowsing-disable-download-protection");
+                options.AddUserProfilePreference("safebrowsing.enabled", "false");
+
+                //options.AddArguments("headless");
+                //options.AddArgument("--start-maximized");
+                options.AddArgument("test-type");
+                options.AddArgument("no-sandbox");
                 options.AddArgument(Directory.GetCurrentDirectory() + @"\chromedriver.exe");
                 LogController.RegistrarLog(Directory.GetCurrentDirectory() + @"\chromedriver.exe", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                //options.AddArguments("headless");
 
-                options.AddArgument("test-type");
-                options.AddArgument("no-sandbox");
+                //options.AddArguments("--disable-web-security");
+                //options.AddArguments("--allow-running-insecure-content");
+                //options.AddArgument("--disable-privacy");
+                //options.AddArgument("--whitelisted-ips");
+                //options.AddArgument("safebrowsing-disable-download-protection");
                 //options.AddExtension(@"c:\\path\to\extension.crx");
 
 
@@ -139,7 +141,6 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                     LogController.RegistrarLog("INSERINDO VALOR DO CAPTCHA NO BROWSER...", eTipoLog.INFO, _cd_bot_exec, "bot");
                     element = _driver.FindElementById("txtTexto_captcha_serpro_gov_br");
 
-                    LogController.RegistrarLog("inserindo o numero da declaração", eTipoLog.INFO, _cd_bot_exec, "bot");
                     element.SendKeys(valorCaptcha);
 
                     element = _driver.FindElementByCssSelector(@"#j_id11 > div:nth-child(4) > center > input");
@@ -161,36 +162,36 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 File.Delete("C:\\Versatilly\\TaxaConversaoCambio.xml");
 
                 //CLICA EM TAXA DE CONVERSAO DE CAMBIO
+                LogController.RegistrarLog("CLICA EM TAXA DE CONVERSAO DE CAMBIO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 element = _driver.FindElement(By.CssSelector("#j_id110\\:agrupamento\\:13\\:grupo\\:0\\:j_id121 > center > a"));
                 element.Click();
 
                 Thread.Sleep(3000);
 
                 //CLICA EM TODOS
+                LogController.RegistrarLog("CLICA EM TODOS...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 element = _driver.FindElement(By.Id(@"j_id111:j_id163"));
                 element.Click();
 
                 Thread.Sleep(2000);
 
                 //CLICA NO EXTRAIR TABELA
+                LogController.RegistrarLog("CLICA NO EXTRAIR TABELA...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 element = _driver.FindElement(By.Id(@"j_id111:j_id207"));
                 element.Click();
 
                 Thread.Sleep(1000);
 
+                LogController.RegistrarLog("CLICA NO XML PARA DOWNLOAD...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 element = _driver.FindElement(By.CssSelector("#j_id111\\:arquivoxml"));
                 element.Click();
-                Thread.Sleep(2000);
 
-                //_driver.Keyboard.SendKeys("{TAB}");
-                SendKeys.SendWait("{TAB}");
-                Thread.Sleep(500);
-                //_driver.Keyboard.SendKeys("{TAB}");
-                SendKeys.SendWait("{TAB}");
-                Thread.Sleep(500);
-                //_driver.Keyboard. SendKeys("{ENTER}");
-                SendKeys.SendWait("{ENTER}");
-                Thread.Sleep(2000);
+                LogController.RegistrarLog("FECHANDO O NAVEGADOR...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                Thread.Sleep(3000);
+
+                LogController.RegistrarLog("NAVEGADOR FECHADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                _driver.Quit();
+                
 
                 //_driver.Close();
 
