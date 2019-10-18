@@ -136,19 +136,19 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         private async Task ExonerarDIAsync(PhantomJSDriver _driver, Importacao di)
         {
             LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "=================================================================================================================", eTipoLog.INFO, _cd_bot_exec, "bot");
-            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Exonerando DI nº {di.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Exonerando DI nº " + di.TX_NUM_DEC, eTipoLog.INFO, _cd_bot_exec, "bot");
 
 
             LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Autenticação efeturada.", eTipoLog.INFO, _cd_bot_exec, "bot");
-            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Acessando Endereço: {urlDeclararICMS}", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Acessando Endereço: " + urlDeclararICMS, eTipoLog.INFO, _cd_bot_exec, "bot");
             _driver.Navigate().GoToUrl(urlDeclararICMS);
             LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Seleciona combo: Exoneração do ICMS", eTipoLog.INFO, _cd_bot_exec, "bot");
             Select selectTipo = new Select(_driver, By.Id("tp"));
             selectTipo.SelectByText("Exoneração do ICMS");
-            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Preenchendo campo DI: {di.TX_NUM_DEC}", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Preenchendo campo DI: " +di.TX_NUM_DEC, eTipoLog.INFO, _cd_bot_exec, "bot");
             IWebElement element = _driver.FindElement(By.Id("numDI"));
             element.SendKeys(di.TX_NUM_DEC);
-            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Selecionando UF: {di.UF_DI}", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Selecionando UF: " + di.UF_DI, eTipoLog.INFO, _cd_bot_exec, "bot");
             Select selectUf = new Select(_driver, By.Id("uf"));
             selectUf.SelectByText(di.UF_DI);
             LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Registrando...", eTipoLog.INFO, _cd_bot_exec, "bot");
@@ -159,26 +159,29 @@ namespace P2E.Automacao.ExonerarIcms.Lib
 
             int posicaoInicioErro = _driver.PageSource.ToString().IndexOf(txtInicioBlocoErro);
 
-            if (posicaoInicioErro > 0 && _driver.PageSource.Contains("alert"))
-            {
-                posicaoInicioErro = posicaoInicioErro + txtInicioBlocoErro.Length;
+            LogController.RegistrarLog(_nome_cliente + " - " + "Operação finalizada sem erros.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            await AtualizarRegistroAsync(di);
 
-                var posicaoFimErro = _driver.PageSource.ToString().LastIndexOf(");");
+            //if (posicaoInicioErro > 0 && _driver.PageSource.Contains("alert"))
+            //{
+            //    posicaoInicioErro = posicaoInicioErro + txtInicioBlocoErro.Length;
 
-                string textoAreaErro = _driver.PageSource.Substring(posicaoInicioErro, posicaoFimErro - posicaoInicioErro);
-                textoAreaErro = textoAreaErro.Replace("\"", "'");
-                textoAreaErro = textoAreaErro.Replace("<script charset='utf-8' type='text/javascript'>alert('", "");
-                textoAreaErro = textoAreaErro.Replace("'+ '\\n' +''", "");
-                textoAreaErro = Regex.Replace(textoAreaErro, @"[^ 0-9a-zA-Z]+", "");
-                textoAreaErro = Regex.Replace(textoAreaErro, "(\r\n|\r|\n|\t|\r\n\t)", "");
+            //    var posicaoFimErro = _driver.PageSource.ToString().LastIndexOf(");");
 
-                LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Operação não permitida. {textoAreaErro}", eTipoLog.INFO, _cd_bot_exec, "bot");
-            }
-            else
-            {
-                LogController.RegistrarLog(_nome_cliente + " - " + "Operação finalizada sem erros.", eTipoLog.INFO, _cd_bot_exec, "bot");
-                await AtualizarRegistroAsync(di);
-            }
+            //    string textoAreaErro = _driver.PageSource.Substring(posicaoInicioErro, posicaoFimErro - posicaoInicioErro);
+            //    textoAreaErro = textoAreaErro.Replace("\"", "'");
+            //    textoAreaErro = textoAreaErro.Replace("<script charset='utf-8' type='text/javascript'>alert('", "");
+            //    textoAreaErro = textoAreaErro.Replace("'+ '\\n' +''", "");
+            //    textoAreaErro = Regex.Replace(textoAreaErro, @"[^ 0-9a-zA-Z]+", "");
+            //    textoAreaErro = Regex.Replace(textoAreaErro, "(\r\n|\r|\n|\t|\r\n\t)", "");
+
+            //    LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Operação não permitida - " + textoAreaErro, eTipoLog.INFO, _cd_bot_exec, "bot");
+            //}
+            //else
+            //{
+            //    LogController.RegistrarLog(_nome_cliente + " - " + "Operação finalizada sem erros.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            //    await AtualizarRegistroAsync(di);
+            //}
         }
 
         /// <summary>
@@ -209,7 +212,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// <returns></returns>
         private async Task AtualizarRegistroAsync(Importacao item)
         {
-            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Atualizando DI nº {item.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Atualizando DI nº " + item.TX_NUM_DEC, eTipoLog.INFO, _cd_bot_exec, "bot");
 
             try
             {
@@ -231,7 +234,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             catch (Exception)
             {
 
-                LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Erro ao atualizar a DI nº {item.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Erro ao atualizar a DI nº " + item.TX_NUM_DEC, eTipoLog.INFO, _cd_bot_exec, "bot");
             }
         }
     }

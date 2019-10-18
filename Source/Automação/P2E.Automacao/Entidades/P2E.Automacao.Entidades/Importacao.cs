@@ -15,7 +15,7 @@ namespace P2E.Automacao.Entidades
         public DateTime? DT_DATA_CANAL { get; set; }
         public DateTime? DT_DATA_DISTR { get; set; }
         public string TX_DOSSIE { get; set; }
-        public DateTime DT_DATA_DOSS { get; set; }
+        public DateTime? DT_DATA_DOSS { get; set; }
         public DateTime? DT_DATA_EXO_ICMS { get; set; }
         public string UF_DI { get; set; }
         public int OP_EXTRATO_PDF { get; set; }

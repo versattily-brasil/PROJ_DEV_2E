@@ -164,10 +164,10 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
         private async Task Acessar(Importacao import, string numero, string cd_imp, Historico historicoImp, Vistoria vistoriaImp, PhantomJSDriver _driver)
         {
+            var numDeclaracao = numero;
+
             try
             {
-                var numDeclaracao = numero;
-
                 //PAGINA DE CONSULTA
                 _driver.Navigate().GoToUrl(urlAcompanhaDespacho);
 
@@ -194,7 +194,7 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                 //localiza o status do despacho
                 element = _driver.FindElementByCssSelector("#tr_" + numDeclaracao + " > td:nth-child(2)");
                 var status = element.Text;
-                LogController.RegistrarLog(_nome_cliente + " - " + "-----" + status + "-----");
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + " Status - " + status, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                 switch (status)
                 {
@@ -204,13 +204,24 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(4) > td:nth-child(3)");
                         corStatus = element.Text;
 
+                        LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + " Cor Status - " + corStatus, eTipoLog.INFO, _cd_bot_exec, "bot");
+
                         switch (corStatus)
                         {
                             case "Verde":
 
                                 element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(6) > td:nth-child(2)");
                                 data = element.Text;
-                                import.DT_DATA_DES = Convert.ToDateTime(data);
+
+                                try
+                                {
+                                    import.DT_DATA_DES = DateTime.ParseExact(data, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);//Convert.ToDateTime(data);
+                                }
+                                catch (Exception)
+                                {
+                                    import.DT_DATA_DES = null;
+                                }
+                                
                                 import.CD_IMP_CANAL = 1;
 
                                 break;
@@ -219,7 +230,15 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                                 element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(6) > td:nth-child(2)");
                                 data = element.Text;
-                                import.DT_DATA_DES = Convert.ToDateTime(data);
+
+                                try
+                                {
+                                    import.DT_DATA_DES = DateTime.ParseExact(data, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                }
+                                catch (Exception)
+                                {
+                                    import.DT_DATA_DES = null;
+                                }
 
                                 element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(5) > td:nth-child(2)");
                                 fiscal = element.Text;
@@ -230,8 +249,15 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                                 import.TX_DOSSIE = dossie;
 
                                 element = _driver.FindElementByCssSelector("#TABLE_3 > tbody > tr:nth-child(2) > td:nth-child(2)");
-                                var dataDossie = element.Text;
-                                import.DT_DATA_DOSS = Convert.ToDateTime(dataDossie);
+                                
+                                try
+                                {
+                                    import.DT_DATA_DOSS = DateTime.ParseExact(dataDossie, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                }
+                                catch (Exception)
+                                {
+                                    import.DT_DATA_DOSS = null;
+                                }
 
                                 import.CD_IMP_CANAL = 3;
 
@@ -253,13 +279,24 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                         element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(3) > td:nth-child(3)");
                         corStatus = element.Text;
 
+                        LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + " Cor Status - " + corStatus, eTipoLog.INFO, _cd_bot_exec, "bot");
+
                         switch (corStatus)
                         {
                             case "Verde":
 
                                 element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(4) > td:nth-child(2)");
                                 data = element.Text;
-                                import.DT_DATA_DISTR = Convert.ToDateTime(data);
+
+                                try
+                                {
+                                    import.DT_DATA_DISTR = DateTime.ParseExact(data, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                                }
+                                catch (Exception)
+                                {
+                                    import.DT_DATA_DISTR = null;
+                                }
+                                
                                 import.CD_IMP_CANAL = 1;
 
                                 break;
@@ -397,7 +434,15 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                         element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(7) > td:nth-child(2)");
                         data = element.Text;
-                        import.DT_DATA_DISTR = Convert.ToDateTime(data);
+
+                        try
+                        {
+                            import.DT_DATA_DISTR = DateTime.ParseExact(data, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        }
+                        catch (Exception)
+                        {
+                            import.DT_DATA_DISTR = null;
+                        }
 
                         element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(6) > td:nth-child(2)");
                         fiscal = element.Text;
@@ -413,7 +458,15 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                         element = _driver.FindElementByCssSelector("#TABLE_3 > tbody > tr:nth-child(2) > td:nth-child(2)");
                         dataDossie = element.Text;
-                        import.DT_DATA_DOSS = Convert.ToDateTime(dataDossie);
+
+                        try
+                        {
+                            import.DT_DATA_DOSS = DateTime.ParseExact(dataDossie, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        }
+                        catch (Exception)
+                        {
+                            import.DT_DATA_DOSS = null;
+                        }
 
                         switch (corStatus)
                         {
@@ -454,7 +507,15 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
 
                         element = _driver.FindElementByCssSelector("#TABLE_3 > tbody > tr:nth-child(2) > td:nth-child(2)");
                         dataDossie = element.Text;
-                        import.DT_DATA_DOSS = Convert.ToDateTime(dataDossie);
+
+                        try
+                        {
+                            import.DT_DATA_DOSS = DateTime.ParseExact(dataDossie, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        }
+                        catch (Exception)
+                        {
+                            import.DT_DATA_DOSS = null;
+                        }
 
                         // clica no link contendo o ...
                         element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr:nth-child(8) > td:nth-child(5) > a > img");
@@ -506,12 +567,12 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                     default:
                         break;
                 }
-                LogController.RegistrarLog(_nome_cliente + " - " + "ATUALIZANDO STATUS...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + " ATUALIZANDO STATUS...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 await AtualizaStatus(import, cd_imp, historicoImp);
             }
             catch (Exception ex)
             {
-                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + $", Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
 
         }
@@ -525,10 +586,10 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(_urlApiBase);
-
                     resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
-
                     resultado.EnsureSuccessStatusCode();
+
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Registro de Importacao salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
 
                 if (resultado.IsSuccessStatusCode)
@@ -536,16 +597,16 @@ namespace P2E.Automacao.Processos.AcompanharDespachos.Lib
                     using (var clientH = new HttpClient())
                     {
                         clientH.BaseAddress = new Uri(_urlApiBase);
-
                         var resultadoHist = await clientH.PutAsJsonAsync($"imp/v1/historico/{0}", historico);
-
                         resultadoHist.EnsureSuccessStatusCode();
+
+                        LogController.RegistrarLog(_nome_cliente + " - " + "Registro de Historicosalvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                     }
                 }
             }
             catch (Exception ex)
             {
-                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em AtualizaStatus. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + import.TX_NUM_DEC + $" - Erro em AtualizaStatus. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 

@@ -175,9 +175,9 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 Thread.Sleep(5000);
 
                 //indo para a página de consulta de declaração de importação.
-                _driver.FindElement(By.Id("btnRegistrarDI")).Click();
+                //_driver.FindElement(By.Id("btnRegistrarDI")).Click();
 
-                Thread.Sleep(3000);
+                //Thread.Sleep(3000);
 
 
                 LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - PDF.", eTipoLog.INFO, _cd_bot_exec, "bot");
