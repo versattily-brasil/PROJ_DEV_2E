@@ -3,10 +3,14 @@ var Moeda = /** @class */ (function () {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
         this.btnConfirmarSalvar = $("#confirm-save");
+        this.btnConfirmarImport = $("#confirm-import");
     }
     Moeda.prototype.init = function () {
         var _this = this;
         this.btnConfirmarSalvar.on("click", function (e) {
+            _this.form.submit();
+        });
+        this.btnConfirmarImport.on("click", function (e) {
             _this.form.submit();
         });
         this.btnSalvar.on("click", function (e) {

@@ -54,6 +54,12 @@
 
                         </div><br />
 
+                              @*<div>
+                                  <label for="File">Upload File:</label>
+                                  <input type="file" name="File" id="File" /><br />                                  
+                                  <input type="submit" value="Upload File" /><br />
+                              </div>*@
+
                         <div class="row">
                             <div class="col-sm-9 "></div>
                             <div class="col-sm-0 form-text text-right">Exibir</div>
@@ -89,18 +95,18 @@
                                 <tbody>
                                     @foreach (var item in Model.DataPage.Items)
                                     {
-                                    <tr>
-                                        @*<td>@item.CD_PAR</td>*@
-                                        <td>@item.CD_MOEDA</td>
-                                        <td>@item.TX_COD_IMP</td>
-                                        <td>@item.TX_COD_EXP</td>
-                                        <td>@item.TX_DESCRICAO</td>
+                                        <tr>
+                                            @*<td>@item.CD_PAR</td>*@
+                                            <td>@item.CD_MOEDA</td>
+                                            <td>@item.TX_COD_IMP</td>
+                                            <td>@item.TX_COD_EXP</td>
+                                            <td>@item.TX_DESCRICAO</td>
 
-                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
-                                        {
-                                            <td class="text-center"><a asp-action="View" asp-route-id="@item.CD_MOEDA"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a></td>
-                                        }
-                                    </tr>
+                                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
+                                            {
+                                                <td class="text-center"><a asp-action="View" asp-route-id="@item.CD_MOEDA"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a></td>
+                                            }
+                                        </tr>
                                     }
                                 </tbody>
                             </table>

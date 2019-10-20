@@ -16,6 +16,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel-save">Cancelar</button>
                             <button type="button" class="btn btn-danger" id="confirm-save">Confirmar</button>
+                            <button type="button" class="btn btn-secondary" id="confirm-import">Confirmar</button>
                         </div>
                         </div>
                     </div>
