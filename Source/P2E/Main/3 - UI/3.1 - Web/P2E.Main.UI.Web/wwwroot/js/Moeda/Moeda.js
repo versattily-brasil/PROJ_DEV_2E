@@ -2,15 +2,20 @@ var Moeda = /** @class */ (function () {
     function Moeda() {
         this.form = $("#form");
         this.btnSalvar = $("#btnSalvar");
+        this.btnConfirmarSalvar = $("#confirm-save");
     }
     Moeda.prototype.init = function () {
+        var _this = this;
+        this.btnConfirmarSalvar.on("click", function (e) {
+            _this.form.submit();
+        });
         this.btnSalvar.on("click", function (e) {
             //var a = confirm("Tem certeza que deseja salvar as alterações?");
             //if (!a) {
             //    return false;
             //}
             //e.preventDefault();
-            //this.form.submit();
+            // this.form.submit();
         });
     };
     return Moeda;

@@ -33,23 +33,23 @@
 
                         <div class="form-group mb-0">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-2">
                                     <input type="hidden" asp-for="CD_MOEDA" />
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_COD_IMP">Código de Importação</label>
-                                        <input type="text" maxlength="100" asp-for="TX_COD_IMP" placeholder="Código de Importação" class="form-control" disabled="disabled">
+                                        <input type="text" maxlength="3" asp-for="TX_COD_IMP" placeholder="Código de Importação" class="form-control" disabled="disabled">
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_COD_EXP">Código de Exportação</label>
-                                        <input type="text" maxlength="21" asp-for="TX_COD_EXP" placeholder="Código de Exportação" class="form-control" disabled="disabled">
+                                        <input type="text" maxlength="3" asp-for="TX_COD_EXP" placeholder="Código de Exportação" class="form-control" disabled="disabled">
                                     </div>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-10">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_DESCRICAO">Descrição</label>
-                                        <input type="text" id="tx_descricao" maxlength="50" asp-for="TX_DESCRICAO" placeholder="Descrição" class="form-control">
+                                        <input type="text" id="tx_descricao" maxlength="100" asp-for="TX_DESCRICAO" placeholder="Descrição" class="form-control" disabled="disabled">
                                     </div>
                                 </div>
                             </div>

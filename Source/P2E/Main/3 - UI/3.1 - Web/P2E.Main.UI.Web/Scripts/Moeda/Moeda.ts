@@ -2,8 +2,13 @@
 
     form = $("#form");
     btnSalvar = $("#btnSalvar");
+    btnConfirmarSalvar = $("#confirm-save");
 
     init(): void {
+
+        this.btnConfirmarSalvar.on("click", (e) => {
+            this.form.submit();
+        });
 
         this.btnSalvar.on("click", (e) => {
 
@@ -13,7 +18,7 @@
             //}
             //e.preventDefault();
 
-            //this.form.submit();
+           // this.form.submit();
         });
     }
 }

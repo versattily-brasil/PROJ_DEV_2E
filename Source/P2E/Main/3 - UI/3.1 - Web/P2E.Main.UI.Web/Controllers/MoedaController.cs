@@ -158,7 +158,7 @@ namespace P2E.Main.UI.Web.Controllers
                         result = await client.PutAsJsonAsync($"{_urlMoeda}/{modulo.CD_MOEDA}", modulo);
                         responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
-                        return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("moeda"));
+                        return RedirectToAction("Index").WithSuccess("Sucesso", GenericMessages.SucessSave("Moeda"));
                     }
                 //}
                 //else
@@ -174,7 +174,7 @@ namespace P2E.Main.UI.Web.Controllers
 
         public IActionResult CancelView()
         {
-            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("moeda"));
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Moeda"));
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace P2E.Main.UI.Web.Controllers
                     result = await client.DeleteAsync($"{_urlMoeda}/{Id}");
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();
-                    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("moeda"));
+                    return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Moeda"));
                 }
 
             }

@@ -44,8 +44,8 @@
                         @*<input type="hidden" asp-for="DataPage.PageSize" />*@
 
                         <div class="row">
-                            <div class="col-md-2">
-                                <input type="text" asp-for="descricao" class="form-control" placeholder="CNPJ" />
+                            <div class="col-md-5">
+                                <input type="text" asp-for="descricao" class="form-control" placeholder="Descrição" />
                             </div>
 
                             <div class="col-md-2">
@@ -79,28 +79,28 @@
                             <table class="table table-bordered table-hover m-0">
                                 <thead class="thead-themed">
                                     <tr>
-                                        <th>Id</th>
-                                        <th>Código Imp.</th>
+                                        <th width="30">Id</th>
+                                        <th width="100">Código Imp.</th>
+                                        <th width="100">Código Exp.</th>
                                         <th>Descrição</th>
-                                        <th>Código Exp.</th>
                                         <th width="20"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var item in Model.DataPage.Items)
                                     {
-                                        <tr>
-                                            @*<td>@item.CD_PAR</td>*@
-                                            <td>@item.CD_MOEDA</td>
-                                            <td>@item.TX_COD_IMP</td>
-                                            <td>@item.TX_DESCRICAO</td>
-                                            <td>@item.TX_COD_EXP</td>
+                                    <tr>
+                                        @*<td>@item.CD_PAR</td>*@
+                                        <td>@item.CD_MOEDA</td>
+                                        <td>@item.TX_COD_IMP</td>
+                                        <td>@item.TX_COD_EXP</td>
+                                        <td>@item.TX_DESCRICAO</td>
 
-                                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
-                                            {
-                                                <td class="text-center"><a asp-action="View" asp-route-id="@item.CD_MOEDA"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a></td>
-                                            }
-                                        </tr>
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
+                                        {
+                                            <td class="text-center"><a asp-action="View" asp-route-id="@item.CD_MOEDA"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a></td>
+                                        }
+                                    </tr>
                                     }
                                 </tbody>
                             </table>

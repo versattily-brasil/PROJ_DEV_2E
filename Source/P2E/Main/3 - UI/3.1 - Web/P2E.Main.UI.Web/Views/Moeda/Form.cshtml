@@ -44,23 +44,23 @@
 
                         <div class="form-group mb-0">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-2">
                                     <input type="hidden" asp-for="CD_MOEDA" />
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_COD_IMP">Código de Importação</label>
-                                        <input type="text" maxlength="100" asp-for="TX_COD_IMP" placeholder="Código de Importação" class="form-control">
+                                        <input type="text" maxlength="3" asp-for="TX_COD_IMP" placeholder="Código de Importação" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_COD_EXP">Código de Exportação</label>
-                                        <input type="text" id="tx_cod_exp" maxlength="21" asp-for="TX_COD_EXP" placeholder="Código de Exportação" class="form-control">
+                                        <input type="text" maxlength="3" asp-for="TX_COD_EXP" placeholder="Código de Exportação" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-10">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_DESCRICAO">Descrição</label>
-                                        <input type="text" id="tx_descricao" maxlength="50" asp-for="TX_DESCRICAO" placeholder="Descrição" class="form-control">
+                                        <input type="text" id="tx_descricao" maxlength="100" asp-for="TX_DESCRICAO" placeholder="Descrição" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -77,18 +77,19 @@
                                     {
                                         mensagemConfirma = "Confirma alteração do registro?";
                                     }
+
                                     <button data-body-message="@mensagemConfirma"
                                             id="btnSalvar"
                                             style="font-weight:normal;cursor:pointer" class="save btn btn-success">
                                         Salvar
-                                    </button>
+                                    </button>                                    
 
                                     @if (Model.CD_MOEDA > 0)
                                     {
                                         actionCancel = "CancelEdit";
                                     }
 
-                                    <button data-controller="moeda" data-id="@Model.CD_MOEDA"
+                                    <button data-controller="Moeda" data-id="@Model.CD_MOEDA"
                                             data-action="@actionCancel"
                                             data-body-message="Deseja cancelar as alterações?"
                                             style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">

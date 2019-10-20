@@ -22,7 +22,7 @@ namespace P2E.Importacao.Domain.Entities
             TX_DESCRICAO = tx_descricao;
             TX_COD_EXP = tx_cod_exp;
 
-           // IsValid();
+            //IsValid();
         }
 
 
