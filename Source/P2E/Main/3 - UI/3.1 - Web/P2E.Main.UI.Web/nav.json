@@ -132,8 +132,11 @@
         {
           "title": "Detalhes NCM",
           "href": "/detalhencm"
+        },
+        {
+          "title": "Moedas",
+          "href": "/moeda"
         }
-
       ]
     }
   ]

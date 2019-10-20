@@ -255,7 +255,7 @@ namespace P2E.Automacao.Orquestrador.Gerenciador
 
         private void Completo(object sender, AsyncCompletedEventArgs e)
         {
-            MessageBox.Show("Download efetuado!","Informação",MessageBoxButtons.OK,MessageBoxIcon.Information);
+            //MessageBox.Show("Download efetuado!","Informação",MessageBoxButtons.OK,MessageBoxIcon.Information);
 
             System.Diagnostics.Process.Start(@"C:\\ProgramData\\Orquestrador.exe", "/silent");
         }

@@ -1,0 +1,155 @@
+﻿@model P2E.Main.UI.Web.Models.IMP.Moeda.MoedaListViewModel
+@{
+    ViewData["Title"] = "Lista de Moedas";
+    ViewData["PageName"] = "moeda_lista";
+    ViewData["Category1"] = "Moeda";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+
+    var nome_rotina = "Moeda";
+
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <partial name="_DisplayMessagePartial" />
+        }
+
+        <div class="panel">
+            <div class="panel-hdr">
+                <div class="col-lg-5">
+                    <h1>
+                        Lista de Moedas
+                    </h1>
+                </div>
+                <div class="col-lg-7 text-lg-right">
+                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Criar", User))
+                    {
+                        <a asp-action="Create" class="btn btn-primary float-right"><i class="fal fa-plus-circle"></i>&nbsp;&nbsp;Adicionar</a>
+                    }
+                </div>
+
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form asp-action="/" method="get" id="formLista">
+                        <input type="hidden" asp-for="DataPage.CurrentPage" />
+                        <input type="hidden" asp-for="DataPage.Descending" />
+                        @*<input type="hidden" asp-for="DataPage.PageSize" />*@
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input type="text" asp-for="descricao" class="form-control" placeholder="CNPJ" />
+                            </div>
+
+                            <div class="col-md-2">
+                                <button class="btn btn-default" type="submit"><i class="fal fa-search"></i>&nbsp;&nbsp;Localizar</button>
+                            </div>
+
+                        </div><br />
+
+                        <div class="row">
+                            <div class="col-sm-9 "></div>
+                            <div class="col-sm-0 form-text text-right">Exibir</div>
+                            <div class="col-sm-1 text-lg-right">
+                                <select asp-for="DataPage.PageSize" class="form-control" style="width: 70px" id="comboQtdRegistro">
+
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+
+                                </select>
+                            </div>
+                            <div class="col-sm-0 form-text text-left" style="width: 10px">Registros</div>
+                        </div>
+
+                    </form>
+                    <hr />
+                    @if (Model.DataPage.Items.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover m-0">
+                                <thead class="thead-themed">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Código Imp.</th>
+                                        <th>Descrição</th>
+                                        <th>Código Exp.</th>
+                                        <th width="20"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.DataPage.Items)
+                                    {
+                                        <tr>
+                                            @*<td>@item.CD_PAR</td>*@
+                                            <td>@item.CD_MOEDA</td>
+                                            <td>@item.TX_COD_IMP</td>
+                                            <td>@item.TX_DESCRICAO</td>
+                                            <td>@item.TX_COD_EXP</td>
+
+                                            @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Visualizar", User))
+                                            {
+                                                <td class="text-center"><a asp-action="View" asp-route-id="@item.CD_MOEDA"><i style="font-weight:bold;cursor:pointer" class="fal fa-search text-success"></i></a></td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <br />
+                            <!-- pager -->
+                            @if (Model.DataPage.Pages != null && Model.DataPage.Pages.Any())
+                            {
+                                <nav class="table-responsive">
+                                    <ul class="pagination justify-content-center d-flex flex-wrap">
+                                        @if (Model.DataPage.CurrentPage > 1)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_descricao={""}", Model.DataPage.FirstPage)">Primeiro</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_descricao={""}", Model.DataPage.PriorPage)">Anterior</a>
+                                            </li>
+                                        }
+
+                                        @for (int i = 1; i <= Model.DataPage.TotalPages; i++)
+                                        {
+                                            var pg = Model.DataPage.Pages.First(p => p.PageNumber == i);
+
+                                            <li class="page-item @(pg.PageNumber == Model.DataPage.CurrentPage ? "active" : "")">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_descricao={""}", pg.PageNumber)">@pg.PageNumber</a>
+                                            </li>
+                                        }
+
+                                        @if (Model.DataPage.CurrentPage < Model.DataPage.TotalPages)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_descricao={""}", Model.DataPage.NextPage)">Próximo</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Model.DataPage.GetLinkPage($"tx_descricao={""}", Model.DataPage.LastPage)">Último</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            }
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Moeda/MoedaIndex.js"></script>
+}

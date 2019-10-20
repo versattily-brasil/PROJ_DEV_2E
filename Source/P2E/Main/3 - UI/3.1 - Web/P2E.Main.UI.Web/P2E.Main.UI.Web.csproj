@@ -21,6 +21,8 @@
   <ItemGroup>
     <None Remove="Scripts\Grupo\Grupo.ts" />
     <None Remove="Scripts\Grupo\GrupoIndex.ts" />
+    <None Remove="Scripts\Moeda\Moeda.ts" />
+    <None Remove="Scripts\Moeda\MoedaIndex.ts" />
     <None Remove="Scripts\ParceiroNegocio\ParceiroNegocioIndex.ts" />
     <None Remove="Scripts\ParceiroNegocio\ParceiroNegocioServicoModulo.ts" />
     <None Remove="Scripts\ParceiroNegocio\TabelaParceiroNegocioServicoModulo.ts" />
@@ -41,7 +43,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
@@ -58,6 +60,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Grupo\Grupo.ts" />
     <TypeScriptCompile Include="Scripts\Grupo\GrupoIndex.ts" />
+    <TypeScriptCompile Include="Scripts\Moeda\Moeda.ts" />
+    <TypeScriptCompile Include="Scripts\Moeda\MoedaIndex.ts" />
     <TypeScriptCompile Include="Scripts\ParceiroNegocio\ParceiroNegocioIndex.ts" />
     <TypeScriptCompile Include="Scripts\ParceiroNegocio\TabelaParceiroNegocioServicoModulo.ts" />
     <TypeScriptCompile Include="Scripts\ParceiroNegocio\ParceiroNegocioServicoModulo.ts" />

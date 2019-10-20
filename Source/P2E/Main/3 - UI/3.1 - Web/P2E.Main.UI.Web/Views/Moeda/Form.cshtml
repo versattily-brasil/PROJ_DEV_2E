@@ -1,0 +1,110 @@
+﻿@model P2E.Main.UI.Web.Models.IMP.Moeda.MoedaViewModel
+@{
+    ViewData["Title"] = "Lista de Moedas";
+    ViewData["PageName"] = "moeda_novo";
+    ViewData["Category1"] = "Moeda";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+
+    var nome_rotina = "Moeda";
+    var mensagemConfirma = "Confirma salvar o registro?";
+    var actionCancel = "CancelInsert";
+
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <partial name="_DisplayMessagePartial" />
+        }
+
+        <div class="panel">
+            <div class="panel-hdr">
+                @if (Model.CD_MOEDA > 0)
+                {
+                    <h1>
+                        Edição de Moeda
+                    </h1>
+                }
+                else
+                {
+                    <h1>
+                        Cadastro de Moeda
+                    </h1>
+                }
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form id="form" asp-action="Save" method="post">
+
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-8">
+                                    <input type="hidden" asp-for="CD_MOEDA" />
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_COD_IMP">Código de Importação</label>
+                                        <input type="text" maxlength="100" asp-for="TX_COD_IMP" placeholder="Código de Importação" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_COD_EXP">Código de Exportação</label>
+                                        <input type="text" id="tx_cod_exp" maxlength="21" asp-for="TX_COD_EXP" placeholder="Código de Exportação" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_DESCRICAO">Descrição</label>
+                                        <input type="text" id="tx_descricao" maxlength="50" asp-for="TX_DESCRICAO" placeholder="Descrição" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <br />
+
+                                    @if (Model.CD_MOEDA > 0)
+                                    {
+                                        mensagemConfirma = "Confirma alteração do registro?";
+                                    }
+                                    <button data-body-message="@mensagemConfirma"
+                                            id="btnSalvar"
+                                            style="font-weight:normal;cursor:pointer" class="save btn btn-success">
+                                        Salvar
+                                    </button>
+
+                                    @if (Model.CD_MOEDA > 0)
+                                    {
+                                        actionCancel = "CancelEdit";
+                                    }
+
+                                    <button data-controller="moeda" data-id="@Model.CD_MOEDA"
+                                            data-action="@actionCancel"
+                                            data-body-message="Deseja cancelar as alterações?"
+                                            style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
+                                        Cancelar
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Moeda/Moeda.js"></script>
+}

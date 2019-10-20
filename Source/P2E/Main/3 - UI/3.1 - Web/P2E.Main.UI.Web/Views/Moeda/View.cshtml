@@ -1,0 +1,102 @@
+﻿@model P2E.Main.UI.Web.Models.IMP.Moeda.MoedaViewModel
+@{
+    ViewData["Title"] = "Lista de Moedas";
+    ViewData["PageName"] = "moeda_novo";
+    ViewData["Category1"] = "Moeda";
+
+    //Alert info
+    var type = (string)TempData["_alert.type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+
+    var nome_rotina = "Moeda";
+
+}
+
+<div class="row">
+    <div class="col-xl-12">
+
+        @if (!string.IsNullOrEmpty(type))
+        {
+            <partial name="_DisplayMessagePartial" />
+        }
+
+        <div class="panel">
+            <div class="panel-hdr">
+                <h1>
+                    Visualização de Moedas
+                </h1>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form id="form" asp-action="Save" method="post">
+
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-8">
+                                    <input type="hidden" asp-for="CD_MOEDA" />
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_COD_IMP">Código de Importação</label>
+                                        <input type="text" maxlength="100" asp-for="TX_COD_IMP" placeholder="Código de Importação" class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_COD_EXP">Código de Exportação</label>
+                                        <input type="text" maxlength="21" asp-for="TX_COD_EXP" placeholder="Código de Exportação" class="form-control" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="form-group">
+                                        <label class="form-label" asp-for="TX_DESCRICAO">Descrição</label>
+                                        <input type="text" id="tx_descricao" maxlength="50" asp-for="TX_DESCRICAO" placeholder="Descrição" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+
+                        <div class="form-group mb-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <br />
+                                    @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Editar", User))
+                                    {
+                                        <button data-controller="moeda" data-id="@Model.CD_MOEDA"
+                                                data-action="Edit"
+                                                data-body-message="Deseja Editar o Registro?"
+                                                style="font-weight:normal;cursor:pointer" class=" edit btn btn-success">
+                                            Editar
+                                        </button>
+                                    }
+                                    <button data-controller="moeda" data-id="@Model.CD_MOEDA"
+                                            data-action="CancelView"
+                                            data-body-message="Voltar para a tela inicial?"
+                                            style="font-weight:normal;cursor:pointer" class=" cancel btn btn-primary">
+                                        Cancelar
+                                    </button>
+
+                                    @if (Model.CD_MOEDA > 0)
+                                    {
+                                        @if (P2E.Main.UI.Web.Extensions.Util.Permissoes.VerificarPermissao(nome_rotina, "Deletar", User))
+                                        {
+                                            <button data-id="@Model.CD_MOEDA"
+                                                    data-controller="moeda"
+                                                    data-action="Delete"
+                                                    data-body-message="Deseja excluir esta Moeda?"
+                                                    style="font-weight:normal;cursor:pointer" class="delete btn btn-danger fa-pull-right">
+                                                Deletar
+                                            </button>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

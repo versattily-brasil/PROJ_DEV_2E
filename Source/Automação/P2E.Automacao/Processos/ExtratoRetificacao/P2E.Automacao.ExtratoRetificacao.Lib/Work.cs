@@ -77,7 +77,9 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                         service.AddArgument("no-sandbox");
                         service.HideCommandPromptWindow = true;
 
-                        using (var _driver = new PhantomJSDriver(service))
+                        var options = new PhantomJSOptions();
+
+                        using (var _driver = new PhantomJSDriver(service, options, TimeSpan.FromMinutes(2)))
                         {
                             try
                             {
@@ -86,7 +88,7 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
 
                                 foreach (var di in registros)
                                 {
-                                    LogController.RegistrarLog(_nome_cliente + " - " + "################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                    LogController.RegistrarLog(_nome_cliente + " - DI: " + di.TX_NUM_DEC + " - ################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                     List<Thread> threads = new List<Thread>();
 
@@ -103,8 +105,9 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
 
                                 //Console.ReadKey();
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
+                                LogController.RegistrarLog(_nome_cliente + " - " + "ERRO CONEXAO: " + ex.Message, eTipoLog.ERRO, _cd_bot_exec, "bot");
                                 _driver.Close();
                             }
                         }
@@ -112,70 +115,78 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                 }
                 else
                 {
-                    LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - " + " Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
         }
 
         private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string nroDI)
         {
-            //using (var service = PhantomJSDriverService.CreateDefaultService(Directory.GetCurrentDirectory()))
-
             var numDeclaracao = numero;
 
-            LogController.RegistrarLog(_nome_cliente + " - " + "ACESSAO PAGINA DE CONSULTA...", eTipoLog.INFO, _cd_bot_exec, "bot");
-            _driver.Navigate().GoToUrl(_urlTelaConsulta);
-
-            //COLOCANDO O NUMERO DA DI NO CAMPO
-            OpenQA.Selenium.IWebElement element = _driver.FindElementById("nrDeclaracao");
-            element.SendKeys(numDeclaracao);
-
-            // clica no BOTAO 'Confirmar'
-            element = _driver.FindElementByCssSelector("#corpo > input:nth-child(3)");
-            element.Click();
-
-            //VERIFICA SE TEM POPUP.. PRECISA MELHORAR...
-            try { var aux = element.Text; }
-            catch (Exception)
+            try
             {
-                import.OP_EXTRATO_RETIF = 0;
 
-                await AtualizaExtratoRetificacao(import, nroDI); 
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + " - ACESSAO PAGINA DE CONSULTA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                _driver.Navigate().GoToUrl(_urlTelaConsulta);
 
-                LogController.RegistrarLog(_nome_cliente + " - " + "DI NÃO RETIFICADA...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                return;
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + " - ADICIONANDO NUMERO DA DI...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                OpenQA.Selenium.IWebElement element = _driver.FindElementById("nrDeclaracao");
+                element.SendKeys(numDeclaracao);
+
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + " - CLICANDO NO BOTÃO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                element = _driver.FindElementByCssSelector("#corpo > input:nth-child(3)");
+                element.Click();
+
+                //VERIFICA SE TEM POPUP.. PRECISA MELHORAR...
+                try { var aux = element.Text; }
+                catch (Exception)
+                {
+                    import.OP_EXTRATO_RETIF = 0;
+
+                    await AtualizaExtratoRetificacao(import, nroDI);
+
+                    LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + "DI NÃO RETIFICADA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    return;
+                }
+
+                string numeroDec = numDeclaracao.Substring(0, 2) + "%2F" +
+                                            numDeclaracao.Substring(2, 7) + "-" +
+                                            numDeclaracao.Substring(9, 1);
+
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + "DOWNLOAD DO EXTRATO DE RETIFICACAO EM PDF...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                var retornoRetif = DownloadComprovante(_driver, _urlDownload + "?nrDeclaracao=" + numeroDec);
+
+                import.OP_EXTRATO_RETIF = retornoRetif ? 1 : 0;
+
+                await AtualizaExtratoRetificacao(import, nroDI);
             }
-
-            string numeroDec = numDeclaracao.Substring(0, 2) + "%2F" +
-                                        numDeclaracao.Substring(2, 7) + "-" +
-                                        numDeclaracao.Substring(9, 1);
-
-            LogController.RegistrarLog(_nome_cliente + " - " + "DOWNLOAD DO EXTRATO DE RETIFICACAO EM PDF...", eTipoLog.INFO, _cd_bot_exec, "bot");
-            var retornoRetif = DownloadComprovante(_driver, _urlDownload + "?nrDeclaracao=" + numeroDec);
-
-            import.OP_EXTRATO_RETIF = retornoRetif ? 1 : 0;
-
-            await AtualizaExtratoRetificacao(import, nroDI);
+            catch (Exception ex)
+            {
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + numDeclaracao + "ERRO - " + ex.Message, eTipoLog.ERRO, _cd_bot_exec, "bot");
+            }
         }
 
         private async Task AtualizaExtratoRetificacao(Importacao import, string cd_imp)
         {
             try
             {
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + cd_imp + " ATUALIZANDO RETIFICACAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+
                 HttpResponseMessage resultado;
 
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(_urlApiBase);
-                    resultado = await client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import);
+                    resultado =  client.PutAsJsonAsync($"imp/v1/importacao/{cd_imp}", import).Result;
                     resultado.EnsureSuccessStatusCode();
 
-                    LogController.RegistrarLog(_nome_cliente + " - " + "Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    LogController.RegistrarLog(_nome_cliente + " - DI: " + cd_imp + " Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
                 }
             }
             catch (Exception e)
             {
-                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + cd_imp + $" Erro ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
 
@@ -201,12 +212,17 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
 
                     myWebClient.DownloadFile(_url, arquivoPath);
+
+                    Thread.Sleep(3000);
                 }
+
+                LogController.RegistrarLog(_nome_cliente + " - " +  " DOWNLOAD PDF CONCLUIDO", eTipoLog.INFO, _cd_bot_exec, "bot");
 
                 return true;
             }
             catch (Exception e)
             {
+                LogController.RegistrarLog(_nome_cliente + " - "+ "ERRO DOWNLOAD - " + e.Message, eTipoLog.ERRO, _cd_bot_exec, "bot");
                 return false;
             }
         }
