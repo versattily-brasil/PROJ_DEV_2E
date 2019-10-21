@@ -217,6 +217,15 @@ namespace P2E.Main.UI.Web.Controllers
             }
         }
 
+        public IActionResult CancelInsert()
+        {
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.InsertCancel("Moeda"));
+        }
+
+        public IActionResult CancelEdit()
+        {
+            return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.EditCancel("Moeda"));
+        }
         public IActionResult CancelView()
         {
             return RedirectToAction("Index").WithSuccess("Cancelada.", GenericMessages.ShowDetailCancel("Moeda"));

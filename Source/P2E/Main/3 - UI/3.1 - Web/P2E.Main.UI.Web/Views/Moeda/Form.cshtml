@@ -48,13 +48,13 @@
                                     <input type="hidden" asp-for="CD_MOEDA" />
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_COD_IMP">Código de Importação</label>
-                                        <input type="text" maxlength="3" asp-for="TX_COD_IMP" placeholder="Código de Importação" class="form-control">
+                                        <input type="text" maxlength="3" asp-for="TX_COD_IMP" placeholder="Ex: 001" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label class="form-label" asp-for="TX_COD_EXP">Código de Exportação</label>
-                                        <input type="text" maxlength="3" asp-for="TX_COD_EXP" placeholder="Código de Exportação" class="form-control">
+                                        <input type="text" maxlength="3" asp-for="TX_COD_EXP" placeholder="Ex: 002" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-10">
@@ -96,10 +96,10 @@
                                         Cancelar
                                     </button>
 
-                                    <button data-controller="moeda" data-id="@Model?.CD_MOEDA"
-                                            data-action="Upload"
+                                    <button data-controller="Moeda" data-id="@Model?.CD_MOEDA"
+                                            data-action="@actionCancel"
                                             data-body-message="Deseja Fazer a Importação do Arquivo .xml ?"
-                                            style="font-weight:normal;cursor:pointer" class=" edit btn btn-secondary">
+                                            style="font-weight:normal;cursor:pointer" class=" cancel btn btn-secondary">
                                         Importar XML
                                     </button>
 
