@@ -200,12 +200,12 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-ExtratoRetificacao.pdf");
+                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", horaData + "-ExtratoRetificacao.pdf");
 
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
                 {

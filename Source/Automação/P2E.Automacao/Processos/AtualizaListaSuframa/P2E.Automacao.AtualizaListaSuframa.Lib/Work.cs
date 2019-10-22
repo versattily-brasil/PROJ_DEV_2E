@@ -129,7 +129,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                         System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
                     }
 
-                    arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-BancoDadosAcess.exe");
+                    arquivoPath = Path.Combine(@"C:\Versatilly\", horaData + "-BancoDadosAcess.exe");
 
                     using (Stream rs = response.GetResponseStream())
                     {

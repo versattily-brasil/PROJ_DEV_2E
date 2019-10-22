@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Xceed.Words.NET;
 
 namespace P2E.Automacao.Processos.TelaDebito.Lib
 {
@@ -150,80 +151,87 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
             try
             {
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", numero + "-TelaDebito.doc");
+                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", numero + "-TelaDebito.docx");
 
-                StreamWriter writer = new StreamWriter(arquivoPath);
+                var doc = DocX.Create(arquivoPath);
+
+
+
+
+
+
+                //StreamWriter writer = new StreamWriter(arquivoPath);
 
                 element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr > td.tituloDI");
-                writer.WriteLine(element.Text);
-                writer.WriteLine(" ");
-                writer.WriteLine(" ");
+                doc.InsertParagraph(element.Text);
+                doc.InsertParagraph(" ");
+                doc.InsertParagraph(" ");
 
                 element = _driver.FindElementByCssSelector("#idTableDocInstDes > tbody > tr:nth-child(1) > td.colunaSemBorda > label");
                 var auxA = element.Text;
                 element = _driver.FindElementByCssSelector("#idTableDocInstDes > tbody > tr:nth-child(1) > td.colunaApenasBordaEsquerda > label");
                 var auxB = element.Text;
-                writer.WriteLine(auxA + ": " + auxB);
+                doc.InsertParagraph(auxA + ": " + auxB);
                 
                 element = _driver.FindElementByCssSelector("#idTableDocInstDes > tbody > tr:nth-child(2) > td:nth-child(1) > label");
                 auxA = element.Text;
                 element = _driver.FindElementByCssSelector("#idTableDocInstDes > tbody > tr:nth-child(2) > td.colunaBordaEsquerda > label");
                 auxB = element.Text;
-                writer.WriteLine(auxA + ": " + auxB);
+                doc.InsertParagraph(auxA + ": " + auxB);
 
                 element = _driver.FindElementByCssSelector("#idTableDocInstDes > tbody > tr:nth-child(3) > td:nth-child(1) > label");
                 auxA = element.Text;
                 element = _driver.FindElementByCssSelector("#idTableDocInstDes > tbody > tr:nth-child(3) > td.colunaBordaEsquerda > label");
                 auxB = element.Text;
-                writer.WriteLine(auxA + ": " + auxB);
+                doc.InsertParagraph(auxA + ": " + auxB);
 
                 element = _driver.FindElementByCssSelector("#idTableDocInstDes > tbody > tr:nth-child(4) > td:nth-child(1) > label");
                 auxA = element.Text;
                 element = _driver.FindElementByCssSelector("#idTableDocInstDes > tbody > tr:nth-child(4) > td.colunaBordaEsquerda > label");
                 auxB = element.Text;
-                writer.WriteLine(auxA + ": " + auxB);
-                writer.WriteLine(" ");
-                writer.WriteLine(" ");
+                doc.InsertParagraph(auxA + ": " + auxB);
+                doc.InsertParagraph(" ");
+                doc.InsertParagraph(" ");
 
                 element = _driver.FindElementByCssSelector("#box > div > fieldset:nth-child(42) > legend");
-                writer.WriteLine(element.Text);
+                doc.InsertParagraph(element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablemulta > tbody > tr > td > label");
-                writer.WriteLine(element.Text);
-                writer.WriteLine(" ");
-                writer.WriteLine(" ");
+                doc.InsertParagraph(element.Text);
+                doc.InsertParagraph(" ");
+                doc.InsertParagraph(" ");
 
                 element = _driver.FindElementByCssSelector("#box > div > fieldset:nth-child(44) > legend");
-                writer.WriteLine(element.Text);
+                doc.InsertParagraph(element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(1) > label");
-                writer.WriteLine("Retificação: "+element.Text);
+                doc.InsertParagraph("Retificação: "+element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(2) > label");
-                writer.WriteLine("Receita: " + element.Text);
+                doc.InsertParagraph("Receita: " + element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(3) > label");
-                writer.WriteLine("Valor Receita: " + element.Text);
+                doc.InsertParagraph("Valor Receita: " + element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(4) > label");
-                writer.WriteLine("Juros/Encargos: " + element.Text);
+                doc.InsertParagraph("Juros/Encargos: " + element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(5) > label");
-                writer.WriteLine("Multa: " + element.Text);
+                doc.InsertParagraph("Multa: " + element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(6) > label");
-                writer.WriteLine("Valor Total: " + element.Text);
+                doc.InsertParagraph("Valor Total: " + element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(7) > label");
-                writer.WriteLine("Data: " + element.Text);
+                doc.InsertParagraph("Data: " + element.Text);
 
                 element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(8) > label");
-                writer.WriteLine("Tipo: " + element.Text);                
+                doc.InsertParagraph("Tipo: " + element.Text);                
                 
                 //CLIQUE NO '+'
                 element = _driver.FindElement(By.CssSelector("#idTablePagamentos > tbody > tr:nth-child(2) > td:nth-child(9) > input[type=button]"));
@@ -236,36 +244,36 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                 auxB = element.Text;
                 element = _driver.FindElementByCssSelector("#TABLE_4 > tbody > tr > td:nth-child(3)");
                 var auxC = element.Text;
-                writer.WriteLine(auxA + " - " + auxB + " - " + auxC );
-                writer.WriteLine(" ");
+                doc.InsertParagraph(auxA + " - " + auxB + " - " + auxC );
+                doc.InsertParagraph(" ");
 
                 var returnPgto = VerificaPagamento(element, _driver,"2");
 
                 if (returnPgto)
                 {
                     element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(1) > label");
-                    writer.WriteLine("Retificação: " + element.Text);
+                    doc.InsertParagraph("Retificação: " + element.Text);
 
                     element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(2) > label");
-                    writer.WriteLine("Receita: " + element.Text);
+                    doc.InsertParagraph("Receita: " + element.Text);
 
                     element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(3) > label");
-                    writer.WriteLine("Valor Receita: " + element.Text);
+                    doc.InsertParagraph("Valor Receita: " + element.Text);
 
                     element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(4) > label");
-                    writer.WriteLine("Juros/Encargos: " + element.Text);
+                    doc.InsertParagraph("Juros/Encargos: " + element.Text);
 
                     element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(5) > label");
-                    writer.WriteLine("Multa: " + element.Text);
+                    doc.InsertParagraph("Multa: " + element.Text);
 
                     element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(6) > label");
-                    writer.WriteLine("Valor Total: " + element.Text);
+                    doc.InsertParagraph("Valor Total: " + element.Text);
 
                     element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(7) > label");
-                    writer.WriteLine("Data: " + element.Text);
+                    doc.InsertParagraph("Data: " + element.Text);
 
                     element = _driver.FindElementByCssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(8) > label");
-                    writer.WriteLine("Tipo: " + element.Text);
+                    doc.InsertParagraph("Tipo: " + element.Text);
                    
                     //CLIQUE NO '+'
                     element = _driver.FindElement(By.CssSelector("#idTablePagamentos > tbody > tr:nth-child(4) > td:nth-child(9) > input[type=button]"));
@@ -278,11 +286,11 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
                     auxB = element.Text;
                     element = _driver.FindElementByCssSelector("#TABLE_5 > tbody > tr > td:nth-child(3)");
                     auxC = element.Text;
-                    writer.WriteLine(auxA + " - " + auxB + " - " + auxC);
-                    writer.WriteLine(" ");
+                    doc.InsertParagraph(auxA + " - " + auxB + " - " + auxC);
+                    doc.InsertParagraph(" ");
                 }
 
-                writer.Close();
+                doc.Save();
 
                 return true;
             }

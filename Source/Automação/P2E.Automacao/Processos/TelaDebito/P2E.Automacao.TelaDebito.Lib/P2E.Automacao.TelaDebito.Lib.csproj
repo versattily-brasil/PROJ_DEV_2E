@@ -89,6 +89,12 @@
     <Reference Include="WebDriver.Support, Version=3.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Selenium.Support.3.10.0\lib\net45\WebDriver.Support.dll</HintPath>
     </Reference>
+    <Reference Include="Xceed.Document.NET, Version=1.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DocX.1.4.1\lib\net40\Xceed.Document.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Words.NET, Version=1.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DocX.1.4.1\lib\net40\Xceed.Words.NET.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Work.cs" />

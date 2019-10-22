@@ -34,7 +34,7 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         #endregion
         public Work()
         {
-            LogController.RegistrarLog(_nome_cliente + " - " , eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - ", eTipoLog.INFO, _cd_bot_exec, "bot");
 
             LogController.RegistrarLog(_nome_cliente + " - " + "#####################  INICIALIZANDO - BAIXAR EXTRATO  ##################### ", eTipoLog.INFO, _cd_bot_exec, "bot");
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
@@ -86,7 +86,6 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     {
                         using (var service = PhantomJSDriverService.CreateDefaultService())
                         {
-
                             LogController.RegistrarLog(_nome_cliente + " - " + "CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                             string cert = $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
 
@@ -245,12 +244,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\" + _nome_cliente + "\\"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\" + _nome_cliente + "\\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.pdf");
+                string arquivoPath = Path.Combine(@"C:\Versatilly\" + _nome_cliente + "\\", horaData + "-Extrato.pdf");
 
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
                 {
@@ -259,7 +258,16 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     myWebClient.DownloadFile(_url, arquivoPath);
                 }
 
-                return true;
+                FileInfo fileInfo = new FileInfo(arquivoPath);
+                var tam = fileInfo.Length;
+                if (fileInfo.Length <= 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {
@@ -284,12 +292,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                     var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
                     //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                    if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                    if (!System.IO.Directory.Exists(@"C:\Versatilly\" + _nome_cliente + "\\"))
                     {
-                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\" + _nome_cliente + "\\");
                     }
 
-                    string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.xml");
+                    string arquivoPath = Path.Combine(@"C:\Versatilly\" + _nome_cliente + "\\", horaData + "-Extrato.xml");
 
 
                     if (!File.Exists(arquivoPath))
@@ -557,12 +565,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
 //                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-//                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+//                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
 //                {
-//                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+//                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
 //                }
 
-//                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.pdf");
+//                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", horaData + "-Extrato.pdf");
 
 //                using (WebClient myWebClient = new P2EWebClient(certificado, driver))
 //                {
@@ -588,12 +596,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 //                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
 //                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-//                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+//                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
 //                {
-//                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+//                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
 //                }
 
-//                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-Extrato.xml");
+//                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", horaData + "-Extrato.xml");
 
 //                using (WebClient myWebClient = new P2EWebClient(certificado, driver))
 //                {

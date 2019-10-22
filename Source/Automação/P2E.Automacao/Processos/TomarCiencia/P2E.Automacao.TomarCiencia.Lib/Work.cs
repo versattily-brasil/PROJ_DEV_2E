@@ -339,12 +339,12 @@ namespace P2E.Automacao.TomarCiencia.Lib
             {
                 Log("CAPTURA O PRINT DA TELA DO DOCUMENTO....");
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", numero + "-CapturaTela");
+                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", numero + "-CapturaTela");
 
                 var retornoPrint = Screenshot(_driver, arquivoPath);
 
@@ -369,12 +369,12 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 iTextSharp.text.Document Doc = new iTextSharp.text.Document(PageSize.A3);
 
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\");
+                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\");
 
                 string PDFOutput = Path.Combine(arquivoPath, "Lacre-" + lacre + ".pdf");
                 PdfWriter writer = PdfWriter.GetInstance(Doc, new FileStream(PDFOutput, FileMode.Create, FileAccess.Write, FileShare.Read));
@@ -608,14 +608,14 @@ namespace P2E.Automacao.TomarCiencia.Lib
             if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
             {
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
                 }
 
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-TomarCiencia" + drEmpresa.Nome.Trim().Replace(" ", "") + ".xlsx");
+                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", horaData + "-TomarCiencia" + drEmpresa.Nome.Trim().Replace(" ", "") + ".xlsx");
 
                 File.WriteAllBytes(arquivoPath, xlsDoc.GetAsByteArray());
             }

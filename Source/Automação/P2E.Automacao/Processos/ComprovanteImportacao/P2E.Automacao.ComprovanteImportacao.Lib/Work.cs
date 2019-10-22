@@ -212,12 +212,12 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                 var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
                 }
 
-                string arquivoPath = Path.Combine("C:\\Versatilly\\", horaData + "-COMPROVANTE_DI.pdf");
+                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", horaData + "-COMPROVANTE_DI.pdf");
 
                 using (WebClient myWebClient = new P2EWebClient(certificado, driver))
                 {
