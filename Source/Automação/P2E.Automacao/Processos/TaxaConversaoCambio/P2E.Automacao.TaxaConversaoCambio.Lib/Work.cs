@@ -9,6 +9,7 @@ using P2E.Automacao.Shared.Log.Enum;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -31,6 +32,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         private string valorCaptcha = "";
         int _cd_bot_exec;
         ChromeOptions options = null;
+        private List<TaxaCambio> registros;
 
         #endregion
 
@@ -80,15 +82,6 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 options.AddArgument("no-sandbox");
                 options.AddArgument(Directory.GetCurrentDirectory() + @"\chromedriver.exe");
                 LogController.RegistrarLog(Directory.GetCurrentDirectory() + @"\chromedriver.exe", eTipoLog.INFO, _cd_bot_exec, "bot");
-
-
-                //options.AddArguments("--disable-web-security");
-                //options.AddArguments("--allow-running-insecure-content");
-                //options.AddArgument("--disable-privacy");
-                //options.AddArgument("--whitelisted-ips");
-                //options.AddArgument("safebrowsing-disable-download-protection");
-                //options.AddExtension(@"c:\\path\to\extension.crx");
-
 
 
                 // Initialize the Chrome Driver
@@ -185,13 +178,14 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 LogController.RegistrarLog("CLICA NO XML PARA DOWNLOAD...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 element = _driver.FindElement(By.CssSelector("#j_id111\\:arquivoxml"));
                 element.Click();
+                Thread.Sleep(5000);
 
                 LogController.RegistrarLog("FECHANDO O NAVEGADOR...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                Thread.Sleep(3000);
+                
 
                 LogController.RegistrarLog("NAVEGADOR FECHADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 _driver.Quit();
-                
+
 
                 //_driver.Close();
 
@@ -209,7 +203,7 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                     try
                     {
-                        var aux = DeleteTaxa();
+                        // var aux = DeleteTaxa();
                     }
                     catch (Exception e)
                     {
@@ -236,31 +230,31 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                         LogController.RegistrarLog("Moeda: " + sNome + " Descricao: " + descricao + "DataI: " + DataInicial + "DataF: " + DataFinal + "Taxa: " + Taxa, eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                        LogController.RegistrarLog("INSERINDO NA TABELA...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                   
+                        //LogController.RegistrarLog("INSERINDO NA TABELA...", eTipoLog.INFO, _cd_bot_exec, "bot");
+
                         taxaCambio.TX_MOEDA = sNome;
-                        LogController.RegistrarLog("MOEDA -" + sNome, eTipoLog.INFO, _cd_bot_exec, "bot");
+                        //LogController.RegistrarLog("MOEDA -" + sNome, eTipoLog.INFO, _cd_bot_exec, "bot");
                         taxaCambio.TX_DESCRICAO = descricao;
-                        LogController.RegistrarLog("DESCRICAO - " + descricao, eTipoLog.INFO, _cd_bot_exec, "bot");
+                        //LogController.RegistrarLog("DESCRICAO - " + descricao, eTipoLog.INFO, _cd_bot_exec, "bot");
                         taxaCambio.DT_INICIO_VIGENCIA = DateTime.ParseExact(DataInicial, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);//DateTime.Parse(DataInicial);
-                        LogController.RegistrarLog("DATA INICIAL - " + DataInicial, eTipoLog.INFO, _cd_bot_exec, "bot");
+                        //LogController.RegistrarLog("DATA INICIAL - " + DataInicial, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                         if (DataFinal.Trim() == "-")
                         {
-                            LogController.RegistrarLog("DATA FINAL - " +".....", eTipoLog.INFO, _cd_bot_exec, "bot");
+                            //LogController.RegistrarLog("DATA FINAL - " + ".....", eTipoLog.INFO, _cd_bot_exec, "bot");
                             taxaCambio.DT_FIM_VIGENCIA = null;
                         }
                         else
                         {
-                            LogController.RegistrarLog("DATA INICIAL - " + DataFinal, eTipoLog.INFO, _cd_bot_exec, "bot");
+                            //LogController.RegistrarLog("DATA INICIAL - " + DataFinal, eTipoLog.INFO, _cd_bot_exec, "bot");
                             taxaCambio.DT_FIM_VIGENCIA = DateTime.ParseExact(DataFinal, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
                         }
 
-                        LogController.RegistrarLog("TAXA - " + Taxa, eTipoLog.INFO, _cd_bot_exec, "bot");
-                        taxaCambio.VL_TAXA_CONVERSAO = decimal.Parse(Taxa);
+                        //LogController.RegistrarLog("TAXA - " + Taxa, eTipoLog.INFO, _cd_bot_exec, "bot");
+                        taxaCambio.VL_TAXA_CONVERSAO =  decimal.Parse(Taxa);
 
-                        
-                        LogController.RegistrarLog("ENVIANDO PARA O METODO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                        //LogController.RegistrarLog("ENVIANDO PARA O METODO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                         await AtualizaTaxaCambio(taxaCambio);
 
                     }
@@ -355,21 +349,44 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
         {
             try
             {
-                //HttpResponseMessage resultado;
+                var criaTaxaCambio = true;
+
+                using (var clientTaxa = new HttpClient())
+                {
+                    string urlTaxa = _urlApiBase + $"imp/v1/taxa/moeda/" + taxaConversaoCambio.TX_MOEDA;
+
+                    var result = clientTaxa.GetAsync(urlTaxa).Result;
+                    var aux = await result.Content.ReadAsStringAsync();
+                    registros = JsonConvert.DeserializeObject<List<TaxaCambio>>(aux);
+
+                    if (registros != null && registros.Any())
+                    {
+                        foreach (var item in registros)
+                        {
+                            if (taxaConversaoCambio.DT_INICIO_VIGENCIA <= item.DT_INICIO_VIGENCIA)
+                            {
+                                criaTaxaCambio = false;
+                            }
+                        }
+                    }
+                }
 
                 using (var client = new HttpClient())
                 {
-                    LogController.RegistrarLog("SERIALIZANDO...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                    var auxA = JsonConvert.SerializeObject(taxaConversaoCambio);
-                    HttpContent httpContent = new StringContent(auxA, Encoding.UTF8, "application/json");
+                    if (criaTaxaCambio)
+                    {
+                        LogController.RegistrarLog("SERIALIZANDO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        var auxA = JsonConvert.SerializeObject(taxaConversaoCambio);
+                        HttpContent httpContent = new StringContent(auxA, Encoding.UTF8, "application/json");
 
-                    LogController.RegistrarLog("ENVIANDO PARA API...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                    client.BaseAddress = new Uri(_urlApiBase);
-                    
-                    var resultado = client.PostAsync($"imp/v1/taxa", httpContent).Result;
-                    resultado.EnsureSuccessStatusCode();
+                        LogController.RegistrarLog("ENVIANDO PARA API...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        client.BaseAddress = new Uri(_urlApiBase);
 
-                    LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        var resultado = client.PostAsync($"imp/v1/taxa", httpContent).Result;
+                        resultado.EnsureSuccessStatusCode();
+
+                        LogController.RegistrarLog("Registro salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    }
                 }
             }
             catch (Exception e)

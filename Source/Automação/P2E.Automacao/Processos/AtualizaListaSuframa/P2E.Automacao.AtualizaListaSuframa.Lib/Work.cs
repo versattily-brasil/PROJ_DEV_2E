@@ -171,20 +171,47 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 //cria o objeto datareader para fazer a conexao com a tabela
                 OleDbDataReader aReader = aCommand.ExecuteReader();
 
-                LogController.RegistrarLog("Limpando tabela NCM...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                await DeleteDetalheNCM(detalheNCM);
+                //LogController.RegistrarLog("Limpando tabela NCM...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                //await DeleteDetalheNCM(detalheNCM);
 
                 LogController.RegistrarLog("Inserindo Dados....", eTipoLog.INFO, _cd_bot_exec, "bot");
                 //Faz a interação com o banco de dados lendo os dados da tabela
-                while (aReader.Read())
+
+                string urlNCM = _urlApiBase + $"imp/v1/importacao/ncm/todos";
+
+                using (var client = new HttpClient())
                 {
-                    LogController.RegistrarLog("Codigo: " + aReader.GetString(0) + " Detalhe: " + aReader.GetString(1) + " Descrição: " + aReader.GetString(2), eTipoLog.INFO, _cd_bot_exec, "bot");
+                    var result = await client.GetAsync(urlNCM);
+                    var aux = await result.Content.ReadAsStringAsync();
+                    registros = JsonConvert.DeserializeObject<List<DetalheNCM>>(aux);
 
-                    detalheNCM.TX_SFNCM_CODIGO = aReader.GetString(0);
-                    detalheNCM.TX_SFNCM_DETALHE = aReader.GetString(1);
-                    detalheNCM.TX_SFNCM_DESCRICAO = aReader.GetString(2);
+                    //if (registros != null && registros.Any())
+                    //{
+                    //    while (aReader.Read())
+                    //    {
+                    //        foreach (var di in registros.FindAll(o=>o.TX_SFNCM_CODIGO == aReader.GetString(0)))
+                    //        {
+                    //            LogController.RegistrarLog("Codigo: " + aReader.GetString(0) + " Detalhe: " + aReader.GetString(1) + " Descrição: " + aReader.GetString(2), eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                    await InsertDetalheNCM(detalheNCM, aReader.GetString(0));
+                    //            detalheNCM.TX_SFNCM_CODIGO = aReader.GetString(0);
+                    //            detalheNCM.TX_SFNCM_DETALHE = aReader.GetString(1);
+                    //            detalheNCM.TX_SFNCM_DESCRICAO = aReader.GetString(2);
+
+                    //            await InsertDetalheNCM(detalheNCM, aReader.GetString(0));
+                    //        }
+                    //    }
+                    //}
+
+                    while (aReader.Read())
+                    {
+                        LogController.RegistrarLog("Codigo: " + aReader.GetString(0) + " Detalhe: " + aReader.GetString(1) + " Descrição: " + aReader.GetString(2), eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                        detalheNCM.TX_SFNCM_CODIGO = aReader.GetString(0);
+                        detalheNCM.TX_SFNCM_DETALHE = aReader.GetString(1);
+                        detalheNCM.TX_SFNCM_DESCRICAO = aReader.GetString(2);
+
+                        await InsertDetalheNCM(detalheNCM, aReader.GetString(0));
+                    }
                 }
 
                 LogController.RegistrarLog("Insert Concluído...", eTipoLog.INFO, _cd_bot_exec, "bot");

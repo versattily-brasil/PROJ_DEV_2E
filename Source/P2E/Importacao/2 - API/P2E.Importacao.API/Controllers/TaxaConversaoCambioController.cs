@@ -19,6 +19,15 @@ namespace P2E.Importacao.API.Controllers
 
         // GET: api/TaxaConversaoCambio
         [HttpGet]
+        [Route("api/v1/taxa/moeda/{id}")]
+        public IEnumerable<TaxaConversaoCambio> ListMoeda(string id)
+        {
+            var result = _taxaConversaoCambioRepository.FindAll(i => i.TX_MOEDA == id);
+            return result;
+        }
+
+        // GET: api/TaxaConversaoCambio
+        [HttpGet]
         [Route("api/v1/taxa/todos")]
         public IEnumerable<TaxaConversaoCambio> Get()
         {

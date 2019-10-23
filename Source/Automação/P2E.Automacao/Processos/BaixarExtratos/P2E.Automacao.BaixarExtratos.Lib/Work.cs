@@ -112,9 +112,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                                         List<Thread> threads = new List<Thread>();
 
-                                        var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
-                                        thread.Start();
-                                        threads.Add(thread);
+                                        if (di.OP_EXTRATO_XML == 0 || di.OP_EXTRATO_PDF == 0)
+                                        {
+                                            var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
+                                            thread.Start();
+                                            threads.Add(thread);
+                                        }
 
                                         // fica aguardnado todas as threads terminarem...
                                         while (threads.Any(t => t.IsAlive))
@@ -178,25 +181,29 @@ namespace P2E.Automacao.BaixarExtratos.Lib
 
                 //Thread.Sleep(3000);
 
-
-                LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - PDF.", eTipoLog.INFO, _cd_bot_exec, "bot");
-
                 Thread.Sleep(2000);
 
                 var numeroDec = numero.Substring(0, 2) + "%2F" +
                                 numero.Substring(2, 7) + "-" +
                                 numero.Substring(9, 1);
 
-                var returnoPDF = DownloadExtratoPDF(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
+                if (import.OP_EXTRATO_PDF == 0)
+                {
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - PDF.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;
+                    var returnoPDF = DownloadExtratoPDF(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
 
+                    import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;
+                }
 
-                LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - XML.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                if (import.OP_EXTRATO_XML == 0)
+                {
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - XML.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                var returnoXML = DownloadExtratoXML(numeroDec);
+                    var returnoXML = DownloadExtratoXML(numeroDec);
 
-                import.OP_EXTRATO_XML = returnoXML ? 1 : 0;
+                    import.OP_EXTRATO_XML = returnoXML ? 1 : 0;
+                }
 
                 await AtualizaExtratoPdfXml(import, cd_imp);
             }
@@ -316,7 +323,16 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                         File.WriteAllBytes(arquivoPath, ConvertToByteArray(driver.PageSource));
                     }
 
-                    return true;
+                    FileInfo fileInfo = new FileInfo(arquivoPath);
+                    var tam = fileInfo.Length;
+                    if (fileInfo.Length <= 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
                 return false;
             }

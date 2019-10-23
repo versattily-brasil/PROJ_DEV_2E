@@ -88,7 +88,7 @@ namespace P2E.Importacao.API.Controllers
         [Route("api/v1/importacao/extrato-pdf-xml/{cd_par}")]
         public IEnumerable<TBImportacao> ExtratoPdf(int cd_par)
         {
-            var result = _ImportacaoRepository.FindAll(p => p.OP_EXTRATO_PDF == 0 || p.OP_EXTRATO_XML == 0 && p.CD_PAR == cd_par);
+            var result = _ImportacaoRepository.FindAll(p => p.CD_PAR == cd_par);
             return result;
         }
 
