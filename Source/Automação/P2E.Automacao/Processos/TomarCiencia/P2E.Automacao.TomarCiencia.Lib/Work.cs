@@ -53,7 +53,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
         public Work()
         {
             Log("############ Inicialização de automação [Tomar Ciência] ############");
-            Log(null, null, true);
+            //Log(null, null, true);
 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
@@ -65,7 +65,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
             _nome_cliente = nome_cliente;
 
             Log("############ Inicialização de automação [Tomar Ciência] ############");
-            Log(null, null, true);
+            //Log(null, null, true);
 
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
@@ -160,13 +160,17 @@ namespace P2E.Automacao.TomarCiencia.Lib
             while (leEmpresas)
             {
                 Empresa empresa = new Empresa();
+
                 try
                 {
                     razaoSocial = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child(1) > td:nth-child(3)", contagemImpar))).Text;
-                    CNPJ = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child(2) > td:nth-child(3)", contagemImpar))).Text;
 
                     if (razaoSocial.Contains(_nome_cliente.Substring(0,10)))
                     {
+                        leEmpresas = false;
+
+                        CNPJ = this._driver.FindElement(By.CssSelector(String.Format("#areaTrabalho > table > tbody > tr > td > table:nth-child({0}) > tbody > tr:nth-child(2) > td:nth-child(3)", contagemImpar))).Text;
+
                         empresa.Nome = razaoSocial;
                         empresa.CNPJ = CNPJ.Replace(".", "").Replace("-", "").Replace("/", "");
                         empresa.IncricoesEstaduais = new List<string>();
@@ -191,6 +195,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
                                 leInscricoes = false;
                             }
                         }
+
+                        return;
                     }
 
                     contagemPar += 6;
@@ -419,7 +425,7 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
             var drEmpresa = empTomarCiencia;
 
-            Log("Empresa - " + drEmpresa.Nome.Trim());
+           // Log("Empresa - " + drEmpresa.Nome.Trim());
 
             //CRIA PLANILHA PARA SAMSUNG E VENTISOL
             if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
@@ -457,9 +463,9 @@ namespace P2E.Automacao.TomarCiencia.Lib
 
                 // Garante que a sessão corrente esteja no contexto da Inscrição Estadual atual
                 this._driver.Navigate().GoToUrl(this._urlIncricao + inscricao);
-                Log(null, null, true);
+              //  Log(null, null, true);
                 Log(String.Format("Verificando DAIs da Inscrição [{0}]", inscricao), nameof(Main));
-
+                
                 // Segue diretamente à listagem das DAI's da Inscrição Estadual
                 // selecionada no passo anterior
                 this._driver.Navigate().GoToUrl(this._urlConsultaDI + paginaInicial);
@@ -472,6 +478,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
                     // Captura o total de páginas da listagem de DAI's da Inscrição Estadual atual
                     totalPaginas = this._driver.FindElement(By.XPath("/html/body/table[1]/tbody/tr/td/table/tbody/tr/td[3]")).Text;
                     numeroPaginas = Convert.ToInt32(totalPaginas.Substring(totalPaginas.LastIndexOf('/') + 1).Trim());
+
+                    
                 }
                 catch (Exception)
                 {
@@ -481,12 +489,13 @@ namespace P2E.Automacao.TomarCiencia.Lib
                 }
 
                 // Página a página, busca pelas DAI's que estejam pendentes de "Tomar Ciência".
-                for (int pag = 1; pag < numeroPaginas; pag++)
-                {
+                for (int pag = 1; pag <= numeroPaginas; pag++)
+                { 
                     Log("Navegando para a página " + pag);
                     this._driver.Navigate().GoToUrl(this._urlConsultaDI + pag);
-                    Log("Loading de 5 mils.");
-                    Thread.Sleep(500);
+               
+                    //Log("Loading de 5 mils.");
+                    //Thread.Sleep(500);
 
                     r++;
 
@@ -518,7 +527,9 @@ namespace P2E.Automacao.TomarCiencia.Lib
                             if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
                             {
                                 var nroDI = element.Text.Substring(0, 9);
-                                Log("GRAVANDO DI= " + nroDI);
+                                //Log("GRAVANDO DI= " + nroDI);
+
+                                //LogController.RegistrarLog(_nome_cliente + " GRAVANDO DI - " + nroDI, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                 var data = element.Text.Substring(10, 10);
                                 var status = "";
@@ -564,7 +575,8 @@ namespace P2E.Automacao.TomarCiencia.Lib
                             if (drEmpresa.Nome.Contains("SAMSUNG") || drEmpresa.Nome.Contains("VENTISOL"))
                             {
                                 var nroDI = elemento.Text.Substring(0, 9);
-                                Log("GRAVANDO DI= " + nroDI);
+                                //Log("GRAVANDO DI= " + nroDI);
+                                //LogController.RegistrarLog(_nome_cliente + " GRAVANDO DI - " + nroDI, eTipoLog.INFO, _cd_bot_exec, "bot");
 
                                 var data = elemento.Text.Substring(10, 10);
                                 var status = "";
