@@ -24,6 +24,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
 
         private string _urlApiBase;
         private List<DetalheNCM> registros;
+        private List<NCM> listaNCM;
         private string arquivoPath = "";
         int _cd_bot_exec;
         #endregion
@@ -177,40 +178,36 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
                 LogController.RegistrarLog("Inserindo Dados....", eTipoLog.INFO, _cd_bot_exec, "bot");
                 //Faz a interação com o banco de dados lendo os dados da tabela
 
-                string urlNCM = _urlApiBase + $"imp/v1/importacao/ncm/todos";
-
                 using (var client = new HttpClient())
                 {
-                    var result = await client.GetAsync(urlNCM);
+                    string urlTaxa = _urlApiBase + $"imp/v1/listancm/todos";
+
+                    var result = client.GetAsync(urlTaxa).Result;
                     var aux = await result.Content.ReadAsStringAsync();
-                    registros = JsonConvert.DeserializeObject<List<DetalheNCM>>(aux);
+                    listaNCM = JsonConvert.DeserializeObject<List<NCM>>(aux);
 
-                    //if (registros != null && registros.Any())
-                    //{
-                    //    while (aReader.Read())
-                    //    {
-                    //        foreach (var di in registros.FindAll(o=>o.TX_SFNCM_CODIGO == aReader.GetString(0)))
-                    //        {
-                    //            LogController.RegistrarLog("Codigo: " + aReader.GetString(0) + " Detalhe: " + aReader.GetString(1) + " Descrição: " + aReader.GetString(2), eTipoLog.INFO, _cd_bot_exec, "bot");
-
-                    //            detalheNCM.TX_SFNCM_CODIGO = aReader.GetString(0);
-                    //            detalheNCM.TX_SFNCM_DETALHE = aReader.GetString(1);
-                    //            detalheNCM.TX_SFNCM_DESCRICAO = aReader.GetString(2);
-
-                    //            await InsertDetalheNCM(detalheNCM, aReader.GetString(0));
-                    //        }
-                    //    }
-                    //}
-
-                    while (aReader.Read())
+                    if (listaNCM != null && listaNCM.Any())
                     {
-                        LogController.RegistrarLog("Codigo: " + aReader.GetString(0) + " Detalhe: " + aReader.GetString(1) + " Descrição: " + aReader.GetString(2), eTipoLog.INFO, _cd_bot_exec, "bot");
+                        await DeleteDetalheNCM();
 
-                        detalheNCM.TX_SFNCM_CODIGO = aReader.GetString(0);
-                        detalheNCM.TX_SFNCM_DETALHE = aReader.GetString(1);
-                        detalheNCM.TX_SFNCM_DESCRICAO = aReader.GetString(2);
+                        while (aReader.Read())
+                        {
+                            foreach (var item in listaNCM)
+                            {
+                                var codNCM = aReader.GetString(0).Trim();
 
-                        await InsertDetalheNCM(detalheNCM, aReader.GetString(0));
+                                if (codNCM == item.TX_NRO_NCM.Trim())
+                                {   
+                                    LogController.RegistrarLog("Codigo: " + aReader.GetString(0) + " Detalhe: " + aReader.GetString(1) + " Descrição: " + aReader.GetString(2), eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                                    detalheNCM.TX_SFNCM_CODIGO = aReader.GetString(0);
+                                    detalheNCM.TX_SFNCM_DETALHE = aReader.GetString(1);
+                                    detalheNCM.TX_SFNCM_DESCRICAO = aReader.GetString(2);
+
+                                    await InsertDetalheNCM(detalheNCM, aReader.GetString(0));
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -251,7 +248,7 @@ namespace P2E.Automacao.Processos.AtualizaListaSuframa.Lib
             }
         }
 
-        private async Task DeleteDetalheNCM(DetalheNCM detalheNcm)
+        private async Task DeleteDetalheNCM()
         {
             try
             {

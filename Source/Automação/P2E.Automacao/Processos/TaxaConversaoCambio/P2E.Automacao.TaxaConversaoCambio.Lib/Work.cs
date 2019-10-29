@@ -83,7 +83,6 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
                 options.AddArgument(Directory.GetCurrentDirectory() + @"\chromedriver.exe");
                 LogController.RegistrarLog(Directory.GetCurrentDirectory() + @"\chromedriver.exe", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-
                 // Initialize the Chrome Driver
                 using (var _driver = new ChromeDriver(options))
                 {
@@ -185,9 +184,6 @@ namespace P2E.Automacao.Processos.TaxaConversaoCambio.Lib
 
                 LogController.RegistrarLog("NAVEGADOR FECHADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
                 _driver.Quit();
-
-
-                //_driver.Close();
 
                 var baixaXml = true;// DownloadXML(_driver);
 
