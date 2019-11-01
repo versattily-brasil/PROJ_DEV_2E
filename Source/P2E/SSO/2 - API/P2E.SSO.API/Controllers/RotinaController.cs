@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
@@ -10,6 +11,7 @@ using System.Net;
 
 namespace P2E.SSO.API.Controllers
 {
+    [Authorize]
     public class RotinaController : ControllerBase
     {
         private readonly IRotinaRepository _rotinaRepository;
@@ -74,6 +76,7 @@ namespace P2E.SSO.API.Controllers
 
         // GET: api/rotina/5
         [HttpGet]
+        [AllowAnonymous]
         [Route("api/v1/rotina/associadas/{id}")]
         public List<RotinaAssociada> Associadas(int id)
         {

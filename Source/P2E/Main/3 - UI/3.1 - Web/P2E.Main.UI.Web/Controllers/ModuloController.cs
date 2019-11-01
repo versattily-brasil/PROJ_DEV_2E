@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
+using P2E.Main.UI.Web.Extensions.Util;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Modulo;
 using P2E.Shared.Message;
@@ -10,6 +11,7 @@ using P2E.SSO.Domain.Entities;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
@@ -49,6 +51,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         var result = await client.GetAsync($"{_urlModulo}" +
                                                                                $"?currentpage={vm.DataPage.CurrentPage}" +
                                                                                $"&pagesize={vm.DataPage.PageSize}" +
@@ -89,6 +92,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlModulo}/{id}");
                     result.EnsureSuccessStatusCode();
                     var modulo = await result.Content.ReadAsAsync<Modulo>();
@@ -130,6 +134,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         result = await client.PutAsJsonAsync($"{_urlModulo}/{modulo.CD_MOD}", modulo);
                         responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
@@ -161,6 +166,7 @@ namespace P2E.Main.UI.Web.Controllers
         {
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 await client.DeleteAsync($"{_urlModulo}/{Id}");
                 return RedirectToAction("Index").WithSuccess("Sucesso.", GenericMessages.SucessRemove("Módulo"));
             }

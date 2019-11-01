@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using P2E.Importacao.Domain.Entities;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Extensions.Filters;
+using P2E.Main.UI.Web.Extensions.Util;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.IMP.Moeda;
 using P2E.Shared.Message;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
@@ -59,6 +61,7 @@ namespace P2E.Main.UI.Web.Controllers
 
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     //Usando for para imprimir na tela
                     for (int i = 0; i < xnList.Count; i++)
                     {
@@ -97,6 +100,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         var result = await client.GetAsync($"{_urlMoeda}" +
                                                            $"?currentpage={vm.DataPage.CurrentPage}" +
                                                            $"&pagesize={vm.DataPage.PageSize}" +
@@ -138,6 +142,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlMoeda}/{id}");
                     result.EnsureSuccessStatusCode();
                     var modulo = await result.Content.ReadAsAsync<Moeda>();
@@ -159,6 +164,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlMoeda}/{id}");
                     result.EnsureSuccessStatusCode();
                     var modulo = await result.Content.ReadAsAsync<Moeda>();
@@ -200,6 +206,7 @@ namespace P2E.Main.UI.Web.Controllers
                 //{
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     result = await client.PutAsJsonAsync($"{_urlMoeda}/{modulo.CD_MOEDA}", modulo);
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();
@@ -247,6 +254,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     result = await client.DeleteAsync($"{_urlMoeda}/{Id}");
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();

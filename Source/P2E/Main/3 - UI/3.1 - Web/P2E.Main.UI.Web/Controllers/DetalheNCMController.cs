@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using P2E.Importacao.Domain.Entities;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Extensions.Filters;
+using P2E.Main.UI.Web.Extensions.Util;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.IMP.DetalheNCM;
 using P2E.Shared.Message;
@@ -11,6 +12,7 @@ using P2E.Shared.Model;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
@@ -51,6 +53,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         var result = await client.GetAsync($"{_urlDetalheNCM}" +
                                                            $"?currentpage={vm.DataPage.CurrentPage}" +
                                                            $"&pagesize={vm.DataPage.PageSize}" +
@@ -92,6 +95,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlDetalheNCM}/{id}");
                     result.EnsureSuccessStatusCode();
                     var modulo = await result.Content.ReadAsAsync<DetalheNCM>();
@@ -113,6 +117,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlDetalheNCM}/{id}");
                     result.EnsureSuccessStatusCode();
                     var modulo = await result.Content.ReadAsAsync<DetalheNCM>();
@@ -154,6 +159,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         result = await client.PutAsJsonAsync($"{_urlDetalheNCM}/{modulo.CD_DET_NCM}", modulo);
                         responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
@@ -192,6 +198,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     result = await client.DeleteAsync($"{_urlDetalheNCM}/{Id}");
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();

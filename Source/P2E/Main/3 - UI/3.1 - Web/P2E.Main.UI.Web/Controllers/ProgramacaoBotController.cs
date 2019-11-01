@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
 {
-    [Authorize]
     //[Route("programacaobot")]
     public class ProgramacaoBotController : Controller
     {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Extensions.Filters;
+using P2E.Main.UI.Web.Extensions.Util;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Servico;
 using P2E.Shared.Message;
@@ -11,6 +12,7 @@ using P2E.SSO.Domain.Entities;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
@@ -52,6 +54,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         var result = await client.GetAsync($"{_urlServico}" +
                                                            $"?currentpage={vm.DataPage.CurrentPage}" +
                                                            $"&pagesize={vm.DataPage.PageSize}" +
@@ -93,6 +96,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlServico}/{id}");
                     result.EnsureSuccessStatusCode();
                     var modulo = await result.Content.ReadAsAsync<Servico>();
@@ -114,6 +118,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlServico}/{id}");
                     result.EnsureSuccessStatusCode();
                     var modulo = await result.Content.ReadAsAsync<Servico>();
@@ -155,6 +160,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         result = await client.PutAsJsonAsync($"{_urlServico}/{modulo.CD_SRV}", modulo);
                         responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
@@ -193,6 +199,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     result = await client.DeleteAsync($"{_urlServico}/{Id}");
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();

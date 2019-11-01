@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Extensions.Filters;
+using P2E.Main.UI.Web.Extensions.Util;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Grupo;
 using P2E.Main.UI.Web.Models.SSO.Operacao;
@@ -15,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
@@ -55,6 +57,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         var result = await client.GetAsync($"{_urlGrupo}" +
                                                            $"?currentpage={vm.DataPage.CurrentPage}" +
                                                            $"&pagesize={vm.DataPage.PageSize}" +
@@ -96,6 +99,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlGrupo}/{id}");
                     result.EnsureSuccessStatusCode();
                     var grupo = await result.Content.ReadAsAsync<Grupo>();
@@ -120,6 +124,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlGrupo}/{id}");
                     result.EnsureSuccessStatusCode();
                     var grupo = await result.Content.ReadAsAsync<Grupo>();
@@ -148,6 +153,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var grupoViewModel = new GrupoViewModel();
 
                     CarregarListasComplementares(grupoViewModel);
@@ -186,6 +192,7 @@ namespace P2E.Main.UI.Web.Controllers
 
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         result = await client.PutAsJsonAsync($"{_urlGrupo}/{grupo.CD_GRP}", grupo);
                         responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
@@ -221,6 +228,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     result = await client.DeleteAsync($"{_urlGrupo}/{Id}");
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();
@@ -261,6 +269,7 @@ namespace P2E.Main.UI.Web.Controllers
             string urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/rotina/todos";
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(urlRotina);
                 var lista = await result.Content.ReadAsAsync<List<Rotina>>();
 
@@ -287,6 +296,7 @@ namespace P2E.Main.UI.Web.Controllers
             string urlOperacao = this.appSettings.ApiBaseURL + $"sso/v1/operacao/todos";
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(urlOperacao);
                 var lista = await result.Content.ReadAsAsync<List<Operacao>>();
 
@@ -304,6 +314,7 @@ namespace P2E.Main.UI.Web.Controllers
             string urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/servico/todos";
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(urlRotina);
                 var lista = await result.Content.ReadAsAsync<List<Servico>>();
 

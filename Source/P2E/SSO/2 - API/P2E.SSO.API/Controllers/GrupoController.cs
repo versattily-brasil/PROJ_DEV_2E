@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Shared.Model;
 using P2E.SSO.Domain.Entities;
@@ -10,6 +11,7 @@ using System.Net;
 
 namespace P2E.SSO.API.Controllers
 {
+    [Authorize]
     public class GrupoController : ControllerBase
     {
         private readonly IGrupoRepository _grupoRepository;

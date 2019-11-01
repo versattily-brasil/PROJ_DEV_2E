@@ -57,5 +57,8 @@ namespace P2E.SSO.Domain.Entities
         [NotMapped]
         //[Compare("Password")]
         public string CONFIRMA_SENHA { get; set; }
+
+        [NotMapped]
+        public string API_TOKEN { get; set; }
     }
 }

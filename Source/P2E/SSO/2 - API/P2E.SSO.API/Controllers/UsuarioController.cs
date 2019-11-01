@@ -1,16 +1,24 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using P2E.Shared.Model;
+using P2E.SSO.API.Helpers;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 
 namespace P2E.SSO.API.Controllers
 {
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
@@ -24,6 +32,8 @@ namespace P2E.SSO.API.Controllers
         private readonly IOperacaoRepository _operacaoRepository;
         private readonly IServicoRepository _servicoRepository;
 
+        private readonly AppSettings _appSettings;
+
         private readonly IMapper _mapper;
         public UsuarioController(IUsuarioRepository usuarioRepository,
                                  IUsuarioModuloRepository usuarioModuloRepository,
@@ -35,9 +45,11 @@ namespace P2E.SSO.API.Controllers
                                  IRotinaUsuarioOperacaoRepository rotinaUsuarioOperacaoRepository,
                                  IOperacaoRepository operacaoRepository,
                                  IServicoRepository servicoRepository,
+                                 IOptions<AppSettings> appSettings,
                                  IMapper mapper)
         {
             _mapper = mapper;
+            _appSettings = appSettings.Value;
             _usuarioRepository = usuarioRepository;
             _usuarioModuloRepository = usuarioModuloRepository;
             _usuarioGrupoRepository = usuarioGrupoRepository;
@@ -59,6 +71,7 @@ namespace P2E.SSO.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("api/v1/usuario/permissoesgrupo/{id}")]
         public List<UsuarioGrupo> GetPermissoesGrupo(int id)
         {
@@ -93,6 +106,7 @@ namespace P2E.SSO.API.Controllers
 
         [HttpGet]
         [Route("api/v1/usuario/permissoesusuario/{id}")]
+        [AllowAnonymous]
         public List<RotinaUsuarioOperacao> GetPermissoesUsuario(int id)
         {
             // Obtem os grupos em que o usuario está associado
@@ -168,11 +182,34 @@ namespace P2E.SSO.API.Controllers
         }
 
         // POST: api/usuario/login
+        [AllowAnonymous]
         [HttpPost]
         [Route("api/v1/usuario/login")]
         public Usuario PostLogin([FromBody] Usuario usuario)
         {
-            return _usuarioRepository.Find(o => o.TX_LOGIN == usuario.TX_LOGIN && o.TX_SENHA == usuario.TX_SENHA);
+            var usuarioBanco = _usuarioRepository.Find(o => o.TX_LOGIN == usuario.TX_LOGIN && o.TX_SENHA == usuario.TX_SENHA);
+
+            if(usuarioBanco != null)
+            {
+                // authentication successful so generate jwt token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes("r5u8x/A?D(G+KbPe");
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim(ClaimTypes.Name, usuario.CD_USR.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(1),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+               usuarioBanco.API_TOKEN = tokenHandler.WriteToken(token);
+
+            }
+
+            return usuarioBanco; 
         }
 
         // PUT: api/usuario/5

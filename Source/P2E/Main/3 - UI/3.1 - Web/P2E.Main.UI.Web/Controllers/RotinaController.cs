@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Extensions.Filters;
+using P2E.Main.UI.Web.Extensions.Util;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Rotina;
 using P2E.Shared.Message;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace P2E.Main.UI.Web.Controllers
@@ -54,6 +56,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         var result = await client.GetAsync($"{_urlRotina}" +
                                                                             $"?currentpage={vm.DataPage.CurrentPage}" +
                                                                             $"&pagesize={vm.DataPage.PageSize}" +
@@ -107,6 +110,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlRotina}/{id}");
                     result.EnsureSuccessStatusCode();
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
@@ -135,6 +139,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlRotina}/{id}");
                     result.EnsureSuccessStatusCode();
                     var rotina = await result.Content.ReadAsAsync<Rotina>();
@@ -187,6 +192,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         result = await client.PutAsJsonAsync($"{_urlRotina}/{rotina.CD_ROT}", rotina);
                         responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
@@ -204,6 +210,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     result = await client.GetAsync($"{_urlRotina}/{0}");
                     result.EnsureSuccessStatusCode();
 
@@ -229,6 +236,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     result = await client.DeleteAsync($"{_urlRotina}/{Id}");
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();
@@ -264,6 +272,7 @@ namespace P2E.Main.UI.Web.Controllers
             string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/servico/todos";
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(urlServico);
                 var lista = await result.Content.ReadAsAsync<List<Servico>>();
                 return lista;
@@ -275,6 +284,7 @@ namespace P2E.Main.UI.Web.Controllers
             string urlServico = this.appSettings.ApiBaseURL + $"sso/v1/rotina/todos";
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(urlServico);
                 var lista = await result.Content.ReadAsAsync<List<Rotina>>();
                 return lista;
@@ -287,6 +297,7 @@ namespace P2E.Main.UI.Web.Controllers
             
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(url);
                 var lista = await result.Content.ReadAsAsync<List<RotinaAssociada>>();
                 return lista;

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using P2E.Main.UI.Web.Extensions.Alerts;
 using P2E.Main.UI.Web.Extensions.Filters;
+using P2E.Main.UI.Web.Extensions.Util;
 using P2E.Main.UI.Web.Models;
 using P2E.Main.UI.Web.Models.SSO.Operacao;
 using P2E.Main.UI.Web.Models.SSO.Rotina;
@@ -18,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -61,6 +63,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         var result = await client.GetAsync($"{_urlUsuario}" +
                                                                                $"?currentpage={vm.DataPage.CurrentPage}" +
                                                                                $"&pagesize={vm.DataPage.PageSize}" +
@@ -102,6 +105,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlUsuario}/{id}");
                     result.EnsureSuccessStatusCode();
                     var usuario = await result.Content.ReadAsAsync<Usuario>();
@@ -125,6 +129,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlUsuario}/{id}");
                     result.EnsureSuccessStatusCode();
                     var usuario = await result.Content.ReadAsAsync<Usuario>();
@@ -152,6 +157,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var result = await client.GetAsync($"{_urlUsuario}/{id}");
                     result.EnsureSuccessStatusCode();
                     var usuario = await result.Content.ReadAsAsync<Usuario>();
@@ -189,6 +195,7 @@ namespace P2E.Main.UI.Web.Controllers
                         {
                             using (var client = new HttpClient())
                             {
+                                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                                 var results = await client.GetAsync($"{_urlUsuario}/{0}");
                                 results.EnsureSuccessStatusCode();
                                 var usuarios = await results.Content.ReadAsAsync<Usuario>();
@@ -206,6 +213,7 @@ namespace P2E.Main.UI.Web.Controllers
                     {
                         using (var client = new HttpClient())
                         {
+                            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                             var results = await client.GetAsync($"{_urlUsuario}/{0}");
                             results.EnsureSuccessStatusCode();
                             var usuarios = await results.Content.ReadAsAsync<Usuario>();
@@ -223,6 +231,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         result = await client.PutAsJsonAsync($"{_urlUsuario}/{usuario.CD_USR}", usuario);
                         responseBody = await result.Content.ReadAsStringAsync();
                         result.EnsureSuccessStatusCode();
@@ -233,6 +242,7 @@ namespace P2E.Main.UI.Web.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                         var results = await client.GetAsync($"{_urlUsuario}/{0}");
                         results.EnsureSuccessStatusCode();
                         var usuarios = await results.Content.ReadAsAsync<Usuario>();
@@ -249,6 +259,7 @@ namespace P2E.Main.UI.Web.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     var results = await client.GetAsync($"{_urlUsuario}/{0}");
                     results.EnsureSuccessStatusCode();
                     var usuarios = await results.Content.ReadAsAsync<Usuario>();
@@ -273,11 +284,12 @@ namespace P2E.Main.UI.Web.Controllers
         {
             HttpResponseMessage result = new HttpResponseMessage();
             string responseBody = string.Empty;
-
+          
             try
             {
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                     result = await client.DeleteAsync($"{_urlUsuario}/{Id}");
                     responseBody = await result.Content.ReadAsStringAsync();
                     result.EnsureSuccessStatusCode();
@@ -356,6 +368,10 @@ namespace P2E.Main.UI.Web.Controllers
                         identity.AddClaim(new Claim(ClaimTypes.Name, usuario.TX_LOGIN));
                         identity.AddClaim(new Claim(ClaimTypes.Sid, usuario.CD_USR.ToString()));
                         identity.AddClaim(new Claim(ClaimTypes.Uri, this.appSettings.ApiBaseURL));
+                        identity.AddClaim(new Claim("api_token", usuario.API_TOKEN));
+
+
+                        //User.FindFirst("api_token").Value = ;
 
                         var permissoes = CarregarPermissoesAsync(usuario.CD_USR).Result;
                         identity.AddClaim(new Claim("permissoes", permissoes));
@@ -416,6 +432,7 @@ namespace P2E.Main.UI.Web.Controllers
             string urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/rotina/todos";
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(urlRotina);
                 var lista = await result.Content.ReadAsAsync<List<Rotina>>();
 
@@ -435,6 +452,7 @@ namespace P2E.Main.UI.Web.Controllers
             string urlOperacao = this.appSettings.ApiBaseURL + $"sso/v1/operacao/todos";
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(urlOperacao);
                 var lista = await result.Content.ReadAsAsync<List<Operacao>>();
 
@@ -452,6 +470,7 @@ namespace P2E.Main.UI.Web.Controllers
             string urlRotina = this.appSettings.ApiBaseURL + $"sso/v1/servico/todos";
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.FindFirst("api_token").Value);
                 var result = await client.GetAsync(urlRotina);
                 var lista = await result.Content.ReadAsAsync<List<Servico>>();
 
