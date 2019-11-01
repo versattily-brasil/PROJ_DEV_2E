@@ -167,9 +167,20 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
                 string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", numero + "-CapturaTela.jpg");
 
                 Screenshot(_driver, arquivoPath);
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
 
-                return true;
+                FileInfo fileInfo = new FileInfo(arquivoPath);
+                var tam = fileInfo.Length;
+                if (fileInfo.Length <= 0)
+                {
+                    File.Delete(arquivoPath);
+
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception)
             {

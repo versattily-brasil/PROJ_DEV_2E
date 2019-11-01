@@ -213,12 +213,23 @@ namespace P2E.Automacao.Processos.ExtratoRetificacao.Lib
 
                     myWebClient.DownloadFile(_url, arquivoPath);
 
-                    Thread.Sleep(3000);
+                    Thread.Sleep(5000);
                 }
 
                 LogController.RegistrarLog(_nome_cliente + " - " +  " DOWNLOAD PDF CONCLUIDO", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                return true;
+                FileInfo fileInfo = new FileInfo(arquivoPath);
+                var tam = fileInfo.Length;
+                if (fileInfo.Length <= 0)
+                {
+                    File.Delete(arquivoPath);
+
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {

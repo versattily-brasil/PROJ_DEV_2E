@@ -33,6 +33,7 @@ namespace P2E.SSO.API.Controllers
         // GET: api/parceironegocio/consulta
         [HttpGet]
         [Route("api/v1/parceironegocio/consulta/{cd_par}")]
+        [AllowAnonymous]
         public IEnumerable<ParceiroNegocio> TomarCiencia(int cd_par)
         {
             var result = _parceiroNegocioRepository.FindAll(p =>  p.CD_PAR == cd_par);

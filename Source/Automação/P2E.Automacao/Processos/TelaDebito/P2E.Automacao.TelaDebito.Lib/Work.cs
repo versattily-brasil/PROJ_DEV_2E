@@ -160,11 +160,6 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
 
                 var doc = DocX.Create(arquivoPath);
 
-
-
-
-
-
                 //StreamWriter writer = new StreamWriter(arquivoPath);
 
                 element = _driver.FindElementByCssSelector("#TABLE_1 > tbody > tr > td.tituloDI");
@@ -292,7 +287,18 @@ namespace P2E.Automacao.Processos.TelaDebito.Lib
 
                 doc.Save();
 
-                return true;
+                FileInfo fileInfo = new FileInfo(arquivoPath);
+                var tam = fileInfo.Length;
+                if (fileInfo.Length <= 0)
+                {
+                    File.Delete(arquivoPath);
+
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {

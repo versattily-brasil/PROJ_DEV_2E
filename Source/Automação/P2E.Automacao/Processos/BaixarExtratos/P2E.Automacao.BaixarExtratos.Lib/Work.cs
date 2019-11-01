@@ -191,18 +191,18 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 {
                     LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - PDF.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                    var returnoPDF = DownloadExtratoPDF(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
+                    var retornoPDF = DownloadExtratoPDF(_driver, _urlDownloadPDF + "?nrDeclaracao=" + numeroDec);
 
-                    import.OP_EXTRATO_PDF = returnoPDF ? 1 : 0;
+                    import.OP_EXTRATO_PDF = retornoPDF ? 1 : 0;
                 }
 
                 if (import.OP_EXTRATO_XML == 0)
                 {
                     LogController.RegistrarLog(_nome_cliente + " - " + "Baixando o Extrato - XML.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                    var returnoXML = DownloadExtratoXML(numeroDec);
+                    var retornoXML = DownloadExtratoXML(numeroDec);
 
-                    import.OP_EXTRATO_XML = returnoXML ? 1 : 0;
+                    import.OP_EXTRATO_XML = retornoXML ? 1 : 0;
                 }
 
                 await AtualizaExtratoPdfXml(import, cd_imp);
@@ -246,29 +246,58 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                var certificado = ControleCertificados.GetClientCertificate(); ;
+                var tentarNovamente = true;
+                var tentativas = 1;
+                string arquivoPath = "";
 
-                var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
-
-                //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\" + _nome_cliente + "\\"))
+                while (tentarNovamente)
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\" + _nome_cliente + "\\");
-                }
+                    var certificado = ControleCertificados.GetClientCertificate(); ;
 
-                string arquivoPath = Path.Combine(@"C:\Versatilly\" + _nome_cliente + "\\", horaData + "-Extrato.pdf");
+                    var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
 
-                using (WebClient myWebClient = new P2EWebClient(certificado, driver))
-                {
-                    myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
-                    Thread.Sleep(3000);
-                    myWebClient.DownloadFile(_url, arquivoPath);
+                    //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                    if (!System.IO.Directory.Exists(@"C:\Versatilly\" + _nome_cliente + "\\"))
+                    {
+                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\" + _nome_cliente + "\\");
+                    }
+
+                    arquivoPath = Path.Combine(@"C:\Versatilly\" + _nome_cliente + "\\", horaData + "-Extrato.pdf");
+
+                    using (WebClient myWebClient = new P2EWebClient(certificado, driver))
+                    {
+                        myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
+                        myWebClient.DownloadFile(_url, arquivoPath);
+
+                        Thread.Sleep(5000);
+                    }
+
+                    FileInfo fileInfox = new FileInfo(arquivoPath);
+                    var tamx = fileInfox.Length;
+                    if (fileInfox.Length > 0)
+                    {
+                        tentarNovamente = false;
+                    }
+                    else
+                    {
+                        if (tentativas <= 5)
+                        {
+                            LogController.RegistrarLog(_nome_cliente + " - " + tentativas + "º Tentativa de Baixar o Extrato - PDF.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                            tentativas++;
+                        }
+                        else
+                        {
+                            tentarNovamente = false;
+                        }
+                    }
                 }
 
                 FileInfo fileInfo = new FileInfo(arquivoPath);
                 var tam = fileInfo.Length;
                 if (fileInfo.Length <= 0)
                 {
+                    File.Delete(arquivoPath);
+
                     return false;
                 }
                 else
@@ -289,52 +318,80 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                numero = numero.Replace("/", "");
-                numero = numero.Replace("-", "");
-                numero = numero.Replace("%2F", "");
+                var tentarNovamente = true;
+                var tentativas = 1;
+                string arquivoPath = "";
 
-                var certificado = ControleCertificados.GetClientCertificate();
-                using (var driver = new SimpleBrowser.WebDriver.SimpleBrowserDriver(certificado))
+                while (tentarNovamente)
                 {
-                    var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+                    numero = numero.Replace("/", "");
+                    numero = numero.Replace("-", "");
+                    numero = numero.Replace("%2F", "");
 
-                    //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                    if (!System.IO.Directory.Exists(@"C:\Versatilly\" + _nome_cliente + "\\"))
+                    var certificado = ControleCertificados.GetClientCertificate();
+                    using (var driver = new SimpleBrowser.WebDriver.SimpleBrowserDriver(certificado))
                     {
-                        System.IO.Directory.CreateDirectory(@"C:\Versatilly\" + _nome_cliente + "\\");
+                        var horaData = DateTime.Now.ToString().Replace("/", "").Replace(":", "").Replace(" ", "");
+
+                        //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
+                        if (!System.IO.Directory.Exists(@"C:\Versatilly\" + _nome_cliente + "\\"))
+                        {
+                            System.IO.Directory.CreateDirectory(@"C:\Versatilly\" + _nome_cliente + "\\");
+                        }
+
+                        arquivoPath = Path.Combine(@"C:\Versatilly\" + _nome_cliente + "\\", horaData + "-Extrato.xml");
+
+
+                        if (!File.Exists(arquivoPath))
+                        {
+                            driver._my.Navigate(_urlSite);
+                            driver._my.Navigate(_urlConsultaDI);
+                            driver._my.Navigate(new Uri(_urlDownloadXML),
+                                "perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numero + "&numeroRetificacao=&enviar=Consultar",
+                                "application/x-www-form-urlencoded");
+
+                            driver.FindElement(By.Id("nrDeclaracaoXml")).SendKeys(numero);
+                            driver.FindElement(By.Name("ConsultarDiXmlForm")).Submit();
+
+                            Thread.Sleep(5000);
+
+                            File.WriteAllBytes(arquivoPath, ConvertToByteArray(driver.PageSource));
+                        }
                     }
 
-                    string arquivoPath = Path.Combine(@"C:\Versatilly\" + _nome_cliente + "\\", horaData + "-Extrato.xml");
-
-
-                    if (!File.Exists(arquivoPath))
+                    FileInfo fileInfox = new FileInfo(arquivoPath);
+                    var tamx = fileInfox.Length;
+                    if (fileInfox.Length > 0)
                     {
-                        driver._my.Navigate(_urlSite);
-                        driver._my.Navigate(_urlConsultaDI);
-                        driver._my.Navigate(new Uri(_urlDownloadXML),
-                            "perfil=IMPORTADOR&rdpesq=pesquisar&nrDeclaracao=" + numero + "&numeroRetificacao=&enviar=Consultar",
-                            "application/x-www-form-urlencoded");
-
-                        driver.FindElement(By.Id("nrDeclaracaoXml")).SendKeys(numero);
-                        driver.FindElement(By.Name("ConsultarDiXmlForm")).Submit();
-
-                        Thread.Sleep(5000);
-
-                        File.WriteAllBytes(arquivoPath, ConvertToByteArray(driver.PageSource));
-                    }
-
-                    FileInfo fileInfo = new FileInfo(arquivoPath);
-                    var tam = fileInfo.Length;
-                    if (fileInfo.Length <= 0)
-                    {
-                        return false;
+                        tentarNovamente = false;
                     }
                     else
                     {
-                        return true;
+                        if (tentativas <= 5)
+                        {
+                            LogController.RegistrarLog(_nome_cliente + " - " + tentativas + "º Tentativa de Baixar o Extrato - XML.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                            tentativas++;
+                        }
+                        else
+                        {
+                            tentarNovamente = false;
+                        }
                     }
                 }
-                return false;
+
+                FileInfo fileInfo = new FileInfo(arquivoPath);
+                var tam = fileInfo.Length;
+                if (fileInfo.Length <= 0)
+                {
+                    File.Delete(arquivoPath);
+
+                    return false;
+
+                }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {

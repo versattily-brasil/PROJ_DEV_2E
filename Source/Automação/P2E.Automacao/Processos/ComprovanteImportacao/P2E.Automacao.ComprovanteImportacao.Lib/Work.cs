@@ -224,9 +224,22 @@ namespace P2E.Automacao.Processos.ComprovanteImportacao.Lib
                     myWebClient.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
 
                     myWebClient.DownloadFile(_url, arquivoPath);
+
+                    Thread.Sleep(5000);
                 }
 
-                return true;
+                FileInfo fileInfo = new FileInfo(arquivoPath);
+                var tam = fileInfo.Length;
+                if (fileInfo.Length <= 0)
+                {
+                    File.Delete(arquivoPath);
+
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {
