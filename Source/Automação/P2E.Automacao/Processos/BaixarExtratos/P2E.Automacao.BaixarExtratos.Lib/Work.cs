@@ -24,9 +24,9 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         public string _urlConsultaDI = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDIMenu.do";
         public string _urlDownloadPDF = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ExtratoDI.do";//?nrDeclaracao=19/0983204-0&consulta=true";
         public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?";
-        // public string _urlDownloadXML = "https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/ConsultarDiXml.do?nrDeclaracao=19%2F0983204-0&consulta=true";
         private string _urlApiBase;
         private List<Importacao> registros;
+        private List<TriagemBot> triagem;
         int _cd_bot_exec;
         int _cd_par;
         string _nome_cliente;
@@ -72,72 +72,87 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             try
             {
-                string urlAcompanha = _urlApiBase + $"imp/v1/importacao/extrato-pdf-xml/" + _cd_par;
+                string urlTriagem = _urlApiBase + $"imp/v1/triagembot/extrato-pdf-xml/" + _cd_par;
 
                 using (var client = new HttpClient())
                 {
+                    var result = await client.GetAsync(urlTriagem);
+                    triagem = await result.Content.ReadAsAsync<List<TriagemBot>>();
+                }
 
-                    LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXÃO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                if (triagem.Count > 0)
+                {
+                    string urlAcompanha = _urlApiBase + $"imp/v1/importacao/extrato-pdf-xml/" + _cd_par;
 
-                    var result = await client.GetAsync(urlAcompanha);
-                    registros = await result.Content.ReadAsAsync<List<Importacao>>();
-
-                    if (registros != null && registros.Any())
+                    using (var client = new HttpClient())
                     {
-                        using (var service = PhantomJSDriverService.CreateDefaultService())
+                        LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXÃO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                        var result = await client.GetAsync(urlAcompanha);
+                        registros = await result.Content.ReadAsAsync<List<Importacao>>();
+
+                        if (registros != null && registros.Any())
                         {
-                            LogController.RegistrarLog(_nome_cliente + " - " + "CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                            string cert = $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
-
-                            LogController.RegistrarLog(_nome_cliente + " - " + cert, eTipoLog.INFO, _cd_bot_exec, "bot");
-                            ControleCertificados.CarregarCertificado(service);
-
-                            service.AddArgument("test-type");
-                            service.AddArgument("no-sandbox");
-                            service.HideCommandPromptWindow = true;
-
-                            var options = new PhantomJSOptions();
-
-                            using (var _driver = new PhantomJSDriver(service, options, TimeSpan.FromMinutes(2)))
+                            using (var service = PhantomJSDriverService.CreateDefaultService())
                             {
-                                try
+                                LogController.RegistrarLog(_nome_cliente + " - " + "CARREGANDO O CERTIFICADO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                                string cert = $"--ssl-client-certificate-file={Directory.GetCurrentDirectory()}\\Certificado\\client-certificate.crt";
+
+                                LogController.RegistrarLog(_nome_cliente + " - " + cert, eTipoLog.INFO, _cd_bot_exec, "bot");
+                                ControleCertificados.CarregarCertificado(service);
+
+                                service.AddArgument("test-type");
+                                service.AddArgument("no-sandbox");
+                                service.HideCommandPromptWindow = true;
+
+                                var options = new PhantomJSOptions();
+
+                                using (var _driver = new PhantomJSDriver(service, options, TimeSpan.FromMinutes(2)))
                                 {
-                                    _driver.Navigate().GoToUrl(_urlSite);
-                                    LogController.RegistrarLog(_nome_cliente + " - " + _driver.Url, eTipoLog.INFO, _cd_bot_exec, "bot");
-
-                                    foreach (var di in registros)
+                                    try
                                     {
+                                        _driver.Navigate().GoToUrl(_urlSite);
+                                        LogController.RegistrarLog(_nome_cliente + " - " + _driver.Url, eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                                        LogController.RegistrarLog(_nome_cliente + " - " + "################## DI: " + di.TX_NUM_DEC + " ##################", eTipoLog.INFO, _cd_bot_exec, "bot");
-
-                                        List<Thread> threads = new List<Thread>();
-
-                                        if (di.OP_EXTRATO_XML == 0 || di.OP_EXTRATO_PDF == 0)
+                                        foreach (var drTri in triagem)
                                         {
-                                            var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
-                                            thread.Start();
-                                            threads.Add(thread);
-                                        }
+                                            foreach (var di in registros)
+                                            {
+                                                if (drTri.NR_DI == di.TX_NUM_DEC)
+                                                {
+                                                    LogController.RegistrarLog(_nome_cliente + " - " + "################## DI: " + di.TX_NUM_DEC + " ##################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                                        // fica aguardnado todas as threads terminarem...
-                                        while (threads.Any(t => t.IsAlive))
-                                        {
-                                            continue;
+                                                    List<Thread> threads = new List<Thread>();
+
+                                                    if (di.OP_EXTRATO_XML == 0 || di.OP_EXTRATO_PDF == 0)
+                                                    {
+                                                        var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString(),drTri.CD_TRIAGEM.ToString(),drTri));
+                                                        thread.Start();
+                                                        threads.Add(thread);
+                                                    }
+
+                                                    // fica aguardnado todas as threads terminarem...
+                                                    while (threads.Any(t => t.IsAlive))
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                                catch (Exception e)
-                                {
-                                    _driver.Close();
+                                    catch (Exception e)
+                                    {
+                                        _driver.Close();
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
 
-                        LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
-                        ////Console.ReadKey();
+                            LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Despacho.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                            ////Console.ReadKey();
+                        }
                     }
                 }
             }
@@ -148,7 +163,9 @@ namespace P2E.Automacao.BaixarExtratos.Lib
             }
         }
 
-        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string cd_imp)
+        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string cd_imp,
+                                    string cd_triagem,
+                                    TriagemBot triagem)
         {
             try
             {
@@ -206,6 +223,12 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 }
 
                 await AtualizaExtratoPdfXml(import, cd_imp);
+
+                if (import.OP_EXTRATO_PDF == 1 && import.OP_EXTRATO_XML == 1)
+                {
+                    triagem.OP_EXTRATO_PDF_XML = 1;
+                    await AtualizaTriagem(triagem, cd_triagem);
+                }
             }
             catch (Exception ex)
             {
@@ -312,8 +335,6 @@ namespace P2E.Automacao.BaixarExtratos.Lib
                 return false;
             }
         }
-
-
         protected bool DownloadExtratoXML(string numero)
         {
             try
@@ -404,6 +425,27 @@ namespace P2E.Automacao.BaixarExtratos.Lib
         {
             byte[] arr = System.Text.Encoding.ASCII.GetBytes(str);
             return arr;
+        }
+
+        private async Task AtualizaTriagem(TriagemBot triagem, string cd_triagem)
+        {
+            try
+            {
+                HttpResponseMessage resultado;
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_urlApiBase);
+                    resultado = await client.PutAsJsonAsync($"imp/v1/triagembot/{cd_triagem}", triagem);
+                    resultado.EnsureSuccessStatusCode();
+
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Registro de Triagem salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + triagem.NR_DI + $" - Erro em AtualizaStatus. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+            }
         }
     }
 }

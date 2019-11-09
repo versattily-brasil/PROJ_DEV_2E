@@ -55,6 +55,7 @@
     <Compile Include="ParceiroNegocio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxaCambio.cs" />
+    <Compile Include="TriagemBot.cs" />
     <Compile Include="Vistoria.cs" />
   </ItemGroup>
   <ItemGroup>

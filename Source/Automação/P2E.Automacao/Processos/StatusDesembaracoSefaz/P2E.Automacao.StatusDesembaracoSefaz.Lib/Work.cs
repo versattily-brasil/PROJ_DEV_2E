@@ -22,6 +22,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
 
         private string _urlApiBase;
         private List<Importacao> registros;
+        private List<TriagemBot> triagem;
         int _cd_bot_exec;
         int _cd_par;
         string _nome_cliente;
@@ -52,64 +53,83 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
 
         private async Task CarregarListaDIAsync()
         {
-            string urlAcompanha = _urlApiBase + $"imp/v1/importacao/status-desembaraco/" + _cd_par;
+            string urlTriagem = _urlApiBase + $"imp/v1/triagembot/status-desembaraco/" + _cd_par;
 
             using (var client = new HttpClient())
             {
-                LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                var result = await client.GetAsync(urlAcompanha);
-                var aux = await result.Content.ReadAsStringAsync();
-                registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
+                var result = await client.GetAsync(urlTriagem);
+                triagem = await result.Content.ReadAsAsync<List<TriagemBot>>();
+            }
 
-                if (registros != null && registros.Any())
+            if (triagem.Count > 0)
+            {
+                string urlAcompanha = _urlApiBase + $"imp/v1/importacao/status-desembaraco/" + _cd_par;
+
+                using (var client = new HttpClient())
                 {
-                    using (var service = PhantomJSDriverService.CreateDefaultService())
+                    LogController.RegistrarLog(_nome_cliente + " - " + "ABRINDO CONEXAO...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                    var result = await client.GetAsync(urlAcompanha);
+                    var aux = await result.Content.ReadAsStringAsync();
+                    registros = JsonConvert.DeserializeObject<List<Importacao>>(aux);
+
+                    if (registros != null && registros.Any())
                     {
-                        service.AddArgument("test-type");
-                        service.AddArgument("no-sandbox");
-                        service.HideCommandPromptWindow = true;
-
-                        using (var _driver = new PhantomJSDriver(service))
+                        using (var service = PhantomJSDriverService.CreateDefaultService())
                         {
-                            try
+                            service.AddArgument("test-type");
+                            service.AddArgument("no-sandbox");
+                            service.HideCommandPromptWindow = true;
+
+                            using (var _driver = new PhantomJSDriver(service))
                             {
-                                foreach (var di in registros)
+                                try
                                 {
-                                    LogController.RegistrarLog(_nome_cliente + " - " + "################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
-
-                                    List<Thread> threads = new List<Thread>();
-
-                                    var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString()));
-                                    thread.Start();
-                                    threads.Add(thread);
-
-                                    // fica aguardnado todas as threads terminarem...
-                                    while (threads.Any(t => t.IsAlive))
+                                    foreach (var drTri in triagem)
                                     {
-                                        continue;
-                                    }
-                                }
+                                        foreach (var di in registros)
+                                        {
+                                            if (drTri.NR_DI == di.TX_NUM_DEC)
+                                            {
+                                                LogController.RegistrarLog(_nome_cliente + " - " + "################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-                                //Console.ReadKey();
-                            }
-                            catch (Exception)
-                            {
-                                _driver.Close();
+                                                List<Thread> threads = new List<Thread>();
+
+                                                var thread = new Thread(() => Acessar(di.TX_NUM_DEC, _driver, di, di.CD_IMP.ToString(),drTri.CD_TRIAGEM.ToString(), drTri));
+                                                thread.Start();
+                                                threads.Add(thread);
+
+                                                // fica aguardnado todas as threads terminarem...
+                                                while (threads.Any(t => t.IsAlive))
+                                                {
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    //Console.ReadKey();
+                                }
+                                catch (Exception)
+                                {
+                                    _driver.Close();
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Status.", eTipoLog.INFO, _cd_bot_exec, "bot");
-                    //Console.ReadKey();
+                    else
+                    {
+                        LogController.RegistrarLog(_nome_cliente + " - " + "Não existe DI's para Acompanhar Status.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        //Console.ReadKey();
+                    }
                 }
             }
         }
 
-        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string nroDI)
+        private async Task Acessar(string numero, PhantomJSDriver _driver, Importacao import, string nroDI,
+                                    string cd_triagem,
+                                    TriagemBot triagem)
         {
-            var numAno = numero.Substring(0,2);
+            var numAno = numero.Substring(0, 2);
             var numDeclaracao = numero.Substring(2, 7);
             var numDigito = numero.Substring(9, 1);
 
@@ -119,7 +139,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             LogController.RegistrarLog(_nome_cliente + " - " + "Inserindo o Ano...", eTipoLog.INFO, _cd_bot_exec, "bot");
             //COLOCANDO O ANO
             OpenQA.Selenium.IWebElement element = _driver.FindElementById("txtAno");
-            element.SendKeys("20"+numAno);
+            element.SendKeys("20" + numAno);
 
             LogController.RegistrarLog(_nome_cliente + " - " + "Inserindo o Numero...", eTipoLog.INFO, _cd_bot_exec, "bot");
             //COLOCANDO O NUMERO
@@ -144,6 +164,9 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             import.OP_STATUS_DESEMB = retorno ? 1 : 0;
             await AtualizaStatusDesembaraco(import, nroDI);
 
+            triagem.OP_STATUS_DESEMB = retorno ? 1 : 0;
+            AtualizaTriagem(triagem, cd_triagem);
+
             LogController.RegistrarLog(_nome_cliente + " - " + "Concluído !!!", eTipoLog.INFO, _cd_bot_exec, "bot");
         }
 
@@ -159,12 +182,12 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             try
             {
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"+ _nome_cliente + "\\"))
+                if (!System.IO.Directory.Exists(@"C:\Versatilly\" + _nome_cliente + "\\"))
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\"+ _nome_cliente + "\\");
+                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\" + _nome_cliente + "\\");
                 }
 
-                string arquivoPath = Path.Combine(@"C:\Versatilly\"+ _nome_cliente + "\\", numero + "-CapturaTela.jpg");
+                string arquivoPath = Path.Combine(@"C:\Versatilly\" + _nome_cliente + "\\", numero + "-CapturaTela.jpg");
 
                 Screenshot(_driver, arquivoPath);
                 Thread.Sleep(1000);
@@ -185,7 +208,7 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             catch (Exception)
             {
                 return false;
-            }            
+            }
         }
 
         private async Task AtualizaStatusDesembaraco(Importacao import, string cd_imp)
@@ -206,6 +229,27 @@ namespace P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib
             catch (Exception e)
             {
                 LogController.RegistrarLog(_nome_cliente + " - " + $"Erro ao atualizar a DI nº {import.TX_NUM_DEC}.", eTipoLog.INFO, _cd_bot_exec, "bot");
+            }
+        }
+
+        private async Task AtualizaTriagem(TriagemBot triagem, string cd_triagem)
+        {
+            try
+            {
+                HttpResponseMessage resultado;
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_urlApiBase);
+                    resultado = client.PutAsJsonAsync($"imp/v1/triagembot/{cd_triagem}", triagem).Result;
+                    resultado.EnsureSuccessStatusCode();
+
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Registro de Triagem salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + triagem.NR_DI + $" - Erro em AtualizaStatus. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
     }

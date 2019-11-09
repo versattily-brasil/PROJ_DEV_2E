@@ -24,12 +24,13 @@ namespace P2E.Automacao.ExonerarIcms.Lib
     {
         private string uUrlInicio = @"https://www1c.siscomex.receita.fazenda.gov.br/siscomexImpweb-7/private_siscomeximpweb_inicio.do";
         public string uUrlbASE = @"https://www1c.siscomex.receita.fazenda.gov.br/";
-       
+
         public string urlDeclararICMS = @"https://www1c.siscomex.receita.fazenda.gov.br/importacaoweb-7/DeclararICMSMenu.do?i=0";
         private string _urlApiBase;
         int _cd_bot_exec;
         int _cd_par;
         private List<Importacao> registros;
+        private List<TriagemBot> triagem;
         string _nome_cliente;
 
         public Work()
@@ -82,20 +83,28 @@ namespace P2E.Automacao.ExonerarIcms.Lib
                                     _driver.Navigate().GoToUrl(uUrlInicio);
 
                                     // percorre todos os registros para tentar a exoneração.
-                                    foreach (var di in registros)
+                                    foreach (var drTri in triagem)
                                     {
-                                        LogController.RegistrarLog(_nome_cliente + " - " + "################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
-
-                                        List<Thread> threads = new List<Thread>();
-
-                                        var thread = new Thread(() => ExonerarDIAsync(_driver, di));
-                                        thread.Start();
-                                        threads.Add(thread);
-
-                                        // fica aguardnado todas as threads terminarem...
-                                        while (threads.Any(t => t.IsAlive))
+                                        foreach (var di in registros)
                                         {
-                                            continue;
+                                            if (drTri.NR_DI == di.TX_NUM_DEC)
+                                            {
+                                                LogController.RegistrarLog(_nome_cliente + " - " + "################# DI: " + di.TX_NUM_DEC + " #################", eTipoLog.INFO, _cd_bot_exec, "bot");
+
+                                                List<Thread> threads = new List<Thread>();
+
+                                                var thread = new Thread(() => ExonerarDIAsync(_driver, di, drTri.CD_TRIAGEM.ToString(), drTri));
+                                                thread.Start();
+                                                threads.Add(thread);
+
+                                                // fica aguardnado todas as threads terminarem...
+                                                while (threads.Any(t => t.IsAlive))
+                                                {
+                                                    continue;
+                                                }
+
+                                                break;
+                                            }
                                         }
                                     }
 
@@ -133,7 +142,9 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         /// <param name="_driver"></param>
         /// <param name="di"></param>
         /// <returns></returns>
-        private async Task ExonerarDIAsync(PhantomJSDriver _driver, Importacao di)
+        private async Task ExonerarDIAsync(PhantomJSDriver _driver, Importacao di,
+                                    string cd_triagem,
+                                    TriagemBot triagem)
         {
             LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "=================================================================================================================", eTipoLog.INFO, _cd_bot_exec, "bot");
             LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Exonerando DI nº " + di.TX_NUM_DEC, eTipoLog.INFO, _cd_bot_exec, "bot");
@@ -145,7 +156,7 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Seleciona combo: Exoneração do ICMS", eTipoLog.INFO, _cd_bot_exec, "bot");
             Select selectTipo = new Select(_driver, By.Id("tp"));
             selectTipo.SelectByText("Exoneração do ICMS");
-            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Preenchendo campo DI: " +di.TX_NUM_DEC, eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Preenchendo campo DI: " + di.TX_NUM_DEC, eTipoLog.INFO, _cd_bot_exec, "bot");
             IWebElement element = _driver.FindElement(By.Id("numDI"));
             element.SendKeys(di.TX_NUM_DEC);
             LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Selecionando UF: " + di.UF_DI, eTipoLog.INFO, _cd_bot_exec, "bot");
@@ -161,6 +172,9 @@ namespace P2E.Automacao.ExonerarIcms.Lib
 
             LogController.RegistrarLog(_nome_cliente + " - " + "Operação finalizada sem erros.", eTipoLog.INFO, _cd_bot_exec, "bot");
             await AtualizarRegistroAsync(di);
+
+            triagem.OP_EXONERA_ICMS = 1;
+            AtualizaTriagem(triagem, cd_triagem);
 
             //if (posicaoInicioErro > 0 && _driver.PageSource.Contains("alert"))
             //{
@@ -192,16 +206,27 @@ namespace P2E.Automacao.ExonerarIcms.Lib
         {
             LogController.RegistrarLog(_nome_cliente + " - " + "Obtendo DI's para exoneração.", eTipoLog.INFO, _cd_bot_exec, "bot");
 
-            // monta url para api de importação.
-            string urlExoneracao = _urlApiBase + $"imp/v1/importacao/obter-exoneracao-icms/" + _cd_par;
+            string urlTriagem = _urlApiBase + $"imp/v1/triagembot/obter-exoneracao-icms/" + _cd_par;
 
-            // realiza a requisição para a api de importação
             using (var client = new HttpClient())
             {
-                var result = client.GetAsync(urlExoneracao).Result;
+                var result = await client.GetAsync(urlTriagem);
+                triagem = await result.Content.ReadAsAsync<List<TriagemBot>>();
+            }
 
-                // recupera os registros.
-                registros = await result.Content.ReadAsAsync<List<Importacao>>();
+            if (triagem.Count > 0)
+            {
+                // monta url para api de importação.
+                string urlExoneracao = _urlApiBase + $"imp/v1/importacao/obter-exoneracao-icms/" + _cd_par;
+
+                // realiza a requisição para a api de importação
+                using (var client = new HttpClient())
+                {
+                    var result = client.GetAsync(urlExoneracao).Result;
+
+                    // recupera os registros.
+                    registros = await result.Content.ReadAsAsync<List<Importacao>>();
+                }
             }
         }
 
@@ -235,6 +260,27 @@ namespace P2E.Automacao.ExonerarIcms.Lib
             {
 
                 LogController.RegistrarLog(_nome_cliente + " - " + _nome_cliente + " - " + "Erro ao atualizar a DI nº " + item.TX_NUM_DEC, eTipoLog.INFO, _cd_bot_exec, "bot");
+            }
+        }
+
+        private async Task AtualizaTriagem(TriagemBot triagem, string cd_triagem)
+        {
+            try
+            {
+                HttpResponseMessage resultado;
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_urlApiBase);
+                    resultado = client.PutAsJsonAsync($"imp/v1/triagembot/{cd_triagem}", triagem).Result;
+                    resultado.EnsureSuccessStatusCode();
+
+                    LogController.RegistrarLog(_nome_cliente + " - " + "Registro de Triagem salvo com sucesso.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogController.RegistrarLog(_nome_cliente + " - DI: " + triagem.NR_DI + $" - Erro em AtualizaStatus. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
             }
         }
     }
