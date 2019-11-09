@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
-using P2E.Automacao.Processos.ComprovanteImportacao.Lib;
 using P2E.Automacao.Shared.Extensions;
 using P2E.Automacao.Shared.Log;
 using P2E.Automacao.Shared.Log.Enum;
