@@ -70,6 +70,14 @@ namespace P2E.SSO.API.Controllers
             return page;
         }
 
+        //[HttpGet]
+        //[Route("api/v1/usuario/")]
+        //public List<Usuario> Get([FromQuery] string tx_nome, [FromQuery] DataPage<Usuario> page)
+        //{
+        //    page = _usuarioRepository.GetByPage(page, tx_nome);
+        //    return page.Items.ToList();
+        //}
+
         [HttpGet]
         [AllowAnonymous]
         [Route("api/v1/usuario/permissoesgrupo/{id}")]

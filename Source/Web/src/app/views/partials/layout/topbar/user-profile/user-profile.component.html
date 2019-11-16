@@ -1,0 +1,11 @@
+<div  placement="bottom-right" *ngIf="nomeUsuario" (click)="logout()" class="kt-header__topbar-item kt-header__topbar-item--user">
+	<div  class="kt-header__topbar-wrapper">
+		<div class="kt-header__topbar-user" style="background-color: wheat;" [ngClass]="{'kt-header__topbar-icon': icon}">
+			<!-- <span class="kt-header__topbar-welcome kt-hidden-mobile">Olá,</span> -->
+			<span class="kt-header__topbar-username kt-hidden-mobile">{{nomeUsuario}}</span>
+			<!-- <i class="flaticon2-user-outline-symbol"></i> -->
+			<!-- <img *ngIf="avatar" alt="Pic" [attr.src]="_user.pic"> -->
+			<span class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold"><i class="fa fa-power-off"></i></span>
+		</div>
+	</div>
+</div>

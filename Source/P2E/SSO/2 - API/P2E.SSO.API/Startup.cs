@@ -11,6 +11,7 @@ using P2E.SSO.Domain.Repositories;
 using P2E.SSO.Infra.Data.DataContext;
 using P2E.SSO.Infra.Data.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
+using Newtonsoft.Json.Serialization;
 using System.Text;
 
 namespace P2E.SSO.API
@@ -27,6 +28,15 @@ namespace P2E.SSO.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
+                });
+            });
+
+
             services.AddMvc().ConfigureApiBehaviorOptions(o =>
             {
                 o.InvalidModelStateResponseFactory = context =>
@@ -41,7 +51,7 @@ namespace P2E.SSO.API
             });
 
             services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver()); ;
 
             services.AddSwaggerGen(c =>
             {
@@ -115,6 +125,7 @@ namespace P2E.SSO.API
                 app.UseHsts();
             }
             app.UseAuthentication();
+            app.UseCors("EnableCORS");
             app.UseMvc();
         }
     }
