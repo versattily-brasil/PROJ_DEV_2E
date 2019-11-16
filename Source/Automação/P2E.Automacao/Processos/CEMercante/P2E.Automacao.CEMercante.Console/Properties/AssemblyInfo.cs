@@ -1,18 +1,17 @@
-﻿using System.Resources;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("P2E.Automacao.Orquestrador.Gerenciador")]
-[assembly: AssemblyDescription("Orquestrador_Gerenciador")]
+[assembly: AssemblyTitle("P2E.Automacao.CEMercante.Console")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Versattily")]
-[assembly: AssemblyProduct("P2E.Automacao.Orquestrador.Gerenciador")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("P2E.Automacao.CEMercante.Console")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
-[assembly: AssemblyTrademark("Versattily")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -21,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0c419b24-95e3-4384-bd7a-4de3e9f4143e")]
+[assembly: Guid("6345d826-6feb-42de-a903-09e47071fee7")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -33,6 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.22.0")]
-[assembly: AssemblyFileVersion("1.0.22.0")]
-[assembly: NeutralResourcesLanguage("pt-BR")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

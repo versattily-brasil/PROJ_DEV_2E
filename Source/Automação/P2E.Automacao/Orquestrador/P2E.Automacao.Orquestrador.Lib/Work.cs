@@ -17,7 +17,8 @@ namespace P2E.Automacao.Orquestrador.Lib
     public class Work
     {
         protected IEnumerable<Agenda> _agendas;
-        private List<Importacao> registros;
+       // private List<Importacao> registros;
+        private List<TriagemBot> triagem;
         private string _urlApiBase;
         public Work() => _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
 
@@ -187,17 +188,17 @@ namespace P2E.Automacao.Orquestrador.Lib
         {
             try
             {
-                string urlParceirosNegocio = _urlApiBase + $"imp/v1/importacao/cd_par";
+                string urlParceirosNegocio = _urlApiBase + $"imp/v1/triagembot/cd_par";
 
                 using (var client = new HttpClient())
                 {
                     var result = await client.GetAsync(urlParceirosNegocio);
-                    registros = await result.Content.ReadAsAsync<List<Importacao>>();
+                    triagem = await result.Content.ReadAsAsync<List<TriagemBot>>();
                     string nomeCliente = "";
 
-                    Parallel.ForEach(registros, item =>
+                    Parallel.ForEach(triagem, item =>
                     {
-                        string urlAcompanha = _urlApiBase + $"sso/v1/parceironegocio/consulta/" + item.CD_PAR;
+                        string urlAcompanha = _urlApiBase + $"sso/v1/parceironegocio/consulta/" + item.CD_PAR_NEG;
 
                         var resultadox = client.GetAsync(urlAcompanha).Result;
                         var clientes = resultadox.Content.ReadAsAsync<List<ParceiroNegocio>>();
@@ -287,13 +288,13 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
-        private void RoboStatusDesembaracoSefaz(AgendaBot bot, Importacao item, string nomeCliente)
+        private void RoboStatusDesembaracoSefaz(AgendaBot bot, TriagemBot item, string nomeCliente)
         {
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
-                    await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await new P2E.Automacao.Processos.StatusDesembaracoSefaz.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR_NEG, nomeCliente).ExecutarAsync();
                     await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                 }
                 catch (ThreadAbortException abort)
@@ -309,14 +310,14 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
-        private void RoboTomarCiencia(AgendaBot bot, Importacao item, string nomeCliente)
+        private void RoboTomarCiencia(AgendaBot bot, TriagemBot item, string nomeCliente)
         {
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
 
-                    new TomarCiencia.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).Start();
+                    new TomarCiencia.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR_NEG, nomeCliente).Start();
                     await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                 }
                 catch (ThreadAbortException abort)
@@ -354,13 +355,13 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
-        private void RoboTelaDebito(AgendaBot bot, Importacao item, string nomeCliente)
+        private void RoboTelaDebito(AgendaBot bot, TriagemBot item, string nomeCliente)
         {
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
-                    await new Processos.TelaDebito.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await new Processos.TelaDebito.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR_NEG, nomeCliente).ExecutarAsync();
                     await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                 }
                 catch (ThreadAbortException abort)
@@ -376,13 +377,13 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
-        private void RoboExtratoRetificacao(AgendaBot bot, Importacao item, string nomeCliente)
+        private void RoboExtratoRetificacao(AgendaBot bot, TriagemBot item, string nomeCliente)
         {
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
-                    await new Processos.ExtratoRetificacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await new Processos.ExtratoRetificacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR_NEG, nomeCliente).ExecutarAsync();
                     await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                 }
                 catch (ThreadAbortException abort)
@@ -398,13 +399,13 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
-        private void RoboExonerarICMS(AgendaBot bot, Importacao item, string nomeCliente)
+        private void RoboExonerarICMS(AgendaBot bot, TriagemBot item, string nomeCliente)
         {
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
-                    new ExonerarIcms.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    new ExonerarIcms.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR_NEG, nomeCliente).ExecutarAsync();
                     await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                 }
                 catch (ThreadAbortException abort)
@@ -420,13 +421,13 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
-        private void RoboComprovanteImportacao(AgendaBot bot, Importacao item, string nomeCliente)
+        private void RoboComprovanteImportacao(AgendaBot bot, TriagemBot item, string nomeCliente)
         {
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
-                    await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await new Processos.ComprovanteImportacao.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR_NEG, nomeCliente).ExecutarAsync();
                     await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                 }
                 catch (ThreadAbortException abort)
@@ -442,13 +443,13 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
-        private void RoboAcompanharDespacho(AgendaBot bot, Importacao item, string nomeCliente)
+        private void RoboAcompanharDespacho(AgendaBot bot, TriagemBot item, string nomeCliente)
         {
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
-                    await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    await new Processos.AcompanharDespachos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR_NEG, nomeCliente).ExecutarAsync();
                     await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
                 }
                 catch (ThreadAbortException abort)
@@ -464,13 +465,13 @@ namespace P2E.Automacao.Orquestrador.Lib
             });
         }
 
-        private void RoboBaixarExtato(AgendaBot bot, Importacao item, string nomeCliente)
+        private void RoboBaixarExtato(AgendaBot bot, TriagemBot item, string nomeCliente)
         {
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
-                    Task task = new BaixarExtratos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR, nomeCliente).ExecutarAsync();
+                    Task task = new BaixarExtratos.Lib.Work(bot.BotProgramado.CD_BOT_EXEC, item.CD_PAR_NEG, nomeCliente).ExecutarAsync();
                     task.Wait();
 
                     await AlterarStatusBotAsync(bot, eStatusExec.Concluído);
