@@ -225,7 +225,7 @@ export class UsuarioFormComponent implements OnInit {
 
 		u.RotinaUsuarioOperacao.forEach(function (item) {
 
-			if (comp.listaRotinaOperacoesSelecionadas.filter(o => o.rotina.CD_ROT == item.CD_ROT).length == 0) {
+			if (comp.listaRotinaOperacoesSelecionadas.filter(o => o.rotina && o.rotina.CD_ROT == item.CD_ROT).length == 0) {
 
 				let novaRotinaOperacoes = new RotinaOperacoes();
 				novaRotinaOperacoes.rotina = comp.listaRotinas.find(o => o.CD_ROT == item.CD_ROT);
