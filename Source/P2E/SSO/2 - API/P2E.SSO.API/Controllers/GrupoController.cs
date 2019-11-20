@@ -49,8 +49,14 @@ namespace P2E.SSO.API.Controllers
         [Route("api/v1/grupo/{id}")]
         public Grupo Get(long id)
         {
-            Grupo grupo = _grupoRepository.Find(p => p.CD_GRP == id);
-            grupo.RotinaGrupoOperacao = _rotinaGrupoOperacaoRepository.FindAll(o => o.CD_GRP == id).ToList();
+            Grupo grupo = new Grupo(); //_grupoRepository.Find(p => p.CD_GRP == id);
+            
+            if (id > 0)
+            {
+                grupo = _grupoRepository.Find(p => p.CD_GRP == id);
+                grupo.RotinaGrupoOperacao = _rotinaGrupoOperacaoRepository.FindAll(o => o.CD_GRP == id).ToList();
+            }
+            
             return grupo;
         }
 
