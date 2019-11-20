@@ -99,6 +99,7 @@ import { NgbProgressbarModule, NgbProgressbarConfig, NgbModule } from '@ng-boots
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { GrupoListaComponent } from './grupo/grupo-lista/grupo-lista.component';
 import { GrupoFormComponent } from './grupo/grupo-form/grupo-form.component';
+import { RotinaListaComponent } from './rotina/rotina-list/rotina-list.component';
 
 // tslint:disable-next-line:class-name
 const routes: Routes = [
@@ -120,10 +121,14 @@ const routes: Routes = [
 				path: 'grupos',
 				component: GrupoListaComponent
 			},
-			 {
-			 	path: 'grupos/cadastro',
-			 	component: GrupoFormComponent,
-			 }
+			{
+				path: 'grupos/cadastro',
+				component: GrupoFormComponent,
+			},
+			{
+				path: 'rotinas',
+				component: RotinaListaComponent,
+			}
 		]
 	}
 ];
@@ -213,8 +218,9 @@ const routes: Routes = [
 		UsuarioListaComponent,
 		UsuarioFormComponent,
 		GrupoListaComponent,
-		GrupoFormComponent
-		
+		GrupoFormComponent,
+		RotinaListaComponent
+
 
 		// ECommerceComponent,
 		// // Customers
@@ -230,11 +236,12 @@ const routes: Routes = [
 		// SpecificationsListComponent,
 		// SpecificationEditDialogComponent,
 	],
-	exports:[
+	exports: [
 		UsuarioListaComponent,
 		UsuarioFormComponent,
 		GrupoListaComponent,
-		GrupoFormComponent
+		GrupoFormComponent,
+		RotinaListaComponent
 	]
 })
 export class SegurancaModule { }

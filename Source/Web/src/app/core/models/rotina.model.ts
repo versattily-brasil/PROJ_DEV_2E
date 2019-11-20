@@ -6,5 +6,7 @@ export class Rotina {
     
     CD_SRV:number;
     TX_URL:string;
+
+    descricaoServico:string;
 }
 

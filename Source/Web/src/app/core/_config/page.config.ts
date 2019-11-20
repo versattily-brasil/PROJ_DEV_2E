@@ -12,6 +12,9 @@ export class PageConfig {
 			},
 			'grupos': {
 				page: {title: 'Grupos', desc: ''}
+			},
+			'rotinas': {
+				page: {title: 'Rotinas', desc: ''}
 			}
 		},
 		ngbootstrap: {
