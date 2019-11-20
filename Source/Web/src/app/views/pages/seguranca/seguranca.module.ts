@@ -100,7 +100,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { GrupoListaComponent } from './grupo/grupo-lista/grupo-lista.component';
 import { GrupoFormComponent } from './grupo/grupo-form/grupo-form.component';
 import { RotinaListaComponent } from './rotina/rotina-list/rotina-list.component';
-import { ParceiroNegocioListaComponent } from './parceironegocio/parceironegocio-lista/parceironegocio-lista.component';
+import { RotinaFormComponent } from './rotina/rotina-form/rotina-form.compoenent';
 
 // tslint:disable-next-line:class-name
 const routes: Routes = [
@@ -129,6 +129,10 @@ const routes: Routes = [
 			{
 				path: 'rotinas',
 				component: RotinaListaComponent,
+			},
+			{
+				path: 'rotinas/cadastro',
+				component: RotinaFormComponent,
 			}
 		]
 	}
@@ -221,7 +225,7 @@ const routes: Routes = [
 		GrupoListaComponent,
 		GrupoFormComponent,
 		RotinaListaComponent,
-		ParceiroNegocioListaComponent
+		RotinaFormComponent
 
 
 		// ECommerceComponent,
@@ -244,7 +248,7 @@ const routes: Routes = [
 		GrupoListaComponent,
 		GrupoFormComponent,
 		RotinaListaComponent,
-		ParceiroNegocioListaComponent
+		RotinaFormComponent
 	]
 })
 export class SegurancaModule { }
