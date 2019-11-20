@@ -25,7 +25,7 @@ export class MenuConfig {
 					submenu: [
 						{
 							title: 'Parceiros de Negócio',
-							page: '/seguranca/parceiros-negocio'
+							page: '/seguranca/parceironegocio'
 						},
 						{
 							title: 'Usuários',

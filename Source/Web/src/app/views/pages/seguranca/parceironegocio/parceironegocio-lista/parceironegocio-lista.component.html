@@ -34,6 +34,16 @@
                     <mat-cell *matCellDef="let parceironegocio">{{parceironegocio.TXT_RZSOC}}</mat-cell>
                 </ng-container>
 
+                <ng-container matColumnDef="CNPJ">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>CNPJ</mat-header-cell>
+                    <mat-cell *matCellDef="let parceironegocio">{{parceironegocio.CNPJ}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="TX_EMAIL">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+                    <mat-cell *matCellDef="let parceironegocio">{{parceironegocio.TX_EMAIL}}</mat-cell>
+                </ng-container>
+
                
 
                 <ng-container matColumnDef="editar">

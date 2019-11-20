@@ -19,7 +19,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 
 	dataSource: ParceiroNegocioDataSource;
-	displayedColumns = ["TX_RZSOC","CNPJ","TX_EMAIL", "editar"];
+	displayedColumns = ["TXT_RZSOC","CNPJ","TX_EMAIL", "editar"];
 	tamanho: number;
 
 	salvouSucesso: boolean = false;
@@ -51,7 +51,7 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 
 		this.tamanho = 20;
 		this.dataSource = new ParceiroNegocioDataSource(this.parceironegocioService);
-		this.dataSource.loadParceiroNegocios('', 1, 10, "TX_RZSOC", false);
+		this.dataSource.loadParceiroNegocios('', 1, 10, "TXT_RZSOC", false);
 	}
 
 	ngAfterViewInit() {

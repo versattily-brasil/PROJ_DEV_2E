@@ -13,10 +13,10 @@ export class ParceiroNegocioService {
 
     public cd_par:number = 0;
 
-    public getParceiroNegocios(tx_rzsoc:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
+    public getParceiroNegocios(txt_rzsoc:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
     
         var params = new HttpParams()
-            .set("tx_rzsoc",tx_rzsoc)
+            .set("razaosocial",txt_rzsoc)
             .set("currentpage",currentpage.toString())
             .set("pagesize", pagesize.toString())
             .set("orderby",orderby)

@@ -15,6 +15,9 @@ export class PageConfig {
 			},
 			'rotinas': {
 				page: {title: 'Rotinas', desc: ''}
+			},
+			'parceironegocio': {
+				page: {title: 'Parceiro de Negócio', desc: ''}
 			}
 		},
 		ngbootstrap: {
