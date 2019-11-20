@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { JwtHelperService  } from "@auth0/angular-jwt";
 import { Usuario } from '../models/usuario.model';
 import { AutenticacaoService } from '../autenticacao/autenticacao.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class UsuarioService {
@@ -28,7 +29,7 @@ export class UsuarioService {
             'Authorization': 'Bearer ' + userToken
          });
      
-        return this.http.get("http://localhost:7010/api/v1/usuario", { headers: reqHeader, params: params} );
+        return this.http.get(environment.baseUrl + "/api/v1/usuario", { headers: reqHeader, params: params} );
     }
 
     
@@ -40,7 +41,7 @@ export class UsuarioService {
             'Authorization': 'Bearer ' + userToken
          });
      
-        return this.http.get("http://localhost:7010/api/v1/usuario/"+cd_usr, { headers: reqHeader});
+        return this.http.get(environment.baseUrl + "/api/v1/usuario/"+cd_usr, { headers: reqHeader});
     }
 
     public salvarUsuario(usuario:Usuario): Observable<any> {
@@ -51,7 +52,7 @@ export class UsuarioService {
             'Authorization': 'Bearer ' + userToken
          });
      
-        return this.http.put("http://localhost:7010/api/v1/usuario/"+usuario.CD_USR, usuario, { headers: reqHeader});
+        return this.http.put(environment.baseUrl + "/api/v1/usuario/" +usuario.CD_USR, usuario, { headers: reqHeader});
     }
 
     public deletarUsuario(cd_usr:number): Observable<any> {
@@ -62,6 +63,6 @@ export class UsuarioService {
             'Authorization': 'Bearer ' + userToken
          });
      
-        return this.http.delete("http://localhost:7010/api/v1/usuario/"+cd_usr, { headers: reqHeader});
+        return this.http.delete(environment.baseUrl + "/api/v1/usuario/" +cd_usr, { headers: reqHeader});
     }
 }
