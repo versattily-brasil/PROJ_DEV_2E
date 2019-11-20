@@ -1,0 +1,70 @@
+<ngb-alert [type]="'success'" *ngIf="salvouSucesso" (close)="salvouSucesso=false"> Registro salvo com sucesso!</ngb-alert>
+<ngb-alert [type]="'success'" *ngIf="excluidoSucesso" (close)="excluidoSucesso=false"> Registro excluído com sucesso!</ngb-alert>
+<kt-portlet>
+
+    <kt-portlet-header [sticky]="false" [title]="'Lista de Grupos'" [class]="'kt-portlet__head--lg'">
+        <ng-container ktPortletTools>
+            <button mat-raised-button color="primary" (click)="adicionarGrupo()" matTooltip="Create new product"><i
+                    class="la la-plus-circle"></i>&nbsp;&nbsp;Novo grupo</button>
+        </ng-container>
+    </kt-portlet-header>
+    <!-- end::Header -->
+
+    <kt-portlet-body>
+
+        <div class="form-group row col-lg-6">
+            <label class="col-lg-2 col-form-label">Pesquisar:</label>
+            <div class="col-lg-8 example-container">
+                <mat-form-field class="col-lg-12">
+                    <input matInput placeholder="Digite o nome do grupo" #filtro
+                        class="mat-form-field mat-form-field-fluid">
+                </mat-form-field>
+
+            </div>
+        </div>
+
+
+        <div class="mat-table__wrapper">
+
+            <mat-table matSort matSortActive="TX_DSC" matSortDirection="asc" matSortDisableClear
+                class="lessons-table mat-elevation-z8" [dataSource]="dataSource">
+
+                <ng-container matColumnDef="TX_DSC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Nome</mat-header-cell>
+                    <mat-cell *matCellDef="let grupo">{{grupo.TX_DSC}}</mat-cell>
+                </ng-container>
+
+               
+
+                <ng-container matColumnDef="editar">
+                    <mat-header-cell style="flex: 0 0 75px;" *matHeaderCellDef>
+                    </mat-header-cell>
+                    <mat-cell style="flex: 0 0 75px;" *matCellDef="let grupo">
+                        <button type="button" mat-icon-button color="primary" (click)="visualizarGrupo(grupo.CD_GRP)" matTooltip="Visualizar Grupo">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                        <!-- <button type="button" (click)="editProduct(product.id)" mat-icon-button color="primary"
+                            matTooltip="Edit product">
+                            <mat-icon>create</mat-icon>
+                        </button> -->
+                    </mat-cell>
+                </ng-container>
+
+
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+            </mat-table>
+        </div>
+        <div class="mat-table__bottom">
+            <mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[3, 5, 10]" [length]="dataSource.totalItems$ | async"
+                [showFirstLastButtons]="true">
+            </mat-paginator>
+        </div>
+        <!-- end: BOTTOM -->
+    </kt-portlet-body>
+    <!-- end::Body -->
+</kt-portlet>

@@ -28,6 +28,7 @@ import { RotinaService } from './seguranca/rotina.service';
 import { OperacaoService } from './seguranca/operacao.service';
 import { ServicoService } from './seguranca/servico.service';
 import { TelaAtualService } from './tela-atual.service';
+import { GrupoService } from './seguranca/grupo.service';
 
 
 
@@ -78,7 +79,8 @@ import { TelaAtualService } from './tela-atual.service';
 		ServicoService,
 		LogadoGuard,
 		JwtHelperService,
-		TelaAtualService
+		TelaAtualService,
+		GrupoService
 	]
 })
 export class CoreModule {
