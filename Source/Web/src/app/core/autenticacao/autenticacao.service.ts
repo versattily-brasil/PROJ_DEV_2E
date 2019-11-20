@@ -5,13 +5,13 @@ import { JwtHelperService  } from "@auth0/angular-jwt";
 import { Usuario } from '../models/usuario.model';
 import { environment } from '../../../environments/environment';
 @Injectable()
-export class AutenticacaoService {
+export class AutenticacaoService {  
 
     constructor(private jwtHelper: JwtHelperService , private http: HttpClient) { }
 
     public login(usuario: Usuario): Observable<any> {
-        return this.http.post(environment.baseUrl + "/sso/v1/usuario/login", usuario);
-        // return this.http.post("http://fase02.fundacaomatiasmachline.org.br:8080/api/Autenticacao", login);
+        //return this.http.post(environment.baseUrl + "/sso/v1/usuario/login", usuario);
+        return this.http.post(environment.baseUrl + "/api/v1/usuario/login", usuario);        
     }
 
     public logout(){

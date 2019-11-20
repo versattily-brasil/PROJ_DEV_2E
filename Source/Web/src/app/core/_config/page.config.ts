@@ -10,8 +10,8 @@ export class PageConfig {
 			'usuarios': {
 				page: {title: 'Usuários', desc: ''}
 			},
-			'cadastro': {
-				page: {title: 'Usuários', desc: ''}
+			'grupos': {
+				page: {title: 'Grupos', desc: ''}
 			}
 		},
 		ngbootstrap: {

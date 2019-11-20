@@ -4,13 +4,14 @@ import { Observable } from "rxjs";
 import { JwtHelperService  } from "@auth0/angular-jwt";
 import { Modulo } from '../models/modulo.model';
 import { AutenticacaoService } from '../autenticacao/autenticacao.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ModuloService {
 
     constructor(private http: HttpClient, private auth:AutenticacaoService) { }
 
-    public getUsuarios(tx_nome:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
+    public getModulos(tx_nome:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
     
         var params = new HttpParams()
             .set("tx_nome",tx_nome)
@@ -24,8 +25,8 @@ export class ModuloService {
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
-         });
+        });
      
-        return this.http.get("http://localhost:7010/api/v1/usuario", { headers: reqHeader, params: params} );
+        return this.http.get(environment.baseUrl + "/api/v1/modulo/todos", { headers: reqHeader, params: params} );
     }
 }

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { AutenticacaoService } from '../autenticacao/autenticacao.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class RotinaService {
@@ -16,7 +17,7 @@ export class RotinaService {
             'Authorization': 'Bearer ' + userToken
          });
      
-        return this.http.get("http://localhost:7010/api/v1/rotina/todos", { headers: reqHeader} );
+        return this.http.get(environment.baseUrl + "/api/v1/rotina/todos" , { headers: reqHeader} );
     }
 
 }

@@ -4,7 +4,7 @@
         <ng-container ktPortletTools>
 
             <a (click)="exibirModal(content7)" class="btn btn-secondary kt-margin-r-10" mat-raised-button
-                matTooltip="Retornar à lista de usuários">
+                matTooltip="Retornar à lista de grupos">
                 <i class="la la-arrow-left"></i>
                 <span class="kt-hidden-mobile">Cancelar</span>
             </a>
@@ -32,41 +32,27 @@
 
         <div>
             <!--begin::Form-->
-            <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="usuario | async; else loading"
-                [formGroup]="usuarioForm" class="kt-form">
+            <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="grupo | async; else loading"
+                [formGroup]="grupoForm" class="kt-form">
                 <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
                     (close)="onAlertClose($event)">
-                    <b>Erro ao salvar o usuário.</b>&nbsp;Realize as correções e tente novamente.
+                    <b>Erro ao salvar o grupo.</b>&nbsp;Realize as correções e tente novamente.
                 </kt-alert>
 
-                <input formControlName="CD_USR" type="hidden">
+                <input formControlName="CD_GRP" type="hidden">
 
                 <div class="kt-form__section kt-form__section--first">
                     <div class="">
                         <div class="row">
 
                             <div class="form-group row col-lg-6">
-                                <label class="col-lg-2 col-form-label">Nome:</label>
+                                <label class="col-lg-2 col-form-label">Descrição:</label>
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
-                                        <input matInput placeholder="Digite o Nome do usuário"
-                                            formControlName="TX_NOME">
+                                        <input matInput placeholder="Digite a Descrição do grupo"
+                                            formControlName="TX_DSC">
                                         <mat-error>
-                                            O campo Nome é <strong>obrigatório</strong>
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group row col-lg-6">
-                                <label class="col-lg-2 col-form-label">Login:</label>
-                                <div class="col-lg-8 example-container">
-                                    <mat-form-field class="col-lg-12">
-                                        <input matInput placeholder="Digite o Login do usuário"
-                                            formControlName="TX_LOGIN">
-                                        <mat-error>
-                                            O campo Login é <strong>obrigatório</strong>
+                                            O campo Descrição é <strong>obrigatório</strong>
                                         </mat-error>
                                     </mat-form-field>
 
@@ -75,68 +61,6 @@
 
                         </div>
                     </div>
-
-                    <div class="">
-                        <div class="row">
-
-                            <div class="form-group row col-lg-6">
-                                <label class="col-lg-2 col-form-label">Senha:</label>
-                                <div class="col-lg-8 example-container">
-                                    <mat-form-field class="col-lg-12">
-                                        <input matInput placeholder="Digite a Senha do usuário"
-                                            formControlName="TX_SENHA">
-                                        <mat-error>
-                                            O campo Senha é <strong>obrigatório</strong>
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group row col-lg-6">
-                                <label class="col-lg-2 col-form-label">Confirmação de Senha:</label>
-                                <div class="col-lg-8 example-container">
-                                    <mat-form-field class="col-lg-12">
-                                        <input matInput placeholder="Confirme a senha do usuário"
-                                            formControlName="CONFIRMA_SENHA">
-                                        <mat-error>
-                                            O campo Confirmação de Senha é <strong>obrigatório</strong>
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="">
-                        <div class="row">
-
-
-                            <div class="form-group row col-lg-6">
-                                <label class="col-lg-2 col-form-label">Status:</label>
-                                <div class="col-lg-8 example-container">
-                                    <mat-form-field class="col-lg-12">
-                                        <mat-select placeholder="Selecione o Status do usuário"
-                                            formControlName="OP_STATUS">
-                                            <mat-option value="{{status.OP_STATUS}}"
-                                                *ngFor="let status of listaStatus;">
-                                                {{status.TX_DESC}}
-                                            </mat-option>
-                                        </mat-select>
-                                        <mat-error>
-                                            O campo Status é <strong>obrigatório</strong>
-                                        </mat-error>
-                                    </mat-form-field>
-
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-
                 </div>
             </form>
         </div>
@@ -146,112 +70,8 @@
         <div class="kt-section">
             <div class="kt-section__content">
                 <ngb-tabset>
-                    <ngb-tab title="Módulos">
-                        <ng-template ngbTabContent *ngIf="usuario | async">
-
-
-                            <div class="row" [ngClass]="{'modoVisualizacao': !modoEdicao}">
-                                <div class="col-lg-6">
-
-                                    <table id="table-origem-md" class="table">
-                                        <thead class="thead-themed">
-                                            <tr>
-                                                <th>Módulos:</th>
-                                                <th width="100px"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let modulo of listaModulos; let i = index">
-                                                <td>{{modulo.TX_DSC}}</td>
-                                                <td class="text-center" (click)="adicionarModulo(modulo,i)">
-                                                    <i style="font-weight:bold;cursor:pointer"
-                                                        class="la la-plus-circle text-success bt-selecao-md"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-lg-6">
-
-                                    <table id="table-origem-md" class="table">
-                                        <thead class="thead-themed">
-                                            <tr>
-                                                <th>Módulos associados ao usuário:</th>
-                                                <th width="100px"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let modulo of listaModulosSelecionados; let i = index">
-                                                <td>{{modulo.TX_DSC}}</td>
-                                                <td class="text-center" (click)="removerModulo(modulo,i)">
-                                                    <i style="font-weight:bold;cursor:pointer"
-                                                        class="la la-times-circle-o text-danger"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-
-
-
-
-                        </ng-template>
-                    </ngb-tab>
-                    <ngb-tab title="Grupos">
-                        <ng-template ngbTabContent *ngIf="usuario | async">
-
-                            <div class="row" [ngClass]="{'modoVisualizacao': !modoEdicao}">
-                                <div class="col-lg-6">
-
-                                    <table id="table-origem-md" class="table">
-                                        <thead class="thead-themed">
-                                            <tr>
-                                                <th>Grupos:</th>
-                                                <th width="100px"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let grupo of listaGrupos;let i = index">
-                                                <td>{{grupo.TX_DSC}}</td>
-                                                <td class="text-center" (click)="adicionarGrupo(grupo,i)">
-                                                    <i style="font-weight:bold;cursor:pointer"
-                                                        class="la la-plus-circle text-success bt-selecao-md"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-lg-6">
-
-                                    <table id="table-origem-md" class="table">
-                                        <thead class="thead-themed">
-                                            <tr>
-                                                <th>Grupos associados ao usuário:</th>
-                                                <th width="100px"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let grupo of listaGruposSelecionados;let i = index">
-                                                <td>{{grupo.TX_DSC}}</td>
-                                                <td class="text-center" (click)="adicionarGrupo(grupo,i)">
-                                                    <i style="font-weight:bold;cursor:pointer"
-                                                        class="la la-times-circle-o text-danger"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-
-
-
-
-
-                        </ng-template>
-                    </ngb-tab>
+                    
+                    
                     <ngb-tab title="Rotinas">
                         <ng-template ngbTabContent>
 
@@ -283,7 +103,7 @@
                                                     [disabled]="cdSrvSelecionado == 0 || filtrarRotinas(cdSrvSelecionado).length == 0">
                                                     <mat-option value="{{rotina.CD_ROT}}"
                                                         *ngFor="let rotina of filtrarRotinas(cdSrvSelecionado);">
-                                                        {{rotina.TX_NOME}}
+                                                        {{rotina.TX_DSC}}
                                                     </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
@@ -293,7 +113,7 @@
 
                                     <div class="col-lg-1">
                                         <button (click)="adicionarRotina()" mat-raised-button color="primary"
-                                            matTooltip="Adicionar rotina ao usuário">
+                                            matTooltip="Adicionar rotina ao grupo">
                                             <i style="font-size: 20px;" class="la la-plus"></i>
                                         </button>
                                     </div>
@@ -317,7 +137,7 @@
                                 <tbody>
                                     <tr *ngFor="let rotinaOp of listaRotinaOperacoesSelecionadas">
                                         <td>
-                                            {{rotinaOp.rotina.TX_NOME}}
+                                            {{rotinaOp.rotina.TX_DSC}}
                                         </td>
                                         <td *ngFor="let op of rotinaOp.operacoes">
                                             <mat-checkbox [(ngModel)]="op.selecionada"></mat-checkbox>
@@ -326,18 +146,11 @@
                                 </tbody>
                             </table>
 
-
-
-
-
-
                         </ng-template>
                     </ngb-tab>
                 </ngb-tabset>
             </div>
         </div>
-
-
 
     </kt-portlet-body>
 </kt-portlet>
@@ -355,7 +168,7 @@
             </div>
             <div class="modal-body">
                 <p>
-                    Deseja cancelar as alterações realizadas e retornar à listagem de usuários?
+                    Deseja cancelar as alterações realizadas e retornar à listagem de grupos?
                 </p>
             </div>
             <div class="modal-footer">
