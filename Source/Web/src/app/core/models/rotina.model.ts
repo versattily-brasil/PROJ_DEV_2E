@@ -1,3 +1,6 @@
+import { RotinaServico } from './rotina-servico.model';
+import { RotinaAssociada } from './rotina-associada.model';
+
 export class Rotina {
     CD_ROT:number;
     TX_NOME:string;
@@ -8,5 +11,7 @@ export class Rotina {
     TX_URL:string;
 
     descricaoServico:string;
-}
 
+    RotinaServico:RotinaServico[] = [];
+    RotinasAssociadas:RotinaAssociada[] = [];
+}

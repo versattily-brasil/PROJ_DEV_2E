@@ -177,6 +177,7 @@ namespace P2E.SSO.API.Controllers
             {
                 var item = this.Get(id);
 
+                _rotinaAssociadaRepository.Delete(o => o.CD_ROT_ASS == id || o.CD_ROT_PRINCIPAL == id);
                 _rotinaGrupoOperacaoRepository.Delete(o => o.CD_ROT == id);
                 _rotinaRepository.Delete(item);
                 return Ok();
