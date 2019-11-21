@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using P2E.Shared.Model;
+using P2E.SSO.API.DTO;
 using P2E.SSO.API.Helpers;
+using P2E.SSO.API.ViewModel;
 using P2E.SSO.Domain.Entities;
 using P2E.SSO.Domain.Repositories;
 using System;
@@ -31,6 +34,8 @@ namespace P2E.SSO.API.Controllers
         private readonly IRotinaUsuarioOperacaoRepository _rotinaUsuarioOperacaoRepository;
         private readonly IOperacaoRepository _operacaoRepository;
         private readonly IServicoRepository _servicoRepository;
+        private readonly IRotinaAssociadaRepository _rotinaAssociadaRepository;
+
 
         private readonly AppSettings _appSettings;
 
@@ -44,6 +49,7 @@ namespace P2E.SSO.API.Controllers
                                  IRotinaGrupoOperacaoRepository rotinaGrupoOperacaoRepository,
                                  IRotinaUsuarioOperacaoRepository rotinaUsuarioOperacaoRepository,
                                  IOperacaoRepository operacaoRepository,
+                                 IRotinaAssociadaRepository rotinaAssociadaRepository,
                                  IServicoRepository servicoRepository,
                                  IOptions<AppSettings> appSettings,
                                  IMapper mapper)
@@ -59,6 +65,7 @@ namespace P2E.SSO.API.Controllers
             _rotinaGrupoOperacaoRepository = rotinaGrupoOperacaoRepository;
             _rotinaUsuarioOperacaoRepository = rotinaUsuarioOperacaoRepository;
             _operacaoRepository = operacaoRepository;
+            _rotinaAssociadaRepository = rotinaAssociadaRepository;
             _servicoRepository = servicoRepository;
         }
 
@@ -82,6 +89,11 @@ namespace P2E.SSO.API.Controllers
         [AllowAnonymous]
         [Route("api/v1/usuario/permissoesgrupo/{id}")]
         public List<UsuarioGrupo> GetPermissoesGrupo(int id)
+        {
+            return ObterPermissoeGrupo(id);
+        }
+
+        private List<UsuarioGrupo> ObterPermissoeGrupo(int id)
         {
             // Obtem os grupos em que o usuario está associado
             var usuarioGrupos = _usuarioGrupoRepository.FindAll(o => o.CD_USR == id).ToList();
@@ -117,6 +129,11 @@ namespace P2E.SSO.API.Controllers
         [AllowAnonymous]
         public List<RotinaUsuarioOperacao> GetPermissoesUsuario(int id)
         {
+            return ObterPermissoesUsuario(id);
+        }
+
+        private List<RotinaUsuarioOperacao> ObterPermissoesUsuario(int id)
+        {
             // Obtem os grupos em que o usuario está associado
             var rotinaUsuarioOperacoes = _rotinaUsuarioOperacaoRepository.FindAll(o => o.CD_USR == id).ToList();
 
@@ -135,6 +152,237 @@ namespace P2E.SSO.API.Controllers
             }
 
             return rotinaUsuarioOperacoes;
+        }
+
+        [HttpGet]
+        [Route("api/v1/usuario/obter-permissoes/{id}")]
+        [AllowAnonymous]
+        public List<Menu> ObterPermissoes(int id)
+        {
+            #region Carrega permissões de Usuario x Grupo
+            var usuarioGrupos = ObterPermissoeGrupo(id);
+
+            var servicosViewModel = new List<ServicoViewModel>();
+
+            // carregar os serviços
+            foreach (var item in usuarioGrupos)
+            {
+                foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                {
+                    if (!servicosViewModel.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                    {
+                        var servico = subitem.Rotina.Servico;
+                        servicosViewModel.Add(new ServicoViewModel()
+                        {
+                            CD_SRV = servico.CD_SRV,
+                            TXT_DEC = servico.TXT_DEC
+                        });
+                    }
+                }
+            }
+
+            // carregar as rotinas dos serviços
+            foreach (var item in usuarioGrupos)
+            {
+                foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                {
+                    var servico = servicosViewModel.First(p => p.CD_SRV == subitem.Rotina.CD_SRV);
+
+                    if (servico.RotinasViewModel == null)
+                        servico.RotinasViewModel = new List<RotinaViewModel>();
+
+                    if (!servico.RotinasViewModel.Any(p => p.CD_ROT == subitem.CD_ROT))
+                    {
+                        var rotinaViewModel = new RotinaViewModel()
+                        {
+                            CD_ROT = subitem.Rotina.CD_ROT,
+                            TX_NOME = subitem.Rotina.TX_NOME,
+                            TX_URL = subitem.Rotina.TX_URL
+                        };
+
+                        var lista = ObterRotinasAssociadas(subitem.CD_ROT);
+                        rotinaViewModel.RotinasAssociadas = lista;
+
+                        if (rotinaViewModel.OperacoesViewModel == null)
+                        {
+                            rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                        }
+
+                        if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == subitem.CD_OPR))
+                        {
+                            rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                            {
+                                CD_OPR = subitem.CD_OPR,
+                                TX_DSC = subitem.Operacao.TX_DSC
+                            });
+                        }
+
+                        servico.RotinasViewModel.Add(rotinaViewModel);
+                    }
+                    else
+                    {
+                        var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p => p.CD_ROT == subitem.CD_ROT);
+
+                        if (rotinaViewModel.OperacoesViewModel == null)
+                        {
+                            rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                        }
+
+                        if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == subitem.CD_OPR))
+                        {
+                            rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                            {
+                                CD_OPR = subitem.CD_OPR,
+                                TX_DSC = subitem.Operacao.TX_DSC
+                            });
+                        }
+
+                    }
+                }
+            }
+            #endregion
+
+            #region Carrega permissões de Usuario x Rotina
+            var usuarioRotinas = ObterPermissoesUsuario(id);
+
+            // carregar os serviços
+            foreach (var item in usuarioRotinas)
+            {
+                if (!servicosViewModel.Any(p => p.CD_SRV == item.Rotina.Servico.CD_SRV))
+                {
+                    var servico = item.Rotina.Servico;
+
+                    if (!servicosViewModel.Any(p => p.CD_SRV == servico.CD_SRV))
+                    {
+                        servicosViewModel.Add(new ServicoViewModel()
+                        {
+                            CD_SRV = servico.CD_SRV,
+                            TXT_DEC = servico.TXT_DEC
+                        });
+                    }
+                }
+            }
+
+            // carregar as rotinas dos serviços
+            foreach (var item in usuarioRotinas)
+            {
+                var servico = servicosViewModel.First(p => p.CD_SRV == item.Rotina.CD_SRV);
+
+                if (servico.RotinasViewModel == null)
+                    servico.RotinasViewModel = new List<RotinaViewModel>();
+
+                if (!servico.RotinasViewModel.Any(p => p.CD_ROT == item.CD_ROT))
+                {
+                    var rotinaViewModel = new RotinaViewModel()
+                    {
+                        CD_ROT = item.Rotina.CD_ROT,
+                        TX_NOME = item.Rotina.TX_NOME,
+                        TX_URL = item.Rotina.TX_URL
+                    };
+
+                    if (rotinaViewModel.OperacoesViewModel == null)
+                    {
+                        rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                    }
+
+                    if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == item.CD_OPR))
+                    {
+                        rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                        {
+                            CD_OPR = item.CD_OPR,
+                            TX_DSC = item.Operacao.TX_DSC
+                        });
+                    }
+
+                    servico.RotinasViewModel.Add(rotinaViewModel);
+                }
+                else
+                {
+                    var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p => p.CD_ROT == item.CD_ROT);
+
+                    if (rotinaViewModel.OperacoesViewModel == null)
+                    {
+                        rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                    }
+
+                    if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == item.CD_OPR))
+                    {
+                        rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                        {
+                            CD_OPR = item.CD_OPR,
+                            TX_DSC = item.Operacao.TX_DSC
+                        });
+                    }
+
+                }
+            }
+            #endregion
+
+            #region Montar Menu
+            var listItems = new List<Menu>();
+            foreach (var servico in servicosViewModel.Where(p => p.RotinasViewModel.Any(x => x.OperacoesViewModel.Any(q => q.TX_DSC.Contains("Consultar")))))
+            {
+
+                var item = new Menu() { title = servico.TXT_DEC, root = true, bullet = "Dot", icon = "flaticon2-architecture-and-city" };
+
+                item.submenu = new List<SubMenu>();
+
+                foreach (var rotina in servico.RotinasViewModel.Where(p => p.OperacoesViewModel.Any(x => x.TX_DSC.Contains("Consultar"))))
+                {
+                    var listItem = new SubMenu()
+                    {
+                        title = rotina.TX_NOME,
+                        page = rotina.TX_URL
+                    };
+
+                    //if (rotina.RotinasAssociadas != null && rotina.RotinasAssociadas.Any())
+                    //{
+                    //    if (listItem.Associados == null)
+                    //    {
+                    //        listItem.Associados = new List<ItemAssociado>();
+                    //    }
+
+                    //    foreach (var rotinaAssociada in rotina.RotinasAssociadas)
+                    //    {
+
+                    //        listItem.Associados.Add(
+                    //            new ItemAssociado()
+                    //            {
+                    //                Title = rotinaAssociada?.Rotina?.TX_NOME,
+                    //                Href = rotinaAssociada?.Rotina?.TX_URL
+                    //            });
+                    //    }
+
+                    //    listItem.jsonAssociados = Newtonsoft.Json.JsonConvert.SerializeObject(listItem.Associados);
+                    //}
+
+                    item.submenu.Add(listItem);
+
+                }
+
+                listItems.Add(item);
+            }
+
+            //var menu = FillProperties(listItems, seedOnly);
+            return listItems; //new SmartNavigation(menu);
+            #endregion
+
+        }
+
+        private List<RotinaAssociada> ObterRotinasAssociadas(int id)
+        {
+            var retorno = new List<RotinaAssociada>();
+
+            retorno = _rotinaAssociadaRepository.FindAll(p => p.CD_ROT_PRINCIPAL == id).ToList();
+
+            foreach (var item in retorno)
+            {
+                var rotina = _rotinaRepository.Find(p => p.CD_ROT == item.CD_ROT_ASS);
+                item.Rotina = rotina;
+                item.NomeRotinaAssociada = rotina.TX_NOME;
+            }
+
+            return retorno;
         }
 
 

@@ -31,7 +31,6 @@ namespace P2E.Main.UI.Web.Models
             {
                 var permissoesJson = Permissoes.CarregarPermissoesAsync(_principal).Result;
 
-
                 // Carregar Dados do DB
                 if (!string.IsNullOrEmpty(permissoesJson))
                 {
@@ -46,8 +45,6 @@ namespace P2E.Main.UI.Web.Models
 
                         foreach (var rotina in servico.RotinasViewModel.Where(p => p.OperacoesViewModel.Any(x => x.TX_DSC.Contains("Consultar"))))
                         {
-
-
                             var listItem = new ListItem()
                             {
                                 Title = rotina.TX_NOME,
