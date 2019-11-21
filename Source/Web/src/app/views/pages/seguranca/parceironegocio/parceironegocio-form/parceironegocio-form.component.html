@@ -4,7 +4,7 @@
         <ng-container ktPortletTools>
 
             <a (click)="exibirModal(content7)" class="btn btn-secondary kt-margin-r-10" mat-raised-button
-                matTooltip="Retornar à lista de parceironegocios">
+                matTooltip="Retornar à lista de parceiro de negócios">
                 <i class="la la-arrow-left"></i>
                 <span class="kt-hidden-mobile">Cancelar</span>
             </a>
@@ -36,7 +36,7 @@
                 [formGroup]="parceironegocioForm" class="kt-form">
                 <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
                     (close)="onAlertClose($event)">
-                    <b>Erro ao salvar o parceironegocio.</b>&nbsp;Realize as correções e tente novamente.
+                    <b>Erro ao salvar o parceiro de negócio.</b>&nbsp;Realize as correções e tente novamente.
                 </kt-alert>
 
                 <input formControlName="CD_PAR" type="hidden">
@@ -62,8 +62,8 @@
                                 <label class="col-lg-2 col-form-label">CNPJ:</label>
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
-                                        <input matInput placeholder="Digite o CNPJ"
-                                            formControlName="CNPJ">
+                                        <input type="text" matInput placeholder="Digite o CNPJ"
+                                            formControlName="CNPJ" [textMask]="{mask: mask}">
                                         <mat-error>
                                             O campo CNPJ é <strong>obrigatório</strong>
                                         </mat-error>
@@ -212,7 +212,7 @@
             </div>
             <div class="modal-body">
                 <p>
-                    Deseja cancelar as alterações realizadas e retornar à listagem de parceironegocios?
+                    Deseja cancelar as alterações realizadas e retornar à listagem de parceiro de negócios?
                 </p>
             </div>
             <div class="modal-footer">

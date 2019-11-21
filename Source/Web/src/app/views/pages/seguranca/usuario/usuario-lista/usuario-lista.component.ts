@@ -19,7 +19,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class UsuarioListaComponent implements OnInit, AfterViewInit {
 
 	dataSource: UsuarioDataSource;
-	displayedColumns = ["TX_NOME", "TX_LOGIN", "OP_STATUS", "editar"];
+	displayedColumns = ["TX_NOME", "TX_LOGIN", "NomeStatus", "editar"];
 	tamanho: number;
 
 	salvouSucesso: boolean = false;

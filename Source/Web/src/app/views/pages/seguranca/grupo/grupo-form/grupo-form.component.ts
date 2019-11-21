@@ -207,20 +207,21 @@ export class GrupoFormComponent implements OnInit {
 	}
 
 	adicionarRotina() {
-
-		let rotinaOperacoes = new RotinaOperacoes();
-		rotinaOperacoes.rotina = this.listaRotinas.find(o => o.CD_ROT == this.cdRotSelecionada);
-
-		this.listaOperacoes.forEach(function (op) {
-
-			let operacaoAdicionar = new Operacao;
-			operacaoAdicionar.CD_OPR = op.CD_OPR;
-			operacaoAdicionar.TX_DSC = op.TX_DSC;
-			operacaoAdicionar.selecionada = false;
-
-			rotinaOperacoes.operacoes.push(operacaoAdicionar);
-		})
-		this.listaRotinaOperacoesSelecionadas.push(rotinaOperacoes);
+		if(this.cdRotSelecionada){
+			let rotinaOperacoes = new RotinaOperacoes();
+			rotinaOperacoes.rotina = this.listaRotinas.find(o => o.CD_ROT == this.cdRotSelecionada);
+	
+			this.listaOperacoes.forEach(function (op) {
+	
+				let operacaoAdicionar = new Operacao;
+				operacaoAdicionar.CD_OPR = op.CD_OPR;
+				operacaoAdicionar.TX_DSC = op.TX_DSC;
+				operacaoAdicionar.selecionada = false;
+	
+				rotinaOperacoes.operacoes.push(operacaoAdicionar);
+			})
+			this.listaRotinaOperacoesSelecionadas.push(rotinaOperacoes);
+		}
 	}
 
 	habilitarEdicao(){

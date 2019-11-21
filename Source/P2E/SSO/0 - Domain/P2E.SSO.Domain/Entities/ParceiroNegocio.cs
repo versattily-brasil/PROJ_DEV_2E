@@ -42,10 +42,10 @@ namespace P2E.SSO.Domain.Entities
                 AddNotification("CNPJ", $"CNPJ é obrigatório.");
             else
             {
-                if (!Funcoes.IsCnpj(CNPJ))
-                {
-                    AddNotification("CNPJ", $"CNPJ é inválido.");
-                }
+                //if (!Funcoes.IsCnpj(CNPJ))
+                //{
+                //    AddNotification("CNPJ", $"CNPJ é inválido.");
+                //}
             }
             return Valid;
         }
