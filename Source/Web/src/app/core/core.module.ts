@@ -29,6 +29,7 @@ import { OperacaoService } from './seguranca/operacao.service';
 import { ServicoService } from './seguranca/servico.service';
 import { TelaAtualService } from './tela-atual.service';
 import { GrupoService } from './seguranca/grupo.service';
+import { MenuService } from './seguranca/menu.service';
 import { ParceiroNegocioService } from './seguranca/parceironegocio.service';
 import { ModuloService } from './seguranca/modulo.service';
 
@@ -82,6 +83,8 @@ import { ModuloService } from './seguranca/modulo.service';
 		LogadoGuard,
 		JwtHelperService,
 		TelaAtualService,
+		GrupoService,
+		MenuService,
 		GrupoService,
 		ParceiroNegocioService,
 		ModuloService

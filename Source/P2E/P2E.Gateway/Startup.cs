@@ -21,6 +21,16 @@ namespace P2E.Gateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
+                });
+            });
+
             services.AddOcelot(Configuration);
         }
 
@@ -34,6 +44,7 @@ namespace P2E.Gateway
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseCors("EnableCORS");
             await app.UseOcelot();
         }
     }

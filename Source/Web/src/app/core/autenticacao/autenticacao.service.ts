@@ -22,6 +22,7 @@ export class AutenticacaoService {
     public armazenaInfoLogin(usuario:Usuario){
         localStorage.setItem("token", usuario.API_TOKEN);
         localStorage.setItem("nome", usuario.TX_NOME);
+        localStorage.setItem("cd_usr", usuario.CD_USR.toString());
     }
 
     public logado() {
@@ -38,5 +39,10 @@ export class AutenticacaoService {
 
     public get nomeLogado(){
         return localStorage.getItem("nome");
+    }
+
+    
+    public get idUsuario(){
+        return localStorage.getItem("cd_usr");
     }
 }

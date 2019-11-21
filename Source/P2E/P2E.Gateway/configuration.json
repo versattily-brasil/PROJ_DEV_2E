@@ -1,33 +1,9 @@
 {
+  "GlobalConfiguration": {
+    "BaseUrl": "localhost"
+  },
   "ReRoutes": [
-
-    // ADM  
-    {
-      "DownstreamPathTemplate": "/api/{version}/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "7008"
-        }
-      ],
-      "UpstreamPathTemplate": "/adm/{version}/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
-    },
-    // IMP  
-    {
-      "DownstreamPathTemplate": "/api/{version}/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "7009"
-        }
-      ],
-      "UpstreamPathTemplate": "/imp/{version}/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
-    },
-    // SSO  
+    // sso
     {
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
@@ -39,9 +15,19 @@
       ],
       "UpstreamPathTemplate": "/sso/{version}/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    // imp
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "imp.2e.versattily.com",
+          "Port": "80"
+        }
+      ],
+      "UpstreamPathTemplate": "/imp/{version}/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     }
-  ],
- "GlobalConfiguration": {
-    "BaseUrl" :  "localhost:7000"
-  }
+  ]
 }

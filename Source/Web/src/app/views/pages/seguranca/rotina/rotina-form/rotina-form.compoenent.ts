@@ -41,7 +41,8 @@ export class RotinaFormComponent implements OnInit {
 	listaRotinas: Rotina[] = [];
 	listaOperacoes: Operacao[] = [];
 
-    listaMenu: string[] = ["usuario","rotina","grupo","parceiroNegocio","servico","detalhencm","programacaobot","moeda"];
+	listaMenu: string[] = 
+	["/seguranca/usuarios","/seguranca/rotinas","/seguranca/grupos","/seguranca/parceironegocio","/seguranca/servicos","/importacao/detalhencm","programacaobot","/importacao/moeda"];
 	listaRotinaAssociadas: Rotina[] = [];
 
 	cdSrvSelecionado = 0;

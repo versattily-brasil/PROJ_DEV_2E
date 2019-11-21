@@ -1,3 +1,5 @@
+
+
 // Directives
 export { SparklineChartOptions, SparklineChartDirective } from './directives/sparkline-chart.directive';
 export { OffcanvasDirective } from './directives/offcanvas.directive';
@@ -34,6 +36,7 @@ export { TranslationService } from './services/translation.service';
 export { LayoutConfigService } from './services/layout-config.service';
 export { LayoutRefService } from './services/layout-ref.service';
 export { MenuAsideService } from './services/menu-aside.service';
+import { MenuService } from '../../seguranca/menu.service';
 export { MenuConfigService } from './services/menu-config.service';
 export { MenuHorizontalService } from './services/menu-horizontal.service';
 export { PageConfigService } from './services/page-config.service';
