@@ -103,6 +103,7 @@ import { RotinaListaComponent } from './rotina/rotina-list/rotina-list.component
 import { RotinaFormComponent } from './rotina/rotina-form/rotina-form.compoenent';
 import { ParceiroNegocioListaComponent } from './parceironegocio/parceironegocio-lista/parceironegocio-lista.component';
 import { ParceiroNegocioFormComponent } from './parceironegocio/parceironegocio-form/parceironegocio-form.component';
+import { ServicoListaComponent } from './servico/servico-lista/servico-lista.component';
 
 // tslint:disable-next-line:class-name
 const routes: Routes = [
@@ -143,6 +144,10 @@ const routes: Routes = [
 			{
 				path: 'parceironegocio/cadastro',
 				component: ParceiroNegocioFormComponent
+			},
+			{
+				path: 'servicos',
+				component: ServicoListaComponent
 			}
 		]
 	}
@@ -237,7 +242,8 @@ const routes: Routes = [
 		RotinaListaComponent,
 		RotinaFormComponent,
 		ParceiroNegocioListaComponent,
-		ParceiroNegocioFormComponent
+		ParceiroNegocioFormComponent,
+		ServicoListaComponent
 
 
 		// ECommerceComponent,
@@ -262,7 +268,8 @@ const routes: Routes = [
 		RotinaListaComponent,
 		RotinaFormComponent,
 		ParceiroNegocioListaComponent,
-		ParceiroNegocioFormComponent
+		ParceiroNegocioFormComponent,
+		ServicoListaComponent
 	]
 })
 export class SegurancaModule { }

@@ -87,7 +87,8 @@ import { ModuloService } from './seguranca/modulo.service';
 		MenuService,
 		GrupoService,
 		ParceiroNegocioService,
-		ModuloService
+		ModuloService,
+		ServicoService
 	]
 })
 export class CoreModule {

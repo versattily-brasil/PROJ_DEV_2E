@@ -18,6 +18,9 @@ export class PageConfig {
 			},
 			'parceironegocio': {
 				page: {title: 'Parceiro de Negócio', desc: ''}
+			},
+			'servico': {
+				page: {title: 'Serviço', desc: ''}
 			}
 		},
 		ngbootstrap: {
