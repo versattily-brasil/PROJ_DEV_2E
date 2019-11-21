@@ -14,6 +14,7 @@ import * as objectPath from 'object-path';
 // Layout
 import { LayoutConfigService, MenuAsideService, MenuOptions, OffcanvasOptions } from '../../../core/_base/layout';
 import { HtmlClassService } from '../html-class.service';
+import { RotinaService } from '../../../core/seguranca/rotina.service';
 
 @Component({
 	selector: 'kt-aside-left',
@@ -75,7 +76,8 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 		public layoutConfigService: LayoutConfigService,
 		private router: Router,
 		private render: Renderer2,
-		private cdr: ChangeDetectorRef
+		private cdr: ChangeDetectorRef,
+		private rotinaService: RotinaService
 	) {
 	}
 
@@ -226,5 +228,19 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 
 	disableScroll() {
 		return this.layoutConfigService.getConfig('aside.menu.dropdown') || false;
+	}
+
+	abrirAbas(cod){
+
+		
+		this.rotinaService.getRotinasAssociadas(cod.CD_ROT).subscribe(rotinas=>{
+			
+			rotinas.forEach(item => {
+				
+				let jan = window.open(item.Rotina.TX_URL,item.Rotina.TX_NOME);
+			});
+
+		});
+		window.open(cod.page,"Principal");
 	}
 }

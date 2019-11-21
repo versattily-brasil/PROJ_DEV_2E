@@ -195,7 +195,7 @@ export class GrupoFormComponent implements OnInit {
 
 			item.operacoes.forEach(function (op) {
 
-				if (u.RotinaGrupoOperacao.filter(o => o.CD_ROT == item.rotina.CD_ROT && o.CD_OPR == op.CD_OPR).length > 0) {
+				if (u.RotinaGrupoOperacao.filter(o => item.rotina && o.CD_ROT == item.rotina.CD_ROT && o.CD_OPR == op.CD_OPR).length > 0) {
 					op.selecionada = true;
 				}
 			})

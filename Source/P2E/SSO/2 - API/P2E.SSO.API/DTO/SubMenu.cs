@@ -9,5 +9,7 @@ namespace P2E.SSO.API.DTO
     {
         public string title { get; set; }
         public string page { get; set; }
+
+        public int CD_ROT { get; set; }
     }
 }

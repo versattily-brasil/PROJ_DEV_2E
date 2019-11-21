@@ -332,7 +332,8 @@ namespace P2E.SSO.API.Controllers
                     var listItem = new SubMenu()
                     {
                         title = rotina.TX_NOME,
-                        page = rotina.TX_URL
+                        page = rotina.TX_URL,
+                        CD_ROT = rotina.CD_ROT
                     };
 
                     //if (rotina.RotinasAssociadas != null && rotina.RotinasAssociadas.Any())
