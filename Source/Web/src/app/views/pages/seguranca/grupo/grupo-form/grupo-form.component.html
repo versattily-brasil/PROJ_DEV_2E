@@ -32,7 +32,7 @@
 
         <div>
             <!--begin::Form-->
-            <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="grupo | async; else loading"
+            <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="grupo | async"
                 [formGroup]="grupoForm" class="kt-form">
                 <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
                     (close)="onAlertClose($event)">
