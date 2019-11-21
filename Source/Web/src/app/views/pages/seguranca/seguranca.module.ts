@@ -99,6 +99,10 @@ import { NgbProgressbarModule, NgbProgressbarConfig, NgbModule } from '@ng-boots
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { GrupoListaComponent } from './grupo/grupo-lista/grupo-lista.component';
 import { GrupoFormComponent } from './grupo/grupo-form/grupo-form.component';
+import { RotinaListaComponent } from './rotina/rotina-list/rotina-list.component';
+import { RotinaFormComponent } from './rotina/rotina-form/rotina-form.compoenent';
+import { ParceiroNegocioListaComponent } from './parceironegocio/parceironegocio-lista/parceironegocio-lista.component';
+import { ParceiroNegocioFormComponent } from './parceironegocio/parceironegocio-form/parceironegocio-form.component';
 
 // tslint:disable-next-line:class-name
 const routes: Routes = [
@@ -120,10 +124,26 @@ const routes: Routes = [
 				path: 'grupos',
 				component: GrupoListaComponent
 			},
-			 {
-			 	path: 'grupos/cadastro',
-			 	component: GrupoFormComponent,
-			 }
+			{
+				path: 'grupos/cadastro',
+				component: GrupoFormComponent,
+			},
+			{
+				path: 'rotinas',
+				component: RotinaListaComponent,
+			},
+			{
+				path: 'rotinas/cadastro',
+				component: RotinaFormComponent,
+			},
+			{
+				path: 'parceironegocio',
+				component: ParceiroNegocioListaComponent,
+			},
+			{
+				path: 'parceironegocio/cadastro',
+				component: ParceiroNegocioFormComponent
+			}
 		]
 	}
 ];
@@ -213,8 +233,12 @@ const routes: Routes = [
 		UsuarioListaComponent,
 		UsuarioFormComponent,
 		GrupoListaComponent,
-		GrupoFormComponent
-		
+		GrupoFormComponent,
+		RotinaListaComponent,
+		RotinaFormComponent,
+		ParceiroNegocioListaComponent,
+		ParceiroNegocioFormComponent
+
 
 		// ECommerceComponent,
 		// // Customers
@@ -230,11 +254,15 @@ const routes: Routes = [
 		// SpecificationsListComponent,
 		// SpecificationEditDialogComponent,
 	],
-	exports:[
+	exports: [
 		UsuarioListaComponent,
 		UsuarioFormComponent,
 		GrupoListaComponent,
-		GrupoFormComponent
+		GrupoFormComponent,
+		RotinaListaComponent,
+		RotinaFormComponent,
+		ParceiroNegocioListaComponent,
+		ParceiroNegocioFormComponent
 	]
 })
 export class SegurancaModule { }
