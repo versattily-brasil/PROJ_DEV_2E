@@ -83,15 +83,11 @@ import { ModuloService } from './seguranca/modulo.service';
 		LogadoGuard,
 		JwtHelperService,
 		TelaAtualService,
-<<<<<<< .mine
 		GrupoService,
-		MenuService
-
-=======
+		MenuService,
 		GrupoService,
 		ParceiroNegocioService,
 		ModuloService
->>>>>>> .theirs
 	]
 })
 export class CoreModule {
