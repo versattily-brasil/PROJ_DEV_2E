@@ -39,7 +39,7 @@ export class MenuConfig {
 							page: '/seguranca/grupos'
 						},						{
 							title: 'Serviços',
-							page: '/seguranca/servicos'
+							page: '/seguranca/servico'
 						}
 					]
 				},
@@ -51,7 +51,7 @@ export class MenuConfig {
 					submenu: [
 						{
 							title: 'Detalhes NCM',
-							page: '/seguranca/parceiros-negocio'
+							page: '/seguranca/parceironegocio'
 						},
 						{
 							title: 'Moeda',
@@ -67,7 +67,7 @@ export class MenuConfig {
 					submenu: [
 						{
 							title: 'Teste de Rotina - Leo',
-							page: '/seguranca/parceiros-negocio'
+							page: '/seguranca/parceironegocio'
 						}
 					]
 				}
