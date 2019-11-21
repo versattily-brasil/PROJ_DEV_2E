@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 // State
 import { AppState } from '../../../../../core/reducers';
+import { User } from '../../../../../views/pages/material/formcontrols/autocomplete/autocomplete.component';
 
 @Component({
 	selector: 'kt-user-profile2',
@@ -13,7 +14,7 @@ import { AppState } from '../../../../../core/reducers';
 })
 export class UserProfile2Component implements OnInit {
 	// Public properties
-	// user$: Observable<User>;
+	 user$: Observable<User>;
 
 	@Input() avatar: boolean = true;
 	@Input() greeting: boolean = true;
