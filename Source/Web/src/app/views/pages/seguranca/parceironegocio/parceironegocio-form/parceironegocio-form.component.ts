@@ -71,7 +71,7 @@ export class ParceiroNegocioFormComponent implements OnInit {
 
 			if(id == 0){
 				this.modoEdicao = true;
-				this.titulo = "Cadastrar ParceiroNegocio";
+				this.titulo = "Cadastrar Parceiro de Negócio";
 			}
 
 			this.parceironegocio = this.parceironegocioService.getParceiroNegocio(id).pipe(
@@ -94,7 +94,7 @@ export class ParceiroNegocioFormComponent implements OnInit {
 
 
 	getTitle() {
-		return "Visualizar ParceiroNegocio"
+		return "Visualizar Parceiro de Negócio"
 	}
 
 	exibirModal(content) {
@@ -175,7 +175,7 @@ export class ParceiroNegocioFormComponent implements OnInit {
 	habilitarEdicao(){
 		this.modalService.dismissAll();
 		this.modoEdicao = true;
-		this.titulo = "Editar Parceiro Negocio"
+		this.titulo = "Editar Parceiro de Negócio"
 	}
 
 	excluir(){
