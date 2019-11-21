@@ -31,7 +31,7 @@ import { RotinaUsuarioOperacao } from '../../../../../core/models/rotina-usuario
 
 export class UsuarioFormComponent implements OnInit {
 
-	titulo:string = "Visualizar Usuário";
+	titulo: string = "Visualizar Usuário";
 
 	modoEdicao: boolean = false;
 
@@ -40,7 +40,7 @@ export class UsuarioFormComponent implements OnInit {
 	usuarioForm: FormGroup;
 	hasFormErrors: boolean = false;
 
-	loadingSalvar:boolean = false;
+	loadingSalvar: boolean = false;
 
 	usuario: Observable<Usuario>;
 	listaModulos: Modulo[] = [];
@@ -57,8 +57,8 @@ export class UsuarioFormComponent implements OnInit {
 	cdSrvSelecionado = 0;
 	cdRotSelecionada = 0;
 
-	@ViewChild('content8', {static: true}) private modalSalvando: TemplateRef<any>;
-	@ViewChild('content12', {static: true}) private modalExcluindo: TemplateRef<any>;
+	@ViewChild('content8', { static: true }) private modalSalvando: TemplateRef<any>;
+	@ViewChild('content12', { static: true }) private modalExcluindo: TemplateRef<any>;
 
 	constructor(
 		private modalService: NgbModal,
@@ -85,7 +85,7 @@ export class UsuarioFormComponent implements OnInit {
 		this.activatedRoute.params.subscribe(params => {
 			let id = params['id'] && params['id'] > 0 ? params['id'] : 0;
 
-			if(id == 0){
+			if (id == 0) {
 				this.modoEdicao = true;
 				this.titulo = "Cadastrar Usuário";
 			}
@@ -148,10 +148,10 @@ export class UsuarioFormComponent implements OnInit {
 		this.modalService.dismissAll();
 
 		let ngbModalOptions: NgbModalOptions = {
-			backdrop : 'static',
-			keyboard : false
-	  	};
-		this.modalService.open(this.modalSalvando,ngbModalOptions);
+			backdrop: 'static',
+			keyboard: false
+		};
+		this.modalService.open(this.modalSalvando, ngbModalOptions);
 
 		let usuarioSalvar: Usuario = this.usuarioForm.value;
 		usuarioSalvar.UsuarioGrupo = [];
@@ -178,20 +178,20 @@ export class UsuarioFormComponent implements OnInit {
 
 			rotinaOp.operacoes.forEach(function (op) {
 
-				if(op.selecionada){
+				if (op.selecionada) {
 
 					let rotinaUsuarioOperacaoSalvar: RotinaUsuarioOperacao = new RotinaUsuarioOperacao();
 					rotinaUsuarioOperacaoSalvar.CD_USR = usuarioSalvar.CD_USR;
 					rotinaUsuarioOperacaoSalvar.CD_OPR = op.CD_OPR;
 					rotinaUsuarioOperacaoSalvar.CD_ROT = rotinaOp.rotina.CD_ROT;
-	
+
 					usuarioSalvar.RotinaUsuarioOperacao.push(rotinaUsuarioOperacaoSalvar);
 				}
 			});
 		});
 
-		this.usuarioService.salvarUsuario(usuarioSalvar).subscribe(result=>{
-			
+		this.usuarioService.salvarUsuario(usuarioSalvar).subscribe(result => {
+
 			this.modalService.dismissAll();
 			this.router.navigate(['/seguranca/usuarios', { sucesso: "true" }]);
 		})
@@ -281,41 +281,46 @@ export class UsuarioFormComponent implements OnInit {
 
 	adicionarRotina() {
 
-		let rotinaOperacoes = new RotinaOperacoes();
-		rotinaOperacoes.rotina = this.listaRotinas.find(o => o.CD_ROT == this.cdRotSelecionada);
+		if (this.cdRotSelecionada) {
 
-		this.listaOperacoes.forEach(function (op) {
+			let rotinaOperacoes = new RotinaOperacoes();
+			rotinaOperacoes.rotina = this.listaRotinas.find(o => o.CD_ROT == this.cdRotSelecionada);
 
-			let operacaoAdicionar = new Operacao;
-			operacaoAdicionar.CD_OPR = op.CD_OPR;
-			operacaoAdicionar.TX_DSC = op.TX_DSC;
-			operacaoAdicionar.selecionada = false;
+			this.listaOperacoes.forEach(function (op) {
 
-			rotinaOperacoes.operacoes.push(operacaoAdicionar);
-		})
-		this.listaRotinaOperacoesSelecionadas.push(rotinaOperacoes);
+				let operacaoAdicionar = new Operacao;
+				operacaoAdicionar.CD_OPR = op.CD_OPR;
+				operacaoAdicionar.TX_DSC = op.TX_DSC;
+				operacaoAdicionar.selecionada = false;
+
+				rotinaOperacoes.operacoes.push(operacaoAdicionar);
+			})
+			this.listaRotinaOperacoesSelecionadas.push(rotinaOperacoes);
+		}
+
+
 	}
 
-	habilitarEdicao(){
+	habilitarEdicao() {
 		this.modalService.dismissAll();
 		this.modoEdicao = true;
 		this.titulo = "Editar Usuário"
 	}
 
-	excluir(){
+	excluir() {
 
 		this.modalService.dismissAll();
 
 		let ngbModalOptions: NgbModalOptions = {
-			backdrop : 'static',
-			keyboard : false
-	  	};
-		this.modalService.open(this.modalExcluindo,ngbModalOptions);
+			backdrop: 'static',
+			keyboard: false
+		};
+		this.modalService.open(this.modalExcluindo, ngbModalOptions);
 
 		let usuarioExcluir: Usuario = this.usuarioForm.value;
 
-		this.usuarioService.deletarUsuario(usuarioExcluir.CD_USR).subscribe(result=>{
-			
+		this.usuarioService.deletarUsuario(usuarioExcluir.CD_USR).subscribe(result => {
+
 			this.modalService.dismissAll();
 			this.router.navigate(['/seguranca/usuarios', { excluido: "true" }]);
 		})

@@ -42,6 +42,8 @@ export class ParceiroNegocioFormComponent implements OnInit {
 	cdSrvSelecionado = 0;
 	cdModSelecionado = 0;
 
+	public mask = [/[0-9]/, /\d/, '.', /\d/, /\d/, /\d/,'.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/,'-', /\d/, /\d/];
+
 	@ViewChild('content8', {static: true}) private modalSalvando: TemplateRef<any>;
 	@ViewChild('content12', {static: true}) private modalExcluindo: TemplateRef<any>;
 
@@ -158,14 +160,16 @@ export class ParceiroNegocioFormComponent implements OnInit {
 		});
 	}
 	adicionarParceiroModuloServico() {
-
-		let novo : ParceiroModuloServico = new ParceiroModuloServico();
+		if(this.cdModSelecionado && this.cdSrvSelecionado){
+			let novo : ParceiroModuloServico = new ParceiroModuloServico();
 			novo.CD_MOD=this.cdModSelecionado;
 			novo.CD_SRV=this.cdSrvSelecionado;
 			novo.NomeModulo = this.listaModulos.find(o=>o.CD_MOD==this.cdModSelecionado).TX_DSC;
 			novo.NomeServico = this.listaServicos.find(o=>o.CD_SRV==this.cdSrvSelecionado).TXT_DEC;	
 
 			this.listaParceiroServicoModulo.push(novo);
+		}
+
 	}
 
 	habilitarEdicao(){

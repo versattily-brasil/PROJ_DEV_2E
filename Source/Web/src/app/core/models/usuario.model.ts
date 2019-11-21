@@ -21,6 +21,8 @@ export class Usuario {
     UsuarioGrupo:UsuarioGrupo[] = [];
     UsuarioModulo:UsuarioModulo[] = [];
     RotinaUsuarioOperacao:RotinaUsuarioOperacao[] = [];
+
+    NomeStatus:string; 
 }
 
 export class UsuarioStatus{

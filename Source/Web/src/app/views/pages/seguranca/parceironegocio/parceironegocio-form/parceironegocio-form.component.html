@@ -62,8 +62,8 @@
                                 <label class="col-lg-2 col-form-label">CNPJ:</label>
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
-                                        <input matInput placeholder="Digite o CNPJ"
-                                            formControlName="CNPJ">
+                                        <input type="text" matInput placeholder="Digite o CNPJ"
+                                            formControlName="CNPJ" [textMask]="{mask: mask}">
                                         <mat-error>
                                             O campo CNPJ é <strong>obrigatório</strong>
                                         </mat-error>

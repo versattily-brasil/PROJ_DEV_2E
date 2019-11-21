@@ -15,7 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { PartialsModule } from '../../partials/partials.module';
 // Core
 import { FakeApiService } from '../../../core/_base/layout';
-
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 // // Core => Services
@@ -180,6 +180,7 @@ const routes: Routes = [
 		MatTabsModule,
 		MatTooltipModule,
 		NgbProgressbarModule,
+		TextMaskModule,
 		environment.isMockEnabled ? HttpClientInMemoryWebApiModule.forFeature(FakeApiService, {
 			passThruUnknownUrl: true,
 			dataEncapsulation: false
