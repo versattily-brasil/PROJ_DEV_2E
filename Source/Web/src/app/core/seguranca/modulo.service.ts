@@ -11,22 +11,14 @@ export class ModuloService {
 
     constructor(private http: HttpClient, private auth:AutenticacaoService) { }
 
-    public getModulos(tx_nome:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
-    
-        var params = new HttpParams()
-            .set("tx_nome",tx_nome)
-            .set("currentpage",currentpage.toString())
-            .set("pagesize", pagesize.toString())
-            .set("orderby",orderby)
-            .set("descending",descending.toString());
-        
-        
+    public getModulos(): Observable<any> {
+
         const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
-        });
+         });
      
-        return this.http.get(environment.baseUrl + "/api/v1/modulo/todos", { headers: reqHeader, params: params} );
+        return this.http.get(environment.baseUrl + "/api/v1/modulo/todos", { headers: reqHeader} );
     }
 }

@@ -1,0 +1,314 @@
+<kt-portlet>
+    <kt-portlet-header [sticky]="false" [title]="titulo" [class]="'kt-portlet__head--lg'">
+
+        <ng-container ktPortletTools>
+
+            <a (click)="exibirModal(content7)" class="btn btn-secondary kt-margin-r-10" mat-raised-button
+                matTooltip="Retornar à lista de parceironegocios">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Cancelar</span>
+            </a>
+
+            <button *ngIf="!modoEdicao" mat-raised-button class="kt-margin-r-10 btn-success"
+                (click)="exibirModal(content9)">
+                Editar
+            </button>
+
+            <button *ngIf="!modoEdicao" mat-raised-button color="warn" class="kt-margin-r-10"
+                (click)="exibirModal(content11)">
+                Excluir
+            </button>
+
+            <button *ngIf="modoEdicao" mat-raised-button color="primary" class="kt-margin-r-10"
+                (click)="exibirModal(content10)">
+                Salvar
+            </button>
+
+
+
+        </ng-container>
+    </kt-portlet-header>
+    <kt-portlet-body>
+
+        <div>
+            <!--begin::Form-->
+            <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="parceironegocio | async; else loading"
+                [formGroup]="parceironegocioForm" class="kt-form">
+                <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+                    (close)="onAlertClose($event)">
+                    <b>Erro ao salvar o parceironegocio.</b>&nbsp;Realize as correções e tente novamente.
+                </kt-alert>
+
+                <input formControlName="CD_PAR" type="hidden">
+
+                <div class="kt-form__section kt-form__section--first">
+                    <div class="">
+                        <div class="row">
+
+                            <div class="form-group row col-lg-6">
+                                <label class="col-lg-2 col-form-label">Razão Social:</label>
+                                <div class="col-lg-8 example-container">
+                                    <mat-form-field class="col-lg-12">
+                                        <input matInput placeholder="Digite o Nome do parceiro" formControlName="TXT_RZSOC">
+                                        <mat-error>
+                                            O campo Razão social é <strong>obrigatório</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row col-lg-6">
+                                <label class="col-lg-2 col-form-label">CNPJ:</label>
+                                <div class="col-lg-8 example-container">
+                                    <mat-form-field class="col-lg-12">
+                                        <input matInput placeholder="Digite o CNPJ"
+                                            formControlName="CNPJ">
+                                        <mat-error>
+                                            O campo CNPJ é <strong>obrigatório</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <div class="row">
+
+                            <div class="form-group row col-lg-6">
+                                <label class="col-lg-2 col-form-label">Email:</label>
+                                <div class="col-lg-8 example-container">
+                                    <mat-form-field class="col-lg-12">
+                                        <input matInput placeholder="Digite o Email"
+                                            formControlName="TX_EMAIL">
+                                        <mat-error>
+                                            O campo Email é <strong>obrigatório</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <br />
+        <br />
+
+        <div class="kt-section">
+            <div class="kt-section__content">
+                <ngb-tabset>
+
+                    <ngb-tab title="Associação : Parceiro Negócio x Módulo x Serviço">
+                        <ng-template ngbTabContent>
+
+                            <mat-card>
+                                <div class="row" style="height: 50px;" [ngClass]="{'modoVisualizacao': !modoEdicao}">
+
+                                    <div class="form-group row col-lg-5" *ngIf="listaModulos">
+                                        <label class="col-lg-2 col-form-label">Módulos:</label>
+                                        <div class="col-lg-8 example-container">
+                                            <mat-form-field class="col-lg-12">
+                                                <mat-select [(ngModel)]="cdModSelecionado"
+                                                    placeholder="Selecione um Modulo">
+                                                    <mat-option value="{{modulo.CD_MOD}}"
+                                                        *ngFor="let modulo of listaModulos">
+                                                        {{modulo.TX_DSC}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row col-lg-5" *ngIf="listaServicos">
+                                        <label class="col-lg-2 col-form-label">Serviços:</label>
+                                        <div class="col-lg-8 example-container">
+                                            <mat-form-field class="col-lg-12">
+                                                <mat-select [(ngModel)]="cdSrvSelecionado"
+                                                    placeholder="Selecione um Serviço">
+                                                    <mat-option value="{{servico.CD_SRV}}"
+                                                        *ngFor="let servico of listaServicos">
+                                                        {{servico.TXT_DEC}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-1">
+                                        <button (click)="adicionarParceiroModuloServico()" mat-raised-button color="primary"
+                                            matTooltip="Associar parceiro negocio x Modulo x Servico">
+                                            <i style="font-size: 20px;" class="la la-plus"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </mat-card>
+
+                            <br />
+                            <br />
+
+                            <table *ngIf="listaServicos && listaParceiroServicoModulo" id="table-origem-md" class="table"
+                                [ngClass]="{'modoVisualizacao': !modoEdicao}">
+                                <thead class="thead-themed">
+                                    <tr>
+                                        <th>Módulo:</th>
+                                        <th>Serviço:</th>
+                                        <th width="100px"></th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let parceiroSM of listaParceiroServicoModulo">
+                                        <td>
+                                            {{parceiroSM.NomeModulo}}
+                                        </td>
+                                        <td>
+                                            {{parceiroSM.NomeServico}}
+                                        </td>
+                                        <td class="text-center" (click)="removerParceiroServicoModulo(parceiroSM,i)">
+                                            <i style="font-weight:bold;cursor:pointer"
+                                                class="la la-times-circle-o text-danger"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
+
+
+
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </div>
+        </div>
+
+
+
+    </kt-portlet-body>
+</kt-portlet>
+
+
+
+<div class="kt-section">
+    <div class="kt-section__content">
+        <ng-template #content7 let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Cancelar Alterações</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Deseja cancelar as alterações realizadas e retornar à listagem de parceironegocios?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="cancelar()">Confirmar</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<div class="kt-section">
+    <div class="kt-section__content">
+        <ng-template #content9 let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar Registro</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Deseja editar o registro?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cancelar</button>
+                <button type="button" class="btn btn-success" (click)="habilitarEdicao()">Confirmar</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<div class="kt-section">
+    <div class="kt-section__content">
+        <ng-template #content10 let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Salvar Registro</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Deseja salvar o registro?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cancelar</button>
+                <button type="button" class="btn btn-success" (click)="salvar()">Confirmar</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<div class="kt-section">
+    <div class="kt-section__content">
+        <ng-template #content11 let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmar exclusão do registro</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <kt-alert type="warn" [showCloseButton]="false">
+                    <p>O registro será definitivamente removido do banco de dados!</p>
+                </kt-alert>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="excluir()">Confirmar</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<div class="kt-section">
+    <div class="kt-section__content">
+        <ng-template #content8>
+            <div class="modal-body">
+                <p>
+                    Salvando as informações do registro. Por favor, aguarde.<mat-spinner [diameter]="20"></mat-spinner>
+                </p>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<div class="kt-section">
+    <div class="kt-section__content">
+        <ng-template #content12>
+            <div class="modal-body">
+                <p>
+                    Exluindo o registro. Por favor, aguarde.<mat-spinner [diameter]="20"></mat-spinner>
+                </p>
+            </div>
+        </ng-template>
+    </div>
+</div>

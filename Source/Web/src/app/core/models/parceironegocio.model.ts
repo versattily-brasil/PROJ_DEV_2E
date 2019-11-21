@@ -5,6 +5,6 @@ export class ParceiroNegocio {
     TXT_RZSOC: string;
     CNPJ: string;
     TX_EMAIL: string;
-    ParceiroModuloServico: ParceiroModuloServico[] = [];
+    ParceiroNegocioServicoModulo: ParceiroModuloServico[] = [];
 }
 

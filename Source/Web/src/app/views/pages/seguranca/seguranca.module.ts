@@ -102,6 +102,7 @@ import { GrupoFormComponent } from './grupo/grupo-form/grupo-form.component';
 import { RotinaListaComponent } from './rotina/rotina-list/rotina-list.component';
 import { RotinaFormComponent } from './rotina/rotina-form/rotina-form.compoenent';
 import { ParceiroNegocioListaComponent } from './parceironegocio/parceironegocio-lista/parceironegocio-lista.component';
+import { ParceiroNegocioFormComponent } from './parceironegocio/parceironegocio-form/parceironegocio-form.component';
 
 // tslint:disable-next-line:class-name
 const routes: Routes = [
@@ -138,11 +139,11 @@ const routes: Routes = [
 			{
 				path: 'parceironegocio',
 				component: ParceiroNegocioListaComponent,
+			},
+			{
+				path: 'parceironegocio/cadastro',
+				component: ParceiroNegocioFormComponent
 			}
-			// {
-			// 	path: 'parceironegocio/cadastro',
-			// 	component: ParceiroNegocioFormComponent,
-			// }
 		]
 	}
 ];
@@ -235,7 +236,8 @@ const routes: Routes = [
 		GrupoFormComponent,
 		RotinaListaComponent,
 		RotinaFormComponent,
-		ParceiroNegocioListaComponent
+		ParceiroNegocioListaComponent,
+		ParceiroNegocioFormComponent
 
 
 		// ECommerceComponent,
@@ -259,7 +261,8 @@ const routes: Routes = [
 		GrupoFormComponent,
 		RotinaListaComponent,
 		RotinaFormComponent,
-		ParceiroNegocioListaComponent
+		ParceiroNegocioListaComponent,
+		ParceiroNegocioFormComponent
 	]
 })
 export class SegurancaModule { }

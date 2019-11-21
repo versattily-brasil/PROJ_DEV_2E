@@ -89,10 +89,10 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 	}
 
 	adicionarParceiroNegocio() {
-		this.router.navigateByUrl('/seguranca/parceironegocios/cadastro');
+		this.router.navigateByUrl('/seguranca/parceironegocio/cadastro');
 	}
 
 	visualizarParceiroNegocio(cd_par) {
-		this.router.navigate(['/seguranca/parceironegocios/cadastro', { id: cd_par }]);
+		this.router.navigate(['/seguranca/parceironegocio/cadastro', { id: cd_par }]);
 	}
 }

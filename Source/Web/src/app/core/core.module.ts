@@ -30,6 +30,7 @@ import { ServicoService } from './seguranca/servico.service';
 import { TelaAtualService } from './tela-atual.service';
 import { GrupoService } from './seguranca/grupo.service';
 import { ParceiroNegocioService } from './seguranca/parceironegocio.service';
+import { ModuloService } from './seguranca/modulo.service';
 
 
 
@@ -82,7 +83,8 @@ import { ParceiroNegocioService } from './seguranca/parceironegocio.service';
 		JwtHelperService,
 		TelaAtualService,
 		GrupoService,
-		ParceiroNegocioService
+		ParceiroNegocioService,
+		ModuloService
 	]
 })
 export class CoreModule {
