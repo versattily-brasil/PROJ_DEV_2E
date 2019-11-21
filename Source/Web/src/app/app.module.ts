@@ -33,6 +33,7 @@ import { CoreModule } from './core/core.module';
 import { ThemeModule } from "./views/theme/theme.module";
 // Partials
 import { PartialsModule } from './views/partials/partials.module';
+
 // Layout Services
 import {
 	DataTableService,
@@ -45,7 +46,7 @@ import {
 	MenuHorizontalService,
 	PageConfigService,
 	SplashScreenService,
-	SubheaderService
+	SubheaderService,
 } from './core/_base/layout';
 // Auth
 import { AuthModule } from './views/pages/auth/auth.module';
@@ -60,6 +61,7 @@ import * as scss from 'highlight.js/lib/languages/scss';
 import * as xml from 'highlight.js/lib/languages/xml';
 import * as json from 'highlight.js/lib/languages/json';
 import { JwtModule } from '@auth0/angular-jwt';
+
 
 // tslint:disable-next-line:class-name
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {

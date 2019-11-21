@@ -29,6 +29,7 @@ import { OperacaoService } from './seguranca/operacao.service';
 import { ServicoService } from './seguranca/servico.service';
 import { TelaAtualService } from './tela-atual.service';
 import { GrupoService } from './seguranca/grupo.service';
+import { MenuService } from './seguranca/menu.service';
 
 
 
@@ -80,7 +81,8 @@ import { GrupoService } from './seguranca/grupo.service';
 		LogadoGuard,
 		JwtHelperService,
 		TelaAtualService,
-		GrupoService
+		GrupoService,
+		MenuService
 	]
 })
 export class CoreModule {
