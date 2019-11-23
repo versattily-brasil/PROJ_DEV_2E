@@ -100,10 +100,16 @@
                                         <input matInput placeholder="Confirme a senha do usuário"
                                             formControlName="CONFIRMA_SENHA">
                                         <mat-error>
-                                            O campo Confirmação de Senha é <strong>obrigatório</strong>
+                                            
+                                            <span *ngIf="usuarioForm.controls.CONFIRMA_SENHA != usuarioForm.controls.SENHA" class="error">
+                                                Confirmação de senha inválida
+                                            </span>
+
+                                            <span *ngIf="usuarioForm.controls.CONFIRMA_SENHA == ''" class="error">
+                                                    O campo Confirmação de Senha é <strong>obrigatório</strong>
+                                                </span>
                                         </mat-error>
                                     </mat-form-field>
-
                                 </div>
                             </div>
 
@@ -118,13 +124,21 @@
                                 <label class="col-lg-2 col-form-label">Status:</label>
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
-                                        <mat-select placeholder="Selecione o Status do usuário"
+                                        <!-- <mat-select placeholder="Selecione o Status do usuário"
+                                        
                                             formControlName="OP_STATUS">
-                                            <mat-option value="{{status.OP_STATUS}}"
+                                            <mat-option value="{{OP_STATUS}}"
                                                 *ngFor="let status of listaStatus;">
                                                 {{status.TX_DESC}}
                                             </mat-option>
+                                        </mat-select> -->
+
+                                        <mat-select [(value)]="OP_STATUS" placeholder="Selecione o Status do usuário" formControlName="OP_STATUS">
+                                            <mat-option *ngFor="let status of listaStatus" [value]="status.OP_STATUS">
+                                                {{status.TX_DESC}}
+                                            </mat-option>
                                         </mat-select>
+                                        
                                         <mat-error>
                                             O campo Status é <strong>obrigatório</strong>
                                         </mat-error>

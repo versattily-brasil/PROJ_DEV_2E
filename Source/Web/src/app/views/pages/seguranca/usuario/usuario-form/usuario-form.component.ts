@@ -19,7 +19,7 @@ import { RotinaOperacoes } from '../../../../../core/models/rotina-operacoes.mod
 import { UsuarioGrupo } from '../../../../../core/models/usuario-grupo.model';
 import { UsuarioModulo } from '../../../../../core/models/usuario-modulo.model';
 import { RotinaUsuarioOperacao } from '../../../../../core/models/rotina-usuario-operacao.model';
-
+import { PasswordValidation } from './password-validation';
 
 @Component({
 	// tslint:disable-next-line:component-selector
@@ -80,7 +80,11 @@ export class UsuarioFormComponent implements OnInit {
 			TX_SENHA: ['', Validators.required],
 			CONFIRMA_SENHA: ['', Validators.required],
 			OP_STATUS: ['1', Validators.required],
-		});
+		}
+		, {
+			validator: PasswordValidation.MatchPassword // your validation method
+		  }
+		);
 
 		this.activatedRoute.params.subscribe(params => {
 			let id = params['id'] && params['id'] > 0 ? params['id'] : 0;
