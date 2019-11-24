@@ -32,8 +32,8 @@
 
         <div>
             <!--begin::Form-->
-            <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="usuario | async"
-                [formGroup]="usuarioForm" class="kt-form">
+            <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="usuario | async" [formGroup]="usuarioForm"
+                class="kt-form">
                 <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
                     (close)="onAlertClose($event)">
                     <b>Erro ao salvar o usuário.</b>&nbsp;Realize as correções e tente novamente.
@@ -100,14 +100,16 @@
                                         <input matInput placeholder="Confirme a senha do usuário"
                                             formControlName="CONFIRMA_SENHA">
                                         <mat-error>
-                                            
-                                            <span *ngIf="usuarioForm.controls.CONFIRMA_SENHA != usuarioForm.controls.SENHA" class="error">
+
+                                            <span
+                                                *ngIf="usuarioForm.controls.CONFIRMA_SENHA != usuarioForm.controls.SENHA"
+                                                class="error">
                                                 Confirmação de senha inválida
                                             </span>
 
                                             <span *ngIf="usuarioForm.controls.CONFIRMA_SENHA == ''" class="error">
-                                                    O campo Confirmação de Senha é <strong>obrigatório</strong>
-                                                </span>
+                                                O campo Confirmação de Senha é <strong>obrigatório</strong>
+                                            </span>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -133,12 +135,13 @@
                                             </mat-option>
                                         </mat-select> -->
 
-                                        <mat-select [(value)]="OP_STATUS" placeholder="Selecione o Status do usuário" formControlName="OP_STATUS">
+                                        <mat-select [(value)]="OP_STATUS" placeholder="Selecione o Status do usuário"
+                                            formControlName="OP_STATUS">
                                             <mat-option *ngFor="let status of listaStatus" [value]="status.OP_STATUS">
                                                 {{status.TX_DESC}}
                                             </mat-option>
                                         </mat-select>
-                                        
+
                                         <mat-error>
                                             O campo Status é <strong>obrigatório</strong>
                                         </mat-error>
@@ -319,22 +322,28 @@
                             <br />
                             <br />
 
-                            <table *ngIf="listaOperacoes && listaRotinaOperacoesSelecionadas" id="table-origem-md" class="table" [ngClass]="{'modoVisualizacao': !modoEdicao}">
+                            <table *ngIf="listaOperacoes && listaRotinaOperacoesSelecionadas" id="table-origem-md"
+                                class="table" [ngClass]="{'modoVisualizacao': !modoEdicao}">
                                 <thead class="thead-themed">
                                     <tr>
                                         <th>Rotina:</th>
                                         <th *ngFor="let operacao of listaOperacoes">
                                             {{operacao.TX_DSC}}
                                         </th>
+                                        <th style="width: 50px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let rotinaOp of listaRotinaOperacoesSelecionadas">
+                                    <tr *ngFor="let rotinaOp of listaRotinaOperacoesSelecionadas; let i = index">
                                         <td>
                                             {{rotinaOp.rotina.TX_NOME}}
                                         </td>
                                         <td *ngFor="let op of rotinaOp.operacoes">
                                             <mat-checkbox [(ngModel)]="op.selecionada"></mat-checkbox>
+                                        </td>
+                                        <td class="text-center" (click)="removerRotinaSelecionada(i)">
+                                            <i style="font-weight:bold;cursor:pointer"
+                                                class="la la-times-circle-o text-danger"></i>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -428,7 +437,7 @@
     <div class="kt-section__content">
         <ng-template #content11 let-c="close" let-d="dismiss">
             <div class="modal-header">
-                <h4 class="modal-title">Confirmar  exclusão do registro</h4>
+                <h4 class="modal-title">Confirmar exclusão do registro</h4>
                 <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -459,13 +468,13 @@
 </div>
 
 <div class="kt-section">
-        <div class="kt-section__content">
-            <ng-template #content12>
-                <div class="modal-body">
-                    <p>
-                        Exluindo o registro. Por favor, aguarde.<mat-spinner [diameter]="20"></mat-spinner>
-                    </p>
-                </div>
-            </ng-template>
-        </div>
+    <div class="kt-section__content">
+        <ng-template #content12>
+            <div class="modal-body">
+                <p>
+                    Exluindo o registro. Por favor, aguarde.<mat-spinner [diameter]="20"></mat-spinner>
+                </p>
+            </div>
+        </ng-template>
     </div>
+</div>

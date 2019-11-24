@@ -248,4 +248,8 @@ export class GrupoFormComponent implements OnInit {
 			this.router.navigate(['/seguranca/grupos', { excluido: "true" }]);
 		})
 	}
+
+	removerRotinaSelecionada(index){
+		this.listaRotinaOperacoesSelecionadas.splice(index,1);
+	}
 }
