@@ -241,6 +241,6 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 			});
 
 		});
-		window.open('#'+cod.page,cod.TX_NOME);
+		window.open('#'+cod.page,cod.title);
 	}
 }
