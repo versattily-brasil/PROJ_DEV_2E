@@ -8,6 +8,7 @@ import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { merge } from 'rxjs/internal/observable/merge';
 import { fromEvent } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ServicoService } from '../../../../../core/seguranca/servico.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class RotinaListaComponent implements OnInit, AfterViewInit {
 
 	dataSource: RotinaDataSource;
-	displayedColumns = ["TX_NOME", "TX_NOME", "CD_SRV", "editar"];
+	displayedColumns = ["TX_NOME", "TX_NOME", "descricaoServico", "editar"];
 	tamanho: number;
 
 	salvouSucesso: boolean = false;
@@ -32,7 +33,8 @@ export class RotinaListaComponent implements OnInit, AfterViewInit {
 	constructor(
 		private rotinaService: RotinaService,
 		private router: Router,
-		private activatedRoute: ActivatedRoute) {
+		private activatedRoute: ActivatedRoute,
+		private servicoService: ServicoService) {
 
 	}
 
@@ -50,7 +52,7 @@ export class RotinaListaComponent implements OnInit, AfterViewInit {
 
 
 		this.tamanho = 20;
-		this.dataSource = new RotinaDataSource(this.rotinaService);
+		this.dataSource = new RotinaDataSource(this.rotinaService,this.servicoService);
 		this.dataSource.loadRotinas('', 1, 10, "TX_NOME", false);
 	}
 
