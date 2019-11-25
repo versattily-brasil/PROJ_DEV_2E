@@ -4,8 +4,9 @@
 
     <kt-portlet-header [sticky]="false" [title]="'Lista de Parceiros de Negócios'" [class]="'kt-portlet__head--lg'">
         <ng-container ktPortletTools>
-            <button mat-raised-button color="primary" (click)="adicionarParceiroNegocio()" matTooltip="Create new product"><i
-                    class="la la-plus-circle"></i>&nbsp;&nbsp;Novo parceiro de negócio</button>
+            <button mat-raised-button color="primary" (click)="adicionarParceiroNegocio()"
+             matTooltip="Create new product" *ngIf="verificarPermissao('Criar')">
+             <i class="la la-plus-circle"></i>&nbsp;&nbsp;Novo parceiro de negócio</button>
         </ng-container>
     </kt-portlet-header>
     <!-- end::Header -->
@@ -50,7 +51,8 @@
                     <mat-header-cell style="flex: 0 0 75px;" *matHeaderCellDef>
                     </mat-header-cell>
                     <mat-cell style="flex: 0 0 75px;" *matCellDef="let parceironegocio">
-                        <button type="button" mat-icon-button color="primary" (click)="visualizarParceiroNegocio(parceironegocio.CD_PAR)" 
+                        <button type="button" mat-icon-button color="primary"
+                         (click)="visualizarParceiroNegocio(parceironegocio.CD_PAR)" 
                         *ngIf="verificarPermissao('Visualizar')"
                         matTooltip="Visualizar Parceiro Negocio">
                             <mat-icon>search</mat-icon>

@@ -103,6 +103,9 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 		this.router.navigate(['/seguranca/parceironegocio/cadastro', { id: cd_par }]);
 	}
 
+	//-------------------------------------------------------------------------------------------------
+	// Método para carregar as permissões da página----------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
 	carregarPermissoes(){
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
@@ -110,19 +113,28 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 		});
 	}
 
+	//-------------------------------------------------------------------------------------------------
+	// Método para verificar a permissão sobre componente----------------------------------------------
+	//-------------------------------------------------------------------------------------------------
 	verificarPermissao(acao:string){
-		if(this.permissoes === null || this.permissoes === [])
+		console.log('ação: ' + acao);
+
+		if(this.permissoes === undefined || this.permissoes === null || this.permissoes === [])
 		{
-			return null;
+			return false;
 		}
 
 		var encontrou = this.permissoes.filter(filtro => filtro.TX_DSC === acao);
 
 		console.log(encontrou);
 
-		if(encontrou == undefined || encontrou == null)
-		return false;
+		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
+		{
+			return false;
+		}
 		else
-		return true;
+		{
+			return true;
+		}
 	}
 }

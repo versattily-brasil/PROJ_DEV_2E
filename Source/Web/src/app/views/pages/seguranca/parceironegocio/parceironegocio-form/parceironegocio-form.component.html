@@ -10,12 +10,12 @@
             </a>
 
             <button *ngIf="!modoEdicao" mat-raised-button class="kt-margin-r-10 btn-success"
-                (click)="exibirModal(content9)">
+                (click)="exibirModal(content9)" *ngIf="verificarPermissao('Editar')"> 
                 Editar
             </button>
 
             <button *ngIf="!modoEdicao" mat-raised-button color="warn" class="kt-margin-r-10"
-                (click)="exibirModal(content11)">
+                (click)="exibirModal(content11)"  *ngIf="verificarPermissao('Deletar')">
                 Excluir
             </button>
 
