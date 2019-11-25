@@ -155,9 +155,9 @@ namespace P2E.SSO.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/v1/usuario/obter-permissoes/{id}")]
+        [Route("api/v1/usuario/obter-permissoes-menu/{id}")]
         [AllowAnonymous]
-        public List<Menu> ObterPermissoes(int id)
+        public List<Menu> ObterPermissoesMenu(int id)
         {
             #region Carrega permissões de Usuario x Grupo
             var usuarioGrupos = ObterPermissoeGrupo(id);
@@ -195,7 +195,7 @@ namespace P2E.SSO.API.Controllers
                     {
                         var rotinaViewModel = new RotinaViewModel()
                         {
-                            CD_ROT = subitem.Rotina.CD_ROT,
+                            CD_ROT = subitem.Rotina.CD_ROT,                                                         
                             TX_NOME = subitem.Rotina.TX_NOME,
                             TX_URL = subitem.Rotina.TX_URL
                         };
@@ -366,6 +366,188 @@ namespace P2E.SSO.API.Controllers
 
             //var menu = FillProperties(listItems, seedOnly);
             return listItems; //new SmartNavigation(menu);
+            #endregion
+
+        }
+
+        [HttpGet]
+        [Route("api/v1/usuario/obter-permissoes/{id}/{nomeRotina}")]
+        [AllowAnonymous]
+        public List<Permissao> ObterPermissoes(int id, string nomeRotina)
+        {
+            #region Carrega permissões de Usuario x Grupo
+            var usuarioGrupos = ObterPermissoeGrupo(id);
+
+            var servicosViewModel = new List<ServicoViewModel>();
+
+            // carregar os serviços
+            foreach (var item in usuarioGrupos)
+            {
+                foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                {
+                    if (!servicosViewModel.Any(p => p.CD_SRV == subitem.Rotina.Servico.CD_SRV))
+                    {
+                        var servico = subitem.Rotina.Servico;
+                        servicosViewModel.Add(new ServicoViewModel()
+                        {
+                            CD_SRV = servico.CD_SRV,
+                            TXT_DEC = servico.TXT_DEC
+                        });
+                    }
+                }
+            }
+
+            // carregar as rotinas dos serviços
+            foreach (var item in usuarioGrupos)
+            {
+                foreach (var subitem in item.ListaRotinaGrupoOperacao)
+                {
+                    var servico = servicosViewModel.First(p => p.CD_SRV == subitem.Rotina.CD_SRV);
+
+                    if (servico.RotinasViewModel == null)
+                        servico.RotinasViewModel = new List<RotinaViewModel>();
+
+                    if (!servico.RotinasViewModel.Any(p => p.CD_ROT == subitem.CD_ROT))
+                    {
+                        var rotinaViewModel = new RotinaViewModel()
+                        {
+                            CD_ROT = subitem.Rotina.CD_ROT,
+                            TX_NOME = subitem.Rotina.TX_NOME,
+                            TX_URL = subitem.Rotina.TX_URL
+                        };
+
+                        var lista = ObterRotinasAssociadas(subitem.CD_ROT);
+                        rotinaViewModel.RotinasAssociadas = lista;
+
+                        if (rotinaViewModel.OperacoesViewModel == null)
+                        {
+                            rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                        }
+
+                        if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == subitem.CD_OPR))
+                        {
+                            rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                            {
+                                CD_OPR = subitem.CD_OPR,
+                                TX_DSC = subitem.Operacao.TX_DSC
+                            });
+                        }
+
+                        servico.RotinasViewModel.Add(rotinaViewModel);
+                    }
+                    else
+                    {
+                        var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p => p.CD_ROT == subitem.CD_ROT);
+
+                        if (rotinaViewModel.OperacoesViewModel == null)
+                        {
+                            rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                        }
+
+                        if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == subitem.CD_OPR))
+                        {
+                            rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                            {
+                                CD_OPR = subitem.CD_OPR,
+                                TX_DSC = subitem.Operacao.TX_DSC
+                            });
+                        }
+
+                    }
+                }
+            }
+            #endregion
+
+            #region Carrega permissões de Usuario x Rotina
+            var usuarioRotinas = ObterPermissoesUsuario(id);
+
+            // carregar os serviços
+            foreach (var item in usuarioRotinas)
+            {
+                if (!servicosViewModel.Any(p => p.CD_SRV == item.Rotina.Servico.CD_SRV))
+                {
+                    var servico = item.Rotina.Servico;
+
+                    if (!servicosViewModel.Any(p => p.CD_SRV == servico.CD_SRV))
+                    {
+                        servicosViewModel.Add(new ServicoViewModel()
+                        {
+                            CD_SRV = servico.CD_SRV,
+                            TXT_DEC = servico.TXT_DEC
+                        });
+                    }
+                }
+            }
+
+            // carregar as rotinas dos serviços
+            foreach (var item in usuarioRotinas)
+            {
+                var servico = servicosViewModel.First(p => p.CD_SRV == item.Rotina.CD_SRV);
+
+                if (servico.RotinasViewModel == null)
+                    servico.RotinasViewModel = new List<RotinaViewModel>();
+
+                if (!servico.RotinasViewModel.Any(p => p.CD_ROT == item.CD_ROT))
+                {
+                    var rotinaViewModel = new RotinaViewModel()
+                    {
+                        CD_ROT = item.Rotina.CD_ROT,
+                        TX_NOME = item.Rotina.TX_NOME,
+                        TX_URL = item.Rotina.TX_URL
+                    };
+
+                    if (rotinaViewModel.OperacoesViewModel == null)
+                    {
+                        rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                    }
+
+                    if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == item.CD_OPR))
+                    {
+                        rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                        {
+                            CD_OPR = item.CD_OPR,
+                            TX_DSC = item.Operacao.TX_DSC
+                        });
+                    }
+
+                    servico.RotinasViewModel.Add(rotinaViewModel);
+                }
+                else
+                {
+                    var rotinaViewModel = servico.RotinasViewModel.FirstOrDefault(p => p.CD_ROT == item.CD_ROT);
+
+                    if (rotinaViewModel.OperacoesViewModel == null)
+                    {
+                        rotinaViewModel.OperacoesViewModel = new List<OperacaoViewModel>();
+                    }
+
+                    if (!rotinaViewModel.OperacoesViewModel.Any(p => p.CD_OPR == item.CD_OPR))
+                    {
+                        rotinaViewModel.OperacoesViewModel.Add(new OperacaoViewModel()
+                        {
+                            CD_OPR = item.CD_OPR,
+                            TX_DSC = item.Operacao.TX_DSC
+                        });
+                    }
+
+                }
+            }
+            #endregion
+
+            #region Montar Menu
+            var permissoes = new List<Permissao>();
+            foreach (var servico in servicosViewModel)
+            {
+                foreach (var rotina in servico.RotinasViewModel.Where(p=> p.TX_NOME.ToLower() == nomeRotina.ToLower()))
+                {
+                    foreach (var permissao in rotina.OperacoesViewModel)
+                    {
+                        permissoes.Add(new Permissao() { TX_DSC = permissao.TX_DSC});
+                    }
+                }
+            }
+
+            return permissoes;
             #endregion
 
         }
