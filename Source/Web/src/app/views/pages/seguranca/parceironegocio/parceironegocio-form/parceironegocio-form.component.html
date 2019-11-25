@@ -9,13 +9,13 @@
                 <span class="kt-hidden-mobile">Cancelar</span>
             </a>
 
-            <button *ngIf="!modoEdicao" mat-raised-button class="kt-margin-r-10 btn-success"
-                (click)="exibirModal(content9)" *ngIf="verificarPermissao('Editar')"> 
+            <button *ngIf="!modoEdicao && verificarPermissao('Editar')" mat-raised-button class="kt-margin-r-10 btn-success"
+                (click)="exibirModal(content9)"> 
                 Editar
             </button>
 
-            <button *ngIf="!modoEdicao" mat-raised-button color="warn" class="kt-margin-r-10"
-                (click)="exibirModal(content11)"  *ngIf="verificarPermissao('Deletar')">
+            <button *ngIf="!modoEdicao && verificarPermissao('Deletar')" mat-raised-button color="warn" class="kt-margin-r-10"
+                (click)="exibirModal(content11)">
                 Excluir
             </button>
 
