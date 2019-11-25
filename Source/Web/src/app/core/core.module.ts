@@ -32,6 +32,7 @@ import { GrupoService } from './seguranca/grupo.service';
 import { MenuService } from './seguranca/menu.service';
 import { ParceiroNegocioService } from './seguranca/parceironegocio.service';
 import { ModuloService } from './seguranca/modulo.service';
+import { PermissaoService } from './seguranca/permissao.service';
 
 
 
@@ -88,7 +89,8 @@ import { ModuloService } from './seguranca/modulo.service';
 		GrupoService,
 		ParceiroNegocioService,
 		ModuloService,
-		ServicoService
+		ServicoService,
+		PermissaoService
 	]
 })
 export class CoreModule {

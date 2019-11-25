@@ -6,8 +6,12 @@ import { ParceiroNegocioDataSource } from '../../../../../core/seguranca/parceir
 import { MatPaginator, MatSort } from '@angular/material';
 import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { merge } from 'rxjs/internal/observable/merge';
-import { fromEvent } from 'rxjs';
+import { fromEvent, BehaviorSubject, from } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PermissaoService } from '../../../../../core/seguranca/permissao.service';
+import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
+import { Permissao } from '../../../../../core/models/permissao.model';
+
 
 
 @Component({
@@ -21,6 +25,8 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 	dataSource: ParceiroNegocioDataSource;
 	displayedColumns = ["TXT_RZSOC","CNPJ","TX_EMAIL", "editar"];
 	tamanho: number;
+	nomeRotina : string =  "Parceiro de Negócio";
+	permissoes : Array<Permissao>;
 
 	salvouSucesso: boolean = false;
 	excluidoSucesso: boolean = false;
@@ -31,15 +37,16 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 
 	constructor(
 		private parceironegocioService: ParceiroNegocioService,
+		private permissaoService: PermissaoService,
+		private auth:AutenticacaoService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute) {
-
 	}
 
 
 	ngOnInit(): void {
 
-
+		this.carregarPermissoes();
 
 		this.activatedRoute.params.subscribe(params => {
 			this.salvouSucesso = params['sucesso'] && params['sucesso'] == 'true' ? true : false;
@@ -94,5 +101,28 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 
 	visualizarParceiroNegocio(cd_par) {
 		this.router.navigate(['/seguranca/parceironegocio/cadastro', { id: cd_par }]);
+	}
+
+	carregarPermissoes(){
+		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
+			this.permissoes = permissao;
+			console.log(this.permissoes);
+		});
+	}
+
+	verificarPermissao(acao:string){
+		if(this.permissoes === null || this.permissoes === [])
+		{
+			return null;
+		}
+
+		var encontrou = this.permissoes.filter(filtro => filtro.TX_DSC === acao);
+
+		console.log(encontrou);
+
+		if(encontrou == undefined || encontrou == null)
+		return false;
+		else
+		return true;
 	}
 }

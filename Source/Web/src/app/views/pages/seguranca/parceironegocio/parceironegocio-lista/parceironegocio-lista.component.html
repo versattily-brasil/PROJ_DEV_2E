@@ -50,7 +50,9 @@
                     <mat-header-cell style="flex: 0 0 75px;" *matHeaderCellDef>
                     </mat-header-cell>
                     <mat-cell style="flex: 0 0 75px;" *matCellDef="let parceironegocio">
-                        <button type="button" mat-icon-button color="primary" (click)="visualizarParceiroNegocio(parceironegocio.CD_PAR)" matTooltip="Visualizar Parceiro Negocio">
+                        <button type="button" mat-icon-button color="primary" (click)="visualizarParceiroNegocio(parceironegocio.CD_PAR)" 
+                        *ngIf="verificarPermissao('Visualizar')"
+                        matTooltip="Visualizar Parceiro Negocio">
                             <mat-icon>search</mat-icon>
                         </button>
                         <!-- <button type="button" (click)="editProduct(product.id)" mat-icon-button color="primary"

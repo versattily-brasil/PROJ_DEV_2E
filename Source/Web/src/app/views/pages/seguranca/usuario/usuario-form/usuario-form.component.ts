@@ -20,6 +20,7 @@ import { UsuarioGrupo } from '../../../../../core/models/usuario-grupo.model';
 import { UsuarioModulo } from '../../../../../core/models/usuario-modulo.model';
 import { RotinaUsuarioOperacao } from '../../../../../core/models/rotina-usuario-operacao.model';
 import { PasswordValidation } from './password-validation';
+import { InterceptService} from '../../../../../core/_base/crud/utils/intercept.service';
 
 @Component({
 	// tslint:disable-next-line:component-selector
@@ -68,7 +69,8 @@ export class UsuarioFormComponent implements OnInit {
 		private usuarioService: UsuarioService,
 		private operacaoService: OperacaoService,
 		private rotinaService: RotinaService,
-		private servicoService: ServicoService
+		private servicoService: ServicoService,
+		private interceptorService : InterceptService
 	) { }
 
 	ngOnInit() {
@@ -194,11 +196,16 @@ export class UsuarioFormComponent implements OnInit {
 			});
 		});
 
-		this.usuarioService.salvarUsuario(usuarioSalvar).subscribe(result => {
+		this.usuarioService.salvarUsuario(usuarioSalvar).subscribe(
+			result => {
 
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/usuarios', { sucesso: "true" }]);
-		})
+			this.router.navigate(['/seguranca/usuarios', { sucesso: "true" }]);			
+			},
+			error => {
+				this.modalService.dismissAll();
+			   }
+		);
 
 	}
 
