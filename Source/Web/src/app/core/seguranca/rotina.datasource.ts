@@ -3,6 +3,7 @@ import { Rotina } from '../models/rotina.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RotinaService } from './rotina.service';
 import { catchError, finalize } from 'rxjs/operators';
+import { ServicoService } from './servico.service';
 
 export class RotinaDataSource implements DataSource<Rotina> {
 
@@ -13,7 +14,7 @@ export class RotinaDataSource implements DataSource<Rotina> {
     public loading$ = this.loadingSubject.asObservable();
     public totalItems$ = this.totalItemsSubject.asObservable();
 
-    constructor(private rotinaService: RotinaService) {}
+    constructor(private rotinaService: RotinaService, private servicoService: ServicoService) {}
 
     connect(collectionViewer: CollectionViewer): Observable<Rotina[]> {
       return this.rotinaSubject.asObservable();
@@ -38,9 +39,22 @@ export class RotinaDataSource implements DataSource<Rotina> {
         
         )
         .subscribe(rotinas => {
+
+            this.servicoService.getServicos().subscribe(servicos =>{
+
+              rotinas.Items.forEach(r => {
+                
+
+                r.descricaoServico = servicos.find(o=>o.CD_SRV == r.CD_SRV).TXT_DEC;
+              });
+
+              
             console.log(rotinas); 
             this.rotinaSubject.next(rotinas.Items); 
-            this.totalItemsSubject.next(rotinas.TotalItems)
+            this.totalItemsSubject.next(rotinas.TotalItems);
+
+            })
+
         });
     }  
 }

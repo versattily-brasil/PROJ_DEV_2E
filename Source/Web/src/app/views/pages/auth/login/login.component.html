@@ -22,17 +22,17 @@
 					<mat-label style="font-size:18px">Login</mat-label>
 					<input style="font-size:18px" matInput placeholder="Digite seu login" formControlName="email" autocomplete="off"/>
 					<mat-error *ngIf="isControlHasError('email','required')">
-						<strong>{{ 'AUTH.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
+						<strong>O campo Login é obrigatório.</strong>
 					</mat-error>
 					<mat-error *ngIf="isControlHasError('email','email')">
 						<strong>{{ 'AUTH.VALIDATION.INVALID_FIELD' | translate }}</strong>
 					</mat-error>
-					<mat-error *ngIf="isControlHasError('email','minlength')">
+					<!-- <mat-error *ngIf="isControlHasError('email','minlength')">
 						<strong>{{ 'AUTH.VALIDATION.MIN_LENGTH_FIELD' | translate }} 3</strong>
 					</mat-error>
 					<mat-error *ngIf="isControlHasError('email','maxlength')">
 						<strong>{{ 'AUTH.VALIDATION.MAX_LENGTH_FIELD' | translate }} 320</strong>
-					</mat-error>
+					</mat-error> -->
 				</mat-form-field>
 			</div>
 			<div class="form-group">
@@ -40,14 +40,14 @@
 					<mat-label style="font-size:18px">Senha</mat-label>
 					<input style="font-size:18px" matInput type="password" placeholder="Digite sua senha" formControlName="password" autocomplete="off"/>
 					<mat-error *ngIf="isControlHasError('password','required')">
-						<strong>{{ 'AUTH.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
+						<strong>O campo Senha é obrigatório.</strong>
 					</mat-error>
-					<mat-error *ngIf="isControlHasError('password','minlength')">
+					<!-- <mat-error *ngIf="isControlHasError('password','minlength')">
 						<strong>{{ 'AUTH.VALIDATION.MIN_LENGTH_FIELD' | translate }} 3</strong>
 					</mat-error>
 					<mat-error *ngIf="isControlHasError('password','maxlength')">
 						<strong>{{ 'AUTH.VALIDATION.MAX_LENGTH_FIELD' | translate }} 100</strong>
-					</mat-error>
+					</mat-error> -->
 				</mat-form-field>
 			</div>
 			<!--begin::Action-->

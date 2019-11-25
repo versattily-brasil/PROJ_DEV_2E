@@ -132,15 +132,20 @@
                                         <th *ngFor="let operacao of listaOperacoes">
                                             {{operacao.TX_DSC}}
                                         </th>
+                                        <th style="width: 50px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let rotinaOp of listaRotinaOperacoesSelecionadas">
+                                    <tr *ngFor="let rotinaOp of listaRotinaOperacoesSelecionadas; let i = index">
                                         <td>
                                             {{rotinaOp.rotina.TX_DSC}}
                                         </td>
                                         <td *ngFor="let op of rotinaOp.operacoes">
                                             <mat-checkbox [(ngModel)]="op.selecionada"></mat-checkbox>
+                                        </td>
+                                        <td class="text-center" (click)="removerRotinaSelecionada(i)">
+                                            <i style="font-weight:bold;cursor:pointer"
+                                                class="la la-times-circle-o text-danger"></i>
                                         </td>
                                     </tr>
                                 </tbody>

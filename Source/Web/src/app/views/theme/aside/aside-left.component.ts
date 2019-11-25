@@ -237,10 +237,10 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 			
 			rotinas.forEach(item => {
 				
-				let jan = window.open(item.Rotina.TX_URL,item.Rotina.TX_NOME);
+				let jan = window.open('#'+item.Rotina.TX_URL,item.Rotina.TX_NOME);
 			});
 
 		});
-		window.open(cod.page,"Principal");
+		window.open('#'+cod.page,cod.title);
 	}
 }

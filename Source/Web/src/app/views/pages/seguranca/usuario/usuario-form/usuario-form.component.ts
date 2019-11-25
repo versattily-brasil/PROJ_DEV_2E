@@ -336,4 +336,8 @@ export class UsuarioFormComponent implements OnInit {
 			this.router.navigate(['/seguranca/usuarios', { excluido: "true" }]);
 		})
 	}
+
+	removerRotinaSelecionada(index){
+		this.listaRotinaOperacoesSelecionadas.splice(index,1);
+	}
 }
