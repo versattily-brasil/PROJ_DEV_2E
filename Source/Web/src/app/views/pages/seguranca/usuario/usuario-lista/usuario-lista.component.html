@@ -1,13 +1,31 @@
 <ngb-alert [type]="'success'" *ngIf="salvouSucesso" (close)="salvouSucesso=false"> Registro salvo com sucesso!</ngb-alert>
 <ngb-alert [type]="'success'" *ngIf="excluidoSucesso" (close)="excluidoSucesso=false"> Registro excluído com sucesso!</ngb-alert>
 <kt-portlet>
-
+<!-- 
     <kt-portlet-header [sticky]="false" [title]="'Lista de Usuários'" [class]="'kt-portlet__head--lg'">
         <ng-container ktPortletTools>
-            <button mat-raised-button color="primary" (click)="adicionarUsuario()" matTooltip="Create new product"><i
-                    class="la la-plus-circle"></i>&nbsp;&nbsp;Novo usuário</button>
+
+            <a  class="btn btn-secondary" 
+                color="primary"
+                mat-raised-button
+                (click)="adicionarUsuario()"
+                *ngIf="verificarPermissao('Criar')"
+                matTooltip="Criar novo usuário">
+                <i class="la la-plus-circle"></i>
+                <span class="kt-hidden-mobile">Novo usuário</span>
+            </a>
         </ng-container>
-    </kt-portlet-header>
+    </kt-portlet-header> -->
+
+    <kt-portlet-header [sticky]="false" [title]="'Lista de Usuários'"  [class]="'kt-portlet__head--lg'">
+
+            <ng-container ktPortletTools  *ngIf="verificarPermissao('Criar')">    
+                <a (click)="adicionarUsuario()" class="btn btn-primary kt-margin-r-10" mat-raised-button>
+                    <i class="la la-arrow-left"></i>
+                    <span class="kt-hidden-mobile">Novo usuário</span>
+                </a>
+            </ng-container>
+        </kt-portlet-header>
     <!-- end::Header -->
 
     <kt-portlet-body>
@@ -49,13 +67,14 @@
                     <mat-header-cell style="flex: 0 0 75px;" *matHeaderCellDef>
                     </mat-header-cell>
                     <mat-cell style="flex: 0 0 75px;" *matCellDef="let usuario">
-                        <button type="button" mat-icon-button color="primary" (click)="visualizarUsuario(usuario.CD_USR)" matTooltip="Visualizar Usuário">
-                            <mat-icon>search</mat-icon>
-                        </button>
-                        <!-- <button type="button" (click)="editProduct(product.id)" mat-icon-button color="primary"
-                            matTooltip="Edit product">
-                            <mat-icon>create</mat-icon>
-                        </button> -->
+                        <a  class="btn btn-secondary kt-margin-r-10" 
+                        mat-icon-button color="primary"
+                        *ngIf="verificarPermissao('Visualizar')"
+                        (click)="visualizarUsuario(usuario.CD_USR)"
+                        matTooltip="Visualizar Usuário">
+                        <mat-icon>search</mat-icon>
+                        </a>
+
                     </mat-cell>
                 </ng-container>
 

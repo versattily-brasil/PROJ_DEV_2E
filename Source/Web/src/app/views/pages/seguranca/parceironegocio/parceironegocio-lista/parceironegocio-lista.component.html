@@ -1,15 +1,21 @@
 <ngb-alert [type]="'success'" *ngIf="salvouSucesso" (close)="salvouSucesso=false"> Registro salvo com sucesso!</ngb-alert>
 <ngb-alert [type]="'success'" *ngIf="excluidoSucesso" (close)="excluidoSucesso=false"> Registro excluído com sucesso!</ngb-alert>
 <kt-portlet>
-
     <kt-portlet-header [sticky]="false" [title]="'Lista de Parceiros de Negócios'" [class]="'kt-portlet__head--lg'">
+
         <ng-container ktPortletTools>
-            <button mat-raised-button color="primary" (click)="adicionarParceiroNegocio()"
-             matTooltip="Create new product" *ngIf="verificarPermissao('Criar')">
-             <i class="la la-plus-circle"></i>&nbsp;&nbsp;Novo parceiro de negócio</button>
+
+            <a  class="btn btn-secondary kt-margin-r-10" 
+                color="primary"
+                mat-raised-button
+                (click)="adicionarParceiroNegocio()"
+                *ngIf="verificarPermissao('Criar')"
+                matTooltip="Retornar à lista de parceiro de negócios">
+                <i class="la la-plus-circle"></i>
+                <span class="kt-hidden-mobile">Novo parceiro de negócio</span>
+            </a>
         </ng-container>
     </kt-portlet-header>
-    <!-- end::Header -->
 
     <kt-portlet-body>
 
@@ -51,16 +57,14 @@
                     <mat-header-cell style="flex: 0 0 75px;" *matHeaderCellDef>
                     </mat-header-cell>
                     <mat-cell style="flex: 0 0 75px;" *matCellDef="let parceironegocio">
-                        <button type="button" mat-icon-button color="primary"
-                         (click)="visualizarParceiroNegocio(parceironegocio.CD_PAR)" 
+                        <a  class="btn btn-secondary kt-margin-r-10" 
+                        mat-icon-button color="primary"
                         *ngIf="verificarPermissao('Visualizar')"
+                        (click)="visualizarParceiroNegocio(parceironegocio.CD_PAR)"
                         matTooltip="Visualizar Parceiro Negocio">
-                            <mat-icon>search</mat-icon>
-                        </button>
-                        <!-- <button type="button" (click)="editProduct(product.id)" mat-icon-button color="primary"
-                            matTooltip="Edit product">
-                            <mat-icon>create</mat-icon>
-                        </button> -->
+                        <mat-icon>search</mat-icon>
+                        </a>
+
                     </mat-cell>
                 </ng-container>
 

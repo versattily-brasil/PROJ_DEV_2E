@@ -46,7 +46,7 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 
 	ngOnInit(): void {
 
-		this.carregarPermissoes();
+		this.carregarPermissoes();	
 
 		this.activatedRoute.params.subscribe(params => {
 			this.salvouSucesso = params['sucesso'] && params['sucesso'] == 'true' ? true : false;
@@ -59,6 +59,11 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 		this.tamanho = 20;
 		this.dataSource = new ParceiroNegocioDataSource(this.parceironegocioService);
 		this.dataSource.loadParceiroNegocios('', 1, 10, "TXT_RZSOC", false);
+
+		this.carregarPermissoes();	
+
+
+		
 	}
 
 	ngAfterViewInit() {
@@ -84,6 +89,8 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 				tap(() => this.loadLessonsPage())
 			)
 			.subscribe();
+
+			
 	}
 
 	loadLessonsPage() {
@@ -93,6 +100,8 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 			this.paginator.pageSize,
 			this.sort.active,
 			this.sort.direction != 'asc');
+
+			this.carregarPermissoes();	
 	}
 
 	adicionarParceiroNegocio() {

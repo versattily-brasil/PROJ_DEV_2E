@@ -8,6 +8,9 @@ import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { merge } from 'rxjs/internal/observable/merge';
 import { fromEvent } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PermissaoService } from '../../../../../core/seguranca/permissao.service';
+import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
+import { Permissao } from '../../../../../core/models/permissao.model';
 
 
 @Component({
@@ -17,6 +20,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsuarioListaComponent implements OnInit, AfterViewInit {
+
+	nomeRotina : string =  "Usuário";
+	permissoes : Array<Permissao>;
 
 	dataSource: UsuarioDataSource;
 	displayedColumns = ["TX_NOME", "TX_LOGIN", "NomeStatus", "editar"];
@@ -32,7 +38,9 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 	constructor(
 		private usuarioService: UsuarioService,
 		private router: Router,
-		private activatedRoute: ActivatedRoute) {
+		private activatedRoute: ActivatedRoute,
+		private permissaoService: PermissaoService,
+		private auth:AutenticacaoService) {
 
 	}
 
@@ -52,6 +60,8 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 		this.tamanho = 20;
 		this.dataSource = new UsuarioDataSource(this.usuarioService);
 		this.dataSource.loadUsuarios('', 1, 10, "TX_NOME", false);
+
+		this.carregarPermissoes();
 	}
 
 	ngAfterViewInit() {
@@ -94,5 +104,40 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 
 	visualizarUsuario(cd_usr) {
 		this.router.navigate(['/seguranca/usuarios/cadastro', { id: cd_usr }]);
+	}
+
+		//-------------------------------------------------------------------------------------------------
+	// Método para carregar as permissões da página----------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
+	carregarPermissoes(){
+		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
+			this.permissoes = permissao;
+			console.log(this.permissoes);
+		});
+	}
+
+	//-------------------------------------------------------------------------------------------------
+	// Método para verificar a permissão sobre componente----------------------------------------------
+	//-------------------------------------------------------------------------------------------------
+	verificarPermissao(acao:string){
+		console.log('ação: ' + acao);
+
+		if(this.permissoes === undefined || this.permissoes === null || this.permissoes === [])
+		{
+			return false;
+		}
+
+		var encontrou = this.permissoes.filter(filtro => filtro.TX_DSC === acao);
+
+		console.log(encontrou);
+
+		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }
