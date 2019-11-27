@@ -124,11 +124,10 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 
 	//-------------------------------------------------------------------------------------------------
 	// Método para verificar a permissão sobre componente----------------------------------------------
-	//-------------------------------------------------------------------------------------------------
 	verificarPermissao(acao:string){
 		console.log('ação: ' + acao);
 
-		if(this.permissoes === undefined || this.permissoes === null || this.permissoes === [])
+		if(this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0)
 		{
 			return false;
 		}
@@ -139,10 +138,12 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 
 		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
 		{
+			console.log('não encontrou ' + acao);
 			return false;
 		}
 		else
 		{
+			console.log('encontrou ' + acao);
 			return true;
 		}
 	}

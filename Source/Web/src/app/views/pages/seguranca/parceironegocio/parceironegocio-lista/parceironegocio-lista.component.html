@@ -4,15 +4,9 @@
     <kt-portlet-header [sticky]="false" [title]="'Lista de Parceiros de Negócios'" [class]="'kt-portlet__head--lg'">
 
         <ng-container ktPortletTools>
-
-            <a  class="btn btn-secondary kt-margin-r-10" 
-                color="primary"
-                mat-raised-button
-                (click)="adicionarParceiroNegocio()"
-                *ngIf="verificarPermissao('Criar')"
-                matTooltip="Retornar à lista de parceiro de negócios">
-                <i class="la la-plus-circle"></i>
-                <span class="kt-hidden-mobile">Novo parceiro de negócio</span>
+            <a (click)="adicionarParceiroNegocio()" class="btn btn-primary kt-margin-r-10" mat-raised-button [hidden]="verificarPermissao('Criar') === false">
+                <i class="la la-plus"></i>
+                <span class="kt-hidden-mobile">Novo Parceiro de Negócio</span>
             </a>
         </ng-container>
     </kt-portlet-header>
@@ -26,7 +20,6 @@
                     <input matInput placeholder="Digite o nome do Parceiro de Negocio" #filtro
                         class="mat-form-field mat-form-field-fluid">
                 </mat-form-field>
-
             </div>
         </div>
 
@@ -59,12 +52,11 @@
                     <mat-cell style="flex: 0 0 75px;" *matCellDef="let parceironegocio">
                         <a  class="btn btn-secondary kt-margin-r-10" 
                         mat-icon-button color="primary"
-                        *ngIf="verificarPermissao('Visualizar')"
+                        [hidden]="verificarPermissao('Visualizar') === false"
                         (click)="visualizarParceiroNegocio(parceironegocio.CD_PAR)"
                         matTooltip="Visualizar Parceiro Negocio">
                         <mat-icon>search</mat-icon>
                         </a>
-
                     </mat-cell>
                 </ng-container>
 

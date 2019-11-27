@@ -27,7 +27,7 @@ import { Permissao } from '../../../../../core/models/permissao.model';
 
 export class ParceiroNegocioFormComponent implements OnInit {
 
-	titulo:string = "Visualizar ParceiroNegocio";
+	titulo:string = "Visualizar Parceiro de Negócio";
 
 	nomeRotina : string =  "Parceiro de Negócio";
 	permissoes : Array<Permissao>;
@@ -227,7 +227,7 @@ export class ParceiroNegocioFormComponent implements OnInit {
 	verificarPermissao(acao:string){
 		console.log('ação: ' + acao);
 
-		if(this.permissoes === undefined || this.permissoes === null || this.permissoes === [])
+		if(this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0)
 		{
 			return false;
 		}
@@ -238,10 +238,12 @@ export class ParceiroNegocioFormComponent implements OnInit {
 
 		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
 		{
+			console.log('não encontrou ' + acao);
 			return false;
 		}
 		else
 		{
+			console.log('encontrou ' + acao);
 			return true;
 		}
 	}
