@@ -130,9 +130,9 @@
                                             </mat-option>
                                         </mat-select> -->
 
-                                        <mat-select [(value)]="OP_STATUS" placeholder="Selecione o Status do usuário"
+                                        <mat-select placeholder="Selecione o Status do usuário"
                                             formControlName="OP_STATUS">
-                                            <mat-option *ngFor="let status of listaStatus" [value]="status.OP_STATUS">
+                                            <mat-option *ngFor="let status of listaStatus" [value]="status">
                                                 {{status.TX_DESC}}
                                             </mat-option>
                                         </mat-select>

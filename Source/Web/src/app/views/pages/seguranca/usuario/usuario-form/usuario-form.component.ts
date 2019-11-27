@@ -84,18 +84,20 @@ export class UsuarioFormComponent implements OnInit {
 
 	ngOnInit() {
 
-		this.usuarioForm = this.usuarioFB.group({
+		let f = this.usuarioForm = this.usuarioFB.group({
 			CD_USR: [''],
 			TX_NOME: ['', Validators.required],
 			TX_LOGIN: ['', Validators.required],
 			TX_SENHA: ['', Validators.required],
 			CONFIRMA_SENHA: ['', Validators.required],
-			OP_STATUS: ['1', Validators.required],
+			OP_STATUS: [null, Validators.required]
 		}
 		, {
 			validator: PasswordValidation.MatchPassword // your validation method
 		  }
 		);
+
+
 
 		this.activatedRoute.params.subscribe(params => {
 			let id = params['id'] && params['id'] > 0 ? params['id'] : 0;
@@ -110,6 +112,9 @@ export class UsuarioFormComponent implements OnInit {
 
 					this.usuarioForm.patchValue(usuario);
 					this.montarTabelas(usuario);
+
+					const toSelect = this.listaStatus.find(c => c.OP_STATUS == usuario.OP_STATUS);
+					f.get('OP_STATUS').setValue(toSelect);
 				})
 			);
 
@@ -170,7 +175,7 @@ export class UsuarioFormComponent implements OnInit {
 		};
 		this.modalService.open(this.modalSalvando, ngbModalOptions);
 
-		let usuarioSalvar: Usuario = this.usuarioForm.value;
+		let usuarioSalvar = this.usuarioForm.value;
 		usuarioSalvar.UsuarioGrupo = [];
 		usuarioSalvar.UsuarioModulo = [];
 		usuarioSalvar.RotinaUsuarioOperacao = [];
@@ -206,6 +211,11 @@ export class UsuarioFormComponent implements OnInit {
 				}
 			});
 		});
+
+		
+		let statusSalvar = this.listaStatus.find(o=>o.OP_STATUS == usuarioSalvar.OP_STATUS.OP_STATUS).OP_STATUS;
+
+		usuarioSalvar.OP_STATUS = statusSalvar;
 
 		this.usuarioService.salvarUsuario(usuarioSalvar).subscribe(
 			result => {

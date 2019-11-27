@@ -70,11 +70,11 @@ export class RotinaFormComponent implements OnInit {
 
 	ngOnInit() {
 
-		this.rotinaForm = this.rotinaFB.group({
+		let f = this.rotinaForm = this.rotinaFB.group({
 			CD_ROT: [''],
 			TX_NOME: ['', Validators.required],
 			TX_DSC: ['', Validators.required],
-			CD_SRV: ['', Validators.required],
+			CD_SRV: [null, Validators.required],
 			TX_URL: ['', Validators.required]
 		});
 
@@ -89,7 +89,7 @@ export class RotinaFormComponent implements OnInit {
 			this.rotina = this.rotinaService.getRotina(id).pipe(
 				tap(rotina => {
 
-					this.rotinaForm.patchValue(rotina);
+					
 
 					this.rotinaService.getRotinasAssociadas(rotina.CD_ROT).subscribe(rotinasAssociadas=>{
 
@@ -100,14 +100,20 @@ export class RotinaFormComponent implements OnInit {
 
 						
 					});
+
+					this.servicoService.getServicos().subscribe(servicos => {
+						this.listaServicos = servicos;
+						this.rotinaForm.patchValue(rotina);
+						
+						const toSelect = this.listaServicos.find(c => c.CD_SRV == rotina.CD_SRV);
+						f.get('CD_SRV').setValue(toSelect);
+					});
 				})
 			);
 
 		});
 
-		this.servicoService.getServicos().subscribe(servicos => {
-			this.listaServicos = servicos;
-		});
+
 
 		this.carregarPermissoes();
 
@@ -156,7 +162,7 @@ export class RotinaFormComponent implements OnInit {
 	  	};
 		this.modalService.open(this.modalSalvando,ngbModalOptions);
 
-		let rotinaSalvar: Rotina = this.rotinaForm.value;
+		let rotinaSalvar = this.rotinaForm.value;
 		rotinaSalvar.RotinasAssociadas = [];
 
 		this.listaRotinaAssociadas.forEach(function (rot) {
@@ -166,6 +172,10 @@ export class RotinaFormComponent implements OnInit {
 			rotinaAssociadaSalvar.CD_ROT_ASS = rot.CD_ROT;
 			rotinaSalvar.RotinasAssociadas.push(rotinaAssociadaSalvar);
 		});
+
+		let servicoSalvar = this.listaServicos.find(o=>o.CD_SRV == rotinaSalvar.CD_SRV.CD_SRV).CD_SRV;
+
+		rotinaSalvar.CD_SRV = servicoSalvar;
 
 		this.rotinaService.salvarRotina(rotinaSalvar).subscribe(result=>{
 			
