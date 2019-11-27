@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../core/reducers';
 import { AutenticacaoService } from '../../../../core/autenticacao/autenticacao.service';
 import { Usuario } from '../../../../core/models/usuario.model';
+import { MenuService } from '../../../../core/seguranca/menu.service';
 
 
 /**
@@ -59,7 +60,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 		private store: Store<AppState>,
 		private fb: FormBuilder,
 		private cdr: ChangeDetectorRef,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private menuService: MenuService
 	) {
 		this.unsubscribe = new Subject();
 	}
@@ -134,19 +136,34 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 		this.loading = true;
 
-		let usuario:Usuario = new Usuario();
+		let usuario: Usuario = new Usuario();
 		usuario.TX_LOGIN = controls['email'].value;
 		usuario.TX_SENHA = controls['password'].value;
 
 		this.auth.login(usuario).subscribe(
 			res => {
-				
-			  let loginResult: Usuario = res;
-			  this.auth.armazenaInfoLogin(loginResult);
-			  this.router.navigate(["/"]);
-			
+
+
+
+				let loginResult: Usuario = res;
+
+
+
+
+				this.menuService.getPermissoes(loginResult.CD_USR.toString()).subscribe(menus => {
+
+					localStorage.setItem("menus",JSON.stringify(menus));
+					this.auth.armazenaInfoLogin(loginResult);
+					this.router.navigate(["/"]);
+				});
+
+
+
+
+
+
 			}, err => {
-			
+
 				// this.erroLogin = err.error;
 			});
 

@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import * as objectPath from 'object-path';
 // Services
 import { MenuConfigService } from './menu-config.service';
-import { MenuService }  from '../../../seguranca/menu.service';
+import { MenuService } from '../../../seguranca/menu.service';
 import { AutenticacaoService } from '../../../autenticacao/autenticacao.service';
 
 @Injectable()
@@ -19,9 +19,9 @@ export class MenuAsideService {
 	 *
 	 * @param menuConfigService: MenuConfigService
 	 */
-	constructor(private menuConfigService: MenuConfigService, 
-		private menuService : MenuService,
-		private auth:AutenticacaoService) {
+	constructor(private menuConfigService: MenuConfigService,
+		private menuService: MenuService,
+		private auth: AutenticacaoService) {
 		this.loadMenu();
 	}
 
@@ -29,10 +29,19 @@ export class MenuAsideService {
 	 * Load menu list
 	 */
 	loadMenu() {
-		
-		this.menuService.getPermissoes(this.auth.idUsuario).subscribe(menus => {
-			this.menuList$.next(menus);
-		});
+
+		if (localStorage.getItem("menus") && localStorage.getItem("menus") != "undefined") {
+
+			console.log(localStorage.getItem("menus"));
+			this.menuList$.next(JSON.parse(localStorage.getItem("menus")));
+		} else {
+
+			this.menuService.getPermissoes(this.auth.idUsuario).subscribe(menus => {
+				this.menuList$.next(menus);
+			});
+		}
+
+
 	}
 
 	// loadMenu() {
