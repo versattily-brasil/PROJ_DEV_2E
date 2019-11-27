@@ -27,23 +27,14 @@ export class InterceptService implements HttpInterceptor {
 		// console.log(request);
 		// console.log('--- end of request---');
 
-		if (!request.headers.has('Content-Type')) {
-            request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
-        }
-
-		request = request.clone({ headers: request.headers.set('Accept', 'application/json') });
-		
-
 		return next.handle(request).pipe(
 			tap(
 				event => {
 					 if (event instanceof HttpResponse) {
 						// console.log('all looks good');
 						// http response status code
-						console.log(event.status);
+						// console.log(event.status);
 					}
-
-					//return Observable.throw(event);
 				},
 				error => {
 					// http response status code
@@ -51,9 +42,7 @@ export class InterceptService implements HttpInterceptor {
 					// console.error('status code:');
 					// tslint:disable-next-line:no-debugger
 					console.error(error.status);
-					console.error(error.error);
-					// window.alert(error.error);
-					//throw(error);
+					console.error(error.message);
 					// console.log('--- end of response---');
 				}
 			)

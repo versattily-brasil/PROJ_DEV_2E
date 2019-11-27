@@ -37,11 +37,13 @@ import { HtmlClassService } from './html-class.service';
 import { HeaderMobileComponent } from './header/header-mobile/header-mobile.component';
 import { ErrorPageComponent } from './content/error-page/error-page.component';
 import { SegurancaModule } from '../pages/seguranca/seguranca.module';
+import { HomeComponent } from './base/home/home.component';
 
 @NgModule({
 	declarations: [
 		BaseComponent,
 		FooterComponent,
+		HomeComponent,
 
 		// headers
 		HeaderComponent,
@@ -65,6 +67,7 @@ import { SegurancaModule } from '../pages/seguranca/seguranca.module';
 	exports: [
 		BaseComponent,
 		FooterComponent,
+		HomeComponent,
 
 		// headers
 		HeaderComponent,

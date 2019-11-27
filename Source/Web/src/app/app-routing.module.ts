@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BaseComponent } from './views/theme/base/base.component';
 import { ErrorPageComponent } from './views/theme/content/error-page/error-page.component';
 import { LogadoGuard } from './core/autenticacao/logado.guard';
+import { HomeComponent } from './views/theme/base/home/home.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,10 @@ const routes: Routes = [
 		component: BaseComponent,
 		canActivate: [LogadoGuard],
 		children: [
+			{
+				path:'',
+				component:HomeComponent
+			},
 			{
 				path: 'dashboard',
 				loadChildren: () => import('app/views/pages/dashboard/dashboard.module').then(m => m.DashboardModule)
