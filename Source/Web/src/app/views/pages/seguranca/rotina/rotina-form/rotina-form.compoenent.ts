@@ -15,6 +15,9 @@ import { Rotina } from '../../../../../core/models/rotina.model';
 import { Operacao } from '../../../../../core/models/operacao.model';
 import { RotinaOperacoes } from '../../../../../core/models/rotina-operacoes.model';
 import { RotinaAssociada } from '../../../../../core/models/rotina-associada.model';
+import { PermissaoService } from '../../../../../core/seguranca/permissao.service';
+import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
+import { Permissao } from '../../../../../core/models/permissao.model';
 
 
 @Component({
@@ -28,6 +31,9 @@ import { RotinaAssociada } from '../../../../../core/models/rotina-associada.mod
 export class RotinaFormComponent implements OnInit {
 
 	titulo:string = "Visualizar Rotina";
+
+	nomeRotina : string =  "Rotinas";
+	permissoes : Array<Permissao>;
 
 	modoEdicao: boolean = false;
 
@@ -57,7 +63,9 @@ export class RotinaFormComponent implements OnInit {
 		private activatedRoute: ActivatedRoute,
 		private rotinaFB: FormBuilder,
 		private rotinaService: RotinaService,
-		private servicoService: ServicoService
+		private servicoService: ServicoService,
+		private permissaoService: PermissaoService,
+		private auth:AutenticacaoService
 	) { }
 
 	ngOnInit() {
@@ -100,6 +108,9 @@ export class RotinaFormComponent implements OnInit {
 		this.servicoService.getServicos().subscribe(servicos => {
 			this.listaServicos = servicos;
 		});
+
+		this.carregarPermissoes();
+
 
 	}
 
@@ -206,5 +217,42 @@ export class RotinaFormComponent implements OnInit {
     
     removerRotina(rotina, index){
 		this.listaRotinaAssociadas.splice(index, 1);
-    }    
+	}    
+	
+		//-------------------------------------------------------------------------------------------------
+	// Método para carregar as permissões da página----------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
+	carregarPermissoes(){
+		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
+			this.permissoes = permissao;
+			console.log(this.permissoes);
+		});
+	}
+
+	//-------------------------------------------------------------------------------------------------
+	// Método para verificar a permissão sobre componente----------------------------------------------
+	//-------------------------------------------------------------------------------------------------
+	verificarPermissao(acao:string){
+		console.log('ação: ' + acao);
+
+		if(this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0)
+		{
+			return false;
+		}
+
+		var encontrou = this.permissoes.filter(filtro => filtro.TX_DSC === acao);
+
+		console.log(encontrou);
+
+		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
+		{
+			console.log('não encontrou ' + acao);
+			return false;
+		}
+		else
+		{
+			console.log('encontrou ' + acao);
+			return true;
+		}
+	}
 }

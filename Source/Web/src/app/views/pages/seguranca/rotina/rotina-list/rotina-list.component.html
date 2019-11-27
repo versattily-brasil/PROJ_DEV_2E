@@ -4,8 +4,11 @@
 
     <kt-portlet-header [sticky]="false" [title]="'Lista de Rotinas'" [class]="'kt-portlet__head--lg'">
         <ng-container ktPortletTools>
-            <button mat-raised-button color="primary" (click)="adicionarRotina()" matTooltip="Create new product"><i
-                    class="la la-plus-circle"></i>&nbsp;&nbsp;Nova rotina</button>
+            <a (click)="adicionarRotina()" class="btn btn-primary kt-margin-r-10"
+                mat-raised-button  [hidden]="verificarPermissao('Criar') === false">
+                <i class="la la-arrow-left"></i>
+                <span class="kt-hidden-mobile">Novo usuário</span>
+            </a>
         </ng-container>
     </kt-portlet-header>
     <!-- end::Header -->
@@ -49,13 +52,13 @@
                     <mat-header-cell style="flex: 0 0 75px;" *matHeaderCellDef>
                     </mat-header-cell>
                     <mat-cell style="flex: 0 0 75px;" *matCellDef="let rotina">
-                        <button type="button" mat-icon-button color="primary" (click)="visualizarRotina(rotina.CD_ROT)" matTooltip="Visualizar Rotina">
-                            <mat-icon>search</mat-icon>
-                        </button>
-                        <!-- <button type="button" (click)="editProduct(product.id)" mat-icon-button color="primary"
-                            matTooltip="Edit product">
-                            <mat-icon>create</mat-icon>
-                        </button> -->
+                        <a  class="btn btn-secondary kt-margin-r-10" 
+                        mat-icon-button color="primary"
+                        [hidden]="verificarPermissao('Visualizar') === false"
+                        (click)="visualizarRotina(rotina.CD_ROT)"
+                        matTooltip="Visualizar Rotina">
+                        <mat-icon>search</mat-icon>
+                        </a>
                     </mat-cell>
                 </ng-container>
 

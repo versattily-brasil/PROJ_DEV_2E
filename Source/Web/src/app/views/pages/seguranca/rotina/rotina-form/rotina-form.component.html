@@ -2,19 +2,18 @@
     <kt-portlet-header [sticky]="false" [title]="titulo" [class]="'kt-portlet__head--lg'">
 
         <ng-container ktPortletTools>
-
             <a (click)="exibirModal(content7)" class="btn btn-secondary kt-margin-r-10" mat-raised-button
                 matTooltip="Retornar à lista de rotinas">
                 <i class="la la-arrow-left"></i>
                 <span class="kt-hidden-mobile">Cancelar</span>
             </a>
 
-            <button *ngIf="!modoEdicao" mat-raised-button class="kt-margin-r-10 btn-success"
-                (click)="exibirModal(content9)">
+            <button  *ngIf="verificarPermissao('Editar') === true && !modoEdicao" mat-raised-button class="kt-margin-r-10 btn-success"
+                (click)="exibirModal(content9)"> 
                 Editar
             </button>
 
-            <button *ngIf="!modoEdicao" mat-raised-button color="warn" class="kt-margin-r-10"
+            <button  *ngIf="verificarPermissao('Deletar') === true && !modoEdicao"  mat-raised-button color="warn" class="kt-margin-r-10"
                 (click)="exibirModal(content11)">
                 Excluir
             </button>
@@ -23,10 +22,8 @@
                 (click)="exibirModal(content10)">
                 Salvar
             </button>
-
-
-
         </ng-container>
+
     </kt-portlet-header>
     <kt-portlet-body>
 
