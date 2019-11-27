@@ -37,7 +37,7 @@ export class UsuarioFormComponent implements OnInit {
 
 	titulo: string = "Visualizar Usuário";
 
-	nomeRotina : string =  "Usuários";
+	nomeRotina : string =  "Usuário";
 	permissoes : Array<Permissao>;
 
 
@@ -352,7 +352,7 @@ export class UsuarioFormComponent implements OnInit {
 		this.listaRotinaOperacoesSelecionadas.splice(index,1);
 	}
 
-		//-------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
 	// Método para carregar as permissões da página----------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
 	carregarPermissoes(){
@@ -368,7 +368,7 @@ export class UsuarioFormComponent implements OnInit {
 	verificarPermissao(acao:string){
 		console.log('ação: ' + acao);
 
-		if(this.permissoes === undefined || this.permissoes === null || this.permissoes === [])
+		if(this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0)
 		{
 			return false;
 		}
@@ -379,10 +379,12 @@ export class UsuarioFormComponent implements OnInit {
 
 		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
 		{
+			console.log('não encontrou ' + acao);
 			return false;
 		}
 		else
 		{
+			console.log('encontrou ' + acao);
 			return true;
 		}
 	}

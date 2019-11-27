@@ -106,7 +106,7 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 		this.router.navigate(['/seguranca/usuarios/cadastro', { id: cd_usr }]);
 	}
 
-		//-------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
 	// Método para carregar as permissões da página----------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
 	carregarPermissoes(){
@@ -122,7 +122,7 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 	verificarPermissao(acao:string){
 		console.log('ação: ' + acao);
 
-		if(this.permissoes === undefined || this.permissoes === null || this.permissoes === [])
+		if(this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0)
 		{
 			return false;
 		}
@@ -133,10 +133,12 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 
 		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
 		{
+			console.log('não encontrou ' + acao);
 			return false;
 		}
 		else
 		{
+			console.log('encontrou ' + acao);
 			return true;
 		}
 	}
