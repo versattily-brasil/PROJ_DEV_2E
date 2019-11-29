@@ -10,6 +10,8 @@ export class RotinaService {
 
     constructor(private http: HttpClient, private auth:AutenticacaoService) { }
 
+    public telaLista:boolean = true;
+
     public getRotinas(): Observable<any> {
 
         const userToken = localStorage.getItem("token");

@@ -11,7 +11,7 @@ export class GrupoService {
 
     constructor(private http: HttpClient, private auth:AutenticacaoService) { }
 
-    public cd_usr:number = 0;
+    public telaLista:boolean = true;
 
     public getGrupos(tx_dsc:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
     

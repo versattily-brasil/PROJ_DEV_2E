@@ -99,7 +99,8 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 	}
 
 	adicionarUsuario() {
-		this.router.navigateByUrl('/seguranca/usuarios/cadastro');
+		this.usuarioService.telaLista = false;
+		//this.router.navigateByUrl('/seguranca/usuarios/cadastro');
 	}
 
 	visualizarUsuario(cd_usr) {

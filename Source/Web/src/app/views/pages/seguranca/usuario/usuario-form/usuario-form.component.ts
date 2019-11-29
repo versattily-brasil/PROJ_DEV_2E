@@ -143,8 +143,9 @@ export class UsuarioFormComponent implements OnInit {
 	}
 
 	cancelar() {
-		this.router.navigateByUrl('/seguranca/usuarios');
+		//this.router.navigateByUrl('/seguranca/usuarios');
 		this.modalService.dismissAll();
+		this.usuarioService.telaLista = true;
 	}
 
 

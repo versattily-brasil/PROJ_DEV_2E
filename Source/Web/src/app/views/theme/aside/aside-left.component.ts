@@ -6,15 +6,19 @@ import {
 	ElementRef,
 	OnInit,
 	Renderer2,
-	ViewChild
+	ViewChild,
+	NgZone
 } from '@angular/core';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import * as objectPath from 'object-path';
 // Layout
 import { LayoutConfigService, MenuAsideService, MenuOptions, OffcanvasOptions } from '../../../core/_base/layout';
 import { HtmlClassService } from '../html-class.service';
 import { RotinaService } from '../../../core/seguranca/rotina.service';
+import { AbasService } from '../../../core/seguranca/abas.service';
+import { Rotina } from '../../../core/models/rotina.model';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'kt-aside-left',
@@ -24,7 +28,9 @@ import { RotinaService } from '../../../core/seguranca/rotina.service';
 })
 export class AsideLeftComponent implements OnInit, AfterViewInit {
 
-	@ViewChild('asideMenu', {static: true}) asideMenu: ElementRef;
+	listaRotinas = [];
+
+	@ViewChild('asideMenu', { static: true }) asideMenu: ElementRef;
 
 	currentRouteUrl: string = '';
 	insideTm: any;
@@ -77,10 +83,12 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 		private router: Router,
 		private render: Renderer2,
 		private cdr: ChangeDetectorRef,
-		private rotinaService: RotinaService
+		private rotinaService: RotinaService,
+		private abas: AbasService
 	) {
 	}
 
+	
 	ngAfterViewInit(): void {
 	}
 
@@ -101,6 +109,25 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 			// tslint:disable-next-line:max-line-length
 			this.render.setAttribute(this.asideMenu.nativeElement, 'data-ktmenu-dropdown-timeout', objectPath.get(config, 'aside.menu.submenu.dropdown.hover-timeout'));
 		}
+
+		let menus=JSON.parse(localStorage.getItem("menus"));
+
+		menus.forEach(item=>{
+
+			item.submenu.forEach(sub=>{
+
+				this.rotinaService.getRotinasAssociadas(sub.CD_ROT).subscribe(
+					rotinas => {
+						
+						rotinas.forEach(r=>{
+							this.listaRotinas.push(r);
+						})
+						console.log(this.listaRotinas);
+					}
+				);
+			});
+		});
+		
 	}
 
 	/**
@@ -230,17 +257,44 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 		return this.layoutConfigService.getConfig('aside.menu.dropdown') || false;
 	}
 
-	abrirAbas(cod){
 
-		
-		this.rotinaService.getRotinasAssociadas(cod.CD_ROT).subscribe(rotinas=>{
-			
-			rotinas.forEach(item => {
-				
-				let jan = window.open('#'+item.Rotina.TX_URL,item.Rotina.TX_NOME);
-			});
+	abrirAbas(cod) {
 
+		this.abas.limparAbas();
+
+		let listaRotinasAbrir = this.listaRotinas.filter(o=>o.CD_ROT_PRINCIPAL == cod.CD_ROT);
+		listaRotinasAbrir.forEach(item => {
+
+			this.abrirAba(item.NomeRotinaAssociada);
 		});
-		window.open('#'+cod.page,cod.title);
+		this.abrirAba(cod.title);
+	}
+
+	abrirAba(nome) {
+
+		switch (nome) {
+
+			case 'Usuário': {
+				this.abas.changeAbaUsuario();
+				break;
+			}
+			case 'Grupos de Usuários': {
+				this.abas.changeAbaGrupos();
+				break;
+			}
+			case 'Serviços': {
+				this.abas.changeAbaServico();
+				break;
+			}
+			case 'Rotinas': {
+				this.abas.changeAbaRotina();
+				break;
+			}
+			case 'Parceiro de Negócio': {
+				this.abas.changeAbaParceirnoNegocio();
+				break;
+			}
+
+		}
 	}
 }

@@ -33,6 +33,7 @@ import { MenuService } from './seguranca/menu.service';
 import { ParceiroNegocioService } from './seguranca/parceironegocio.service';
 import { ModuloService } from './seguranca/modulo.service';
 import { PermissaoService } from './seguranca/permissao.service';
+import { AbasService } from './seguranca/abas.service';
 
 
 
@@ -90,7 +91,8 @@ import { PermissaoService } from './seguranca/permissao.service';
 		ParceiroNegocioService,
 		ModuloService,
 		ServicoService,
-		PermissaoService
+		PermissaoService,
+		AbasService
 	]
 })
 export class CoreModule {

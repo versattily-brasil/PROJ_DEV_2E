@@ -66,3 +66,24 @@
 .titulo-pagina{
 	margin: 0;
 }
+
+.mat-tab-label{
+	border: 1px solid gainsboro !important;
+}
+
+.mat-ink-bar{
+	display: none;
+}
+
+.mat-tab-label-active{
+	background-color: #ffe2ae !important;
+}
+
+
+.mat-tab-body.mat-tab-body-active {
+    overflow-y: hidden !important;
+}
+
+.mat-tab-label {
+	opacity: 1 !important;
+}

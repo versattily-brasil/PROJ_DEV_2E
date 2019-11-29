@@ -20,14 +20,81 @@
 				<!-- end:: Header -->
 
 				<!-- begin:: Content -->
-				<div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" [ngClass]="{'kt-content--fit-top': fitTop}">
+				<div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="margin-top: -60px;"
+					[ngClass]="{'kt-content--fit-top': fitTop}">
 					<!-- begin:: Content Head -->
 					<kt-subheader *ngIf="subheaderDisplay"></kt-subheader>
 					<!-- end:: Content Head -->
-
+					{{ultimaTab}}
 					<!-- begin:: Content Body -->
-					<div ktContentAnimate class="kt-container kt-grid__item kt-grid__item--fluid" [ngClass]="{'kt-container--fluid': fluid}">
-						<router-outlet></router-outlet>
+					<div ktContentAnimate class="kt-container kt-grid__item kt-grid__item--fluid"
+						[ngClass]="{'kt-container--fluid': fluid}">
+
+						<mat-tab-group class="card" [selectedIndex]="abas.SelectedTab" #tabs>
+
+							<mat-tab *ngIf="AbaParceironegocio">
+								<ng-template mat-tab-label class="card">
+
+									Parceiros de Negócio
+									<i class="flaticon2-cancel" style="margin-left: 20px;"
+										(click)="fecharAbaParceironegocio()"></i>
+								</ng-template>
+
+								<versattily-parceironegocio></versattily-parceironegocio>
+							</mat-tab>
+
+							<mat-tab *ngIf="AbaUsuario" class="card">
+								<ng-template mat-tab-label>
+
+									Usuários
+									<i class="flaticon2-cancel" style="margin-left: 20px;"
+										(click)="fecharAbaUsuario()"></i>
+								</ng-template>
+								<versattily-usuario></versattily-usuario>
+							</mat-tab>
+
+							<mat-tab *ngIf="AbaRotina">
+								<ng-template mat-tab-label class="card">
+
+									Rotinas
+									<i class="flaticon2-cancel" style="margin-left: 20px;"
+										(click)="fecharAbaRotina()"></i>
+								</ng-template>
+								<versattily-rotina></versattily-rotina>
+							</mat-tab>
+
+							<mat-tab *ngIf="AbaGrupo">
+								<ng-template mat-tab-label class="card">
+
+									Grupos de Usuário
+									<i class="flaticon2-cancel" style="margin-left: 20px;"
+										(click)="fecharAbaGrupo()"></i>
+								</ng-template>
+
+								<versattily-grupo></versattily-grupo>
+							</mat-tab>
+
+							<mat-tab *ngIf="AbaServico">
+								<ng-template mat-tab-label class="card">
+
+									Serviços
+									<i class="flaticon2-cancel" style="margin-left: 20px;"
+										(click)="fecharAbaServico()"></i>
+								</ng-template>
+
+								<versattily-servico-lista></versattily-servico-lista>
+							</mat-tab>
+
+
+
+						</mat-tab-group>
+
+
+
+
+
+
+						<!-- <router-outlet></router-outlet> -->
 					</div>
 					<!-- end:: Content Body -->
 				</div>

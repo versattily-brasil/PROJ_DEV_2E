@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild, ChangeDetectorRef } from '@angular/core';
 // RxJS
 import { Observable, Subscription } from 'rxjs';
 // Object-Path
@@ -16,6 +16,8 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/reducers';
 import { TelaAtualService } from '../../../core/tela-atual.service';
+import { AbasService } from '../../../core/seguranca/abas.service';
+import { MatTabGroup } from '@angular/material';
 
 @Component({
 	selector: 'kt-base',
@@ -33,10 +35,15 @@ export class BaseComponent implements OnInit, OnDestroy {
 	fitTop: boolean;
 	fluid: boolean;
 
+	selectedTab = 0;
+
+	
+	@ViewChild('tabs', {static: false}) tabGroup: MatTabGroup;
+
+
 	// Private properties
 	private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 	// private currentUserPermissions$: Observable<Permission[]>;
-
 
 	/**
 	 * Component constructor
@@ -49,12 +56,14 @@ export class BaseComponent implements OnInit, OnDestroy {
 	 * @param permissionsService
 	 */
 	constructor(
-		private tela:TelaAtualService,
+		private abas: AbasService,
+		private tela: TelaAtualService,
 
 		private layoutConfigService: LayoutConfigService,
 		private menuConfigService: MenuConfigService,
 		private pageConfigService: PageConfigService,
 		private htmlClassService: HtmlClassService,
+		private cd: ChangeDetectorRef,
 		private store: Store<AppState>,
 		private permissionsService: NgxPermissionsService) {
 		this.loadRolesWithPermissions();
@@ -101,6 +110,13 @@ export class BaseComponent implements OnInit, OnDestroy {
 			});
 		});
 		this.unsubscribe.push(subscr);
+
+		this.abas.tabSubject.subscribe(aba=>{
+
+			this.tabGroup.selectedIndex = aba;
+			// this.selectedTab = aba;
+			// this.cd.detectChanges();
+		});
 	}
 
 	/**
@@ -126,7 +142,41 @@ export class BaseComponent implements OnInit, OnDestroy {
 		// this.unsubscribe.push(subscr);
 	}
 
-	mudarTela(tela){
+	mudarTela(tela) {
 		this.tela.TelaAtual = tela;
+	}
+
+	public get AbaUsuario() {
+		return this.abas.AbaUsuario;
+	}
+	public get AbaGrupo() {
+
+		return this.abas.AbaGrupos;
+	}
+	public get AbaServico() {
+		return this.abas.AbaServico;
+	}
+	public get AbaParceironegocio() {
+		return this.abas.AbaParceironegocio;
+	}
+	public get AbaRotina() {
+		return this.abas.AbaRotina;
+	}
+
+	fecharAbaUsuario() {
+		this.abas.AbaUsuario = false;
+	}
+	fecharAbaGrupo() {
+
+		this.abas.AbaGrupos = false;
+	}
+	fecharAbaServico() {
+		this.abas.AbaServico = false;
+	}
+	fecharAbaParceironegocio() {
+		this.abas.AbaParceironegocio = false;
+	}
+	fecharAbaRotina() {
+		this.abas.AbaRotina = false;
 	}
 }

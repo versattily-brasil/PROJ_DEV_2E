@@ -4,7 +4,7 @@
     <kt-portlet-header [sticky]="false" [title]="'Lista de Usuários'"  [class]="'kt-portlet__head--lg'">
         <ng-container ktPortletTools>    
             <a (click)="adicionarUsuario()" class="btn btn-primary kt-margin-r-10" mat-raised-button  [hidden]="verificarPermissao('Criar') === false">
-                <i class="la la-arrow-left"></i>
+                <i class="la la-plus"></i>
                 <span class="kt-hidden-mobile">Novo usuário</span>
             </a>
         </ng-container>
