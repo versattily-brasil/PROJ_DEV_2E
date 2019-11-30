@@ -112,7 +112,8 @@ export class ParceiroNegocioFormComponent implements OnInit {
 	}
 
 	cancelar() {
-		this.router.navigateByUrl('/seguranca/parceironegocio');
+		this.parceironegocioService.telaLista = true;
+		// this.router.navigateByUrl('/seguranca/parceironegocio');
 		this.modalService.dismissAll();
 	}
 
@@ -150,7 +151,8 @@ export class ParceiroNegocioFormComponent implements OnInit {
 		this.parceironegocioService.salvarParceiroNegocio(parceironegocioSalvar).subscribe(result=>{
 			
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/parceironegocio', { sucesso: "true" }]);
+			this.parceironegocioService.telaLista = true;
+			// this.router.navigate(['/seguranca/parceironegocio', { sucesso: "true" }]);
 		})
 	}
 
@@ -203,7 +205,8 @@ export class ParceiroNegocioFormComponent implements OnInit {
 		this.parceironegocioService.deletarParceiroNegocio(parceironegocioExcluir.CD_PAR).subscribe(result=>{
 			
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/parceironegocio', { excluido: "true" }]);
+			this.parceironegocioService.telaLista = true;
+			// this.router.navigate(['/seguranca/parceironegocio', { excluido: "true" }]);
 		})
     }
     

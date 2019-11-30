@@ -28,8 +28,12 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 	displayedColumns = ["TX_NOME", "TX_LOGIN", "NomeStatus", "editar"];
 	tamanho: number;
 
-	salvouSucesso: boolean = false;
-	excluidoSucesso: boolean = false;
+	get salvouSucesso(){
+		return this.usuarioService.sucessoSalvar;
+	}
+	get excluidoSucesso(){
+		return this.usuarioService.sucessoExcluir;
+	}
 
 	@ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 	@ViewChild(MatSort, { static: false }) sort: MatSort;
@@ -46,16 +50,6 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 
 
 	ngOnInit(): void {
-
-
-
-		this.activatedRoute.params.subscribe(params => {
-			this.salvouSucesso = params['sucesso'] && params['sucesso'] == 'true' ? true : false;
-		});
-		this.activatedRoute.params.subscribe(params => {
-			this.excluidoSucesso = params['excluido'] && params['excluido'] == 'true' ? true : false;
-		});
-
 
 		this.tamanho = 20;
 		this.dataSource = new UsuarioDataSource(this.usuarioService);
@@ -100,11 +94,18 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 
 	adicionarUsuario() {
 		this.usuarioService.telaLista = false;
+		this.usuarioService.sucessoExcluir = false;
+		this.usuarioService.sucessoSalvar = false;
+		this.usuarioService.cdUserVisualizar = 0;
 		//this.router.navigateByUrl('/seguranca/usuarios/cadastro');
 	}
 
 	visualizarUsuario(cd_usr) {
-		this.router.navigate(['/seguranca/usuarios/cadastro', { id: cd_usr }]);
+		this.usuarioService.telaLista = false;
+		this.usuarioService.sucessoExcluir = false;
+		this.usuarioService.sucessoSalvar = false;
+		this.usuarioService.cdUserVisualizar = cd_usr;
+		// this.router.navigate(['/seguranca/usuarios/cadastro', { id: cd_usr }]);
 	}
 
 	//-------------------------------------------------------------------------------------------------

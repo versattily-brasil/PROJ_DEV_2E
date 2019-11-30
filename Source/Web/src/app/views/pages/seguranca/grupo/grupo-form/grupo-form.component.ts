@@ -120,7 +120,8 @@ export class GrupoFormComponent implements OnInit {
 	}
 
 	cancelar() {
-		this.router.navigateByUrl('/seguranca/grupos');
+		this.grupoService.telaLista = true;
+		// this.router.navigateByUrl('/seguranca/grupos');
 		this.modalService.dismissAll();
 	}
 
@@ -174,7 +175,9 @@ export class GrupoFormComponent implements OnInit {
 		this.grupoService.salvarGrupo(grupoSalvar).subscribe(result=>{
 			
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/grupos', { sucesso: "true" }]);
+
+			this.grupoService.telaLista = true;
+			// this.router.navigate(['/seguranca/grupos', { sucesso: "true" }]);
 		})
 
 	}
@@ -258,7 +261,8 @@ export class GrupoFormComponent implements OnInit {
 		this.grupoService.deletarGrupo(grupoExcluir.CD_GRP).subscribe(result=>{
 			
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/grupos', { excluido: "true" }]);
+			this.grupoService.telaLista = true;
+			// this.router.navigate(['/seguranca/grupos', { excluido: "true" }]);
 		})
 	}
 

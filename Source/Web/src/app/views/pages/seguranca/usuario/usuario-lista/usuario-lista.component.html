@@ -1,9 +1,15 @@
-<ngb-alert [type]="'success'" *ngIf="salvouSucesso" (close)="salvouSucesso=false"> Registro salvo com sucesso!</ngb-alert>
-<ngb-alert [type]="'success'" *ngIf="excluidoSucesso" (close)="excluidoSucesso=false"> Registro excluído com sucesso!</ngb-alert>
+<div *ngIf="salvouSucesso || excluidoSucesso" style="padding-left: 20px;padding-right: 20px;">
+    <ngb-alert [type]="'success'" *ngIf="salvouSucesso" (close)="salvouSucesso=false"> Registro salvo com sucesso!
+    </ngb-alert>
+    <ngb-alert [type]="'success'" *ngIf="excluidoSucesso" (close)="excluidoSucesso=false"> Registro excluído com
+        sucesso!</ngb-alert>
+</div>
+
 <kt-portlet>
-    <kt-portlet-header [sticky]="false" [title]="'Lista de Usuários'"  [class]="'kt-portlet__head--lg'">
-        <ng-container ktPortletTools>    
-            <a (click)="adicionarUsuario()" class="btn btn-primary kt-margin-r-10" mat-raised-button  [hidden]="verificarPermissao('Criar') === false">
+    <kt-portlet-header [sticky]="false" [title]="'Lista de Usuários'" [class]="'kt-portlet__head--lg'">
+        <ng-container ktPortletTools>
+            <a (click)="adicionarUsuario()" class="btn btn-primary kt-margin-r-10" mat-raised-button
+                [hidden]="verificarPermissao('Criar') === false">
                 <i class="la la-plus"></i>
                 <span class="kt-hidden-mobile">Novo usuário</span>
             </a>
@@ -49,12 +55,10 @@
                     <mat-header-cell style="flex: 0 0 75px;" *matHeaderCellDef>
                     </mat-header-cell>
                     <mat-cell style="flex: 0 0 75px;" *matCellDef="let usuario">
-                        <a  class="btn btn-secondary kt-margin-r-10" 
-                        mat-icon-button color="primary"
-                        [hidden]="verificarPermissao('Visualizar') === false"
-                        (click)="visualizarUsuario(usuario.CD_USR)"
-                        matTooltip="Visualizar Usuário">
-                        <mat-icon>search</mat-icon>
+                        <a class="btn btn-secondary kt-margin-r-10" mat-icon-button color="primary"
+                            [hidden]="verificarPermissao('Visualizar') === false"
+                            (click)="visualizarUsuario(usuario.CD_USR)" matTooltip="Visualizar Usuário">
+                            <mat-icon>search</mat-icon>
                         </a>
 
                     </mat-cell>

@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, ElementRef, ViewChild, TemplateRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, TemplateRef, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -79,7 +79,8 @@ export class UsuarioFormComponent implements OnInit {
 		private servicoService: ServicoService,
 		private interceptorService : InterceptService,
 		private permissaoService: PermissaoService,
-		private auth:AutenticacaoService
+		private auth:AutenticacaoService,
+		private cd: ChangeDetectorRef
 	) { }
 
 	ngOnInit() {
@@ -98,27 +99,23 @@ export class UsuarioFormComponent implements OnInit {
 		);
 
 
+		let id = this.usuarioService.cdUserVisualizar;
 
-		this.activatedRoute.params.subscribe(params => {
-			let id = params['id'] && params['id'] > 0 ? params['id'] : 0;
+		if (id == 0) {
+			this.modoEdicao = true;
+			this.titulo = "Cadastrar Usuário";
+		}
 
-			if (id == 0) {
-				this.modoEdicao = true;
-				this.titulo = "Cadastrar Usuário";
-			}
+		this.usuario = this.usuarioService.getUsuario(id).pipe(
+			tap(usuario => {
 
-			this.usuario = this.usuarioService.getUsuario(id).pipe(
-				tap(usuario => {
+				this.usuarioForm.patchValue(usuario);
+				this.montarTabelas(usuario);
 
-					this.usuarioForm.patchValue(usuario);
-					this.montarTabelas(usuario);
-
-					const toSelect = this.listaStatus.find(c => c.OP_STATUS == usuario.OP_STATUS);
-					f.get('OP_STATUS').setValue(toSelect);
-				})
-			);
-
-		});
+				const toSelect = this.listaStatus.find(c => c.OP_STATUS == usuario.OP_STATUS);
+				f.get('OP_STATUS').setValue(toSelect);
+			})
+		);
 
 		this.servicoService.getServicos().subscribe(servicos => {
 			this.listaServicos = servicos;
@@ -222,7 +219,10 @@ export class UsuarioFormComponent implements OnInit {
 			result => {
 
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/usuarios', { sucesso: "true" }]);			
+			this.usuarioService.telaLista = true;
+			this.usuarioService.sucessoSalvar = true;
+			this.cd.markForCheck();
+			// this.router.navigate(['/seguranca/usuarios', { sucesso: "true" }]);			
 			},
 			error => {
 				this.modalService.dismissAll();
@@ -281,7 +281,7 @@ export class UsuarioFormComponent implements OnInit {
 
 			item.operacoes.forEach(function (op) {
 
-				if (u.RotinaUsuarioOperacao.filter(o => o.CD_ROT == item.rotina.CD_ROT && o.CD_OPR == op.CD_OPR).length > 0) {
+				if (u.RotinaUsuarioOperacao.filter(o => item.rotina && o.CD_ROT == item.rotina.CD_ROT && o.CD_OPR == op.CD_OPR).length > 0) {
 					op.selecionada = true;
 				}
 			})
@@ -355,7 +355,10 @@ export class UsuarioFormComponent implements OnInit {
 		this.usuarioService.deletarUsuario(usuarioExcluir.CD_USR).subscribe(result => {
 
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/usuarios', { excluido: "true" }]);
+			this.usuarioService.telaLista = true;
+			this.usuarioService.sucessoExcluir = true;
+			this.cd.markForCheck();
+			// this.router.navigate(['/seguranca/usuarios', { excluido: "true" }]);
 		})
 	}
 

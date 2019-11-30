@@ -100,11 +100,13 @@ export class RotinaListaComponent implements OnInit, AfterViewInit {
 	}
 
 	adicionarRotina() {
-		this.router.navigateByUrl('/seguranca/rotinas/cadastro');
+		this.rotinaService.telaLista = false;
+		// this.router.navigateByUrl('/seguranca/rotinas/cadastro');
 	}
 
 	visualizarRotina(cd_usr) {
-		this.router.navigate(['/seguranca/rotinas/cadastro', { id: cd_usr }]);
+		this.rotinaService.telaLista = false;
+		// this.router.navigate(['/seguranca/rotinas/cadastro', { id: cd_usr }]);
 	}
 
 	//-------------------------------------------------------------------------------------------------

@@ -13,6 +13,10 @@ export class UsuarioService {
 
     public telaLista:boolean = true;
 
+    public cdUserVisualizar = 0;
+    public sucessoSalvar = false;
+    public sucessoExcluir = false;
+
     public getUsuarios(tx_nome:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
     
         var params = new HttpParams()

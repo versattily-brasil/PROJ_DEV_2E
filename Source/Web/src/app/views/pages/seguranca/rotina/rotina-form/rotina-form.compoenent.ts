@@ -130,7 +130,8 @@ export class RotinaFormComponent implements OnInit {
 	}
 
 	cancelar() {
-		this.router.navigateByUrl('/seguranca/rotinas');
+		this.rotinaService.telaLista = true;
+		// this.router.navigateByUrl('/seguranca/rotinas');
 		this.modalService.dismissAll();
 	}
 
@@ -180,7 +181,8 @@ export class RotinaFormComponent implements OnInit {
 		this.rotinaService.salvarRotina(rotinaSalvar).subscribe(result=>{
 			
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/rotinas', { sucesso: "true" }]);
+			this.rotinaService.telaLista = true;
+			// this.router.navigate(['/seguranca/rotinas', { sucesso: "true" }]);
 		})
 	}
 
@@ -221,7 +223,8 @@ export class RotinaFormComponent implements OnInit {
 		this.rotinaService.deletarRotina(rotinaExcluir.CD_ROT).subscribe(result=>{
 			
 			this.modalService.dismissAll();
-			this.router.navigate(['/seguranca/rotinas', { excluido: "true" }]);
+			this.rotinaService.telaLista = true;
+			// this.router.navigate(['/seguranca/rotinas', { excluido: "true" }]);
 		})
     }
     

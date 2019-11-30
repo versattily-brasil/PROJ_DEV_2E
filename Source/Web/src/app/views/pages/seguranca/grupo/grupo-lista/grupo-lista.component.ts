@@ -101,11 +101,13 @@ export class GrupoListaComponent implements OnInit, AfterViewInit {
 	}
 
 	adicionarGrupo() {
-		this.router.navigateByUrl('/seguranca/grupos/cadastro');
+		this.grupoService.telaLista = false;
+		// this.router.navigateByUrl('/seguranca/grupos/cadastro');
 	}
 
 	visualizarGrupo(cd_grp) {
-		this.router.navigate(['/seguranca/grupos/cadastro', { id: cd_grp }]);
+		this.grupoService.telaLista = false;
+		// this.router.navigate(['/seguranca/grupos/cadastro', { id: cd_grp }]);
 	}
 
 	//-------------------------------------------------------------------------------------------------

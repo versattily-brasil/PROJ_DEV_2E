@@ -1,5 +1,10 @@
-<ngb-alert [type]="'success'" *ngIf="salvouSucesso" (close)="salvouSucesso=false"> Registro salvo com sucesso!</ngb-alert>
-<ngb-alert [type]="'success'" *ngIf="excluidoSucesso" (close)="excluidoSucesso=false"> Registro excluído com sucesso!</ngb-alert>
+<div *ngIf="salvouSucesso || excluidoSucesso" style="padding-left: 20px;padding-right: 20px;">
+    <ngb-alert [type]="'success'" *ngIf="salvouSucesso" (close)="salvouSucesso=false"> Registro salvo com sucesso!
+    </ngb-alert>
+    <ngb-alert [type]="'success'" *ngIf="excluidoSucesso" (close)="excluidoSucesso=false"> Registro excluído com
+        sucesso!</ngb-alert>
+</div>
+
 <kt-portlet>
 
     <kt-portlet-header [sticky]="false" [title]="'Lista de Rotinas'" [class]="'kt-portlet__head--lg'">
