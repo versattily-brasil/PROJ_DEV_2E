@@ -69,6 +69,8 @@
 
 .mat-tab-label{
 	border: 1px solid gainsboro !important;
+	color: darkgray;
+	color: #646c9a !important;
 }
 
 .mat-ink-bar{
@@ -77,6 +79,8 @@
 
 .mat-tab-label-active{
 	background-color: #ffe2ae !important;
+	
+	font-weight: bold;
 }
 
 

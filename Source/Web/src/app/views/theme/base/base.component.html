@@ -20,8 +20,8 @@
 				<!-- end:: Header -->
 
 				<!-- begin:: Content -->
-				<div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content" style="margin-top: -60px;"
-					[ngClass]="{'kt-content--fit-top': fitTop}">
+				<div class="kt-content kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content"
+					style="margin-top: -60px;" [ngClass]="{'kt-content--fit-top': fitTop}">
 					<!-- begin:: Content Head -->
 					<kt-subheader *ngIf="subheaderDisplay"></kt-subheader>
 					<!-- end:: Content Head -->
@@ -35,9 +35,11 @@
 							<mat-tab *ngIf="AbaParceironegocio">
 								<ng-template mat-tab-label class="card">
 
-									Parceiros de Negócio
-									<i class="flaticon2-cancel" style="margin-left: 20px;"
-										(click)="fecharAbaParceironegocio()"></i>
+									Parceiros de Negócio<button style="margin-left: 20px;
+									color: white;
+									background-color: #646c9a;
+									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaParceironegocio()"></i></button>
+
 								</ng-template>
 
 								<versattily-parceironegocio></versattily-parceironegocio>
@@ -47,8 +49,10 @@
 								<ng-template mat-tab-label>
 
 									Usuários
-									<i class="flaticon2-cancel" style="margin-left: 20px;"
-										(click)="fecharAbaUsuario()"></i>
+									<button style="margin-left: 20px;
+									color: white;
+									background-color: #646c9a;
+									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaUsuario()"></i></button>
 								</ng-template>
 								<versattily-usuario></versattily-usuario>
 							</mat-tab>
@@ -57,8 +61,10 @@
 								<ng-template mat-tab-label class="card">
 
 									Rotinas
-									<i class="flaticon2-cancel" style="margin-left: 20px;"
-										(click)="fecharAbaRotina()"></i>
+									<button style="margin-left: 20px;
+									color: white;
+									background-color: #646c9a;
+									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaRotina()"></i></button>
 								</ng-template>
 								<versattily-rotina></versattily-rotina>
 							</mat-tab>
@@ -67,8 +73,10 @@
 								<ng-template mat-tab-label class="card">
 
 									Grupos de Usuário
-									<i class="flaticon2-cancel" style="margin-left: 20px;"
-										(click)="fecharAbaGrupo()"></i>
+									<button style="margin-left: 20px;
+									color: white;
+									background-color: #646c9a;
+									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaGrupo()"></i></button>
 								</ng-template>
 
 								<versattily-grupo></versattily-grupo>
@@ -78,8 +86,10 @@
 								<ng-template mat-tab-label class="card">
 
 									Serviços
-									<i class="flaticon2-cancel" style="margin-left: 20px;"
-										(click)="fecharAbaServico()"></i>
+									<button style="margin-left: 20px;
+									color: white;
+									background-color: #646c9a;
+									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaServico()"></i></button>
 								</ng-template>
 
 								<versattily-servico-lista></versattily-servico-lista>
