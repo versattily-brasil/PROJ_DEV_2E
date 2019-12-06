@@ -20,7 +20,6 @@ import { UsuarioGrupo } from '../../../../../core/models/usuario-grupo.model';
 import { UsuarioModulo } from '../../../../../core/models/usuario-modulo.model';
 import { RotinaUsuarioOperacao } from '../../../../../core/models/rotina-usuario-operacao.model';
 import { PasswordValidation } from './password-validation';
-import { InterceptService} from '../../../../../core/_base/crud/utils/intercept.service';
 import { PermissaoService } from '../../../../../core/seguranca/permissao.service';
 import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
 import { Permissao } from '../../../../../core/models/permissao.model';
@@ -77,7 +76,6 @@ export class UsuarioFormComponent implements OnInit {
 		private operacaoService: OperacaoService,
 		private rotinaService: RotinaService,
 		private servicoService: ServicoService,
-		private interceptorService : InterceptService,
 		private permissaoService: PermissaoService,
 		private auth:AutenticacaoService,
 		private cd: ChangeDetectorRef

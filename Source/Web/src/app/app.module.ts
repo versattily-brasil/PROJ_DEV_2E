@@ -62,6 +62,7 @@ import * as xml from 'highlight.js/lib/languages/xml';
 import * as json from 'highlight.js/lib/languages/json';
 import { JwtModule } from '@auth0/angular-jwt';
 
+import { ToastrModule } from 'ngx-toastr';
 
 // tslint:disable-next-line:class-name
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -103,6 +104,7 @@ export function tokenGetter() {
 			}
 		}),
 		BrowserAnimationsModule,
+		ToastrModule.forRoot(),
 		BrowserModule,
 		AppRoutingModule,
 		HttpClientModule,

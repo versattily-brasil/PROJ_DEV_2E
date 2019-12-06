@@ -13,6 +13,7 @@ import { AppState } from '../../../../core/reducers';
 import { AutenticacaoService } from '../../../../core/autenticacao/autenticacao.service';
 import { Usuario } from '../../../../core/models/usuario.model';
 import { MenuService } from '../../../../core/seguranca/menu.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 /**
@@ -61,7 +62,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 		private fb: FormBuilder,
 		private cdr: ChangeDetectorRef,
 		private route: ActivatedRoute,
-		private menuService: MenuService
+		private menuService: MenuService,
+		private toastr: ToastrService
 	) {
 		this.unsubscribe = new Subject();
 	}
@@ -124,7 +126,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	/**
 	 * Form Submit
 	 */
-	submit() {
+	public submit() {
 		const controls = this.loginForm.controls;
 		/** check form */
 		if (this.loginForm.invalid) {
@@ -141,32 +143,32 @@ export class LoginComponent implements OnInit, OnDestroy {
 		usuario.TX_SENHA = controls['password'].value;
 
 		this.auth.login(usuario).subscribe(
-			res => {
-
-
-
+			(res) => {
 				let loginResult: Usuario = res;
-
-
-
-
 				this.menuService.getPermissoes(loginResult.CD_USR.toString()).subscribe(menus => {
-
-					localStorage.setItem("menus",JSON.stringify(menus));
+					localStorage.setItem("menus", JSON.stringify(menus));
 					this.auth.armazenaInfoLogin(loginResult);
 					this.router.navigate(["/"]);
 				});
+			}, 
+			(err) => {
+				this.err(err)
+			},
+			() => {
+				this.actLoading();
+			}
+		);
 
+	}
 
+	public actLoading(){
+		this.loading = !this.loading;
+		console.log(this.loading);
+	}
 
-
-
-
-			}, err => {
-
-				// this.erroLogin = err.error;
-			});
-
+	public err(err) {
+		this.toastr.error(err.error, 'Notificação');
+		this.actLoading();
 	}
 
 	/**

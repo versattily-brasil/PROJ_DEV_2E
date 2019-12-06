@@ -16,8 +16,10 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
+using System.Web.Http;
 
 namespace P2E.SSO.API.Controllers
 {
@@ -195,7 +197,7 @@ namespace P2E.SSO.API.Controllers
                     {
                         var rotinaViewModel = new RotinaViewModel()
                         {
-                            CD_ROT = subitem.Rotina.CD_ROT,                                                         
+                            CD_ROT = subitem.Rotina.CD_ROT,
                             TX_NOME = subitem.Rotina.TX_NOME,
                             TX_URL = subitem.Rotina.TX_URL
                         };
@@ -538,11 +540,11 @@ namespace P2E.SSO.API.Controllers
             var permissoes = new List<Permissao>();
             foreach (var servico in servicosViewModel)
             {
-                foreach (var rotina in servico.RotinasViewModel.Where(p=> p.TX_NOME.ToLower() == nomeRotina.ToLower()))
+                foreach (var rotina in servico.RotinasViewModel.Where(p => p.TX_NOME.ToLower() == nomeRotina.ToLower()))
                 {
                     foreach (var permissao in rotina.OperacoesViewModel)
                     {
-                        permissoes.Add(new Permissao() { TX_DSC = permissao.TX_DSC});
+                        permissoes.Add(new Permissao() { TX_DSC = permissao.TX_DSC });
                     }
                 }
             }
@@ -628,8 +630,12 @@ namespace P2E.SSO.API.Controllers
         {
             var usuarioBanco = _usuarioRepository.Find(o => o.TX_LOGIN == usuario.TX_LOGIN && o.TX_SENHA == usuario.TX_SENHA);
 
-            if(usuarioBanco != null)
+            if (usuarioBanco != null)
             {
+                if (usuarioBanco.OP_STATUS == Shared.Enum.eStatusUsuario.INATIVO)
+                {
+                    throw new HttpResponseException() { Status = (int)HttpStatusCode.NotFound, Value = "Usuário inativo" };
+                }
                 // authentication successful so generate jwt token
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes("r5u8x/A?D(G+KbPe");
@@ -644,11 +650,15 @@ namespace P2E.SSO.API.Controllers
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-               usuarioBanco.API_TOKEN = tokenHandler.WriteToken(token);
+                usuarioBanco.API_TOKEN = tokenHandler.WriteToken(token);
 
             }
+            else
+            {
+                throw new HttpResponseException() { Status = (int)HttpStatusCode.NotFound, Value = "Credenciais não encontradas" };
+            }
 
-            return usuarioBanco; 
+            return usuarioBanco;
         }
 
         // PUT: api/usuario/5

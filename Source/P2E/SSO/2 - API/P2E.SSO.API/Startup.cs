@@ -13,6 +13,7 @@ using P2E.SSO.Infra.Data.Repositories;
 using Swashbuckle.AspNetCore.Swagger;
 using Newtonsoft.Json.Serialization;
 using System.Text;
+using P2E.SSO.API.Exceptions;
 
 namespace P2E.SSO.API
 {
@@ -35,6 +36,10 @@ namespace P2E.SSO.API
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
                 });
             });
+
+            services.AddMvc(options =>
+                options.Filters.Add(new HttpResponseExceptionFilter()))
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 
             services.AddMvc().ConfigureApiBehaviorOptions(o =>
