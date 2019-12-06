@@ -13,6 +13,7 @@ import { AppState } from '../../../../core/reducers';
 import { AutenticacaoService } from '../../../../core/autenticacao/autenticacao.service';
 import { Usuario } from '../../../../core/models/usuario.model';
 import { MenuService } from '../../../../core/seguranca/menu.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 /**
@@ -61,7 +62,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 		private fb: FormBuilder,
 		private cdr: ChangeDetectorRef,
 		private route: ActivatedRoute,
-		private menuService: MenuService
+		private menuService: MenuService,
+		private toastr: ToastrService
 	) {
 		this.unsubscribe = new Subject();
 	}
@@ -124,7 +126,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	/**
 	 * Form Submit
 	 */
-	submit() {
+	public submit() {
 		const controls = this.loginForm.controls;
 		/** check form */
 		if (this.loginForm.invalid) {

@@ -34,11 +34,14 @@ import { ParceiroNegocioService } from './seguranca/parceironegocio.service';
 import { ModuloService } from './seguranca/modulo.service';
 import { PermissaoService } from './seguranca/permissao.service';
 import { AbasService } from './seguranca/abas.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
 @NgModule({
-	imports: [CommonModule,        
+	imports: [
+		CommonModule,      
+		HttpClientModule
 		],
 	declarations: [
 		// directives
