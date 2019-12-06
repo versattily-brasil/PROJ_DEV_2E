@@ -228,7 +228,6 @@ export class ParceiroNegocioFormComponent implements OnInit {
 	// Método para verificar a permissão sobre componente----------------------------------------------
 	//-------------------------------------------------------------------------------------------------
 	verificarPermissao(acao:string){
-		console.log('ação: ' + acao);
 
 		if(this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0)
 		{
@@ -237,16 +236,13 @@ export class ParceiroNegocioFormComponent implements OnInit {
 
 		var encontrou = this.permissoes.filter(filtro => filtro.TX_DSC === acao);
 
-		console.log(encontrou);
 
 		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
 		{
-			console.log('não encontrou ' + acao);
 			return false;
 		}
 		else
 		{
-			console.log('encontrou ' + acao);
 			return true;
 		}
 	}
