@@ -37,6 +37,9 @@ export class BaseComponent implements OnInit, OnDestroy {
 
 	selectedTab = 0;
 
+	public get AbasAbertas(){
+		return this.abas.listAbasAbertas;
+	}
 	
 	@ViewChild('tabs', {static: false}) tabGroup: MatTabGroup;
 

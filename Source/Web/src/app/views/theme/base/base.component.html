@@ -32,68 +32,143 @@
 
 						<mat-tab-group class="card" [selectedIndex]="abas.SelectedTab" #tabs>
 
-							<mat-tab *ngIf="AbaParceironegocio">
-								<ng-template mat-tab-label class="card">
+							<mat-tab *ngFor="let aba of AbasAbertas">
 
-									Parceiros de Negócio<button style="margin-left: 20px;
+								<div *ngIf="aba == 'Parceiro de Negócio'">
+									<ng-template mat-tab-label class="card">
+
+										Parceiros de Negócio<button style="margin-left: 20px;
+											color: white;
+											background-color: #646c9a;
+											font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaParceironegocio()"></i></button>
+
+									</ng-template>
+
+									<versattily-parceironegocio></versattily-parceironegocio>
+								</div>
+
+								<div *ngIf="aba == 'Usuário'">
+									<ng-template mat-tab-label>
+
+										Usuários
+										<button style="margin-left: 20px;
+												color: white;
+												background-color: #646c9a;
+												font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaUsuario()"></i></button>
+									</ng-template>
+									<versattily-usuario></versattily-usuario>
+								</div>
+								<div *ngIf="aba == 'Rotinas'">
+									<ng-template mat-tab-label class="card">
+
+										Rotinas
+										<button style="margin-left: 20px;
+													color: white;
+													background-color: #646c9a;
+													font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaRotina()"></i></button>
+									</ng-template>
+									<versattily-rotina></versattily-rotina>
+								</div>
+								<div *ngIf="aba == 'Grupos de Usuários'">
+									<ng-template mat-tab-label class="card">
+
+										Grupos de Usuário
+										<button style="margin-left: 20px;
+														color: white;
+														background-color: #646c9a;
+														font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaGrupo()"></i></button>
+									</ng-template>
+
+									<versattily-grupo></versattily-grupo>
+								</div>
+								<div *ngIf="aba == 'Serviços'">
+									<ng-template mat-tab-label class="card">
+
+										Serviços
+										<button style="margin-left: 20px;
+															color: white;
+															background-color: #646c9a;
+															font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaServico()"></i></button>
+									</ng-template>
+
+									<versattily-servico-lista></versattily-servico-lista>
+								</div>
+
+							</mat-tab>
+
+							<!-- 
+							<mat-tab *ngIf="AbaParceironegocio">
+								<div>
+									<ng-template mat-tab-label class="card">
+
+										Parceiros de Negócio<button style="margin-left: 20px;
 									color: white;
 									background-color: #646c9a;
 									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaParceironegocio()"></i></button>
 
-								</ng-template>
+									</ng-template>
 
-								<versattily-parceironegocio></versattily-parceironegocio>
+									<versattily-parceironegocio></versattily-parceironegocio>
+								</div>
 							</mat-tab>
 
 							<mat-tab *ngIf="AbaUsuario" class="card">
-								<ng-template mat-tab-label>
+								<div>
+									<ng-template mat-tab-label>
 
-									Usuários
-									<button style="margin-left: 20px;
+										Usuários
+										<button style="margin-left: 20px;
 									color: white;
 									background-color: #646c9a;
 									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaUsuario()"></i></button>
-								</ng-template>
-								<versattily-usuario></versattily-usuario>
+									</ng-template>
+									<versattily-usuario></versattily-usuario>
+								</div>
 							</mat-tab>
 
 							<mat-tab *ngIf="AbaRotina">
-								<ng-template mat-tab-label class="card">
+								<div>
+									<ng-template mat-tab-label class="card">
 
-									Rotinas
-									<button style="margin-left: 20px;
+										Rotinas
+										<button style="margin-left: 20px;
 									color: white;
 									background-color: #646c9a;
 									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaRotina()"></i></button>
-								</ng-template>
-								<versattily-rotina></versattily-rotina>
+									</ng-template>
+									<versattily-rotina></versattily-rotina>
+								</div>
 							</mat-tab>
 
 							<mat-tab *ngIf="AbaGrupo">
-								<ng-template mat-tab-label class="card">
+								<div>
+									<ng-template mat-tab-label class="card">
 
-									Grupos de Usuário
-									<button style="margin-left: 20px;
+										Grupos de Usuário
+										<button style="margin-left: 20px;
 									color: white;
 									background-color: #646c9a;
 									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaGrupo()"></i></button>
-								</ng-template>
+									</ng-template>
 
-								<versattily-grupo></versattily-grupo>
+									<versattily-grupo></versattily-grupo>
+								</div>
 							</mat-tab>
 
 							<mat-tab *ngIf="AbaServico">
-								<ng-template mat-tab-label class="card">
+								<div>
+									<ng-template mat-tab-label class="card">
 
-									Serviços
-									<button style="margin-left: 20px;
+										Serviços
+										<button style="margin-left: 20px;
 									color: white;
 									background-color: #646c9a;
 									font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaServico()"></i></button>
-								</ng-template>
+									</ng-template>
 
-								<versattily-servico-lista></versattily-servico-lista>
-							</mat-tab>
+									<versattily-servico-lista></versattily-servico-lista>
+								</div>
+							</mat-tab> -->
 
 
 
