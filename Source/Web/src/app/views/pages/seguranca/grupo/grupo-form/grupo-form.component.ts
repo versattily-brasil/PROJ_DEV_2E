@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, ElementRef, ViewChild, TemplateRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, TemplateRef, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -20,6 +20,7 @@ import { RotinaGrupoOperacao } from '../../../../../core/models/rotina-grupo-ope
 import { PermissaoService } from '../../../../../core/seguranca/permissao.service';
 import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
 import { Permissao } from '../../../../../core/models/permissao.model';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -32,18 +33,18 @@ import { Permissao } from '../../../../../core/models/permissao.model';
 
 export class GrupoFormComponent implements OnInit {
 
-	titulo:string = "Visualizar Grupo";
+	titulo: string = "Visualizar Grupo";
 
-	nomeRotina : string =  "Grupos de Usuários";
+	nomeRotina: string = "Grupos de Usuários";
 
-	permissoes : Array<Permissao>;
+	permissoes: Array<Permissao>;
 
 	modoEdicao: boolean = false;
 
 	grupoForm: FormGroup;
 	hasFormErrors: boolean = false;
 
-	loadingSalvar:boolean = false;
+	loadingSalvar: boolean = false;
 
 	grupo: Observable<Grupo>;
 	listaServicos: Servico[] = [];
@@ -55,8 +56,8 @@ export class GrupoFormComponent implements OnInit {
 	cdSrvSelecionado = 0;
 	cdRotSelecionada = 0;
 
-	@ViewChild('content8', {static: true}) private modalSalvando: TemplateRef<any>;
-	@ViewChild('content12', {static: true}) private modalExcluindo: TemplateRef<any>;
+	@ViewChild('content8', { static: true }) private modalSalvando: TemplateRef<any>;
+	@ViewChild('content12', { static: true }) private modalExcluindo: TemplateRef<any>;
 
 	constructor(
 		private modalService: NgbModal,
@@ -68,7 +69,9 @@ export class GrupoFormComponent implements OnInit {
 		private rotinaService: RotinaService,
 		private servicoService: ServicoService,
 		private permissaoService: PermissaoService,
-		private auth:AutenticacaoService
+		private auth: AutenticacaoService,
+		private toast: ToastrService,
+		private cd: ChangeDetectorRef,
 	) { }
 
 	ngOnInit() {
@@ -78,23 +81,23 @@ export class GrupoFormComponent implements OnInit {
 			TX_DSC: ['', Validators.required],
 		});
 
-		this.activatedRoute.params.subscribe(params => {
-			let id = params['id'] && params['id'] > 0 ? params['id'] : 0;
 
-			if(id == 0){
-				this.modoEdicao = true;
-				this.titulo = "Cadastrar Grupo";
-			}
+		let id = this.grupoService.cdGrpVisualizar;
 
-			this.grupo = this.grupoService.getGrupo(id).pipe(
-				tap(grupo => {
+		if (id == 0) {
+			this.modoEdicao = true;
+			this.titulo = "Cadastrar Grupo";
+		}
 
-					this.grupoForm.patchValue(grupo);
-					this.montarTabelas(grupo);
-				})
-			);
+		this.grupo = this.grupoService.getGrupo(id).pipe(
+			tap(grupo => {
 
-		});
+				this.grupoForm.patchValue(grupo);
+				this.montarTabelas(grupo);
+			})
+		);
+
+
 
 		this.servicoService.getServicos().subscribe(servicos => {
 			this.listaServicos = servicos;
@@ -148,10 +151,10 @@ export class GrupoFormComponent implements OnInit {
 		this.modalService.dismissAll();
 
 		let ngbModalOptions: NgbModalOptions = {
-			backdrop : 'static',
-			keyboard : false
-	  	};
-		this.modalService.open(this.modalSalvando,ngbModalOptions);
+			backdrop: 'static',
+			keyboard: false
+		};
+		this.modalService.open(this.modalSalvando, ngbModalOptions);
 
 		let grupoSalvar: Grupo = this.grupoForm.value;
 		grupoSalvar.RotinaGrupoOperacao = [];
@@ -160,23 +163,24 @@ export class GrupoFormComponent implements OnInit {
 
 			rotinaOp.operacoes.forEach(function (op) {
 
-				if(op.selecionada){
+				if (op.selecionada) {
 
 					let rotinaGrupoOperacaoSalvar: RotinaGrupoOperacao = new RotinaGrupoOperacao();
 					rotinaGrupoOperacaoSalvar.CD_GRP = grupoSalvar.CD_GRP;
 					rotinaGrupoOperacaoSalvar.CD_OPR = op.CD_OPR;
 					rotinaGrupoOperacaoSalvar.CD_ROT = rotinaOp.rotina.CD_ROT;
-	
+
 					grupoSalvar.RotinaGrupoOperacao.push(rotinaGrupoOperacaoSalvar);
 				}
 			});
 		});
 
-		this.grupoService.salvarGrupo(grupoSalvar).subscribe(result=>{
-			
-			this.modalService.dismissAll();
+		this.grupoService.salvarGrupo(grupoSalvar).subscribe(result => {
 
+			this.modalService.dismissAll();
+			this.toast.success("Registro salvo com sucesso!", 'Notificação');
 			this.grupoService.telaLista = true;
+			this.cd.markForCheck();
 			// this.router.navigate(['/seguranca/grupos', { sucesso: "true" }]);
 		})
 
@@ -223,59 +227,62 @@ export class GrupoFormComponent implements OnInit {
 	}
 
 	adicionarRotina() {
-		if(this.cdRotSelecionada){
+		if (this.cdRotSelecionada) {
 			let rotinaOperacoes = new RotinaOperacoes();
 			rotinaOperacoes.rotina = this.listaRotinas.find(o => o.CD_ROT == this.cdRotSelecionada);
-	
+
 			this.listaOperacoes.forEach(function (op) {
-	
+
 				let operacaoAdicionar = new Operacao;
 				operacaoAdicionar.CD_OPR = op.CD_OPR;
 				operacaoAdicionar.TX_DSC = op.TX_DSC;
 				operacaoAdicionar.selecionada = false;
-	
+
 				rotinaOperacoes.operacoes.push(operacaoAdicionar);
 			})
 			this.listaRotinaOperacoesSelecionadas.push(rotinaOperacoes);
 		}
 	}
 
-	habilitarEdicao(){
+	habilitarEdicao() {
 		this.modalService.dismissAll();
 		this.modoEdicao = true;
 		this.titulo = "Editar Grupo"
 	}
 
-	excluir(){
+	excluir() {
 
 		this.modalService.dismissAll();
 
 		let ngbModalOptions: NgbModalOptions = {
-			backdrop : 'static',
-			keyboard : false
-	  	};
-		this.modalService.open(this.modalExcluindo,ngbModalOptions);
+			backdrop: 'static',
+			keyboard: false
+		};
+		this.modalService.open(this.modalExcluindo, ngbModalOptions);
 
 		let grupoExcluir: Grupo = this.grupoForm.value;
 
-		this.grupoService.deletarGrupo(grupoExcluir.CD_GRP).subscribe(result=>{
-			
+		this.grupoService.deletarGrupo(grupoExcluir.CD_GRP).subscribe(result => {
+
 			this.modalService.dismissAll();
 			this.grupoService.telaLista = true;
+			this.toast.success("Registro excluído com sucesso!", 'Notificação');
+			this.cd.markForCheck();
 			// this.router.navigate(['/seguranca/grupos', { excluido: "true" }]);
 		})
 	}
 
-	removerRotinaSelecionada(index){
-		this.listaRotinaOperacoesSelecionadas.splice(index,1);
+	removerRotinaSelecionada(index) {
+		this.listaRotinaOperacoesSelecionadas.splice(index, 1);
 	}
 
 	//-------------------------------------------------------------------------------------------------
 	// Método para carregar as permissões da página----------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
-	carregarPermissoes(){
+	carregarPermissoes() {
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
+			this.cd.markForCheck();
 			console.log(this.permissoes);
 		});
 	}
@@ -283,22 +290,19 @@ export class GrupoFormComponent implements OnInit {
 	//-------------------------------------------------------------------------------------------------
 	// Método para verificar a permissão sobre componente----------------------------------------------
 	//-------------------------------------------------------------------------------------------------
-	verificarPermissao(acao:string){
+	verificarPermissao(acao: string) {
 
-		if(this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0)
-		{
+		if (this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0) {
 			return false;
 		}
 
 		var encontrou = this.permissoes.filter(filtro => filtro.TX_DSC === acao);
 
 
-		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
-		{
+		if (encontrou === undefined || encontrou === null || encontrou.length === 0) {
 			return false;
 		}
-		else
-		{
+		else {
 			return true;
 		}
 	}

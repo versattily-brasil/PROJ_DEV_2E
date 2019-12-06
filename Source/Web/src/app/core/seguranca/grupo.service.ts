@@ -13,6 +13,8 @@ export class GrupoService {
 
     public telaLista:boolean = true;
 
+    public cdGrpVisualizar = 0;
+
     public getGrupos(tx_dsc:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
     
         var params = new HttpParams()

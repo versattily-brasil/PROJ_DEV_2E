@@ -12,6 +12,7 @@ export class ParceiroNegocioService {
     constructor(private http: HttpClient, private auth:AutenticacaoService) { }
 
     public telaLista:boolean = true;
+    public cdPrnVisualizar = 0;
 
     public getParceiroNegocios(txt_rzsoc:string, currentpage:number, pagesize:number, orderby:string, descending:boolean): Observable<any> {
     

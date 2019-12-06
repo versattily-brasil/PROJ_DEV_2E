@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, OnDestroy, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ParceiroNegocioService } from '../../../../../core/seguranca/parceironegocio.service';
 import { HttpParams } from '@angular/common/http';
 import { ParceiroNegocioDataSource } from '../../../../../core/seguranca/parceironegocio.datasource';
@@ -40,6 +40,7 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 		private permissaoService: PermissaoService,
 		private auth:AutenticacaoService,
 		private router: Router,
+		private cd: ChangeDetectorRef,
 		private activatedRoute: ActivatedRoute) {
 	}
 
@@ -106,11 +107,13 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 
 	adicionarParceiroNegocio() {
 		this.parceironegocioService.telaLista = false;
+		this.parceironegocioService.cdPrnVisualizar = 0;
 		// this.router.navigateByUrl('/seguranca/parceironegocio/cadastro');
 	}
 
 	visualizarParceiroNegocio(cd_par) {
 		this.parceironegocioService.telaLista = false;
+		this.parceironegocioService.cdPrnVisualizar = cd_par;
 		// this.router.navigate(['/seguranca/parceironegocio/cadastro', { id: cd_par }]);
 	}
 
@@ -120,6 +123,7 @@ export class ParceiroNegocioListaComponent implements OnInit, AfterViewInit {
 	carregarPermissoes(){
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
+			this.cd.markForCheck();
 			console.log(this.permissoes);
 		});
 	}

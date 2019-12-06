@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, OnDestroy, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { RotinaService } from '../../../../../core/seguranca/rotina.service';
 import { HttpParams } from '@angular/common/http';
 import { RotinaDataSource } from '../../../../../core/seguranca/rotina.datasource';
@@ -42,6 +42,7 @@ export class RotinaListaComponent implements OnInit, AfterViewInit {
 		private activatedRoute: ActivatedRoute,
 		private servicoService: ServicoService,
 		private permissaoService: PermissaoService,
+		private cd: ChangeDetectorRef,
 		private auth:AutenticacaoService) {
 
 	}
@@ -101,11 +102,13 @@ export class RotinaListaComponent implements OnInit, AfterViewInit {
 
 	adicionarRotina() {
 		this.rotinaService.telaLista = false;
+		this.rotinaService.cdRotVisualizar = 0;
 		// this.router.navigateByUrl('/seguranca/rotinas/cadastro');
 	}
 
 	visualizarRotina(cd_usr) {
 		this.rotinaService.telaLista = false;
+		this.rotinaService.cdRotVisualizar = cd_usr;
 		// this.router.navigate(['/seguranca/rotinas/cadastro', { id: cd_usr }]);
 	}
 
@@ -115,6 +118,7 @@ export class RotinaListaComponent implements OnInit, AfterViewInit {
 	carregarPermissoes(){
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
+			this.cd.markForCheck();
 		});
 	}
 

@@ -11,6 +11,7 @@ export class RotinaService {
     constructor(private http: HttpClient, private auth:AutenticacaoService) { }
 
     public telaLista:boolean = true;
+    public cdRotVisualizar = 0;
 
     public getRotinas(): Observable<any> {
 

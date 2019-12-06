@@ -23,6 +23,7 @@ import { PasswordValidation } from './password-validation';
 import { PermissaoService } from '../../../../../core/seguranca/permissao.service';
 import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
 import { Permissao } from '../../../../../core/models/permissao.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	// tslint:disable-next-line:component-selector
@@ -78,7 +79,8 @@ export class UsuarioFormComponent implements OnInit {
 		private servicoService: ServicoService,
 		private permissaoService: PermissaoService,
 		private auth:AutenticacaoService,
-		private cd: ChangeDetectorRef
+		private cd: ChangeDetectorRef,
+		private toast:ToastrService
 	) { }
 
 	ngOnInit() {
@@ -218,7 +220,8 @@ export class UsuarioFormComponent implements OnInit {
 
 			this.modalService.dismissAll();
 			this.usuarioService.telaLista = true;
-			this.usuarioService.sucessoSalvar = true;
+			// this.usuarioService.sucessoSalvar = true;
+			this.toast.success("Registro salvo com sucesso!", 'Notificação');
 			this.cd.markForCheck();
 			// this.router.navigate(['/seguranca/usuarios', { sucesso: "true" }]);			
 			},
@@ -354,7 +357,7 @@ export class UsuarioFormComponent implements OnInit {
 
 			this.modalService.dismissAll();
 			this.usuarioService.telaLista = true;
-			this.usuarioService.sucessoExcluir = true;
+			this.toast.success("Registro excluído com sucesso!", 'Notificação');
 			this.cd.markForCheck();
 			// this.router.navigate(['/seguranca/usuarios', { excluido: "true" }]);
 		})
@@ -370,7 +373,9 @@ export class UsuarioFormComponent implements OnInit {
 	carregarPermissoes(){
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
+			this.cd.markForCheck();
 			console.log(this.permissoes);
+			this.cd.markForCheck();
 		});
 	}
 

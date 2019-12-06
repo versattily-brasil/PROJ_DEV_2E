@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, OnDestroy, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { UsuarioService } from '../../../../../core/seguranca/usuario.service';
 import { HttpParams } from '@angular/common/http';
 import { UsuarioDataSource } from '../../../../../core/seguranca/usuario.datasource';
@@ -44,6 +44,7 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private permissaoService: PermissaoService,
+		private cd: ChangeDetectorRef,
 		private auth:AutenticacaoService) {
 
 	}
@@ -115,6 +116,7 @@ export class UsuarioListaComponent implements OnInit, AfterViewInit {
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
 			console.log(this.permissoes);
+			this.cd.markForCheck();
 		});
 	}
 

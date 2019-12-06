@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, ElementRef, ViewChild, TemplateRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, TemplateRef, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -18,6 +18,7 @@ import { RotinaAssociada } from '../../../../../core/models/rotina-associada.mod
 import { PermissaoService } from '../../../../../core/seguranca/permissao.service';
 import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
 import { Permissao } from '../../../../../core/models/permissao.model';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -30,32 +31,32 @@ import { Permissao } from '../../../../../core/models/permissao.model';
 
 export class RotinaFormComponent implements OnInit {
 
-	titulo:string = "Visualizar Rotina";
+	titulo: string = "Visualizar Rotina";
 
-	nomeRotina : string =  "Rotinas";
-	permissoes : Array<Permissao>;
+	nomeRotina: string = "Rotinas";
+	permissoes: Array<Permissao>;
 
 	modoEdicao: boolean = false;
 
 	rotinaForm: FormGroup;
 	hasFormErrors: boolean = false;
 
-	loadingSalvar:boolean = false;
+	loadingSalvar: boolean = false;
 
 	rotina: Observable<Rotina>;
 	listaServicos: Servico[] = [];
 	listaRotinas: Rotina[] = [];
 	listaOperacoes: Operacao[] = [];
 
-	listaMenu: string[] = 
-	["/seguranca/usuarios","/seguranca/rotinas","/seguranca/grupos","/seguranca/parceironegocio","/seguranca/servicos","/importacao/detalhencm","programacaobot","/importacao/moeda"];
+	listaMenu: string[] =
+		["/seguranca/usuarios", "/seguranca/rotinas", "/seguranca/grupos", "/seguranca/parceironegocio", "/seguranca/servicos", "/importacao/detalhencm", "programacaobot", "/importacao/moeda"];
 	listaRotinaAssociadas: Rotina[] = [];
 
 	cdSrvSelecionado = 0;
 	cdRotSelecionada = 0;
 
-	@ViewChild('content8', {static: true}) private modalSalvando: TemplateRef<any>;
-	@ViewChild('content12', {static: true}) private modalExcluindo: TemplateRef<any>;
+	@ViewChild('content8', { static: true }) private modalSalvando: TemplateRef<any>;
+	@ViewChild('content12', { static: true }) private modalExcluindo: TemplateRef<any>;
 
 	constructor(
 		private modalService: NgbModal,
@@ -65,7 +66,9 @@ export class RotinaFormComponent implements OnInit {
 		private rotinaService: RotinaService,
 		private servicoService: ServicoService,
 		private permissaoService: PermissaoService,
-		private auth:AutenticacaoService
+		private auth: AutenticacaoService,
+		private toast: ToastrService,
+		private cd: ChangeDetectorRef,
 	) { }
 
 	ngOnInit() {
@@ -78,40 +81,39 @@ export class RotinaFormComponent implements OnInit {
 			TX_URL: ['', Validators.required]
 		});
 
-		this.activatedRoute.params.subscribe(params => {
-			let id = params['id'] && params['id'] > 0 ? params['id'] : 0;
+		let id = this.rotinaService.cdRotVisualizar;
 
-			if(id == 0){
-				this.modoEdicao = true;
-				this.titulo = "Cadastrar Rotina";
-			}
+		if (id == 0) {
+			this.modoEdicao = true;
+			this.titulo = "Cadastrar Rotina";
+		}
 
-			this.rotina = this.rotinaService.getRotina(id).pipe(
-				tap(rotina => {
+		this.rotina = this.rotinaService.getRotina(id).pipe(
+			tap(rotina => {
 
-					
 
-					this.rotinaService.getRotinasAssociadas(rotina.CD_ROT).subscribe(rotinasAssociadas=>{
 
-						this.rotinaService.getRotinas().subscribe(rotinas => {
-							this.listaRotinas = rotinas;
-							this.montarTabelas(rotinasAssociadas);
-						});
+				this.rotinaService.getRotinasAssociadas(rotina.CD_ROT).subscribe(rotinasAssociadas => {
 
-						
+					this.rotinaService.getRotinas().subscribe(rotinas => {
+						this.listaRotinas = rotinas;
+						this.montarTabelas(rotinasAssociadas);
 					});
 
-					this.servicoService.getServicos().subscribe(servicos => {
-						this.listaServicos = servicos;
-						this.rotinaForm.patchValue(rotina);
-						
-						const toSelect = this.listaServicos.find(c => c.CD_SRV == rotina.CD_SRV);
-						f.get('CD_SRV').setValue(toSelect);
-					});
-				})
-			);
 
-		});
+				});
+
+				this.servicoService.getServicos().subscribe(servicos => {
+					this.listaServicos = servicos;
+					this.rotinaForm.patchValue(rotina);
+
+					const toSelect = this.listaServicos.find(c => c.CD_SRV == rotina.CD_SRV);
+					f.get('CD_SRV').setValue(toSelect);
+				});
+			})
+		);
+
+
 
 
 
@@ -158,10 +160,10 @@ export class RotinaFormComponent implements OnInit {
 		this.modalService.dismissAll();
 
 		let ngbModalOptions: NgbModalOptions = {
-			backdrop : 'static',
-			keyboard : false
-	  	};
-		this.modalService.open(this.modalSalvando,ngbModalOptions);
+			backdrop: 'static',
+			keyboard: false
+		};
+		this.modalService.open(this.modalSalvando, ngbModalOptions);
 
 		let rotinaSalvar = this.rotinaForm.value;
 		rotinaSalvar.RotinasAssociadas = [];
@@ -174,14 +176,16 @@ export class RotinaFormComponent implements OnInit {
 			rotinaSalvar.RotinasAssociadas.push(rotinaAssociadaSalvar);
 		});
 
-		let servicoSalvar = this.listaServicos.find(o=>o.CD_SRV == rotinaSalvar.CD_SRV.CD_SRV).CD_SRV;
+		let servicoSalvar = this.listaServicos.find(o => o.CD_SRV == rotinaSalvar.CD_SRV.CD_SRV).CD_SRV;
 
 		rotinaSalvar.CD_SRV = servicoSalvar;
 
-		this.rotinaService.salvarRotina(rotinaSalvar).subscribe(result=>{
-			
+		this.rotinaService.salvarRotina(rotinaSalvar).subscribe(result => {
+
 			this.modalService.dismissAll();
 			this.rotinaService.telaLista = true;
+			this.toast.success("Registro salvo com sucesso!", 'Notificação');
+			this.cd.markForCheck();
 			// this.router.navigate(['/seguranca/rotinas', { sucesso: "true" }]);
 		})
 	}
@@ -189,78 +193,79 @@ export class RotinaFormComponent implements OnInit {
 	montarTabelas(rotinasAssociadas) {
 
 		let comp = this;
-		
-		rotinasAssociadas.forEach(function (item){
 
-			comp.listaRotinaAssociadas.push(comp.listaRotinas.find(o=>o.CD_ROT == item.CD_ROT_ASS));
+		rotinasAssociadas.forEach(function (item) {
+
+			comp.listaRotinaAssociadas.push(comp.listaRotinas.find(o => o.CD_ROT == item.CD_ROT_ASS));
 		});
 	}
 	adicionarRotina() {
-		if(this.cdRotSelecionada){
+		if (this.cdRotSelecionada) {
 			this.listaRotinaAssociadas.push(this.listaRotinas.find(o => o.CD_ROT == this.cdRotSelecionada));
 		}
-		
+
 	}
 
-	habilitarEdicao(){
+	habilitarEdicao() {
 		this.modalService.dismissAll();
 		this.modoEdicao = true;
 		this.titulo = "Editar Rotina"
 	}
 
-	excluir(){
+	excluir() {
 
 		this.modalService.dismissAll();
 
 		let ngbModalOptions: NgbModalOptions = {
-			backdrop : 'static',
-			keyboard : false
-	  	};
-		this.modalService.open(this.modalExcluindo,ngbModalOptions);
+			backdrop: 'static',
+			keyboard: false
+		};
+		this.modalService.open(this.modalExcluindo, ngbModalOptions);
 
 		let rotinaExcluir: Rotina = this.rotinaForm.value;
 
-		this.rotinaService.deletarRotina(rotinaExcluir.CD_ROT).subscribe(result=>{
-			
+		this.rotinaService.deletarRotina(rotinaExcluir.CD_ROT).subscribe(result => {
+
 			this.modalService.dismissAll();
 			this.rotinaService.telaLista = true;
+			this.toast.success("Registro excluído com sucesso!", 'Notificação');
+			this.cd.markForCheck();
 			// this.router.navigate(['/seguranca/rotinas', { excluido: "true" }]);
 		})
-    }
-    
-    removerRotina(rotina, index){
+	}
+
+	removerRotina(rotina, index) {
 		this.listaRotinaAssociadas.splice(index, 1);
-	}    
-	
-		//-------------------------------------------------------------------------------------------------
+	}
+
+	//-------------------------------------------------------------------------------------------------
 	// Método para carregar as permissões da página----------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
-	carregarPermissoes(){
+	carregarPermissoes() {
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
+			this.cd.markForCheck();
 			console.log(this.permissoes);
+			
 		});
 	}
 
 	//-------------------------------------------------------------------------------------------------
 	// Método para verificar a permissão sobre componente----------------------------------------------
 	//-------------------------------------------------------------------------------------------------
-	verificarPermissao(acao:string){
+	verificarPermissao(acao: string) {
 
-		if(this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0)
-		{
+		if (this.permissoes === undefined || this.permissoes === null || this.permissoes.length === 0) {
 			return false;
 		}
 
 		var encontrou = this.permissoes.filter(filtro => filtro.TX_DSC === acao);
 
 
-		if(encontrou === undefined || encontrou === null || encontrou.length === 0)
-		{
+		if (encontrou === undefined || encontrou === null || encontrou.length === 0) {
 			return false;
 		}
-		else
-		{
+		else {
 			return true;
 		}
 	}

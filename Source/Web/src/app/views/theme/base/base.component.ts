@@ -97,6 +97,7 @@ export class BaseComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 
 		this.tela.TelaAtual == "usuario-lista";
+		this.abas.listAbasAbertas = [];
 
 		const config = this.layoutConfigService.getConfig();
 		this.selfLayout = objectPath.get(config, 'self.layout');

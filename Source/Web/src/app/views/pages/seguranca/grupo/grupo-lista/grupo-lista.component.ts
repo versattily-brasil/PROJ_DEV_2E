@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, OnDestroy, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { GrupoService } from '../../../../../core/seguranca/grupo.service';
 import { HttpParams } from '@angular/common/http';
 import { GrupoDataSource } from '../../../../../core/seguranca/grupo.datasource';
@@ -41,6 +41,7 @@ export class GrupoListaComponent implements OnInit, AfterViewInit {
 		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private permissaoService: PermissaoService,
+		private cd: ChangeDetectorRef,
 		private auth:AutenticacaoService) {
 
 	}
@@ -102,11 +103,13 @@ export class GrupoListaComponent implements OnInit, AfterViewInit {
 
 	adicionarGrupo() {
 		this.grupoService.telaLista = false;
+		this.grupoService.cdGrpVisualizar = 0
 		// this.router.navigateByUrl('/seguranca/grupos/cadastro');
 	}
 
 	visualizarGrupo(cd_grp) {
 		this.grupoService.telaLista = false;
+		this.grupoService.cdGrpVisualizar = cd_grp
 		// this.router.navigate(['/seguranca/grupos/cadastro', { id: cd_grp }]);
 	}
 
@@ -116,6 +119,7 @@ export class GrupoListaComponent implements OnInit, AfterViewInit {
 	carregarPermissoes(){
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
+			this.cd.markForCheck();
 			console.log(this.permissoes);
 		});
 	}
