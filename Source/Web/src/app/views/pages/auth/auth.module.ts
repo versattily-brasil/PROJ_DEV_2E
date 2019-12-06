@@ -12,7 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 // CRUD
-import { InterceptService } from '../../../core/_base/crud/';
+
 // Module components
 import { AuthComponent } from './auth.component';
 import { LoginComponent } from './login/login.component';
@@ -50,12 +50,6 @@ const routes: Routes = [
 		TranslateModule.forChild()
 	],
 	providers: [
-		InterceptService,
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: InterceptService,
-			multi: true
-		},
 	],
 	exports: [AuthComponent],
 	declarations: [

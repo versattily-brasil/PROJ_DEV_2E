@@ -19,7 +19,7 @@
             </button>
 
             <button *ngIf="modoEdicao" mat-raised-button color="primary" class="kt-margin-r-10"
-                (click)="exibirModal(content10)">
+                (click)="exibirModal(content10)" [disabled]="usuarioForm.invalid">
                 Salvar
             </button>
         </ng-container>

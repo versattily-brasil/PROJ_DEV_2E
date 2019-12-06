@@ -143,32 +143,32 @@ export class LoginComponent implements OnInit, OnDestroy {
 		usuario.TX_SENHA = controls['password'].value;
 
 		this.auth.login(usuario).subscribe(
-			res => {
-
-
-
+			(res) => {
 				let loginResult: Usuario = res;
-
-
-
-
 				this.menuService.getPermissoes(loginResult.CD_USR.toString()).subscribe(menus => {
-
-					localStorage.setItem("menus",JSON.stringify(menus));
+					localStorage.setItem("menus", JSON.stringify(menus));
 					this.auth.armazenaInfoLogin(loginResult);
 					this.router.navigate(["/"]);
 				});
+			}, 
+			(err) => {
+				this.err(err)
+			},
+			() => {
+				this.actLoading();
+			}
+		);
 
+	}
 
+	public actLoading(){
+		this.loading = !this.loading;
+		console.log(this.loading);
+	}
 
-
-
-
-			}, err => {
-
-				// this.erroLogin = err.error;
-			});
-
+	public err(err) {
+		this.toastr.error(err.error, 'Notificação');
+		this.actLoading();
 	}
 
 	/**
