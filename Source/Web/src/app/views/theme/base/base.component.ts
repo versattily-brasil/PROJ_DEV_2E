@@ -167,19 +167,24 @@ export class BaseComponent implements OnInit, OnDestroy {
 	}
 
 	fecharAbaUsuario() {
-		this.abas.AbaUsuario = false;
+		this.abas.listAbasAbertas.splice(this.abas.listAbasAbertas.indexOf('Usuário'),1);
+		// this.abas.AbaUsuario = false;
 	}
 	fecharAbaGrupo() {
-
-		this.abas.AbaGrupos = false;
+		this.abas.listAbasAbertas.splice(this.abas.listAbasAbertas.indexOf('Grupos de Usuários'),1);
+		// this.abas.AbaGrupos = false;
 	}
 	fecharAbaServico() {
-		this.abas.AbaServico = false;
+		this.abas.listAbasAbertas.splice(this.abas.listAbasAbertas.indexOf('Serviços'),1);
+		// this.abas.AbaServico = false;
 	}
 	fecharAbaParceironegocio() {
-		this.abas.AbaParceironegocio = false;
+
+		this.abas.listAbasAbertas.splice(this.abas.listAbasAbertas.indexOf('Parceiro de Negócio'),1);
+		// this.abas.AbaParceironegocio = false;
 	}
 	fecharAbaRotina() {
-		this.abas.AbaRotina = false;
+		this.abas.listAbasAbertas.splice(this.abas.listAbasAbertas.indexOf('Rotinas'),1);
+		// this.abas.AbaRotina = false;
 	}
 }
