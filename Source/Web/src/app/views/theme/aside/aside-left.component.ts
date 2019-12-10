@@ -260,13 +260,13 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 
 	abrirAbas(cod) {
 
-		this.abas.limparAbas();
+		// this.abas.limparAbas();
 
-		let listaRotinasAbrir = this.listaRotinas.filter(o=>o.CD_ROT_PRINCIPAL == cod.CD_ROT);
-		listaRotinasAbrir.forEach(item => {
+		// let listaRotinasAbrir = this.listaRotinas.filter(o=>o.CD_ROT_PRINCIPAL == cod.CD_ROT);
+		// listaRotinasAbrir.forEach(item => {
 
-			this.abrirAba(item.NomeRotinaAssociada);
-		});
+		// 	this.abrirAba(item.NomeRotinaAssociada);
+		// });
 		this.abrirAba(cod.title);
 	}
 
