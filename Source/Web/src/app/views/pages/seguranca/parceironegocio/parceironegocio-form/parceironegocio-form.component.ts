@@ -112,6 +112,26 @@ export class ParceiroNegocioFormComponent implements OnInit {
 		this.modalService.open(content);
 	}
 
+	exibirModalSalvar(content) {
+
+		this.hasFormErrors = false;
+		const controls = this.parceironegocioForm.controls;
+
+		/** check form */
+		if (this.parceironegocioForm.invalid) {
+			Object.keys(controls).forEach(controlName =>
+				controls[controlName].markAsTouched()
+			);
+			this.toast.error("Realize as correções no formulário e tente novamente.", 'Não é possível salvar o parceiro de negócio');
+			this.hasFormErrors = true;
+			return;
+		}else{
+			this.modalService.open(content);
+		}
+
+		
+	}
+
 	cancelar() {
 		this.parceironegocioService.telaLista = true;
 		// this.router.navigateByUrl('/seguranca/parceironegocio');
@@ -139,6 +159,7 @@ export class ParceiroNegocioFormComponent implements OnInit {
 	salvar() {
 
 		this.modalService.dismissAll();
+
 
 		let ngbModalOptions: NgbModalOptions = {
 			backdrop: 'static',

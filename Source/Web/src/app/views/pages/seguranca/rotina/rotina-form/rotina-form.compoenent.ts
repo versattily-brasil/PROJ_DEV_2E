@@ -131,6 +131,26 @@ export class RotinaFormComponent implements OnInit {
 		this.modalService.open(content);
 	}
 
+	exibirModalSalvar(content) {
+
+		this.hasFormErrors = false;
+		const controls = this.rotinaForm.controls;
+
+		/** check form */
+		if (this.rotinaForm.invalid) {
+			Object.keys(controls).forEach(controlName =>
+				controls[controlName].markAsTouched()
+			);
+			this.toast.error("Realize as correções no formulário e tente novamente.", 'Não é possível salvar a rotina');
+			this.hasFormErrors = true;
+			return;
+		}else{
+			this.modalService.open(content);
+		}
+
+		
+	}
+
 	cancelar() {
 		this.rotinaService.telaLista = true;
 		// this.router.navigateByUrl('/seguranca/rotinas');
@@ -158,6 +178,11 @@ export class RotinaFormComponent implements OnInit {
 	salvar() {
 
 		this.modalService.dismissAll();
+
+
+
+
+		
 
 		let ngbModalOptions: NgbModalOptions = {
 			backdrop: 'static',
@@ -246,7 +271,7 @@ export class RotinaFormComponent implements OnInit {
 			this.permissoes = permissao;
 			this.cd.markForCheck();
 			console.log(this.permissoes);
-			
+
 		});
 	}
 

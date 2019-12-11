@@ -19,7 +19,7 @@
             </button>
 
             <button *ngIf="modoEdicao" mat-raised-button color="primary" class="kt-margin-r-10"
-                (click)="exibirModal(content10)" [disabled]="usuarioForm.invalid">
+                (click)="exibirModalSalvar(content10)" >
                 Salvar
             </button>
         </ng-container>
@@ -29,10 +29,6 @@
         <div>
             <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="usuario | async" [formGroup]="usuarioForm"
                 class="kt-form">
-                <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
-                    (close)="onAlertClose($event)">
-                    <b>Erro ao salvar o usuário.</b>&nbsp;Realize as correções e tente novamente.
-                </kt-alert>
 
                 <input formControlName="CD_USR" type="hidden">
 
@@ -82,7 +78,7 @@
                                     <mat-form-field class="col-lg-12">
                                         <input matInput placeholder="Digite a Senha do usuário"
                                             formControlName="TX_SENHA"
-                                            maxlength="10">
+                                            maxlength="10" type="password">
                                         <mat-error>
                                             O campo Senha é <strong>obrigatório</strong>
                                         </mat-error>
@@ -97,7 +93,7 @@
                                     <mat-form-field class="col-lg-12">
                                         <input matInput placeholder="Confirme a senha do usuário"
                                             formControlName="CONFIRMA_SENHA"
-                                            maxlength="10">
+                                            maxlength="10" type="password">
                                         <mat-error>
 
                                             <span

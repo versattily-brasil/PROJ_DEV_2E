@@ -19,7 +19,7 @@
             </button>
 
             <button *ngIf="modoEdicao" mat-raised-button color="primary" class="kt-margin-r-10"
-                (click)="exibirModal(content10)">
+                (click)="exibirModalSalvar(content10)">
                 Salvar
             </button>
         </ng-container>
@@ -31,10 +31,10 @@
             <!--begin::Form-->
             <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="rotina | async"
                 [formGroup]="rotinaForm" class="kt-form">
-                <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
+                <!-- <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
                     (close)="onAlertClose($event)">
                     <b>Erro ao salvar o rotina.</b>&nbsp;Realize as correções e tente novamente.
-                </kt-alert>
+                </kt-alert> -->
 
                 <input formControlName="CD_ROT" type="hidden">
 

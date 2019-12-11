@@ -168,7 +168,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	public err(err) {
-		this.toastr.error(err.error, 'Notificação');
+		this.toastr.error(err.error, 'Notificação',{
+			positionClass: 'toast-top-left' 
+		 });
 		this.actLoading();
 	}
 

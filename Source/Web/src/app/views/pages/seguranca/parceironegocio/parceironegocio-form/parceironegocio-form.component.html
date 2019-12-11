@@ -21,7 +21,7 @@
             </button>
 
             <button *ngIf="modoEdicao" mat-raised-button color="primary" class="kt-margin-r-10"
-                (click)="exibirModal(content10)">
+                (click)="exibirModalSalvar(content10)">
                 Salvar
             </button>
         </ng-container>
@@ -32,10 +32,7 @@
             <!--begin::Form-->
             <form [ngClass]="{'modoVisualizacao': !modoEdicao}" *ngIf="parceironegocio | async"
                 [formGroup]="parceironegocioForm" class="kt-form">
-                <kt-alert *ngIf="hasFormErrors" type="warn" [showCloseButton]="true" [duration]="10000"
-                    (close)="onAlertClose($event)">
-                    <b>Erro ao salvar o parceiro de negócio.</b>&nbsp;Realize as correções e tente novamente.
-                </kt-alert>
+
 
                 <input formControlName="CD_PAR" type="hidden">
 

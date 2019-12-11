@@ -139,6 +139,26 @@ export class UsuarioFormComponent implements OnInit {
 		this.modalService.open(content);
 	}
 
+	exibirModalSalvar(content) {
+
+		this.hasFormErrors = false;
+		const controls = this.usuarioForm.controls;
+
+		/** check form */
+		if (this.usuarioForm.invalid) {
+			Object.keys(controls).forEach(controlName =>
+				controls[controlName].markAsTouched()
+			);
+			this.toast.error("Realize as correções no formulário e tente novamente.", 'Não é possível salvar o usuário');
+			this.hasFormErrors = true;
+			return;
+		}else{
+			this.modalService.open(content);
+		}
+
+		
+	}
+
 	cancelar() {
 		//this.router.navigateByUrl('/seguranca/usuarios');
 		this.modalService.dismissAll();
@@ -165,7 +185,9 @@ export class UsuarioFormComponent implements OnInit {
 
 	salvar() {
 
+		
 		this.modalService.dismissAll();
+
 
 		let ngbModalOptions: NgbModalOptions = {
 			backdrop: 'static',

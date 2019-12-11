@@ -122,6 +122,26 @@ export class GrupoFormComponent implements OnInit {
 		this.modalService.open(content);
 	}
 
+	exibirModalSalvar(content) {
+
+		this.hasFormErrors = false;
+		const controls = this.grupoForm.controls;
+
+		/** check form */
+		if (this.grupoForm.invalid) {
+			Object.keys(controls).forEach(controlName =>
+				controls[controlName].markAsTouched()
+			);
+			this.toast.error("Realize as correções no formulário e tente novamente.", 'Não é possível salvar o grupo');
+			this.hasFormErrors = true;
+			return;
+		}else{
+			this.modalService.open(content);
+		}
+
+		
+	}
+
 	cancelar() {
 		this.grupoService.telaLista = true;
 		// this.router.navigateByUrl('/seguranca/grupos');
@@ -149,6 +169,8 @@ export class GrupoFormComponent implements OnInit {
 	salvar() {
 
 		this.modalService.dismissAll();
+
+
 
 		let ngbModalOptions: NgbModalOptions = {
 			backdrop: 'static',
