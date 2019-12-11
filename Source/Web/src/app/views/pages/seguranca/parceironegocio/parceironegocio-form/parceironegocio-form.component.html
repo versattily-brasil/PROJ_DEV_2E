@@ -47,7 +47,9 @@
                                 <label class="col-lg-2 col-form-label">Razão Social:</label>
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
-                                        <input matInput placeholder="Digite o Nome do parceiro" formControlName="TXT_RZSOC">
+                                        <input matInput placeholder="Digite o Nome do parceiro" 
+                                        formControlName="TXT_RZSOC"
+                                        maxlength="100">
                                         <mat-error>
                                             O campo Razão social é <strong>obrigatório</strong>
                                         </mat-error>
@@ -61,7 +63,8 @@
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
                                         <input type="text" matInput placeholder="Digite o CNPJ"
-                                            formControlName="CNPJ" [textMask]="{mask: mask}">
+                                            formControlName="CNPJ" [textMask]="{mask: mask}"
+                                            maxlength="21">
                                         <mat-error>
                                             O campo CNPJ é <strong>obrigatório</strong>
                                         </mat-error>
@@ -81,7 +84,8 @@
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
                                         <input matInput placeholder="Digite o Email"
-                                            formControlName="TX_EMAIL">
+                                            formControlName="TX_EMAIL"
+                                            maxlength="100">
                                         <mat-error>
                                             O campo Email é <strong>obrigatório</strong>
                                         </mat-error>

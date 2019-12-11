@@ -46,7 +46,9 @@
                                 <label class="col-lg-2 col-form-label">Nome:</label>
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
-                                        <input matInput placeholder="Digite o Nome da rotina" formControlName="TX_NOME">
+                                        <input matInput placeholder="Digite o Nome da rotina" 
+                                        formControlName="TX_NOME"
+                                        maxlength="40">
                                         <mat-error>
                                             O campo Nome é <strong>obrigatório</strong>
                                         </mat-error>
@@ -60,7 +62,8 @@
                                 <div class="col-lg-8 example-container">
                                     <mat-form-field class="col-lg-12">
                                         <input matInput placeholder="Digite a Descrição da rotina"
-                                            formControlName="TX_DSC">
+                                            formControlName="TX_DSC"
+                                            maxlength="200">
                                         <mat-error>
                                             O campo Descrição é <strong>obrigatório</strong>
                                         </mat-error>
