@@ -225,7 +225,7 @@ export class RotinaFormComponent implements OnInit {
 		});
 	}
 	adicionarRotina() {
-		if (this.cdRotSelecionada) {
+		if (this.cdRotSelecionada && !this.listaRotinaAssociadas.find(o=>o.CD_ROT == this.cdRotSelecionada)) {
 			this.listaRotinaAssociadas.push(this.listaRotinas.find(o => o.CD_ROT == this.cdRotSelecionada));
 		}
 

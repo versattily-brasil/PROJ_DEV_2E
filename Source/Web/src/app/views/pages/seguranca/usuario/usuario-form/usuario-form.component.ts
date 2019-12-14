@@ -337,7 +337,7 @@ export class UsuarioFormComponent implements OnInit {
 
 	adicionarRotina() {
 
-		if (this.cdRotSelecionada) {
+		if (this.cdRotSelecionada && !this.listaRotinaOperacoesSelecionadas.find(o=>o.rotina && o.rotina.CD_ROT == this.cdRotSelecionada)) {
 
 			let rotinaOperacoes = new RotinaOperacoes();
 			rotinaOperacoes.rotina = this.listaRotinas.find(o => o.CD_ROT == this.cdRotSelecionada);

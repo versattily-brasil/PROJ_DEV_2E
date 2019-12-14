@@ -26,7 +26,7 @@ export class RotinaListaComponent implements OnInit, AfterViewInit {
 	permissoes : Array<Permissao>;
 
 	dataSource: RotinaDataSource;
-	displayedColumns = ["TX_NOME", "TX_NOME", "descricaoServico", "editar"];
+	displayedColumns = ["TX_NOME", "descricaoServico", "editar"];
 	tamanho: number;
 
 	salvouSucesso: boolean = false;
