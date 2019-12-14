@@ -54,6 +54,7 @@ namespace P2E.Importacao.API
             services.AddTransient<IMoedaRepository, MoedaRepository>();
             services.AddTransient<INCMRepository, NCMRepository>();
             services.AddTransient<ITriagemBotRepository, TriagemBotRepository>();
+            services.AddTransient<ICEMercanteRepository, CEMercanteRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

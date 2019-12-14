@@ -1,11 +1,15 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
+using P2E.Automacao.Entidades;
 using P2E.Automacao.Shared.Extensions;
 using P2E.Automacao.Shared.Log;
 using P2E.Automacao.Shared.Log.Enum;
 using Selenium.Utils.Html;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,10 +22,12 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
         public string _urlSite = @"https://www.mercante.transportes.gov.br/g36127/servlet/serpro.siscomex.mercante.servlet.MercanteController";
 
         private string _urlApiBase;
+        private List<TBCEMercante> registros;
 
         int _cd_bot_exec;
         int _cd_par;
         string _nome_cliente;
+        ChromeOptions options = null;
 
         #endregion
 
@@ -43,30 +49,29 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
 
         public async Task ExecutarAsync()
         {
-            //LogController.RegistrarLog(_nome_cliente + " - " + "Obtendo DI's ", eTipoLog.INFO, _cd_bot_exec, "bot");
             await CarregarListaDIAsync();
         }
 
         private async Task CarregarListaDIAsync()
         {
-            using (var service = PhantomJSDriverService.CreateDefaultService())
+            using ( var service = PhantomJSDriverService.CreateDefaultService() )
             {
-                LogController.RegistrarLog("Carregando certificado...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                ControleCertificados.CarregarCertificado(service);
+                LogController.RegistrarLog( "Carregando certificado...", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                ControleCertificados.CarregarCertificado( service );
 
-                service.AddArgument("test-type");
-                service.AddArgument("no-sandbox");
+                service.AddArgument( "test-type" );
+                service.AddArgument( "no-sandbox" );
                 service.HideCommandPromptWindow = true;
 
-                using (var _driver = new PhantomJSDriver(service))
+                using ( var _driver = new PhantomJSDriver( service ) )
                 {
                     try
                     {
-                        Acessar(_driver);
+                        Acessar( _driver );
 
-                        LogController.RegistrarLog($"Execução concluída.", eTipoLog.INFO, _cd_bot_exec, "bot");
+                        LogController.RegistrarLog( $"Execução concluída.", eTipoLog.INFO, _cd_bot_exec, "bot" );
                     }
-                    catch (Exception)
+                    catch ( Exception )
                     {
                         _driver.Close();
                     }
@@ -74,7 +79,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
             }
         }
 
-        private async Task Acessar(PhantomJSDriver _driver)
+        private async Task Acessar(PhantomJSDriver _driver )
         {
             try
             {
@@ -82,39 +87,87 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
 
                 _driver.Navigate().GoToUrl(_urlSite);
                 Thread.Sleep(500);
+                var retorno = capturaImagem(_driver, "0");
 
                 LogController.RegistrarLog($"Clique na Area para Cadastrados", eTipoLog.INFO, _cd_bot_exec, "bot");
                 OpenQA.Selenium.IWebElement element = _driver.FindElementByCssSelector("body > form:nth-child(3) > table:nth-child(6) > tbody > tr > td:nth-child(4) > p:nth-child(6) > a");
                 element.Click();
-                Thread.Sleep(500);
+                Thread.Sleep(900);
+                retorno = capturaImagem(_driver, "1");
 
                 LogController.RegistrarLog($"Click no Certificado", eTipoLog.INFO, _cd_bot_exec, "bot");
                 element = _driver.FindElementByCssSelector("#cpfsenha > table.Tab1 > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(4) > td:nth-child(1) > table > tbody > tr:nth-child(4) > td:nth-child(2) > div > a > img");
                 element.Click();
                 Thread.Sleep(500);
+                retorno = capturaImagem(_driver, "2");
 
-                var retorno = capturaImagem(_driver, "0");
-
+                _driver.SwitchTo().Frame( 1 );
                 LogController.RegistrarLog($"Clique na Aba 'Conhecimento'", eTipoLog.INFO, _cd_bot_exec, "bot");
-                element = _driver.FindElementByXPath("/html/body/form[1]/table[2]/tbody/tr/td[2]/a/img");
+                element = _driver.FindElementByCssSelector( "body > form:nth-child(1) > table:nth-child(2) > tbody > tr > td:nth-child(3) > a" );
                 element.Click();
                 Thread.Sleep(500);
-
-                retorno = capturaImagem(_driver, "1");
+                retorno = capturaImagem(_driver, "3");
 
                 LogController.RegistrarLog($"Selecionando: Conhecimento/BL/BL-HOUSE", eTipoLog.INFO, _cd_bot_exec, "bot");
                 Select selectTipo = new Select(_driver, By.Name("cmbAcoes"));
                 selectTipo.SelectByText("Conhecimento/BL/BL-HOUSE");
                 Thread.Sleep(500);
-
-                retorno = capturaImagem(_driver, "2");
+                retorno = capturaImagem(_driver, "4");
 
                 LogController.RegistrarLog($"Selecionando: Consultar Conhecimentos Incluídos e Alterados", eTipoLog.INFO, _cd_bot_exec, "bot");
                 selectTipo = new Select(_driver, By.Name("cmbAcoesNivel2"));
                 selectTipo.SelectByText("Consultar Conhecimentos Incluídos e Alterados");
                 Thread.Sleep(500);
+                retorno = capturaImagem(_driver, "5");
 
-                retorno = capturaImagem(_driver, "3");
+                _driver.SwitchTo().DefaultContent();  // .Frame( "main");
+                _driver.SwitchTo().Frame( "main");
+                LogController.RegistrarLog( $"Adicionando a Data de Inclusão do Conhecimento", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                element = _driver.FindElementById( "DtConsulta" );
+                element.SendKeys( "31102019" );
+                retorno = capturaImagem( _driver, "6" );
+
+                LogController.RegistrarLog( $"Adicionando o CNPJ/CPF do Consignatário", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                element = _driver.FindElementByCssSelector( "#CnpjCpfConsignatario" );
+                element.SendKeys( "00280273000137" );
+                retorno = capturaImagem( _driver, "7" );
+
+                LogController.RegistrarLog( $"Clique no Botão enviar", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                element = _driver.FindElementById( "Enviar" );
+                element.Click();
+                retorno = capturaImagem( _driver, "8" );
+
+                //LEIRUTA DO CE'S E GRAVACAO NA TABELA PARA FAZER O INCEPTION
+                bool leNumCE = true;
+                
+                string data = string.Empty;
+
+                int cont = 3;
+
+                TBCEMercante mercante = new TBCEMercante();
+
+                while ( leNumCE )
+                {        
+                    try
+                    {
+                        mercante.TX_CE_MERCANTE = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(1) > a", cont ) ) ).Text;
+                        mercante.TX_NUM_BL = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(2)", cont ) ) ).Text;
+                        mercante.TX_TIPO = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(3)", cont ) ) ).Text;
+                        mercante.TX_NUM_MANIFESTO = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(4) > a", cont ) ) ).Text;
+                        data = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(5)", cont ) ) ).Text;
+                        mercante.DT_DATA_OPERACAO = Convert.ToDateTime(data);
+
+                        LogController.RegistrarLog( $"Inserindo no Banco o CE Nº " + mercante.TX_CE_MERCANTE, eTipoLog.INFO, _cd_bot_exec, "bot" );
+                        await AtualizaCEMercante( mercante, "0" );
+
+                        cont++;
+                    }
+                    catch
+                    {
+                        LogController.RegistrarLog( $"Fim da Leitura do CE's", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                        leNumCE = false;
+                    }
+                }
 
 
 
@@ -125,34 +178,37 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
 
 
 
-                //
-
-                ////COLOCANDO O ANO
-                //
-                //element.SendKeys("20" + numAno);
-
-                //LogController.RegistrarLog(_nome_cliente + " - " + "Inserindo o Numero...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                ////COLOCANDO O NUMERO
-                //element = _driver.FindElementById("txtNumeroDI");
-                //element.SendKeys(numDeclaracao);
-
-                //LogController.RegistrarLog(_nome_cliente + " - " + "Inserindo o Digito Verificador...", eTipoLog.INFO, _cd_bot_exec, "bot");
-                ////COLOCANDO O NUMERO DO DIGITO VERIFICADOR
-                //element = _driver.FindElementById("txtDigito");
-                //element.SendKeys(numDigito);
-
-                //// clica no BOTAO 'Confirmar'
-                //element = _driver.FindElementById("pesquisar");
-                //element.Click();
+                    //body > form > table:nth-child(10) > tbody > tr:nth-child(3) > td:nth-child(1) > a
+                    //body > form > table:nth-child(10) > tbody > tr:nth-child(4) > td:nth-child(1) > a
+                    //body > form > table:nth-child(10) > tbody > tr:nth-child(5) > td:nth-child(1) > a
 
 
 
-
-                //retorno = capturaImagem(_driver, "1");
-            }
+                }
             catch (Exception ex)
             {
                 LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+            }
+        }
+
+        private async Task AtualizaCEMercante( TBCEMercante import, string cd_ce )
+        {
+            try
+            {
+                HttpResponseMessage resultado;
+
+                using ( var client = new HttpClient() )
+                {
+                    client.BaseAddress = new Uri( _urlApiBase );
+                    resultado = client.PutAsJsonAsync( $"imp/v1/cemercante/{cd_ce}", import ).Result;
+                    resultado.EnsureSuccessStatusCode();
+
+                    LogController.RegistrarLog( "Registro salvo com sucesso." );
+                }
+            }
+            catch ( Exception e )
+            {
+                LogController.RegistrarLog( $"Erro ao atualizar o CE nº {import.TX_CE_MERCANTE}." );
             }
         }
 
