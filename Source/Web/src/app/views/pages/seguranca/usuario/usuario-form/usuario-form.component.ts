@@ -40,7 +40,8 @@ export class UsuarioFormComponent implements OnInit {
 	nomeRotina : string =  "Usuário";
 	permissoes : Array<Permissao>;
 
-
+	public mascara = ['(', /[1-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+	myModel :string;
 	modoEdicao: boolean = false;
 
 	listaStatus: UsuarioStatus[] = [{ OP_STATUS: '1', TX_DESC: "Ativo" }, { OP_STATUS: '0', TX_DESC: "Inativo" }];
@@ -91,7 +92,9 @@ export class UsuarioFormComponent implements OnInit {
 			TX_LOGIN: ['', Validators.required],
 			TX_SENHA: ['', Validators.required],
 			CONFIRMA_SENHA: ['', Validators.required],
-			OP_STATUS: [null, Validators.required]
+			OP_STATUS: [null, Validators.required],
+			TX_EMAIL: ['',[Validators.email,Validators.required]],
+			TX_TELEFONE: ['']
 		}
 		, {
 			validator: PasswordValidation.MatchPassword // your validation method
@@ -129,7 +132,11 @@ export class UsuarioFormComponent implements OnInit {
 
 		this.carregarPermissoes();
 	}
-
+	getErrorMessage() {
+		return this.usuarioForm.controls['TX_EMAIL'].hasError('required') ? 'Email precisa ser preenchido' :
+			this.usuarioForm.controls['TX_EMAIL'].hasError('email') ? 'Não é um email válido' :
+				'';
+	  }
 
 	getTitle() {
 		return "Visualizar Usuário"

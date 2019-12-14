@@ -115,6 +115,40 @@
 
                     <div class="">
                         <div class="row">
+                            <div class="form-group row col-lg-6">
+                                <label class="col-lg-2 col-form-label">Email:</label>
+                                <div class="col-lg-8 example-container">
+                                    <mat-form-field class="col-lg-12">
+                                        <input id="email" matInput placeholder="Digite o e-mail do usuário"
+                                            formControlName="TX_EMAIL"
+                                            type="email">
+                                        <mat-error *ngIf="usuarioForm.controls.TX_EMAIL.invalid">
+                                            {{getErrorMessage()}}
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row col-lg-6">
+                                <label class="col-lg-2 col-form-label">Telefone:</label>
+                                <div class="col-lg-8 example-container">
+                                    <mat-form-field class="col-lg-12">
+                                        <input id="telefone" matInput placeholder="Confirme o telefone do usuário"
+                                            formControlName="TX_TELEFONE" [textMask]="{mask: mascara}"
+                                           type="text">
+                                        <mat-error>
+                                            O campo Telefone é <strong>obrigatório</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <div class="row">
 
 
                             <div class="form-group row col-lg-6">

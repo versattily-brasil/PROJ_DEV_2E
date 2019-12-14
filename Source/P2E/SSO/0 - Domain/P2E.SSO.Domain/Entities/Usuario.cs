@@ -15,13 +15,15 @@ namespace P2E.SSO.Domain.Entities
 
         }
 
-        public Usuario(int cd_usr, string tx_login, string tx_nome, string tx_senha, eStatusUsuario op_status)
+        public Usuario(int cd_usr, string tx_login, string tx_nome, string tx_senha, eStatusUsuario op_status, string tx_email, string tx_telefone)
         {
             CD_USR = cd_usr;
             TX_LOGIN = tx_login?.Trim();
             TX_NOME = tx_nome?.Trim();
             TX_SENHA = tx_senha?.Trim();
             OP_STATUS = op_status;
+            TX_EMAIL = tx_email?.Trim();
+            TX_TELEFONE = tx_telefone?.Trim();
 
             IsValid();
         }
@@ -33,6 +35,8 @@ namespace P2E.SSO.Domain.Entities
         public string TX_LOGIN { get; set; }
         public string TX_SENHA { get; set; }
         public eStatusUsuario OP_STATUS { get; set; }
+        public string TX_EMAIL { get; set; }
+        public string TX_TELEFONE { get; set; }
 
         public bool IsValid()
         {
