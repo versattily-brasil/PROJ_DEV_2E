@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.PhantomJS;
 using P2E.Automacao.Entidades;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,17 +35,17 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
 
         public Work()
         {
-            LogController.RegistrarLog("#################  INICIALIZANDO - CE MERCANTE  ################# ");
+            LogController.RegistrarLog( "#################  INICIALIZANDO - CE MERCANTE  ################# " );
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
-        public Work(int cd_bot_exec, int cd_par, string nome_cliente)
+        public Work( int cd_bot_exec, int cd_par, string nome_cliente )
         {
             _cd_bot_exec = cd_bot_exec;
             _cd_par = cd_par;
             _nome_cliente = nome_cliente;
 
-            LogController.RegistrarLog("#################  INICIALIZANDO - CE MERCANTE  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot");
+            LogController.RegistrarLog( "#################  INICIALIZANDO - CE MERCANTE  ################# ", eTipoLog.INFO, _cd_bot_exec, "bot" );
             _urlApiBase = System.Configuration.ConfigurationSettings.AppSettings["ApiBaseUrl"];
         }
 
@@ -79,49 +81,49 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
             }
         }
 
-        private async Task Acessar(PhantomJSDriver _driver )
+        private async Task Acessar( PhantomJSDriver _driver )
         {
             try
             {
-                LogController.RegistrarLog("Acessando URL...", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog( "Acessando URL...", eTipoLog.INFO, _cd_bot_exec, "bot" );
 
-                _driver.Navigate().GoToUrl(_urlSite);
-                Thread.Sleep(500);
-                var retorno = capturaImagem(_driver, "0");
+                _driver.Navigate().GoToUrl( _urlSite );
+                Thread.Sleep( 500 );
+                var retorno = capturaImagem( _driver, "0" );
 
-                LogController.RegistrarLog($"Clique na Area para Cadastrados", eTipoLog.INFO, _cd_bot_exec, "bot");
-                OpenQA.Selenium.IWebElement element = _driver.FindElementByCssSelector("body > form:nth-child(3) > table:nth-child(6) > tbody > tr > td:nth-child(4) > p:nth-child(6) > a");
+                LogController.RegistrarLog( $"Clique na Area para Cadastrados", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                OpenQA.Selenium.IWebElement element = _driver.FindElementByCssSelector( "body > form:nth-child(3) > table:nth-child(6) > tbody > tr > td:nth-child(4) > p:nth-child(6) > a" );
                 element.Click();
-                Thread.Sleep(900);
-                retorno = capturaImagem(_driver, "1");
+                Thread.Sleep( 900 );
+                retorno = capturaImagem( _driver, "1" );
 
-                LogController.RegistrarLog($"Click no Certificado", eTipoLog.INFO, _cd_bot_exec, "bot");
-                element = _driver.FindElementByCssSelector("#cpfsenha > table.Tab1 > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(4) > td:nth-child(1) > table > tbody > tr:nth-child(4) > td:nth-child(2) > div > a > img");
+                LogController.RegistrarLog( $"Click no Certificado", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                element = _driver.FindElementByCssSelector( "#cpfsenha > table.Tab1 > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(4) > td:nth-child(1) > table > tbody > tr:nth-child(4) > td:nth-child(2) > div > a > img" );
                 element.Click();
-                Thread.Sleep(500);
-                retorno = capturaImagem(_driver, "2");
+                Thread.Sleep( 500 );
+                retorno = capturaImagem( _driver, "2" );
 
                 _driver.SwitchTo().Frame( 1 );
-                LogController.RegistrarLog($"Clique na Aba 'Conhecimento'", eTipoLog.INFO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog( $"Clique na Aba 'Conhecimento'", eTipoLog.INFO, _cd_bot_exec, "bot" );
                 element = _driver.FindElementByCssSelector( "body > form:nth-child(1) > table:nth-child(2) > tbody > tr > td:nth-child(3) > a" );
                 element.Click();
-                Thread.Sleep(500);
-                retorno = capturaImagem(_driver, "3");
+                Thread.Sleep( 500 );
+                retorno = capturaImagem( _driver, "3" );
 
-                LogController.RegistrarLog($"Selecionando: Conhecimento/BL/BL-HOUSE", eTipoLog.INFO, _cd_bot_exec, "bot");
-                Select selectTipo = new Select(_driver, By.Name("cmbAcoes"));
-                selectTipo.SelectByText("Conhecimento/BL/BL-HOUSE");
-                Thread.Sleep(500);
-                retorno = capturaImagem(_driver, "4");
+                LogController.RegistrarLog( $"Selecionando: Conhecimento/BL/BL-HOUSE", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                Select selectTipo = new Select( _driver, By.Name( "cmbAcoes" ) );
+                selectTipo.SelectByText( "Conhecimento/BL/BL-HOUSE" );
+                Thread.Sleep( 500 );
+                retorno = capturaImagem( _driver, "4" );
 
-                LogController.RegistrarLog($"Selecionando: Consultar Conhecimentos Incluídos e Alterados", eTipoLog.INFO, _cd_bot_exec, "bot");
-                selectTipo = new Select(_driver, By.Name("cmbAcoesNivel2"));
-                selectTipo.SelectByText("Consultar Conhecimentos Incluídos e Alterados");
-                Thread.Sleep(500);
-                retorno = capturaImagem(_driver, "5");
+                LogController.RegistrarLog( $"Selecionando: Consultar Conhecimentos Incluídos e Alterados", eTipoLog.INFO, _cd_bot_exec, "bot" );
+                selectTipo = new Select( _driver, By.Name( "cmbAcoesNivel2" ) );
+                selectTipo.SelectByText( "Consultar Conhecimentos Incluídos e Alterados" );
+                Thread.Sleep( 500 );
+                retorno = capturaImagem( _driver, "5" );
 
                 _driver.SwitchTo().DefaultContent();  // .Frame( "main");
-                _driver.SwitchTo().Frame( "main");
+                _driver.SwitchTo().Frame( "main" );
                 LogController.RegistrarLog( $"Adicionando a Data de Inclusão do Conhecimento", eTipoLog.INFO, _cd_bot_exec, "bot" );
                 element = _driver.FindElementById( "DtConsulta" );
                 element.SendKeys( "31102019" );
@@ -139,7 +141,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
 
                 //LEIRUTA DO CE'S E GRAVACAO NA TABELA PARA FAZER O INCEPTION
                 bool leNumCE = true;
-                
+
                 string data = string.Empty;
 
                 int cont = 3;
@@ -147,7 +149,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                 TBCEMercante mercante = new TBCEMercante();
 
                 while ( leNumCE )
-                {        
+                {
                     try
                     {
                         mercante.TX_CE_MERCANTE = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(1) > a", cont ) ) ).Text;
@@ -155,7 +157,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                         mercante.TX_TIPO = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(3)", cont ) ) ).Text;
                         mercante.TX_NUM_MANIFESTO = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(4) > a", cont ) ) ).Text;
                         data = _driver.FindElement( By.CssSelector( String.Format( "body > form > table:nth-child(10) > tbody > tr:nth-child({0}) > td:nth-child(5)", cont ) ) ).Text;
-                        mercante.DT_DATA_OPERACAO = Convert.ToDateTime(data);
+                        mercante.DT_DATA_OPERACAO = Convert.ToDateTime( data );
 
                         LogController.RegistrarLog( $"Inserindo no Banco o CE Nº " + mercante.TX_CE_MERCANTE, eTipoLog.INFO, _cd_bot_exec, "bot" );
                         await AtualizaCEMercante( mercante, "0" );
@@ -169,25 +171,13 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                     }
                 }
 
+                //CE Mercante Itens
 
 
-
-
-
-
-
-
-
-                    //body > form > table:nth-child(10) > tbody > tr:nth-child(3) > td:nth-child(1) > a
-                    //body > form > table:nth-child(10) > tbody > tr:nth-child(4) > td:nth-child(1) > a
-                    //body > form > table:nth-child(10) > tbody > tr:nth-child(5) > td:nth-child(1) > a
-
-
-
-                }
-            catch (Exception ex)
+            }
+            catch ( Exception ex )
             {
-                LogController.RegistrarLog(_nome_cliente + " - " + $"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot");
+                LogController.RegistrarLog( _nome_cliente + " - " + $"Erro em Acessar. {ex.Message}", eTipoLog.ERRO, _cd_bot_exec, "bot" );
             }
         }
 
@@ -195,15 +185,13 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
         {
             try
             {
-                HttpResponseMessage resultado;
-
                 using ( var client = new HttpClient() )
                 {
+                    var auxA = JsonConvert.SerializeObject( import );
+                    HttpContent httpContent = new StringContent( auxA, Encoding.UTF8, "application/json" );
                     client.BaseAddress = new Uri( _urlApiBase );
-                    resultado = client.PutAsJsonAsync( $"imp/v1/cemercante/{cd_ce}", import ).Result;
+                    var resultado = client.PostAsync( $"imp/v1/cemercante", httpContent ).Result;
                     resultado.EnsureSuccessStatusCode();
-
-                    LogController.RegistrarLog( "Registro salvo com sucesso." );
                 }
             }
             catch ( Exception e )
@@ -212,33 +200,33 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
             }
         }
 
-        public void Screenshot(IWebDriver driver, string screenshotsPasta)
+        public void Screenshot( IWebDriver driver, string screenshotsPasta )
         {
             ITakesScreenshot camera = driver as ITakesScreenshot;
             Screenshot foto = camera.GetScreenshot();
-            foto.SaveAsFile(screenshotsPasta, ScreenshotImageFormat.Png);
+            foto.SaveAsFile( screenshotsPasta, ScreenshotImageFormat.Png );
         }
 
-        public bool capturaImagem(PhantomJSDriver _driver, string numero)
+        public bool capturaImagem( PhantomJSDriver _driver, string numero )
         {
             try
             {
                 //FUTURAMENTE ESSE CAMINHO SERÁ CONFIGURADO EM UMA TABELA
-                if (!System.IO.Directory.Exists(@"C:\Versatilly\"))
+                if ( !System.IO.Directory.Exists( @"C:\Versatilly\" ) )
                 {
-                    System.IO.Directory.CreateDirectory(@"C:\Versatilly\");
+                    System.IO.Directory.CreateDirectory( @"C:\Versatilly\" );
                 }
 
-                string arquivoPath = Path.Combine(@"C:\Versatilly\", numero + "-CapturaTelaCE.jpg");
+                string arquivoPath = Path.Combine( @"C:\Versatilly\", numero + "-CapturaTelaCE.jpg" );
 
-                Screenshot(_driver, arquivoPath);
-                Thread.Sleep(1000);
+                Screenshot( _driver, arquivoPath );
+                Thread.Sleep( 1000 );
 
-                FileInfo fileInfo = new FileInfo(arquivoPath);
+                FileInfo fileInfo = new FileInfo( arquivoPath );
                 var tam = fileInfo.Length;
-                if (fileInfo.Length <= 0)
+                if ( fileInfo.Length <= 0 )
                 {
-                    File.Delete(arquivoPath);
+                    File.Delete( arquivoPath );
 
                     return false;
                 }
@@ -247,7 +235,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                     return true;
                 }
             }
-            catch (Exception)
+            catch ( Exception )
             {
                 return false;
             }
