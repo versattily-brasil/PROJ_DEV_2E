@@ -172,7 +172,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                         mercante.DT_DATA_OPERACAO = Convert.ToDateTime( data );
 
                         LogController.RegistrarLog( $"Inserindo no Banco o CE Nº " + mercante.TX_CE_MERCANTE, eTipoLog.INFO, _cd_bot_exec, "bot" );
-                        await AtualizaCEMercante( mercante, "0" );
+                        await AtualizaCEMercante( mercante );
 
                         ListaCE.Add( mercante );
                         
@@ -186,6 +186,13 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                 }
 
                 //Carrega Tabela CE Mercante
+
+                TBCEMercanteItens mercanteItem = new TBCEMercanteItens();
+                List<TBCEMercanteItens> ListaCEItem = new List<TBCEMercanteItens>();
+
+                string peso = "";
+                bool leNumCEItem = true;
+                cont = 3;
 
                 foreach ( var item in ListaCE )
                 {
@@ -202,22 +209,33 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                     retorno = capturaImagem( _driver, aux.ToString() );
                     aux++;
 
+                    while ( leNumCEItem )
+                    {
+                        try
+                        {
+                            mercanteItem.TX_NRO_CE = item.TX_CE_MERCANTE;
+                            mercanteItem.TX_CODIGO = _driver.FindElement( By.CssSelector( String.Format( "body > form > fieldset:nth-child(60) > table > tbody > tr:nth-child({0}) > td:nth-child(1) > a", cont ) ) ).Text;
+                            mercanteItem.TX_TIPO = _driver.FindElement( By.CssSelector( String.Format( "body > form > fieldset:nth-child(60) > table > tbody > tr:nth-child({0}) > td:nth-child(2)", cont ) ) ).Text;
+                            peso = _driver.FindElement( By.CssSelector( String.Format( "body > form > fieldset:nth-child(60) > table > tbody > tr:nth-child(3) > td:nth-child({0})", cont ) ) ).Text;
+                            mercanteItem.VL_PESO = Convert.ToDecimal(peso);
+                            mercanteItem.TX_PENDENTE = _driver.FindElement( By.CssSelector( String.Format( "body > form > fieldset:nth-child(60) > table > tbody > tr:nth-child({0}) > td:nth-child(4)", cont ) ) ).Text == "NÃO" ? "N":"S" ; 
+                            mercanteItem.TX_DETALHAMENTO = _driver.FindElement( By.CssSelector( String.Format( "body > form > fieldset:nth-child(60) > table > tbody > tr:nth-child({0}) > td:nth-child(5)", cont ) ) ).Text;
 
 
+                            LogController.RegistrarLog( $"Inserindo no Banco o CE Item Nº " + item.TX_CE_MERCANTE + " Codigo: " + mercanteItem.TX_CODIGO, eTipoLog.INFO, _cd_bot_exec, "bot" );
+                            await AtualizaCEMercanteItem( mercanteItem );
 
+                            ListaCEItem.Add( mercanteItem );
 
-
-
-
+                            cont++;
+                        }
+                        catch
+                        {
+                            LogController.RegistrarLog( $"Fim da Leitura do Item do CE Nº " + item.TX_CE_MERCANTE, eTipoLog.INFO, _cd_bot_exec, "bot" );
+                            leNumCEItem = false;
+                        }
+                    }
                 }
-
-                //
-
-
-
-
-                //CE Mercante Itens
-
 
             }
             catch ( Exception ex )
@@ -226,7 +244,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
             }
         }
 
-        private async Task AtualizaCEMercante( TBCEMercante import, string cd_ce )
+        private async Task AtualizaCEMercante( TBCEMercante import )
         {
             try
             {
@@ -242,6 +260,25 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
             catch ( Exception e )
             {
                 LogController.RegistrarLog( $"Erro ao atualizar o CE nº {import.TX_CE_MERCANTE}." );
+            }
+        }
+
+        private async Task AtualizaCEMercanteItem( TBCEMercanteItens import )
+        {
+            try
+            {
+                using ( var client = new HttpClient() )
+                {
+                    var auxA = JsonConvert.SerializeObject( import );
+                    HttpContent httpContent = new StringContent( auxA, Encoding.UTF8, "application/json" );
+                    client.BaseAddress = new Uri( _urlApiBase );
+                    var resultado = client.PostAsync( $"imp/v1/cemercanteitens", httpContent ).Result;
+                    resultado.EnsureSuccessStatusCode();
+                }
+            }
+            catch ( Exception e )
+            {
+                LogController.RegistrarLog( $"Erro ao atualizar o Item do CE nº {import.TX_NRO_CE}." );
             }
         }
 
