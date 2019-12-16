@@ -27,7 +27,7 @@ export class UsuarioService {
             .set("descending",descending.toString());
         
         
-        const userToken = localStorage.getItem("token");
+        const userToken = sessionStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -39,7 +39,7 @@ export class UsuarioService {
     
     public getUsuario(cd_usr:number): Observable<any> {
 
-        const userToken = localStorage.getItem("token");
+        const userToken = sessionStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -50,7 +50,7 @@ export class UsuarioService {
 
     public salvarUsuario(usuario:Usuario): Observable<any> {
 
-        const userToken = localStorage.getItem("token");
+        const userToken = sessionStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -61,7 +61,7 @@ export class UsuarioService {
 
     public deletarUsuario(cd_usr:number): Observable<any> {
 
-        const userToken = localStorage.getItem("token");
+        const userToken = sessionStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken

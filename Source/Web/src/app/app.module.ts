@@ -92,7 +92,7 @@ export function hljsLanguages(): HighlightLanguage[] {
 
 
 export function tokenGetter() {
-	return localStorage.getItem("token");
+	return sessionStorage.getItem("token");
 }
 
 @NgModule({

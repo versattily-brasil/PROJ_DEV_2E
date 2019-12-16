@@ -15,18 +15,18 @@ export class AutenticacaoService {
     }
 
     public logout(){
-        localStorage.removeItem("token");
-        localStorage.removeItem("nome");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("nome");
     }
 
     public armazenaInfoLogin(usuario:Usuario){
-        localStorage.setItem("token", usuario.API_TOKEN);
-        localStorage.setItem("nome", usuario.TX_NOME);
-        localStorage.setItem("cd_usr", usuario.CD_USR.toString());
+        sessionStorage.setItem("token", usuario.API_TOKEN);
+        sessionStorage.setItem("nome", usuario.TX_NOME);
+        sessionStorage.setItem("cd_usr", usuario.CD_USR.toString());
     }
 
     public logado() {
-        var token = localStorage.getItem("token");
+        var token = sessionStorage.getItem("token");
         if (token != "undefined" && !this.jwtHelper.isTokenExpired(token)) {
             return true;
         }
@@ -34,15 +34,15 @@ export class AutenticacaoService {
     }
 
     public get token(){
-        return localStorage.getItem("token");
+        return sessionStorage.getItem("token");
     }
 
     public get nomeLogado(){
-        return localStorage.getItem("nome");
+        return sessionStorage.getItem("nome");
     }
 
     
     public get idUsuario(){
-        return localStorage.getItem("cd_usr");
+        return sessionStorage.getItem("cd_usr");
     }
 }

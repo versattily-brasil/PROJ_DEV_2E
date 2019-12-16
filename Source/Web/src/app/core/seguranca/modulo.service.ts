@@ -13,7 +13,7 @@ export class ModuloService {
 
     public getModulos(): Observable<any> {
 
-        const userToken = localStorage.getItem("token");
+        const userToken = sessionStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken

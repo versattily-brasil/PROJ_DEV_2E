@@ -112,6 +112,8 @@ export class UsuarioFormComponent implements OnInit {
 		this.usuario = this.usuarioService.getUsuario(id).pipe(
 			tap(usuario => {
 
+				usuario.CONFIRMA_SENHA = usuario.TX_SENHA;
+
 				this.usuarioForm.patchValue(usuario);
 				this.montarTabelas(usuario);
 

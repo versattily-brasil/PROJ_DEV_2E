@@ -22,5 +22,7 @@ export class ParceiroNegocioComponent implements OnInit {
 	/**
 	 * On init
 	 */
-	ngOnInit() {}
+	ngOnInit() {
+		this.parceiroNegocioService.telaLista = true;
+	}
 }

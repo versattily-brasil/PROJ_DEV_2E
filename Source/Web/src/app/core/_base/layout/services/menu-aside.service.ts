@@ -30,10 +30,10 @@ export class MenuAsideService {
 	 */
 	loadMenu() {
 
-		if (localStorage.getItem("menus") && localStorage.getItem("menus") != "undefined") {
+		if (sessionStorage.getItem("menus") && sessionStorage.getItem("menus") != "undefined") {
 
-			console.log(localStorage.getItem("menus"));
-			this.menuList$.next(JSON.parse(localStorage.getItem("menus")));
+			console.log(sessionStorage.getItem("menus"));
+			this.menuList$.next(JSON.parse(sessionStorage.getItem("menus")));
 		} else {
 
 			this.menuService.getPermissoes(this.auth.idUsuario).subscribe(menus => {

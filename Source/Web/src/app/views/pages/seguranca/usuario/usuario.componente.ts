@@ -22,5 +22,7 @@ export class UsuarioComponent implements OnInit {
 	/**
 	 * On init
 	 */
-	ngOnInit() {}
+	ngOnInit() {
+		this.usuarioService.telaLista = true;
+	}
 }
