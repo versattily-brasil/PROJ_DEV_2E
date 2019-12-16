@@ -18,6 +18,7 @@ import { AppState } from '../../../core/reducers';
 import { TelaAtualService } from '../../../core/tela-atual.service';
 import { AbasService } from '../../../core/seguranca/abas.service';
 import { MatTabGroup } from '@angular/material';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'kt-base',
@@ -36,6 +37,9 @@ export class BaseComponent implements OnInit, OnDestroy {
 	fluid: boolean;
 
 	selectedTab = 0;
+
+
+	abaFechar = '';
 
 	public get AbasAbertas(){
 		return this.abas.listAbasAbertas;
@@ -61,7 +65,7 @@ export class BaseComponent implements OnInit, OnDestroy {
 	constructor(
 		private abas: AbasService,
 		private tela: TelaAtualService,
-
+		private modalService: NgbModal,
 		private layoutConfigService: LayoutConfigService,
 		private menuConfigService: MenuConfigService,
 		private pageConfigService: PageConfigService,
@@ -187,5 +191,41 @@ export class BaseComponent implements OnInit, OnDestroy {
 	fecharAbaRotina() {
 		this.abas.listAbasAbertas.splice(this.abas.listAbasAbertas.indexOf('Rotinas'),1);
 		// this.abas.AbaRotina = false;
+	}
+
+	exibirModal(content, abaFechar) {
+
+		this.abaFechar = abaFechar;
+		this.modalService.open(content);
+	}
+
+	fecharAba(){
+
+		if(this.abaFechar == 'Usuários'){
+			this.fecharAbaUsuario();
+			this.abaFechar = '';
+
+		}
+		if(this.abaFechar == 'Grupos de Usuários'){
+			this.fecharAbaGrupo();
+			this.abaFechar = '';
+			
+		}
+		if(this.abaFechar == 'Serviços'){
+			this.fecharAbaServico();
+			this.abaFechar = '';
+			
+		}
+		if(this.abaFechar == 'Parceiros de Negócio'){
+			this.fecharAbaParceironegocio();
+			this.abaFechar = '';
+			
+		}
+		if(this.abaFechar == 'Rotinas'){
+			this.fecharAbaRotina();
+			this.abaFechar = '';
+			
+		}
+		this.modalService.dismissAll();
 	}
 }

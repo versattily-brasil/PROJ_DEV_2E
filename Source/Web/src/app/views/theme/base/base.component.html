@@ -42,7 +42,7 @@
 										Parceiros de Negócio<button style="margin-left: 20px;
 											color: white;
 											background-color: #646c9a;
-											font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaParceironegocio()"></i></button>
+											font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Parceiros de Negócio')"></i></button>
 
 									</ng-template>
 
@@ -56,7 +56,7 @@
 										<button style="margin-left: 20px;
 												color: white;
 												background-color: #646c9a;
-												font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaUsuario()"></i></button>
+												font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Usuários')"></i></button>
 									</ng-template>
 									<versattily-usuario></versattily-usuario>
 								</div>
@@ -67,7 +67,7 @@
 										<button style="margin-left: 20px;
 													color: white;
 													background-color: #646c9a;
-													font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaRotina()"></i></button>
+													font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Rotinas')"></i></button>
 									</ng-template>
 									<versattily-rotina></versattily-rotina>
 								</div>
@@ -78,7 +78,7 @@
 										<button style="margin-left: 20px;
 														color: white;
 														background-color: #646c9a;
-														font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaGrupo()"></i></button>
+														font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Grupos de Usuários')"></i></button>
 									</ng-template>
 
 									<versattily-grupo></versattily-grupo>
@@ -90,7 +90,7 @@
 										<button style="margin-left: 20px;
 															color: white;
 															background-color: #646c9a;
-															font-size: 12px;"><i class="flaticon2-cancel" (click)="fecharAbaServico()"></i></button>
+															font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Serviços')"></i></button>
 									</ng-template>
 
 									<versattily-servico-lista></versattily-servico-lista>
@@ -126,3 +126,26 @@
 <ng-template #blankLayout>
 	<router-outlet></router-outlet>
 </ng-template>
+
+
+<div class="kt-section">
+    <div class="kt-section__content">
+        <ng-template #content7 let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Fechar aba {{abaFechar}}</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Fechando a aba você perderá qualquer alteração feita. Deseja realmente fechar?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="fecharAba()">Confirmar</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
