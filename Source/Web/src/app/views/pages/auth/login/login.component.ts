@@ -146,7 +146,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 			(res) => {
 				let loginResult: Usuario = res;
 				this.menuService.getPermissoes(loginResult.CD_USR.toString()).subscribe(menus => {
-					localStorage.setItem("menus", JSON.stringify(menus));
+					sessionStorage.setItem("menus", JSON.stringify(menus));
 					this.auth.armazenaInfoLogin(loginResult);
 					this.router.navigate(["/"]);
 				});

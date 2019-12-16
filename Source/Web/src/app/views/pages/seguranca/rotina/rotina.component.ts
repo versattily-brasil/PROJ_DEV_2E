@@ -22,5 +22,7 @@ export class RotinaComponent implements OnInit {
 	/**
 	 * On init
 	 */
-	ngOnInit() {}
+	ngOnInit() {
+		this.rotinaService.telaLista = true;
+	}
 }

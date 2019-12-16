@@ -22,5 +22,7 @@ export class GrupoComponent implements OnInit {
 	/**
 	 * On init
 	 */
-	ngOnInit() {}
+	ngOnInit() {
+		this.grupoService.telaLista = true;
+	}
 }
