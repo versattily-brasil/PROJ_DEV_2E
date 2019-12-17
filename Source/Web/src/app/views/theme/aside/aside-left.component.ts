@@ -110,7 +110,7 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 			this.render.setAttribute(this.asideMenu.nativeElement, 'data-ktmenu-dropdown-timeout', objectPath.get(config, 'aside.menu.submenu.dropdown.hover-timeout'));
 		}
 
-		let menus=JSON.parse(sessionStorage.getItem("menus"));
+		let menus=JSON.parse(localStorage.getItem("menus"));
 
 		menus.forEach(item=>{
 

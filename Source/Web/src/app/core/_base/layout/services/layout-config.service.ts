@@ -29,7 +29,7 @@ export class LayoutConfigService {
 	 */
 	saveConfig(layoutConfig: LayoutConfigModel): void {
 		if (layoutConfig) {
-			sessionStorage.setItem('layoutConfig', JSON.stringify(layoutConfig));
+			localStorage.setItem('layoutConfig', JSON.stringify(layoutConfig));
 		}
 	}
 

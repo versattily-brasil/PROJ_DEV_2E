@@ -15,7 +15,7 @@ export class RotinaService {
 
     public getRotinas(): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -34,7 +34,7 @@ export class RotinaService {
             .set("descending",descending.toString());
         
         
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -45,7 +45,7 @@ export class RotinaService {
 
     public getRotina(cd_rot:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -56,7 +56,7 @@ export class RotinaService {
 
     public salvarRotina(rotina:Rotina): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -67,7 +67,7 @@ export class RotinaService {
 
     public deletarRotina(cd_rot:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -78,7 +78,7 @@ export class RotinaService {
 
     public getRotinasAssociadas(cd_rot:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken

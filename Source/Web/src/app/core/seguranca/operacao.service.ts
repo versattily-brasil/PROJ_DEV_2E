@@ -11,7 +11,7 @@ export class OperacaoService {
 
     public getOperacoes(): Observable<any> {
     
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken

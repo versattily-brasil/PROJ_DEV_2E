@@ -24,7 +24,7 @@ export class ParceiroNegocioService {
             .set("descending",descending.toString());
         
         
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -36,7 +36,7 @@ export class ParceiroNegocioService {
     
     public getParceiroNegocio(cd_par:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -47,7 +47,7 @@ export class ParceiroNegocioService {
 
     public salvarParceiroNegocio(parceironegocio:ParceiroNegocio): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -58,7 +58,7 @@ export class ParceiroNegocioService {
 
     public deletarParceiroNegocio(cd_par:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken

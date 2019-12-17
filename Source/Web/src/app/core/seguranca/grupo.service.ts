@@ -25,7 +25,7 @@ export class GrupoService {
             .set("descending",descending.toString());
         
         
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -37,7 +37,7 @@ export class GrupoService {
     
     public getGrupo(cd_usr:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -48,7 +48,7 @@ export class GrupoService {
 
     public salvarGrupo(grupo:Grupo): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -59,7 +59,7 @@ export class GrupoService {
 
     public deletarGrupo(cd_usr:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken

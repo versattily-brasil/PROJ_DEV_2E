@@ -11,7 +11,7 @@ export class ServicoService {
 
     public getServicos(): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -32,7 +32,7 @@ export class ServicoService {
             .set("descending",descending.toString());
         
         
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -44,7 +44,7 @@ export class ServicoService {
     
     public getServicoCD(cd_srv:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
@@ -57,7 +57,7 @@ export class ServicoService {
 
     public deletarServico(cd_par:number): Observable<any> {
 
-        const userToken = sessionStorage.getItem("token");
+        const userToken = localStorage.getItem("token");
         var reqHeader = new HttpHeaders({ 
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + userToken
