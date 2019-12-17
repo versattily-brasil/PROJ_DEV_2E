@@ -93,7 +93,20 @@ export class GrupoFormComponent implements OnInit {
 			tap(grupo => {
 
 				this.grupoForm.patchValue(grupo);
-				this.montarTabelas(grupo);
+
+				this.rotinaService.getRotinas().subscribe(rotinas => {
+					this.listaRotinas = rotinas;
+
+					this.operacaoService.getOperacoes().subscribe(operacoes => {
+						this.listaOperacoes = operacoes;
+
+						
+						this.montarTabelas(grupo);
+						this.cd.markForCheck();
+					});
+				});
+
+				
 			})
 		);
 
@@ -102,12 +115,7 @@ export class GrupoFormComponent implements OnInit {
 		this.servicoService.getServicos().subscribe(servicos => {
 			this.listaServicos = servicos;
 		});
-		this.rotinaService.getRotinas().subscribe(rotinas => {
-			this.listaRotinas = rotinas;
-		});
-		this.operacaoService.getOperacoes().subscribe(operacoes => {
-			this.listaOperacoes = operacoes;
-		});
+
 
 		this.carregarPermissoes();
 
@@ -305,7 +313,6 @@ export class GrupoFormComponent implements OnInit {
 		this.permissaoService.getPermissoes(this.auth.idUsuario, this.nomeRotina).subscribe(permissao => {
 			this.permissoes = permissao;
 			this.cd.markForCheck();
-			console.log(this.permissoes);
 		});
 	}
 

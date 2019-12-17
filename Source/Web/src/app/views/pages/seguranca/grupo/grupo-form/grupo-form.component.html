@@ -133,7 +133,7 @@
                                 <tbody>
                                     <tr *ngFor="let rotinaOp of listaRotinaOperacoesSelecionadas; let i = index">
                                         <td>
-                                            {{rotinaOp.rotina.TX_DSC}}
+                                            {{rotinaOp.rotina?.TX_DSC}}
                                         </td>
                                         <td *ngFor="let op of rotinaOp.operacoes">
                                             <mat-checkbox [(ngModel)]="op.selecionada"></mat-checkbox>
@@ -145,7 +145,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-
                         </ng-template>
                     </ngb-tab>
                 </ngb-tabset>

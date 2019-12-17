@@ -115,22 +115,30 @@ export class UsuarioFormComponent implements OnInit {
 				usuario.CONFIRMA_SENHA = usuario.TX_SENHA;
 
 				this.usuarioForm.patchValue(usuario);
-				this.montarTabelas(usuario);
+				
 
 				const toSelect = this.listaStatus.find(c => c.OP_STATUS == usuario.OP_STATUS);
 				f.get('OP_STATUS').setValue(toSelect);
+
+				this.rotinaService.getRotinas().subscribe(rotinas => {
+					this.listaRotinas = rotinas;
+
+					this.operacaoService.getOperacoes().subscribe(operacoes => {
+						this.listaOperacoes = operacoes;
+						this.montarTabelas(usuario);
+						this.cd.markForCheck();
+					});
+
+				});
+
+
 			})
 		);
 
 		this.servicoService.getServicos().subscribe(servicos => {
 			this.listaServicos = servicos;
 		});
-		this.rotinaService.getRotinas().subscribe(rotinas => {
-			this.listaRotinas = rotinas;
-		});
-		this.operacaoService.getOperacoes().subscribe(operacoes => {
-			this.listaOperacoes = operacoes;
-		});
+
 
 		this.carregarPermissoes();
 	}
