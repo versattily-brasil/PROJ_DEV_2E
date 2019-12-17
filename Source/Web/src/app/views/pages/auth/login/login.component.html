@@ -20,7 +20,7 @@
 			<div class="form-group">
 				<mat-form-field>
 					<mat-label style="font-size:18px">Login</mat-label>
-					<input style="font-size:18px" matInput placeholder="Digite seu login" formControlName="email" autocomplete="off"/>
+					<input style="font-size:18px" matInput placeholder="Digite seu login" maxlength="40" formControlName="email" autocomplete="off"/>
 					<mat-error *ngIf="isControlHasError('email','required')">
 						<strong>O campo Login é obrigatório.</strong>
 					</mat-error>
@@ -38,7 +38,7 @@
 			<div class="form-group">
 				<mat-form-field>
 					<mat-label style="font-size:18px">Senha</mat-label>
-					<input style="font-size:18px" matInput type="password" placeholder="Digite sua senha" formControlName="password" autocomplete="off"/>
+					<input style="font-size:18px" matInput type="password" placeholder="Digite sua senha" maxlength="10" formControlName="password" autocomplete="off"/>
 					<mat-error *ngIf="isControlHasError('password','required')">
 						<strong>O campo Senha é obrigatório.</strong>
 					</mat-error>
