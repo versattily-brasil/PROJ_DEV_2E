@@ -24,7 +24,7 @@ import { PermissaoService } from '../../../../../core/seguranca/permissao.servic
 import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
 import { Permissao } from '../../../../../core/models/permissao.model';
 import { ToastrService } from 'ngx-toastr';
-
+import {AbstractControl} from '@angular/forms';
 @Component({
 	// tslint:disable-next-line:component-selector
 	selector: 'versattily-usuario-form',
@@ -89,7 +89,7 @@ export class UsuarioFormComponent implements OnInit {
 		let f = this.usuarioForm = this.usuarioFB.group({
 			CD_USR: [''],
 			TX_NOME: ['', Validators.required],
-			TX_LOGIN: ['', Validators.required],
+			TX_LOGIN: ['', Validators.required, this.loginValidation.bind(this)],
 			TX_SENHA: ['', Validators.required],
 			CONFIRMA_SENHA: ['', Validators.required],
 			OP_STATUS: [null, Validators.required],
@@ -146,7 +146,21 @@ export class UsuarioFormComponent implements OnInit {
 		return this.usuarioForm.controls['TX_EMAIL'].hasError('required') ? 'Email precisa ser preenchido' :
 			this.usuarioForm.controls['TX_EMAIL'].hasError('email') ? 'Não é um email válido' :
 				'';
-	  }
+	}
+
+	getErrorMessageLogin(error) {
+		return this.usuarioForm.controls['TX_LOGIN'].hasError('required') ? 'Login precisa ser preenchido' :
+			this.usuarioForm.controls['TX_LOGIN'].hasError('login') ? error :
+				'';
+	}
+
+	public loginValidation (control: AbstractControl): {[key: string]: any;} {
+		var val: string = control.value;
+		
+		return this.usuarioService.getValidarLogin(val,this.usuarioService.cdUserVisualizar).subscribe(
+			(res) => { return res ? null : {login : false};
+		});
+	};
 
 	getTitle() {
 		return "Visualizar Usuário"
@@ -160,6 +174,8 @@ export class UsuarioFormComponent implements OnInit {
 
 		this.hasFormErrors = false;
 		const controls = this.usuarioForm.controls;
+
+		this.validarLogin();
 
 		/** check form */
 		if (this.usuarioForm.invalid) {
@@ -269,6 +285,24 @@ export class UsuarioFormComponent implements OnInit {
 			   }
 		);
 
+	}
+
+	validarLogin(){
+		const controls = this.usuarioForm.controls;
+		this.usuarioService.getValidarLogin(controls['TX_LOGIN'].value,controls['CD_USR'].value).subscribe(
+			(res) => {
+		
+			},
+			(err) => {
+				// this.usuarioFB.control['TX_LOGIN'].valid = false;
+
+				// this.getErrorMessageLogin(err.error);
+				this.toast.error(err.error, 'Notificação',{
+					positionClass: 'toast-top-right' 
+				 });
+				 this.modalService.dismissAll();
+			   }
+		);
 	}
 
 	montarTabelas(u) {

@@ -745,5 +745,26 @@ namespace P2E.SSO.API.Controllers
                 return BadRequest($"Erro ao tentar excluir o registro. {ex.Message}");
             }
         }
+
+        [HttpGet]
+        [Route("api/v1/usuario/valida/{login}/{id}")]
+        public bool VerificiarLoginExistente(string login, int id)
+        {
+            Usuario usuarioOk = new Usuario();
+            bool resultado = false;
+
+            usuarioOk = _usuarioRepository.Find(p => p.TX_LOGIN == login);
+            if (usuarioOk == null || (usuarioOk != null && id == usuarioOk.CD_USR))
+            {
+                resultado = true;
+            }
+            else
+            {
+                throw new HttpResponseException() { Status = (int)HttpStatusCode.NotFound, Value = "Login já existente" };
+
+            }
+
+            return resultado;
+        }
     }
 }

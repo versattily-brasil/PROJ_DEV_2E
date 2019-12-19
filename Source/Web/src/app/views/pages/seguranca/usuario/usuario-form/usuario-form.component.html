@@ -58,8 +58,8 @@
                                         <input matInput placeholder="Digite o Login do usuário"
                                             formControlName="TX_LOGIN"
                                             maxlength="40">
-                                        <mat-error>
-                                            O campo Login é <strong>obrigatório</strong>
+                                        <mat-error *ngIf="usuarioForm.controls.TX_LOGIN.invalid">
+                                            {{getErrorMessageLogin()}}
                                         </mat-error>
                                     </mat-form-field>
 

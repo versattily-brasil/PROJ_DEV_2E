@@ -69,4 +69,15 @@ export class UsuarioService {
      
         return this.http.delete(environment.baseUrl + "/api/v1/usuario/" +cd_usr, { headers: reqHeader});
     }
+
+    public getValidarLogin(tx_login:string, id:number): Observable<any> {
+
+        const userToken = localStorage.getItem("token");
+        var reqHeader = new HttpHeaders({ 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + userToken
+         });
+     
+        return this.http.get(environment.baseUrl + "/api/v1/usuario/valida/"+tx_login+"/"+id, { headers: reqHeader});
+    }
 }
