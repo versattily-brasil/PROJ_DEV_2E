@@ -24,7 +24,6 @@ import { PermissaoService } from '../../../../../core/seguranca/permissao.servic
 import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
 import { Permissao } from '../../../../../core/models/permissao.model';
 import { ToastrService } from 'ngx-toastr';
-
 @Component({
 	// tslint:disable-next-line:component-selector
 	selector: 'versattily-usuario-form',
@@ -62,12 +61,13 @@ export class UsuarioFormComponent implements OnInit {
 	listaModulosSelecionados: Modulo[] = [];
 	listaGruposSelecionados: Grupo[] = [];
 	listaRotinaOperacoesSelecionadas: RotinaOperacoes[] = [];
-
 	cdSrvSelecionado = 0;
 	cdRotSelecionada = 0;
 
 	@ViewChild('content8', { static: true }) private modalSalvando: TemplateRef<any>;
 	@ViewChild('content12', { static: true }) private modalExcluindo: TemplateRef<any>;
+	@ViewChild('login', { static: false })
+	public login:any;
 
 	constructor(
 		private modalService: NgbModal,
@@ -146,7 +146,21 @@ export class UsuarioFormComponent implements OnInit {
 		return this.usuarioForm.controls['TX_EMAIL'].hasError('required') ? 'Email precisa ser preenchido' :
 			this.usuarioForm.controls['TX_EMAIL'].hasError('email') ? 'Não é um email válido' :
 				'';
-	  }
+	}
+
+	getErrorMessageLogin(error) {
+		let message = ''
+        if (this.usuarioForm.controls['TX_LOGIN'].hasError('required') ){
+            message = 'Login precisa ser preenchido';
+        }
+        if (this.usuarioForm.controls['TX_LOGIN'].hasError('login')){
+            message = error;
+        } 
+        if (this.usuarioForm.controls['TX_LOGIN'].hasError('notUnique')){
+            message = 'Login já existente'            
+        } 
+        return message
+	}
 
 	getTitle() {
 		return "Visualizar Usuário"
@@ -161,17 +175,30 @@ export class UsuarioFormComponent implements OnInit {
 		this.hasFormErrors = false;
 		const controls = this.usuarioForm.controls;
 
-		/** check form */
-		if (this.usuarioForm.invalid) {
-			Object.keys(controls).forEach(controlName =>
-				controls[controlName].markAsTouched()
-			);
-			this.toast.error("Realize as correções no formulário e tente novamente.", 'Não é possível salvar o usuário');
-			this.hasFormErrors = true;
-			return;
-		}else{
-			this.modalService.open(content);
-		}
+		// this.validarLogin();
+		this.usuarioService.getValidarLogin(controls['TX_LOGIN'].value,controls['CD_USR'].value).subscribe(
+			(res) => {		
+			},
+			(err) => {
+				controls.TX_LOGIN.setErrors({notUnique: true });
+				controls.TX_LOGIN.markAsTouched();
+				 this.modalService.dismissAll();
+			   },
+			() => {
+				/** check form */
+				if (this.usuarioForm.invalid) {
+					Object.keys(controls).forEach(controlName =>
+						controls[controlName].markAsTouched()
+					);
+					this.toast.error("Realize as correções no formulário e tente novamente.", 'Não é possível salvar o usuário');
+					this.hasFormErrors = true;
+					return;
+				}else{
+					this.modalService.open(content);
+				}
+
+			}
+		);
 
 		
 	}
