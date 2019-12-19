@@ -98,6 +98,7 @@ export class RotinaFormComponent implements OnInit {
 					this.rotinaService.getRotinas().subscribe(rotinas => {
 						this.listaRotinas = rotinas;
 						this.montarTabelas(rotinasAssociadas);
+						this.cd.markForCheck();
 					});
 
 
