@@ -19,6 +19,7 @@ import { TelaAtualService } from '../../../core/tela-atual.service';
 import { AbasService } from '../../../core/seguranca/abas.service';
 import { MatTabGroup } from '@angular/material';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AutenticacaoService } from '../../../core/autenticacao/autenticacao.service';
 
 @Component({
 	selector: 'kt-base',
@@ -63,6 +64,7 @@ export class BaseComponent implements OnInit, OnDestroy {
 	 * @param permissionsService
 	 */
 	constructor(
+		private auth: AutenticacaoService,
 		private abas: AbasService,
 		private tela: TelaAtualService,
 		private modalService: NgbModal,
@@ -99,6 +101,13 @@ export class BaseComponent implements OnInit, OnDestroy {
 	 * On init
 	 */
 	ngOnInit(): void {
+
+		let self = this;
+		window.addEventListener("beforeunload", function (e) {
+		
+			self.auth.logout();
+		});
+
 
 		this.tela.TelaAtual == "usuario-lista";
 		this.abas.listAbasAbertas = [];

@@ -17,6 +17,8 @@ export class AutenticacaoService {
     public logout(){
         localStorage.removeItem("token");
         localStorage.removeItem("nome");
+        localStorage.removeItem("cd_usr");
+        localStorage.removeItem("menus");
     }
 
     public armazenaInfoLogin(usuario:Usuario){

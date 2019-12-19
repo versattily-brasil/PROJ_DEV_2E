@@ -93,6 +93,9 @@ export class AsideLeftComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
+
+		this.menuAsideService.loadMenu();
+
 		this.currentRouteUrl = this.router.url.split(/[?#]/)[0];
 
 		this.router.events

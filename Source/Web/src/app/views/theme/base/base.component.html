@@ -39,10 +39,11 @@
 								<div *ngIf="aba == 'Parceiro de Negócio'">
 									<ng-template mat-tab-label class="card">
 
-										Parceiros de Negócio<button style="margin-left: 20px;
+										Parceiros de Negócio<button  (click)="exibirModal(content7,'Parceiros de Negócio')"
+										 style="margin-left: 20px;
 											color: white;
 											background-color: #646c9a;
-											font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Parceiros de Negócio')"></i></button>
+											font-size: 12px;"><i class="flaticon2-cancel"></i></button>
 
 									</ng-template>
 
@@ -53,10 +54,11 @@
 									<ng-template mat-tab-label>
 
 										Usuários
-										<button style="margin-left: 20px;
+										<button  (click)="exibirModal(content7,'Usuários')"
+											style="margin-left: 20px;
 												color: white;
 												background-color: #646c9a;
-												font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Usuários')"></i></button>
+												font-size: 12px;"><i class="flaticon2-cancel"></i></button>
 									</ng-template>
 									<versattily-usuario></versattily-usuario>
 								</div>
@@ -64,10 +66,11 @@
 									<ng-template mat-tab-label class="card">
 
 										Rotinas
-										<button style="margin-left: 20px;
+										<button (click)="exibirModal(content7,'Rotinas')"
+										 style="margin-left: 20px;
 													color: white;
 													background-color: #646c9a;
-													font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Rotinas')"></i></button>
+													font-size: 12px;"><i class="flaticon2-cancel" ></i></button>
 									</ng-template>
 									<versattily-rotina></versattily-rotina>
 								</div>
@@ -75,10 +78,11 @@
 									<ng-template mat-tab-label class="card">
 
 										Grupos de Usuário
-										<button style="margin-left: 20px;
+										<button (click)="exibirModal(content7,'Grupos de Usuários')" 
+										 style="margin-left: 20px;
 														color: white;
 														background-color: #646c9a;
-														font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Grupos de Usuários')"></i></button>
+														font-size: 12px;"><i class="flaticon2-cancel" ></i></button>
 									</ng-template>
 
 									<versattily-grupo></versattily-grupo>
@@ -87,10 +91,11 @@
 									<ng-template mat-tab-label class="card">
 
 										Serviços
-										<button style="margin-left: 20px;
+										<button (click)="exibirModal(content7,'Serviços')"
+										 style="margin-left: 20px;
 															color: white;
 															background-color: #646c9a;
-															font-size: 12px;"><i class="flaticon2-cancel" (click)="exibirModal(content7,'Serviços')"></i></button>
+															font-size: 12px;"><i class="flaticon2-cancel" ></i></button>
 									</ng-template>
 
 									<versattily-servico-lista></versattily-servico-lista>
