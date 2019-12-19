@@ -24,7 +24,6 @@ import { PermissaoService } from '../../../../../core/seguranca/permissao.servic
 import { AutenticacaoService } from '../../../../../core/autenticacao/autenticacao.service';
 import { Permissao } from '../../../../../core/models/permissao.model';
 import { ToastrService } from 'ngx-toastr';
-import {AbstractControl} from '@angular/forms';
 @Component({
 	// tslint:disable-next-line:component-selector
 	selector: 'versattily-usuario-form',
@@ -62,12 +61,13 @@ export class UsuarioFormComponent implements OnInit {
 	listaModulosSelecionados: Modulo[] = [];
 	listaGruposSelecionados: Grupo[] = [];
 	listaRotinaOperacoesSelecionadas: RotinaOperacoes[] = [];
-
 	cdSrvSelecionado = 0;
 	cdRotSelecionada = 0;
 
 	@ViewChild('content8', { static: true }) private modalSalvando: TemplateRef<any>;
 	@ViewChild('content12', { static: true }) private modalExcluindo: TemplateRef<any>;
+	@ViewChild('login', { static: false })
+	public login:any;
 
 	constructor(
 		private modalService: NgbModal,
@@ -89,7 +89,7 @@ export class UsuarioFormComponent implements OnInit {
 		let f = this.usuarioForm = this.usuarioFB.group({
 			CD_USR: [''],
 			TX_NOME: ['', Validators.required],
-			TX_LOGIN: ['', Validators.required, this.loginValidation.bind(this)],
+			TX_LOGIN: ['', Validators.required],
 			TX_SENHA: ['', Validators.required],
 			CONFIRMA_SENHA: ['', Validators.required],
 			OP_STATUS: [null, Validators.required],
@@ -149,18 +149,18 @@ export class UsuarioFormComponent implements OnInit {
 	}
 
 	getErrorMessageLogin(error) {
-		return this.usuarioForm.controls['TX_LOGIN'].hasError('required') ? 'Login precisa ser preenchido' :
-			this.usuarioForm.controls['TX_LOGIN'].hasError('login') ? error :
-				'';
+		let message = ''
+        if (this.usuarioForm.controls['TX_LOGIN'].hasError('required') ){
+            message = 'Login precisa ser preenchido';
+        }
+        if (this.usuarioForm.controls['TX_LOGIN'].hasError('login')){
+            message = error;
+        } 
+        if (this.usuarioForm.controls['TX_LOGIN'].hasError('notUnique')){
+            message = 'Login já existente'            
+        } 
+        return message
 	}
-
-	public loginValidation (control: AbstractControl): {[key: string]: any;} {
-		var val: string = control.value;
-		
-		return this.usuarioService.getValidarLogin(val,this.usuarioService.cdUserVisualizar).subscribe(
-			(res) => { return res ? null : {login : false};
-		});
-	};
 
 	getTitle() {
 		return "Visualizar Usuário"
@@ -175,19 +175,30 @@ export class UsuarioFormComponent implements OnInit {
 		this.hasFormErrors = false;
 		const controls = this.usuarioForm.controls;
 
-		this.validarLogin();
+		// this.validarLogin();
+		this.usuarioService.getValidarLogin(controls['TX_LOGIN'].value,controls['CD_USR'].value).subscribe(
+			(res) => {		
+			},
+			(err) => {
+				controls.TX_LOGIN.setErrors({notUnique: true });
+				controls.TX_LOGIN.markAsTouched();
+				 this.modalService.dismissAll();
+			   },
+			() => {
+				/** check form */
+				if (this.usuarioForm.invalid) {
+					Object.keys(controls).forEach(controlName =>
+						controls[controlName].markAsTouched()
+					);
+					this.toast.error("Realize as correções no formulário e tente novamente.", 'Não é possível salvar o usuário');
+					this.hasFormErrors = true;
+					return;
+				}else{
+					this.modalService.open(content);
+				}
 
-		/** check form */
-		if (this.usuarioForm.invalid) {
-			Object.keys(controls).forEach(controlName =>
-				controls[controlName].markAsTouched()
-			);
-			this.toast.error("Realize as correções no formulário e tente novamente.", 'Não é possível salvar o usuário');
-			this.hasFormErrors = true;
-			return;
-		}else{
-			this.modalService.open(content);
-		}
+			}
+		);
 
 		
 	}
@@ -285,24 +296,6 @@ export class UsuarioFormComponent implements OnInit {
 			   }
 		);
 
-	}
-
-	validarLogin(){
-		const controls = this.usuarioForm.controls;
-		this.usuarioService.getValidarLogin(controls['TX_LOGIN'].value,controls['CD_USR'].value).subscribe(
-			(res) => {
-		
-			},
-			(err) => {
-				// this.usuarioFB.control['TX_LOGIN'].valid = false;
-
-				// this.getErrorMessageLogin(err.error);
-				this.toast.error(err.error, 'Notificação',{
-					positionClass: 'toast-top-right' 
-				 });
-				 this.modalService.dismissAll();
-			   }
-		);
 	}
 
 	montarTabelas(u) {
