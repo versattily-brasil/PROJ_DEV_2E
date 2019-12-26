@@ -203,7 +203,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                     retorno = capturaImagem( _driver, aux.ToString() );
                     aux++;
 
-                    //SALVAR TODO O CONTEUDO DA PAGINA ANTES DE INCLUIR O ITEM
+                    //SALVAR TODO O CONTEUDO DA PAGINA ANTES DE INCLUIR O ITEM.....
 
 
 
