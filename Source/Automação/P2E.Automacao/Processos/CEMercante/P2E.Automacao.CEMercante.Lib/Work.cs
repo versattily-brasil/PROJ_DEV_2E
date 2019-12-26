@@ -203,12 +203,16 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                     retorno = capturaImagem( _driver, aux.ToString() );
                     aux++;
 
+                    //SALVAR TODO O CONTEUDO DA PAGINA ANTES DE INCLUIR O ITEM
+
+
+
                     element = _driver.FindElementByCssSelector( "body > fieldset:nth-child(26) > table > tbody > tr:nth-child(3) > td > b > a" );
                     element.Click();
                     Thread.Sleep( 500 );
                     retorno = capturaImagem( _driver, aux.ToString() );
                     aux++;
-
+                   
                     while ( leNumCEItem )
                     {
                         try
