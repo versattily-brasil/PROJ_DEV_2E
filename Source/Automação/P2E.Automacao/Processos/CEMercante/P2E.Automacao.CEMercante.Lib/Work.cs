@@ -65,7 +65,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
 
                 service.AddArgument( "test-type" );
                 service.AddArgument( "no-sandbox" );
-                service.HideCommandPromptWindow = true;
+                //service.HideCommandPromptWindow = true;
 
                 using ( var _driver = new PhantomJSDriver( service ) )
                 {
@@ -150,7 +150,7 @@ namespace P2E.Automacao.Processos.CEMercante.Lib
                 retorno = capturaImagem( _driver, aux.ToString() );
                 aux++;
 
-                //LEIRUTA DO CE'S E GRAVACAO NA TABELA PARA FAZER O INCEPTION
+                //LEITURA DO CE'S E GRAVACAO NA TABELA PARA FAZER O INCEPTION
                 bool leNumCE = true;
 
                 string data = string.Empty;
