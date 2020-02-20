@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DapperExtensions;
+using Microsoft.Extensions.Configuration;
 using P2E.Shared.TypeHandler;
 using P2E.SSO.Domain.Entities.Map;
 using System;
@@ -12,9 +13,9 @@ namespace P2E.SSO.Infra.Data.DataContext
     {
         public SqlConnection Connection { get; set; }
 
-        public SSOContext()
+        public SSOContext(IConfiguration configuration)
         {
-            Connection = new SqlConnection(P2E.Shared.Configuration.ConnectionString);
+            Connection = new SqlConnection(configuration["ConnectionString"]);
 
             InicializaMapperDapper();
             var dialect = new DapperExtensions.Sql.SqlServerDialect();

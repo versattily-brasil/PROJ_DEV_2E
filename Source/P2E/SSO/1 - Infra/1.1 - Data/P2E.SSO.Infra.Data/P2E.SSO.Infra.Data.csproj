@@ -8,6 +8,7 @@
     <PackageReference Include="Dapper" Version="1.60.6" />
     <PackageReference Include="DapperExtensions.NetCore" Version="2.0.6" />
     <PackageReference Include="MicroOrm.Dapper.Repositories" Version="1.8.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
