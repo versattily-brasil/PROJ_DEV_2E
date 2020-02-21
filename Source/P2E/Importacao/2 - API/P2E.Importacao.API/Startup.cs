@@ -44,6 +44,8 @@ namespace P2E.Importacao.API
                 c.SwaggerDoc("v1", new Info { Title = "P2E [Importação-API]", Version = "v1" });
             });
 
+            services.AddSingleton<IConfiguration>(Configuration);
+
             services.AddScoped<ImportacaoContext, ImportacaoContext>();
             services.AddTransient<IImportacaoRepository, ImportacaoRepository>();
             services.AddTransient<IHistoricoRepository, HistoricoRepository>();

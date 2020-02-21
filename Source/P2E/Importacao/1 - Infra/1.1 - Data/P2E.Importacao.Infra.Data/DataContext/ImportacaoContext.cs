@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DapperExtensions;
+using Microsoft.Extensions.Configuration;
 using P2E.Importacao.Domain.Entities.Map;
 using P2E.Shared.TypeHandler;
 using System;
@@ -12,9 +13,9 @@ namespace P2E.Importacao.Infra.Data.DataContext
     {
         public SqlConnection Connection { get; set; }
 
-        public ImportacaoContext()
+        public ImportacaoContext(IConfiguration configuration)
         {
-            Connection = new SqlConnection(P2E.Shared.Configuration.ConnectionString);
+            Connection = new SqlConnection(configuration["ConnectionString"]);
 
             InicializaMapperDapper();
             var dialect = new DapperExtensions.Sql.SqlServerDialect();
